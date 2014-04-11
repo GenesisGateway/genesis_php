@@ -1,0 +1,19 @@
+{
+    "name": "eMerchantPay/Genesis_PHP_Client",
+    "description": "PHP Client for eMerchantPay's Genesis Payment Processing Gateway",
+    "minimum-stability": "alpha",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Peter Manchev",
+            "email": "p.manchev@emerchantpay.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ext-curl": "*",
+        "ext-openssl": "*",
+        "ext-xmlwriter": "*"
+    }
+}
