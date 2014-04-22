@@ -2,29 +2,23 @@
 
 namespace Genesis;
 
-class API_Request_Authorize_3D extends Genesis_API_Request_Base
+
+class API_Request_WPF_Create extends Genesis_API_Request_Base
 {
-    protected $transaction_type;
     protected $transaction_id;
-
-    protected $usage;
-    protected $gaming;
-    protected $moto;
-
-    protected $remote_ip;
-    protected $notification_url;
-    protected $return_success_url;
-    protected $return_failure_url;
 
     protected $amount;
     protected $currency;
-    protected $card_holder;
-    protected $expiration_month;
-    protected $expiration_year;
+    protected $usage;
+    protected $description;
+
     protected $customer_email;
     protected $customer_phone;
-    protected $card_number;
-    protected $cvv;
+
+    protected $notification_url;
+    protected $return_success_url;
+    protected $return_failure_url;
+    protected $return_cancel_url;
 
     protected $billing_address;
     protected $billing_first_name;
@@ -46,6 +40,8 @@ class API_Request_Authorize_3D extends Genesis_API_Request_Base
     protected $shipping_state;
     protected $shipping_country;
 
+    protected $transaction_type;
+
     protected $risk_ssn;
     protected $risk_mac_address;
     protected $risk_session_id;
@@ -56,86 +52,55 @@ class API_Request_Authorize_3D extends Genesis_API_Request_Base
     protected $risk_remote_ip;
     protected $risk_serial_number;
 
-    protected $mpi_cavv;
-    protected $mpi_eci;
-    protected $mpi_xid;
-
-    protected $dynamic_merchant_name;
-    protected $dynamic_merchant_city;
-
     public function __construct()
     {
         $config = array (
-            'url'           => 'process',
-            'SSL'      => true,
-            'requestType'   => 'POST',
+            'url'   => $this->getRequestURL('wpf', 'wpf'),
+            'ssl'   => true,
+            'type'  => 'POST',
         );
 
         $this->createArrayObject('config', $config);
 
         $requiredFields = array (
-            'transaction_type',
             'transaction_id',
-            'remote_ip',
+            'amount',
+            'currency',
+            'usage',
+            'description',
+            'customer_email',
+            'customer_phone',
             'notification_url',
             'return_success_url',
             'return_failure_url',
-            'amount',
-            'currency',
-            'card_holder',
-            'card_number',
-            'cvv',
-            'expiration_month',
-            'expiration_year',
-            'customer_email',
-            'first_name',
-            'last_name',
-            'address1',
-            'zip_code',
-            'city',
-            'country',
-            'cavv',
-            'eci',
-            'xid'
+            'return_cancel_url',
+            'billing_first_name',
+            'billing_last_name',
+            'billing_address1',
+            'billing_zip_code',
+            'billing_city',
+            'billing_country',
         );
 
         $this->createArrayObject('requiredFields', $requiredFields);
-
-        $requiredFieldsConditional = array(
-            'notification_url'      => array('return_success_url', 'return_failure_url'),
-            'return_success_url'    => array('notification_url', 'return_failure_url'),
-            'return_failure_url'    => array('notification_url', 'return_success_url'),
-            'cavv'                  => array('eci', 'xid'),
-            'eci'                   => array('cavv', 'xid'),
-            'xid'                   => array('cavv', 'eci'),
-        );
-
-        $this->createArrayObject('requiredFieldsConditional', $requiredFieldsConditional);
     }
 
     protected function mapToTreeStructure()
     {
         $treeStructure = array (
-            'payment_transaction' => array (
-                'transaction_type'      => 'authorize3d',
+            'wpf_payment' => array (
                 'transaction_id'        => $this->transaction_id,
+                'amount'                => $this->amount,
+                'currency'              => $this->currency,
                 'usage'                 => $this->usage,
-                'gaming'                => $this->gaming,
-                'moto'                  => $this->moto,
-                'remote_ip'             => $this->remote_ip,
+                'description'           => $this->description,
+                'customer_email'        => $this->customer_email,
+                'customer_phone'        => $this->customer_phone,
                 'notification_url'      => $this->notification_url,
                 'return_success_url'    => $this->return_success_url,
                 'return_failure_url'    => $this->return_failure_url,
-                'amount'                => $this->amount,
-                'currency'              => $this->currency,
-                'card_holder'           => $this->card_holder,
-                'card_number'           => $this->card_number,
-                'cvv'                   => $this->cvv,
-                'expiration_month'      => $this->expiration_month,
-                'expiration_year'       => $this->expiration_year,
-                'customer_email'        => $this->customer_email,
-                'customer_phone'        => $this->customer_phone,
-                'billing_address'           => array(
+                'return_cancel_url'     => $this->return_cancel_url,
+                'billing_address'   => array(
                     'first_name'        => $this->billing_first_name,
                     'last_name'         => $this->billing_last_name,
                     'address1'          => $this->billing_address1,
@@ -144,7 +109,7 @@ class API_Request_Authorize_3D extends Genesis_API_Request_Base
                     'state'             => $this->billing_state,
                     'country'           => $this->billing_country,
                 ),
-                'shipping_address'          => array(
+                'shipping_address'  => array(
                     'first_name'        => $this->shipping_first_name,
                     'last_name'         => $this->shipping_last_name,
                     'address1'          => $this->shipping_address1,
@@ -153,12 +118,8 @@ class API_Request_Authorize_3D extends Genesis_API_Request_Base
                     'state'             => $this->shipping_state,
                     'country'           => $this->shipping_country,
                 ),
-                'mpi_params'                => array(
-                    'cavv'              => $this->cavv,
-                    'eci'               => $this->eci,
-                    'xid'               => $this->xid,
-                ),
-                'risk_params'               => array(
+                'transaction_types' => $this->transaction_type,
+                'risk_params'       => array(
                     'ssn'               => $this->risk_ssn,
                     'mac_address'       => $this->risk_mac_address,
                     'session_id'        => $this->risk_session_id,
@@ -169,10 +130,6 @@ class API_Request_Authorize_3D extends Genesis_API_Request_Base
                     'remote_ip'         => $this->risk_remote_ip,
                     'serial_number'     => $this->risk_serial_number,
                 ),
-                'dynamic_descriptor_params' => array(
-                    'merchant_name'     => $this->dynamic_merchant_name,
-                    'merchant_city'     => $this->dynamic_merchant_city,
-                )
             )
         );
 

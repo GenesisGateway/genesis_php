@@ -2,87 +2,135 @@
 
 namespace Genesis;
 
-class Genesis_Configuration extends Genesis_Base
+final class Genesis_Configuration extends Genesis_Base
 {
-    const VERSION = '1.0.0';
+    /**
+     * Version of this library
+     */
+    const VERSION   = '1.0.0';
+
+    /**
+     * Protocol for the HTTP requests
+     */
+    const PROTOCOL  = 'https';
+
+    /**
+     * The base domain for Genesis
+     */
+    const DOMAIN    = 'e-comprocessing.net';
 
     /**
      * Array storing all the configuration for this instance.
      *
      * @var array
      */
-    static $vault;
+    public static $vault = array (
+        'Debug'             => null,
+        'Enviorment'        => null,
+        'Token'             => null,
+        'Username'          => null,
+        'Password'          => null,
+    );
 
-    public function __construct()
-    {
-        Genesis_Configuration::$vault = array (
-            'Debug'             => null,
-            'Enviorment'        => null,
-            'Token'             => null,
-            'Username'          => null,
-            'Password'          => null,
-        );
-    }
+    /**
+     * Some requests are targeting different sub-domains.
+     * This should map all available requests/sub-domains
+     * for each configuration type (develop,sandbox,production)
+     *
+     * @var array
+     */
+    public static $sub_domains = array (
+        'gateway'   => array (
+            'production'    => 'gate.',
+            'sandbox'       => 'staging.gate.'
+        ),
+        'wpf'       => array (
+            'production'    => 'wpf.',
+            'sandbox'       => 'staging.wpf.',
+        ),
+    );
 
     /**
      * Dynamic Getters/Setter for the class
      *
      */
-    static function __callStatic($method, $args) {
-            $EtterType = substr($method, 0, 3);
-            $ConfigKey = substr($method, 3);
+    final public static function __callStatic($method, $args)
+    {
+        $ConfigKey = substr($method, 3);
 
-            switch ($EtterType) {
-                case 'get' :
-                    if (isset(Genesis_Configuration::$vault[$ConfigKey]))
-                    {
-                        return Genesis_Configuration::$vault[$ConfigKey];
-                    }
-                    break;
-                case 'set' :
-                    $ConfigValue = trim($args[0]);
+        switch (substr($method, 0, 3))
+        {
+            case 'get' :
+                if (isset(self::$vault[$ConfigKey])) {
+                    return self::$vault[$ConfigKey];
+                }
+                break;
+            case 'set' :
+                $ConfigValue = trim(reset($args));
 
-                    if (Genesis_Configuration::validateOption($ConfigKey,$ConfigValue))
-                    {
-                        Genesis_Configuration::$vault[$ConfigKey] = $ConfigValue;
-                    }
-                    break;
-                default :
-                    throw new Genesis_Exception_Invalid_Method();
-            }
+                if (parent::validateOption($ConfigKey, $ConfigValue)) {
+                    self::$vault[$ConfigKey] = $ConfigValue;
+                }
+                break;
+            default :
+                throw new Genesis_Exception_Invalid_Method($method);
+        }
     }
 
     /**
-     * Get the CA PEM (needed for cURL), depending
-     * on the selected enviorment
+     * Get the current Environment
+     *
+     * @return mixed
+     */
+    final public static function getEnviorment()
+    {
+        return self::$vault['Enviorment'];
+    }
+
+    /**
+     * Get the CA PEM (needed for cURL), based on the selected
+     * enviorment
      *
      * @return string - Path to the PEM file with the certificates
+     * @throws Genesis_Exception_Environment_Not_Set
      */
-    static function getCertificateAuthority()
+    final public static function getCertificateAuthority()
     {
-        switch (Genesis_Configuration::getEnviorment())
+        switch (self::getEnviorment())
         {
             case 'production':
                 return sprintf('%s/cert/genesis_production_global_ca.pem', ROOT_PATH);
+                break;
             case 'sandbox':
                 return sprintf('%s/cert/genesis_sandbox_comodo_ca.pem', ROOT_PATH);
+                break;
+            default:
+                throw new Genesis_Exception_Environment_Not_Set();
         }
     }
 
     /**
-     * Get the BASE url, depending on the selected enviorment
+     * Get Basic URL for Genesis Requests
      *
-     * @return string
+     * @param string $sub_domain - preferred sub_domain
+     * @return string - formatted url: protocol, sub, domain
+     * @throws Genesis_Exception_Environment_Not_Set
      */
-    static function getEnviormentURL()
+    final public static function getEnviormentURL($sub_domain = 'gateway')
     {
-        switch (Genesis_Configuration::getEnviorment())
+        switch (self::getEnviorment())
         {
-            case 'sandbox':
-                return 'https://staging.gate.e-comprocessing.net';
             case 'production':
-                return 'https://gate.e-comprocessing.net';
+                $url = self::$sub_domains[$sub_domain]['production'];
+                break;
+            case 'sandbox':
+                $url = self::$sub_domains[$sub_domain]['sandbox'];
+                break;
+            default:
+                throw new Genesis_Exception_Environment_Not_Set();
         }
+
+        return sprintf('%s://%s%s', self::PROTOCOL, $url, self::DOMAIN);
     }
 
     /**
@@ -90,7 +138,7 @@ class Genesis_Configuration extends Genesis_Base
      *
      * @return string
      */
-    static function getVersion()
+    final public static function getVersion()
     {
         return self::VERSION;
     }

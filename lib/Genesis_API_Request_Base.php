@@ -6,102 +6,151 @@ namespace Genesis;
 abstract class Genesis_API_Request_Base extends Genesis_Base
 {
     /**
-     * Tree structure of the API Request
+     * Store "per_request" configuration, like
+     * isPost, isSecure, URL etc.
      *
-     * Note: This is the structure we use
-     * in order to create the XML request
-     *
-     * @var $_fieldStructure
+     * @var $config
      */
-    protected $fieldStructure;
+    public $config;
+
+    /**
+     * Array representing the tree-structure of the Request
+     *
+     * @var $treeStructure
+     */
+    protected $treeStructure;
+
     /**
      * Array holding the names of the fields
      * that are Mandatory
      *
-     * @var $_fieldMandatory
+     * @var $requiredFields
      */
-    protected $fieldMandatory;
+    protected $requiredFields;
 
     /**
-     * Store "per_request" configuration, like
-     * isPost, isSecure, URL etc.
+     * Array holding the names of conditionally
+     * required fields.
      *
-     * @var $requestConfig
+     * @var $requiredFieldsConditional
      */
-    protected $requestConfig;
+    protected $requiredFieldsConditional;
 
-    /**
-     * Since we're using anonymous functions
-     * and callbacks, we need this variable
-     * to hold our data
-     *
-     * @var $_lastSetData
-     */
-    private $_scope;
 
-    public function getRequestConfigKey($key)
-    {
-        if ( isset($this->requestConfig[$key]))
-        {
-            return $this->requestConfig[$key];
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
         }
+
+        return false;
+    }
+
+    public function __set($property, $value) {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
+
+        return $this;
     }
 
     /**
-     * Get the structure array that represents the
-     * Hierarchy tree structure of the request
+     * Generate the URL for this Request
+     *
+     * @param string $sub_domain - gateway/wpf etc.
+     * @param string $path - path of the current request
+     * @return string - complete URL (sub_domain,path,token)
+     */
+    protected function getRequestURL($sub_domain = 'gateway', $path = '/')
+    {
+        $base_url   = Genesis_Configuration::getEnviormentURL($sub_domain);
+        $token      = Genesis_Configuration::getToken();
+
+        return sprintf('%s/%s/%s', $base_url, $path, $token);
+    }
+
+    /**
+     * Get array that represents the Hierarchy
+     * structure in the XML Request
      *
      * @return array (API_Request_Fields)
      */
-    public function getArrayStructure()
+    public function getRequestStructure()
     {
-        return $this->fieldStructure;
+        return $this->treeStructure->getArrayCopy();
     }
 
     /**
-     * Set the parameter key/value pair in our XML
-     * structure
-     *
-     * @param $setKey   - the parameter key
-     * @param $setValue - the parameter value
+     * Rebuild the Tree Structure of the Request
      */
-    public function setRequestData($setKey, $setValue)
+    public function finalizeRequest()
     {
-        $this->_scope['parameter'] = array ('key' => $setKey, 'value' => $setValue);
+        $this->mapToTreeStructure();
+        $this->sanitizeTreeStructure();
+        $this->verifyRequirements();
+    }
 
-        array_walk_recursive($this->fieldStructure, function (&$value, $key)
+    /**
+     * Helper function: create ArrayObject from array
+     *
+     * @param $target - variable storing the instance of this object
+     * @param $source_array - input array
+     */
+    protected function createArrayObject($target, $source_array)
+    {
+        $this->$target = new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
+    }
+
+    /**
+     * Helper function: map the previously set data
+     * to the tree structure representing the request
+     *
+     * @note this method must be overridden by the
+     * specific request class
+     */
+    protected function mapToTreeStructure() { }
+
+    /**
+     * Helper function: Remove empty keys/values from the structure
+     */
+    protected function sanitizeTreeStructure()
+    {
+        $arrayObject = $this->treeStructure->getArrayCopy();
+
+        $arrayObject = Genesis_Base::emptyValueRecursiveRemoval($arrayObject);
+
+        $this->treeStructure->exchangeArray($arrayObject);
+    }
+
+    /**
+     * Helper function: Perform field validation
+     */
+    protected function verifyRequirements()
+    {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($this->requiredFields));
+
+        foreach($iterator as $fieldName)
         {
-            if (strval($key) == strval($this->_scope['parameter']['key'])) {
-                $value = $this->_scope['parameter']['value'];
+            if (empty($this->$fieldName)) {
+                throw new Genesis_Exception_Required_Fields_Are_Empty($fieldName);
             }
-        });
-    }
-
-    /**
-     * Check, whether or not all mandatory fields are
-     * filled before submitting
-     *
-     * @return bool
-     */
-    public function isRequiredFilled()
-    {
-        $this->_scope['mandatory']['field']     = null;
-        $this->_scope['mandatory']['status']    = true;
-
-        foreach ($this->fieldMandatory as $mandatoryField)
-        {
-            $this->_scope['mandatory']['field'] = $mandatoryField;
-
-            array_walk_recursive($this->fieldStructure, function($value, $key)
-            {
-                if (strval($key) == strval($this->_scope['mandatory']['field'])) {
-                    if (empty($value)) {
-                        $this->_scope['mandatory']['status'] = false;
-                    }
-                }
-            });
         }
 
-        return $this->_scope['mandatory']['status'];
+
+        if ($this->requiredFieldsConditional)
+        {
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($this->requiredFieldsConditional));
+
+            foreach($iterator as $fieldName => $fieldDependencies)
+            {
+                if (isset($this->$fieldName)) {
+                    foreach ($fieldDependencies as $field)
+                    {
+                        if (empty($field)) {
+                            throw new Genesis_Exception_Required_Fields_Are_Empty($field);
+                        }
+                    }
+                }
+            }
+        }
     }
 } 

@@ -25,19 +25,21 @@ spl_autoload_register(
                 'genesis\\genesis_api_request' => '/Genesis_API_Request.php',
                 'initrecurringsale' => '/requests/transactions/API_Request_Init_Recurring_Sale.php',
                 'initrecurringsale3d' => '/requests/transactions/API_Request_Init_Recurring_Sale_3D.php',
-                'nonfinancial_account_verification' => '/requests/transactions/API_Request_Account_Verification.php',
-                'nonfinancial_avs' => '/requests/transactions/API_Request_AVS.php',
+                'genesis\\api_request_account_verification' => '/requests/transactions/API_Request_Account_Verification.php',
+                'genesis\\api_request_avs' => '/requests/transactions/API_Request_AVS.php',
                 'reconcile_date_range' => '/requests/reconcile/API_Request_Reconcile_By_Date_Range.php',
                 'recurringsale' => '/requests/transactions/API_Request_Recurring_Sale.php',
                 'sale3d' => '/requests/transactions/API_Request_Sale_3D.php',
                 'singletransaction' => '/requests/reconcile/API_Request_Reconcile_By_Transaction.php',
                 'tranasction_capture' => '/requests/transactions/API_Request_Capture.php',
-                'transaction_authorize' => '/requests/transactions/API_Request_Authorize.php',
+                'genesis\\api_request_authorize' => '/requests/transactions/API_Request_Authorize.php',
                 'transaction_credit' => '/requests/transactions/API_Request_Credit.php',
                 'transaction_payout' => '/requests/transactions/API_Request_Payout.php',
                 'transaction_refund' => '/requests/transactions/API_Request_Refund.php',
                 'transaction_sale' => '/requests/transactions/API_Request_Sale.php',
-                'transaction_void' => '/requests/transactions/API_Request_Void.php'
+                'genesis\\api_request_void' => '/requests/transactions/API_Request_Void.php',
+                'genesis\\api_request_notification_echo' => '/requests/API_Request_Notification_Echo.php',
+                'genesis\\api_request_wpf_create' => '/requests/wpf/API_Request_WPF_Create.php'
             );
         }
         $cn = strtolower($class);

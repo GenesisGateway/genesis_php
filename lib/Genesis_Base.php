@@ -16,14 +16,45 @@ class Genesis_Base
         return preg_replace("/(?<=[a-zA-Z])(?=[A-Z])/", "_", $string);
     }
 
+    /**
+     * Get Genesis Error Code
+     *
+     * @param $error
+     * @return mixed
+     */
     static function getErrorCode($error)
     {
         return Genesis_Errors::$error;
     }
 
+    /**
+     * Get description for an error, based
+     * on the Error Code
+     *
+     * @param $error_code
+     * @return string
+     */
     static function getErrorDescription($error_code)
     {
         return Genesis_Errors::getErrorDescription($error_code);
+    }
+
+    /**
+     * Recursive array cleanup
+     */
+    static function emptyValueRecursiveRemoval($haystack)
+    {
+        foreach ($haystack as $key => $value) {
+            if (is_array($value)) {
+                $haystack[$key] = self::emptyValueRecursiveRemoval($haystack[$key]);
+            }
+
+            if (empty($haystack[$key])) {
+                unset($haystack[$key]);
+            }
+        }
+
+        return $haystack;
     }
 
     /**
@@ -38,7 +69,7 @@ class Genesis_Base
     {
         if (empty($key) || empty($value))
         {
-            if (array_key_exists(Genesis_Configuration::$vault, $key))
+            if (array_key_exists($key, Genesis_Configuration::$vault))
             {
                 return false;
             }

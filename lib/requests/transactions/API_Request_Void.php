@@ -4,11 +4,47 @@ namespace Genesis;
 
 class API_Request_Void extends Genesis_API_Request_Base
 {
-    public $transaction_type;
-    public $transaction_id;
+    protected $transaction_id;
 
-    public $usage;
+    protected $usage;
 
-    public $remote_ip;
-    public $reference_id;
+    protected $remote_ip;
+    protected $reference_id;
+
+    public function __construct()
+    {
+        $config = array (
+            'URL'   => $this->getRequestURL('gateway', 'process'),
+            'SSL'   => true,
+            'TYPE'  => 'POST',
+        );
+
+        $this->createArrayObject('config', $config);
+
+        $requiredFields = array (
+            'transaction_type',
+            'transaction_id',
+            'remote_ip',
+            'reference_id',
+        );
+
+        $this->createArrayObject('requiredFields', $requiredFields);
+    }
+
+    protected function mapToTreeStructure()
+    {
+        $treeStructure = array (
+            'payment_transaction' => array (
+                'transaction_type'  => 'void',
+                'transaction_id'    => $this->transaction_id,
+                'usage'             => $this->usage,
+                'remote_ip'         => $this->remote_ip,
+                'reference_id'      => $this->reference_id,
+            )
+        );
+
+        $this->createArrayObject('treeStructure', $treeStructure);
+    }
+
+
 }

@@ -5,53 +5,45 @@ namespace Genesis;
 
 class Genesis_HTTP_Request extends Genesis_Base
 {
-    private $_body;
-    private $_status;
+    public $responseBody;
+    public $responseStatus;
 
-    private $_context;
+    private $wrapperContext;
 
-    /**
-     * Check if cURL is available, if not - fallback to Native
-     *
-     */
     public function __construct()
     {
-        if ($this->_isCurlAvailable())
-        {
-            $this->_context = new Genesis_HTTP_Request_cURL();
-        }
-        else
-        {
-            throw Genesis_Missing_Required_Component('cURL');
+        if (function_exists('curl_version')) {
+            $this->wrapperContext = new Genesis_HTTP_Request_cURL();
+        } else {
+            throw new Genesis_Exception_Missing_Component('cURL');
         }
     }
 
-    /**
-     * Load the Data From the Request
-     */
-    public function setRequest($request)
+    public function setRequestData($request)
     {
-        $this->_context->setRequest($request);
-        $this->_context->setHeaders();
+        $requestData = array (
+            'ssl'           => $request->getSsl(),
+            'url'           => $request->getUrl(),
+            'body'          => $request->getXMLDocument(),
+            'type'          => $request->getType(),
+            'debug'         => (bool)Genesis_Configuration::getDebug(),
+            'cert_ca'       => Genesis_Configuration::getCertificateAuthority(),
+            'user_agent'    => sprintf('Genesis PHP Client v%s', Genesis_Configuration::getVersion()),
+            'user_login'    => sprintf('%s:%s', Genesis_Configuration::getUsername(), Genesis_Configuration::getPassword()),
+        );
+
+        $this->wrapperContext->prepareRequestBody($requestData);
     }
 
     /**
-     * Execute the request
+     * submitRequest the request
      *
      */
     public function submitToGenesis()
     {
-        $this->_context->Execute();
+        $this->wrapperContext->submitRequest();
 
-        $this->_status  = $this->_context->getStatus();
-    }
-
-    /**
-     * Check whether cURL is available or not
-     *
-     * @return bool
-     */
-    private function _isCurlAvailable() {
-        return function_exists('curl_version');
+        $this->responseBody     = $this->wrapperContext->getResponse();
+        $this->responseStatus   = $this->wrapperContext->getStatus();
     }
 }

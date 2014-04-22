@@ -1,5 +1,5 @@
 {
-    "name": "eMerchantPay/Genesis_PHP_Client",
+    "name": "eMerchantPay/genesis_php",
     "description": "PHP Client for eMerchantPay's Genesis Payment Processing Gateway",
     "minimum-stability": "alpha",
     "license": "proprietary",

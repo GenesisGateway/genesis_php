@@ -4,21 +4,61 @@ namespace Genesis;
 
 class Genesis_API_Request extends Genesis_Base
 {
-    private $_body;
-    private $_context;
-    private $_network;
+    /**
+     * Placeholder for the HTTP_Request instance
+     * @var $httpRequest
+     */
+    private $httpRequest;
+    /**
+     * Placeholder for the API_Request instance
+     * @var $requestContext
+     */
+    private $requestContext;
+    /**
+     * Placeholder for the generated XML Document
+     * @var $xmlDocument
+     */
+    private $xmlDocument;
 
-    public function __call($method, $args) {
-        $EtterType = substr($method, 0, 3);
-        $ConfigKey = strtolower(parent::uppercaseToUnderscore(substr($method, 3)));
+    /**
+     * Initialize and instantiate the desired request
+     *
+     * @param $request - name of the API request
+     */
+    public function loadRequest($request)
+    {
+        $request_class = sprintf('\Genesis\API_Request_%s', $request);
+        $this->requestContext = new $request_class;
+    }
 
-        switch ($EtterType) {
+    /**
+     * Redirect get/set requests from this instance to the Request Context
+     *
+     * @param $method
+     * @param $args
+     * @throws Genesis_Exception_Invalid_Method
+     */
+    public function __call($method, $args)
+    {
+        $requestedKey = strtolower(parent::uppercaseToUnderscore(substr($method, 3)));
+
+        switch (substr($method, 0, 3)) {
+            case 'add' :
+                if (is_array($this->requestContext->$requestedKey)) {
+                    $arr = $this->requestContext->$requestedKey;
+                } else {
+                    $arr = array();
+                }
+
+                array_push($arr, array($requestedKey => trim(reset($args))));
+
+                $this->requestContext->$requestedKey = $arr;
+                break;
             case 'get' :
+                return $this->requestContext->config->offsetGet($requestedKey);
                 break;
             case 'set' :
-                $ConfigValue = trim($args[0]);
-
-                $this->_context->setRequestData($ConfigKey, $ConfigValue);
+                $this->requestContext->$requestedKey = trim(reset($args));
                 break;
             default :
                 throw new Genesis_Exception_Invalid_Method();
@@ -26,93 +66,12 @@ class Genesis_API_Request extends Genesis_Base
     }
 
     /**
-     * Instantiate and initialize the selected request
-     *
-     * @param $request - name of the API request
+     * Get the generated XML document
+     * @return mixed
      */
-    public function loadRequest($request)
+    public function getXMLDocument()
     {
-        $request_class = sprintf('\Genesis\API_Request_%s', $request);
-        $this->_context = new $request_class;
-    }
-
-    /**
-     * Boolean flag for the Requests Transport Layer
-     *
-     * @return bool - true if it is SSL/TLS, false if anything else
-     */
-    public function isSecure()
-    {
-        return (bool)$this->_context->getRequestConfigKey('isSecure');
-    }
-
-    /**
-     * Get the type of Request (currently only the type of HTTP Request: GET/POST/PUT)
-     *
-     * @return $string Request_type
-     */
-    public function getType()
-    {
-        return $this->_context->getRequestConfigKey('requestType');
-    }
-
-    /**
-     * Check if the Request's Body is not empty
-     *
-     * @return bool - true if the body of the request is not empty, false if it is
-     */
-    public function isNotEmpty()
-    {
-        if (empty($this->_body))
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    /**
-     * Build the URL for the current request.
-     *
-     * @return string
-     */
-    public function buildURL()
-    {
-        return sprintf("%s/%s/%s",
-            Genesis_Configuration::getEnviormentURL(),
-            $this->_context->getRequestConfigKey('url'),
-            Genesis_Configuration::getToken()
-        );
-    }
-
-    /**
-     * Set a parameter for the selected request
-     *
-     * @param $key      - name of the parameter
-     * @param $value    - value of the parameter
-     */
-    public function setParameter($key, $value)
-    {
-        $this->_context->$key = $value;
-    }
-
-    /*
-     * Proxy function to the request's validation
-     * function for verifying if all fields are
-     * filled correctly
-     *
-     * @return bool
-     */
-    public function validateRequirements()
-    {
-        return $this->_context->isRequiredFilled();
-    }
-
-    public function getBody()
-    {
-        return $this->_body;
+        return $this->xmlDocument;
     }
 
     /**
@@ -120,18 +79,18 @@ class Genesis_API_Request extends Genesis_Base
      * after we ensure that all mandatory fields
      * are filled
      *
-     * @throws Genesis_Required_Fields_Are_Empty
      */
     public function generateXML()
     {
-        if ( !$this->validateRequirements() )
-        {
-            throw new Genesis_Exception_Required_Fields_Are_Empty();
-        }
+        $this->requestContext->finalizeRequest();
 
-        $xmlDocument = new \Genesis\Genesis_Builder_XML();
-        $xmlDocument->generateBody($this->_context->getArrayStructure());
-        $this->_body = $xmlDocument->getOutput();
+        //var_dump($this->requestContext->getRequestStructure());
+        //exit;
+
+        $xmlDocument = new Genesis_Builder_XML();
+        $xmlDocument->populateXMLNodes($this->requestContext->getRequestStructure());
+        $xmlDocument->finishDocument();
+        $this->xmlDocument = $xmlDocument->getOutput();
     }
 
     /**
@@ -142,9 +101,11 @@ class Genesis_API_Request extends Genesis_Base
     {
         $this->generateXML();
 
-        $this->_network = new \Genesis\Genesis_HTTP_Request();
-        $this->_network->setRequest($this);
-        $this->_network->submitToGenesis();
+        $this->httpRequest = new Genesis_HTTP_Request();
+        $this->httpRequest->setRequestData($this);
+        $this->httpRequest->submitToGenesis();
+
+        var_dump($this->httpRequest->responseBody);
     }
 
 }

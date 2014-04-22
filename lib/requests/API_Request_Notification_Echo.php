@@ -2,14 +2,15 @@
 
 namespace Genesis;
 
-class API_Request_Reconcile_By_Transaction extends Genesis_API_Request_Base
+
+class API_Request_Notification_Echo extends Genesis_API_Request_Base
 {
     protected $unique_id;
 
     public function __construct()
     {
         $config = array (
-            'url'           => 'reconcile',
+            'url'           => $this->getRequestURL('gateway', 'process'),
             'SSL'      => true,
             'requestType'   => 'POST',
         );
@@ -26,11 +27,11 @@ class API_Request_Reconcile_By_Transaction extends Genesis_API_Request_Base
     protected function mapToTreeStructure()
     {
         $treeStructure = array (
-            'reconcile' => array (
-                'unique_id'  => $this->unique_id,
+            'notification_echo' => array (
+                'unique_id' => $this->unique_id,
             )
         );
 
         $this->createArrayObject('treeStructure', $treeStructure);
     }
-}
+} 

@@ -5,91 +5,79 @@ namespace Genesis;
 
 class Genesis_Builder_XML
 {
-    private $_writer;
+    private $xmlWriter;
+    private $xmlDocument;
 
+    /**
+     * Instantiate and start an empty XML Document
+     *
+     */
     public function __construct()
     {
-        $this->_writer = new \XMLWriter();
+        $this->xmlWriter = new \XMLWriter();
 
-        $this->_writer->openMemory();
-        $this->_writer->startDocument('1.0', 'UTF-8');
-        $this->_writer->setIndent(4);
+        $this->xmlWriter->openMemory();
+        $this->xmlWriter->startDocument('1.0', 'UTF-8');
+        $this->xmlWriter->setIndent(4);
     }
 
     /**
-     * Flush and destroy the Writer upon destruction (just in case)
+     * Flush and destroy XMLWriter instance upon destruction
      */
     public function __destruct()
     {
-        $this->_writer->flush(true);
+        $this->xmlWriter->flush(true);
     }
 
     /**
-     * Generate the body of the XML file by providing the request fields
-     *
-     * @param $fields Array - tree-structured array
-     */
-    public function generateBody($fields)
-    {
-        $this->writeData($fields);
-    }
-
-    /**
-     * Get the generated XML file as string
-     *
-     * @param bool $flush - should we flush the cache upon returning it?
-     * @return string
-     */
-    public function getOutput($flush = false)
-    {
-        $this->_writer->endDocument();
-        return $this->_writer->outputMemory($flush);
-    }
-
-    /**
-     * Insert tree-structured array as objects in existing XMLWriter
+     * Insert tree-structured array as nodes in XMLWriter
      *
      * @param $data Array - tree-structured array
      */
-    public function writeData($data)
+    public function populateXMLNodes($data)
     {
-        foreach($data as $key => $value) {
-            if(is_array($value)){
-                $this->_writer->startElement($key);
-                $this->writeData($value);
-                $this->_writer->endElement();
+        foreach($data as $key => $value)
+        {
+            // Skip null nodes as this
+            // only increases the body
+            // length in the request
+            if (is_null($value))
+            {
                 continue;
             }
-            $this->_writer->writeElement($key, $value);
+
+            if (is_array($value))
+            {
+                $this->xmlWriter->startElement($key);
+                $this->populateXMLNodes($value);
+                $this->xmlWriter->endElement();
+                continue;
+            }
+
+            $this->xmlWriter->writeElement($key, $value);
         }
     }
 
     /**
-     * Generate an XML representation of given array
-     * in a given XML object.
+     * Close the document and save the XML output
      *
-     * @param $xml_nodes_arr    - array with fields to be represented as XML nodes
-     * @param $xml_doc_instance - instance of the XML document
+     * @param bool $flush - flush the memory after returning the contents
+     * @return string
      */
-    private function array_to_xml($xml_nodes_arr, &$xml_doc_instance) {
-        foreach($xml_nodes_arr as $key => $value) {
-            if(is_array($value))
-            {
-                if(!is_numeric($key))
-                {
-                    $subnode = $xml_doc_instance->addChild("$key");
-                    $this->array_to_xml($value, $subnode);
-                }
-                else
-                {
-                    $subnode = $xml_doc_instance->addChild("item$key");
-                    $this->array_to_xml($value, $subnode);
-                }
-            }
-            else
-            {
-                $xml_doc_instance->addChild("$key",htmlspecialchars("$value"));
-            }
-        }
+    public function finishDocument($flush = false)
+    {
+        $this->xmlWriter->endDocument();
+        $this->xmlDocument = $this->xmlWriter->outputMemory($flush);
+        var_dump($this->xmlDocument);
+    }
+
+    /**
+     * Get the XML output
+     *
+     * @return mixed
+     */
+    public function getOutput()
+    {
+        return $this->xmlDocument;
     }
 } 
