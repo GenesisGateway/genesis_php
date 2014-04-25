@@ -15,5 +15,13 @@
         "ext-curl": "*",
         "ext-openssl": "*",
         "ext-xmlwriter": "*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Genesis\\": "src/"
+        }
     }
 }

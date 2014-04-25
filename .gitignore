@@ -1,1 +1,5 @@
+*.lock
 .idea
+legacy
+vendor
+tester.php
