@@ -56,6 +56,10 @@ final class XMLWriter
 
             $this->xmlWriter->writeElement($key, $value);
         }
+    }
+
+    public function finalizeXML()
+    {
         $this->xmlWriter->endDocument();
     }
 
@@ -66,6 +70,7 @@ final class XMLWriter
      */
     public function getOutput()
     {
-        return $this->xmlWriter->outputMemory();
+        $contents = html_entity_decode($this->xmlWriter->outputMemory());
+        return $contents;
     }
 }

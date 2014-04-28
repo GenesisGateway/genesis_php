@@ -107,13 +107,15 @@ final class Configuration
      */
     final public static function getCertificateAuthority()
     {
+        $genesis_dir = dirname(__FILE__);
+
         switch (self::getEnvironment())
         {
             case 'production':
-                return sprintf('%s/Certificates/genesis_production_global_ca.pem', ROOT_PATH);
+                return sprintf('%s/Certificates/genesis_production_global_ca.pem', $genesis_dir);
                 break;
             case 'sandbox':
-                return sprintf('%s/Certificates/genesis_sandbox_comodo_ca.pem', ROOT_PATH);
+                return sprintf('%s/Certificates/genesis_sandbox_comodo_ca.pem', $genesis_dir);
                 break;
             default:
                 throw new Exceptions\EnvironmentNotSet();

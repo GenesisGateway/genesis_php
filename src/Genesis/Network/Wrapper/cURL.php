@@ -4,9 +4,12 @@ namespace Genesis\Network\Wrapper;
 
 class cURL
 {
-    public $response;
-
     private $curlHandle;
+
+    private $responseHeaders;
+    private $responseBody;
+    private $response;
+
 
     public function __construct()
     {
@@ -43,13 +46,34 @@ class cURL
     }
 
     /**
+     * Get Response Headers
+     *
+     * @return mixed
+     */
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
+    }
+
+    /**
+     * Get Response Body
+     *
+     * @return mixed
+     */
+    public function getResponseBody()
+    {
+        return $this->responseBody;
+    }
+
+    /**
      * Set cURL headers/options, according to the request
      */
     public function prepareRequestBody($requestData)
     {
         $cURLOpt = array(
             CURLOPT_ENCODING        => 'gzip',
-            CURLOPT_HTTPHEADER      => array('Content-Type: text/xml'),
+            CURLOPT_HEADER          => true,
+            CURLOPT_HTTPHEADER      => array('Content-Type: text/xml', 'Expect:'),
             CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
             CURLOPT_URL             => $requestData['url'],
             CURLOPT_TIMEOUT         => $requestData['timeout'],
@@ -83,6 +107,7 @@ class cURL
     public function submitRequest()
     {
         $this->response = curl_exec($this->curlHandle);
+        list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
     }
 
     /**

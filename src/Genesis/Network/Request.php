@@ -7,8 +7,8 @@ use \Genesis\Configuration as Configuration;
 
 class Request
 {
-    public $responseBody;
-    public $responseStatus;
+    private $responseBody;
+    private $responseHeaders;
 
     private $wrapperContext;
 
@@ -19,8 +19,26 @@ class Request
         }
         else {
             $this->wrapperContext = new Wrapper\StreamContext();
-            //throw new Exceptions\MissingComponent('cURL Library');
         }
+    }
+
+    /**
+     * Get the Body of the response
+     * @return mixed
+     */
+    public function getResponseBody()
+    {
+        return $this->responseBody;
+    }
+
+    /**
+     * Get the Headers of the response
+     *
+     * @return mixed
+     */
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
     }
 
     /**
@@ -40,7 +58,6 @@ class Request
     {
         $requestData = array(
             'url'           => $request->getUrl(),
-            'transport_url' => str_replace($request->getProtocol(), $request->getTransport(), $request->getUrl()),
             'body'          => $request->getXMLDocument(),
             'type'          => $request->getType(),
             'port'          => $request->getPort(),
@@ -50,6 +67,7 @@ class Request
             'timeout'       => 60,
             'user_agent'    => sprintf('Genesis PHP Client v%s', Configuration::getVersion()),
             'user_login'    => sprintf('%s:%s', Configuration::getUsername(), Configuration::getPassword()),
+            'transport_url' => str_replace($request->getProtocol(), $request->getTransport(), $request->getUrl()),
         );
 
         $this->wrapperContext->prepareRequestBody($requestData);
@@ -62,7 +80,7 @@ class Request
     {
         $this->wrapperContext->submitRequest();
 
-        $this->responseBody     = $this->wrapperContext->getResponse();
-        $this->responseStatus   = $this->wrapperContext->getStatus();
+        $this->responseBody     = $this->wrapperContext->getResponseBody();
+        $this->responseHeaders  = $this->wrapperContext->getResponseHeaders();
     }
 }

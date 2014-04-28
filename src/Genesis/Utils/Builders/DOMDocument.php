@@ -49,6 +49,14 @@ final class DOMDocument
     }
 
     /**
+     * Dummy function to make the DOMDocument class interchangeable with XMLWriter
+     */
+    public function finalizeXML()
+    {
+
+    }
+
+    /**
      * Get the XML output
      *
      * @return mixed

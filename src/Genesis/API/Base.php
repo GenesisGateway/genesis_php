@@ -3,10 +3,10 @@
 namespace Genesis\API;
 
 use \Genesis\Base as GenesisBase;
-use \Genesis\Exceptions as Exceptions;
 use \Genesis\Configuration as Configuration;
-use \Genesis\Utils\Builders as Builders;
+use \Genesis\Exceptions as Exceptions;
 use \Genesis\Network as Network;
+use \Genesis\Utils\Builders as Builders;
 
 abstract class Base
 {
@@ -38,17 +38,35 @@ abstract class Base
      */
     protected $requiredFieldsConditional;
 
+    /**
+     * Store group name/fields where at least on the fields
+     * is required
+     *
+     * @var \ArrayObject
+     */
+    protected $requiredFieldsGroups;
+
+    /**
+     * Store the generated XML Body
+     *
+     * @var String
+     */
     protected $xmlDocument;
 
+    /**
+     * Store the Network Request Handle
+     * @var \Genesis\Network\Request
+     */
     protected $httpRequest;
 
     public function __call($method, $args)
     {
-        $requestedKey = strtolower(GenesisBase::uppercaseToUnderscore(substr($method, 3)));
+        $methodType     = substr($method, 0, 3);
+        $requestedKey   = strtolower(GenesisBase::uppercaseToUnderscore(substr($method, 3)));
 
-        switch (substr($method, 0, 3)) {
+        switch ($methodType) {
             case 'add' :
-                if (is_array($this->$requestedKey)) {
+                if (isset($this->$requestedKey) && is_array($this->$requestedKey)) {
                     $arr = $this->$requestedKey;
                 }
                 else {
@@ -69,26 +87,6 @@ abstract class Base
         return null;
     }
 
-    public function __get($property)
-    {
-        if (property_exists($this, $property))
-        {
-            return $this->$property;
-        }
-
-        return false;
-    }
-
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property))
-        {
-            $this->$property = $value;
-        }
-
-        return $this;
-    }
-
     /**
      * Get the generated XML document
      *
@@ -106,7 +104,7 @@ abstract class Base
      */
     public function getGenesisResponse()
     {
-        return $this->httpRequest->responseBody;
+        return $this->httpRequest->getResponseBody();
     }
 
     /**
@@ -119,6 +117,7 @@ abstract class Base
 
         $xmlDocument = new Builders\XMLWriter();
         $xmlDocument->populateXMLNodes($this->getRequestStructure());
+        $xmlDocument->finalizeXML();
         $this->xmlDocument = $xmlDocument->getOutput();
     }
 
@@ -226,8 +225,32 @@ abstract class Base
             foreach($iterator as $fieldName)
             {
                 if (empty($this->$fieldName)) {
-                    throw new Exceptions\BlankRequiredField($fieldName);
+                    throw new Exceptions\BlankRequiredField($fieldName, 0);
                 }
+            }
+        }
+
+        if ($this->requiredFieldsGroups)
+        {
+            $fields = $this->requiredFieldsGroups->getArrayCopy();
+
+            $emptyFlag = false;
+            $groupsFormatted = array();
+
+            foreach($fields as $group => $groupFields)
+            {
+                $groupsFormatted[] = sprintf('%s (%s)', ucfirst($group), implode(', ', $groupFields));
+
+                foreach ($groupFields as $field)
+                {
+                    if (!empty($this->$field)) {
+                        $emptyFlag = true;
+                    }
+                }
+            }
+
+            if (!$emptyFlag) {
+                throw new Exceptions\BlankRequiredField('One of the following groups of fields: ' . implode(' / ', $groupsFormatted) . ' must be filled in!', 1);
             }
         }
 
@@ -241,7 +264,7 @@ abstract class Base
                     foreach ($fieldDependencies as $field)
                     {
                         if (empty($this->$field)) {
-                            throw new Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field);
+                            throw new Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field, 0);
                         }
                     }
                 }

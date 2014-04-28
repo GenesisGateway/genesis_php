@@ -4,6 +4,7 @@ namespace Genesis\API;
 
 final class Errors
 {
+    const SUCCESS                           = 0;
     const ERROR                             = 1;
 
     const SYSTEM_ERROR                      = 100;

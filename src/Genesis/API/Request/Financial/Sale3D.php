@@ -184,5 +184,12 @@ class Sale3D extends RequestBase
         );
 
         $this->createArrayObject('requiredFieldsConditional', $requiredFieldsConditional);
+
+        $requiredFieldsGroups = array(
+            'synchronous'   => array('notification_url', 'return_success_url', 'return_failure_url'),
+            'asynchronous'  => array('mpi_cavv', 'mpi_eci', 'mpi_xid'),
+        );
+
+        $this->createArrayObject('requiredFieldsGroups', $requiredFieldsGroups);
     }
 }

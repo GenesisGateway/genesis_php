@@ -41,10 +41,10 @@ class CreateSpec extends ObjectBehavior
         $this->setCurrency('USD');
         $this->setUsage('40208 Concert Tickets');
         $this->setDescription('Genesis PHP Client Example Request');
-        $this->setNotificationUrl('http://10.100.26.3/handleGenesis.php');
-        $this->setReturnSuccessUrl('http://10.100.26.3/handleGenesis.php?redir=success');
-        $this->setReturnFailureUrl('http://10.100.26.3/handleGenesis.php?redir=failure');
-        $this->setReturnCancelUrl('http://10.100.26.3/handleGenesis.php?redir=cancel');
+        $this->setNotificationUrl('https://94.26.28.144:22303/handleGenesis.php');
+        $this->setReturnSuccessUrl('https://94.26.28.144:22303/handleGenesis.php?redir=success');
+        $this->setReturnFailureUrl('https://94.26.28.144:22303/handleGenesis.php?redir=failure');
+        $this->setReturnCancelUrl('https://94.26.28.144:22303/handleGenesis.php?redir=cancel');
         $this->setCustomerEmail('test@emerchantpay.com');
         $this->setCustomerPhone('+359000');
         $this->setBillingFirstName('Max');

@@ -5,11 +5,10 @@ namespace spec\Genesis\API;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-
-class RequestSpec extends ObjectBehavior
+class NotificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request');
+        $this->shouldHaveType('Genesis\API\Notification');
     }
 }

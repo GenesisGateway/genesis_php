@@ -6,10 +6,16 @@ class StreamContext
 {
     public $response;
 
+    private $responseBody;
+    private $responseHeaders;
+
     private $requestData;
     private $socketHandle;
     private $streamContext;
 
+    /**
+     * Null-ify the Socket Handle to avoid memory leaks
+     */
     public function __destruct()
     {
         if (isset($this->socketHandle)) {
@@ -35,6 +41,26 @@ class StreamContext
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * Get Response Headers
+     *
+     * @return mixed
+     */
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
+    }
+
+    /**
+     * Get Response Body
+     *
+     * @return mixed
+     */
+    public function getResponseBody()
+    {
+        return $this->responseBody;
     }
 
     /**
@@ -86,8 +112,10 @@ class StreamContext
             //while (!$this->safeTimeout($this->socketHandle, $start) && (microtime(true) - $start) < 1) {
              */
             while (!feof($this->socketHandle)) {
-                $this->response .= fgets($this->socketHandle, 1);
+                $this->response .= fgets($this->socketHandle, 4096);
             }
+
+            list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
 
             fclose($this->socketHandle);
         }
