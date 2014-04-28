@@ -107,10 +107,7 @@ class StreamContext
         }
         else {
             fwrite($this->socketHandle, $this->buildRAWQuery());
-            /*
-            //$start = NULL;
-            //while (!$this->safeTimeout($this->socketHandle, $start) && (microtime(true) - $start) < 1) {
-             */
+
             while (!feof($this->socketHandle)) {
                 $this->response .= fgets($this->socketHandle, 4096);
             }
@@ -133,19 +130,11 @@ class StreamContext
                 "User-Agent: " . $data['user_agent'] . "\r\n" .
                 "Content-Length: " . strlen($data['body']) . "\r\n" .
                 "Content-Type: text/xml\r\n" .
+                "Expect: \r\n" .
                 "\r\n" .
                 $data['body'] .
                 "\r\n";
 
         return $raw;
     }
-
-    /*
-    private function safeTimeout($handle, &$start = null)
-    {
-        $start = microtime(true);
-
-        return feof($handle);
-    }
-    */
 }
