@@ -6,9 +6,9 @@ class cURL
 {
     private $curlHandle;
 
-    private $responseHeaders;
-    private $responseBody;
     private $response;
+    private $responseBody;
+    private $responseHeaders;
 
 
     public function __construct()
@@ -115,7 +115,7 @@ class cURL
      *
      * @param $curlOptions Array
      */
-    private function setOptions($curlOptions)
+    public function setOptions($curlOptions)
     {
         curl_setopt_array($this->curlHandle, $curlOptions);
     }

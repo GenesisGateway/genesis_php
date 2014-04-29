@@ -1,7 +1,7 @@
 {
     "name": "eMerchantPay/genesis_php",
-    "description": "PHP Client for eMerchantPay's Genesis Payment Processing Gateway",
-    "minimum-stability": "alpha",
+    "description": "PHP Client for Genesis Payment Processing Gateway",
+    "minimum-stability": "beta",
     "license": "proprietary",
     "authors": [
         {
@@ -17,7 +17,7 @@
         "ext-xmlwriter": "*"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.*"
+        "phpspec/phpspec": "2.0.*@dev"
     },
     "autoload": {
         "psr-0": {

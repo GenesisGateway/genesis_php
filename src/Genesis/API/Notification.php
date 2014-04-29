@@ -2,8 +2,9 @@
 
 namespace Genesis\API;
 
+use Genesis\Exceptions;
 use Genesis\Configuration;
-use \Genesis\Utils\Builders as Builders;
+use Genesis\Utils\Builders as Builders;
 
 class Notification
 {
@@ -22,12 +23,12 @@ class Notification
     private $notificationObj;
 
     /**
-     * Generate XML response required for acknowledging
+     * Generate XML response (Echo) required for acknowledging
      * Genesis's Notification
      *
      * @return string
      */
-    public function acknowledgeNotification()
+    public function generateNotificationResponse()
     {
         $echo_structure = array (
             'notification_echo' => array (
@@ -42,9 +43,10 @@ class Notification
     }
 
     /**
-     * Parse Notification from Genesis
+     * Parse the incoming notification from Genesis
      *
-     * @param $response $_POST
+     * @param $response
+     * @throws Exceptions\InvalidArgument()
      */
     public function parseNotification($response)
     {
@@ -52,11 +54,17 @@ class Notification
         $response_parser->parseNotification($response);
         $this->notificationObj = $response_parser->getResponseObject();
 
-        if (isset($this->notificationObj->notification_type) && $this->notificationObj->notification_type == 'wpf') {
+        if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
+            $this->unique_id = $this->notificationObj->unique_id;
+        }
+
+        if (isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id)) {
             $this->unique_id = $this->notificationObj->wpf_unique_id;
         }
-        else {
-            $this->unique_id = $this->notificationObj->unique_id;
+
+        if (empty($this->notificationObj->unique_id) || empty($this->notificationObj->signature) || empty($this->notificationObj->status))
+        {
+            throw new Exceptions\InvalidArgument();
         }
     }
 
@@ -86,11 +94,11 @@ class Notification
         $calc_signature = hash($hash_type, $unique_id . $customer_password);
 
         if ($message_signature === $calc_signature) {
-            if (isset($this->notificationObj->status) && $this->notificationObj->status === 'approved') {
+            if (isset($this->notificationObj->status) && $this->notificationObj->status == 'approved') {
                 return true;
             }
 
-            if (isset($this->notificationObj->wpf_status) && $this->notificationObj->wpf_status === 'approved') {
+            if (isset($this->notificationObj->wpf_status) && $this->notificationObj->wpf_status == 'approved') {
                 return true;
             }
         }

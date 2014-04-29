@@ -2,6 +2,7 @@
 
 namespace Genesis\API;
 
+use Genesis\Exceptions;
 
 class Response
 {
@@ -18,7 +19,7 @@ class Response
         $status = false;
 
         if (isset($this->responseObj->status) && $this->responseObj->status == 'approved') {
-            if (intval($this->responseObj->response_code) === Errors::SUCCESS) {
+            if ($this->responseObj->response_code == Errors::SUCCESS) {
                 $status = true;
             }
         }
@@ -38,10 +39,16 @@ class Response
 
     /**
      * Parse Genesis response to SimpleXMLElement
+     *
      * @param $response \SimpleXMLElement
+     * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function parseResponse($response)
     {
+        if (empty($response)) {
+            throw new Exceptions\InvalidArgument();
+        }
+
         $this->responseObj = simplexml_load_string($response);
     }
 
@@ -58,6 +65,4 @@ class Response
             $this->responseObj->$var = trim(urldecode($value));
         }
     }
-
-
-} 
+}

@@ -16,7 +16,7 @@ class DateRange extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'reconcile/by_date', false);
+        $this->setRequestURL('gateway', 'reconcile/by_date', true);
     }
 
     protected function mapToTreeStructure()

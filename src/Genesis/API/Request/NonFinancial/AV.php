@@ -55,7 +55,7 @@ class AV extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'process', false);
+        $this->setRequestURL('gateway', 'process', true);
     }
 
     protected function mapToTreeStructure()

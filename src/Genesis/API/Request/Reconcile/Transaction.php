@@ -13,7 +13,7 @@ class Transaction extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'reconcile', false);
+        $this->setRequestURL('gateway', 'reconcile', true);
     }
 
     protected function mapToTreeStructure()
