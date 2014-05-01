@@ -17,11 +17,11 @@
         "ext-xmlwriter": "*"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.0.*@dev"
+        "phpspec/phpspec": "2.0.*@stable"
     },
     "autoload": {
         "psr-0": {
-            "Genesis\\": "src/"
+            "Genesis": "src/"
         }
     }
 }

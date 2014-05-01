@@ -2,7 +2,7 @@
 
 namespace Genesis\API\Request\Reconcile;
 
-use \Genesis\API\Base as RequestBase;
+use \Genesis\API\Request as RequestBase;
 
 class Transaction extends RequestBase
 {
@@ -16,7 +16,7 @@ class Transaction extends RequestBase
         $this->setRequestURL('gateway', 'reconcile', true);
     }
 
-    protected function mapToTreeStructure()
+    protected function populateStructure()
     {
         $treeStructure = array (
             'reconcile' => array (
@@ -31,10 +31,10 @@ class Transaction extends RequestBase
     {
         $config = array (
             'url'       => '',
-            'port'      => null,
+            'port'      => 443,
             'type'      => 'POST',
+            'format'    => 'xml',
             'protocol'  => 'https',
-            'transport' => 'tls',
         );
 
         $this->createArrayObject('config', $config);

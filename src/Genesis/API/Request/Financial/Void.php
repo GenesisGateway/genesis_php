@@ -2,7 +2,7 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Base as RequestBase;
+use \Genesis\API\Request as RequestBase;
 
 class Void extends RequestBase
 {
@@ -21,7 +21,7 @@ class Void extends RequestBase
         $this->setRequestURL('gateway', 'process', true);
     }
 
-    protected function mapToTreeStructure()
+    protected function populateStructure()
     {
         $treeStructure = array (
             'payment_transaction' => array (
@@ -40,10 +40,10 @@ class Void extends RequestBase
     {
         $config = array (
             'url'       => '',
-            'port'      => null,
+            'port'      => 443,
             'type'      => 'POST',
+            'format'    => 'xml',
             'protocol'  => 'https',
-            'transport' => 'tls',
         );
 
         $this->createArrayObject('config', $config);

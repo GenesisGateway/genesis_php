@@ -35,6 +35,16 @@ final class Configuration
     );
 
     /**
+     * Array storing wrapper choice
+     *
+     * @var array
+     */
+    public static $wrappers = array (
+        'network'       => 'curl',
+        'xml_builder'   => 'xml_writer',
+    );
+
+    /**
      * Some requests are targeting different sub-domains.
      * This should map all available requests/sub-domains
      * for each configuration type (develop,sandbox,production)
@@ -152,6 +162,12 @@ final class Configuration
         }
     }
 
+    final public static function getWrapper($type)
+    {
+        if (array_key_exists($type, self::$wrappers))
+            return self::$wrappers[$type];
+    }
+
     /**
      * Get the version of this Library API
      *
@@ -171,8 +187,6 @@ final class Configuration
     {
         if (file_exists($settings_file)) {
             $settings = parse_ini_file($settings_file, true);
-
-            var_dump($settings);
 
             if (isset($settings['Genesis']) && is_array($settings['Genesis']) && sizeof($settings['Genesis']) > 1) {
                 foreach ($settings['Genesis'] as $option => $value)

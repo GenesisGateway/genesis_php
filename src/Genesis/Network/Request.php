@@ -7,18 +7,35 @@ use \Genesis\Configuration as Configuration;
 
 class Request
 {
+    /**
+     * Store the Body of the incoming response
+     * @var string
+     */
     private $responseBody;
+    /**
+     * Store the Headers of the incoming response
+     * @var string
+     */
     private $responseHeaders;
 
+    /**
+     * Instance of the selected network wrapper
+     * @var object
+     */
     private $wrapperContext;
 
     public function __construct()
     {
-        if (function_exists('curl_version')) {
-            $this->wrapperContext = new Wrapper\cURL();
-        }
-        else {
-            $this->wrapperContext = new Wrapper\StreamContext();
+        $wrapper = Configuration::getWrapper('network');
+
+        switch ($wrapper) {
+            default:
+            case 'curl':
+                $this->wrapperContext = new Wrapper\cURL();
+                break;
+            case 'stream';
+                $this->wrapperContext = new Wrapper\StreamContext();
+                break;
         }
     }
 
@@ -58,7 +75,7 @@ class Request
     {
         $requestData = array(
             'url'           => $request->getUrl(),
-            'body'          => $request->getXMLDocument(),
+            'body'          => $request->getRequestDocument(),
             'type'          => $request->getType(),
             'port'          => $request->getPort(),
             'protocol'      => $request->getProtocol(),
@@ -67,7 +84,6 @@ class Request
             'timeout'       => 60,
             'user_agent'    => sprintf('Genesis PHP Client v%s', Configuration::getVersion()),
             'user_login'    => sprintf('%s:%s', Configuration::getUsername(), Configuration::getPassword()),
-            'transport_url' => str_replace($request->getProtocol(), $request->getTransport(), $request->getUrl()),
         );
 
         $this->wrapperContext->prepareRequestBody($requestData);

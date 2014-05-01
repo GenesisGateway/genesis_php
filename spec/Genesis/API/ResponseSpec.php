@@ -24,7 +24,7 @@ class ResponseSpec extends ObjectBehavior
     {
         $this->shouldNotThrow()->duringParseResponse($this->sampleXML);
         $this->getResponseObject()->shouldNotBeEmpty();
-        $this->checkResponseCode()->shouldBeTrue();
+        $this->isSuccess()->shouldBeTrue();
     }
 
     function it_should_fail_parsing()
@@ -38,7 +38,7 @@ class ResponseSpec extends ObjectBehavior
 
         $this->shouldNotThrow()->duringParseResponse($invalidXML);
         $this->getResponseObject()->shouldNotBeEmpty();
-        $this->checkResponseCode()->shouldBeFalse();
+        $this->isSuccess()->shouldBeFalse();
     }
 
     function getMatchers()

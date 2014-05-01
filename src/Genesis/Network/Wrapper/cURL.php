@@ -4,25 +4,32 @@ namespace Genesis\Network\Wrapper;
 
 class cURL
 {
+    /**
+     * Storing cURL Handle
+     * @var resource
+     */
     private $curlHandle;
 
+    /**
+     * Storing the full incoming response
+     * @var string
+     */
     private $response;
+    /**
+     * Storing body from an incoming response
+     * @var string
+     */
     private $responseBody;
+    /**
+     * Storing headers from an incoming response
+     * @var string
+     */
     private $responseHeaders;
 
 
     public function __construct()
     {
         $this->curlHandle = curl_init();
-    }
-
-    /**
-     * Flush and destroy cURL instance upon destruction
-     */
-    public function __destruct()
-    {
-        if (isset($this->curlHandle))
-            curl_close($this->curlHandle);
     }
 
     /**
@@ -36,7 +43,7 @@ class cURL
     }
 
     /**
-     * Get cURL's cached exec output
+     * Get Body/Headers from an incoming response
      *
      * @return mixed
      */
@@ -46,7 +53,7 @@ class cURL
     }
 
     /**
-     * Get Response Headers
+     * Get Headers from an incoming response
      *
      * @return mixed
      */
@@ -56,7 +63,7 @@ class cURL
     }
 
     /**
-     * Get Response Body
+     * Get Body from an incoming response
      *
      * @return mixed
      */
@@ -66,7 +73,7 @@ class cURL
     }
 
     /**
-     * Set cURL headers/options, according to the request
+     * Set cURL headers/options, based on the request data
      */
     public function prepareRequestBody($requestData)
     {
@@ -98,25 +105,15 @@ class cURL
             $cURLOpt[CURLINFO_HEADER_OUT]       = true;
         }
 
-        $this->setOptions($cURLOpt);
+        curl_setopt_array($this->curlHandle, $cURLOpt);
     }
 
     /**
-     * Execute the prepared request
+     * Send the request
      */
     public function submitRequest()
     {
         $this->response = curl_exec($this->curlHandle);
         list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
-    }
-
-    /**
-     * Helper function to set all cURL options, passed as array
-     *
-     * @param $curlOptions Array
-     */
-    public function setOptions($curlOptions)
-    {
-        curl_setopt_array($this->curlHandle, $curlOptions);
     }
 }

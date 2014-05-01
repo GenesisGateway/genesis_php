@@ -24,7 +24,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha1', $this->data['unique_id'] . Configuration::getPassword());
 
         $this->shouldNotThrow()->duringParseNotification($this->data);
-        $this->verifyNotificationAuthenticity()->shouldBeTrue();
+        $this->verifyAuthenticity()->shouldBeTrue();
     }
 
     function it_can_verify_wpf_notification()
@@ -33,13 +33,30 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha512', $this->data['unique_id'] . Configuration::getPassword());
 
         $this->shouldNotThrow()->duringParseNotification($this->data);
-        $this->verifyNotificationAuthenticity()->shouldBeTrue();
+        $this->verifyAuthenticity()->shouldBeTrue();
+    }
+
+    function it_should_fail_auth_verification()
+    {
+        $this->data['signature'] = hash('sha1', $this->data['unique_id'] . Configuration::getPassword() . 'FAIL');
+
+        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->verifyAuthenticity()->shouldBeFalse();
+    }
+
+    function it_should_fail_wpf_auth_verification()
+    {
+        $this->data['wpf_unique_id'] = $this->data['unique_id'];
+        $this->data['signature'] = hash('sha512', $this->data['unique_id'] . Configuration::getPassword() . 'FAIL');
+
+        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->verifyAuthenticity()->shouldBeFalse();
     }
 
     function it_can_generate_xml_response()
     {
         $this->parseNotification($this->data);
-        $this->generateNotificationResponse()->shouldNotBeEmpty();
+        $this->generateResponse()->shouldNotBeEmpty();
     }
 
     function it_should_fail_without_status()
@@ -47,7 +64,7 @@ class NotificationSpec extends ObjectBehavior
         unset($this->data['status']);
 
         $this->shouldThrow()->duringParseNotification($this->data);
-        $this->verifyNotificationAuthenticity()->shouldBeFalse();
+        $this->verifyAuthenticity()->shouldBeFalse();
     }
 
     function it_should_fail_without_id()

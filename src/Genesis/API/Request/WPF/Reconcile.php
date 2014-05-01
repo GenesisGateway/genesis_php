@@ -2,7 +2,7 @@
 
 namespace Genesis\API\Request\WPF;
 
-use \Genesis\API\Base as RequestBase;
+use \Genesis\API\Request as RequestBase;
 
 class Reconcile extends RequestBase
 {
@@ -16,7 +16,7 @@ class Reconcile extends RequestBase
         $this->setRequestURL('wpf', 'wpf/reconcile', false);
     }
 
-    protected function mapToTreeStructure()
+    protected function populateStructure()
     {
         $treeStructure = array (
             'wpf_reconcile' => array (
@@ -31,10 +31,10 @@ class Reconcile extends RequestBase
     {
         $config = array (
             'url'       => '',
-            'port'      => null,
+            'port'      => 443,
             'type'      => 'POST',
+            'format'    => 'xml',
             'protocol'  => 'https',
-            'transport' => 'tls',
         );
 
         $this->createArrayObject('config', $config);

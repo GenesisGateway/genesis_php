@@ -4,7 +4,7 @@ namespace Genesis\API;
 
 use Genesis\Exceptions;
 use Genesis\Configuration;
-use Genesis\Utils\Builders as Builders;
+use Genesis\Builders as Builders;
 
 class Notification
 {
@@ -28,7 +28,7 @@ class Notification
      *
      * @return string
      */
-    public function generateNotificationResponse()
+    public function generateResponse()
     {
         $echo_structure = array (
             'notification_echo' => array (
@@ -36,10 +36,9 @@ class Notification
             )
         );
 
-        $xmlDocument = new Builders\XMLWriter();
-        $xmlDocument->populateXMLNodes($echo_structure);
-        $xmlDocument->finalizeXML();
-        return $xmlDocument->getOutput();
+        $xmlDocument = new Builders\XML();
+        $xmlDocument->parseStructure($echo_structure);
+        return $xmlDocument->getDocument();
     }
 
     /**
@@ -74,7 +73,7 @@ class Notification
      *
      * @return bool
      */
-    public function verifyNotificationAuthenticity()
+    public function verifyAuthenticity()
     {
         $unique_id          = $this->unique_id;
         $message_signature  = $this->notificationObj->signature;

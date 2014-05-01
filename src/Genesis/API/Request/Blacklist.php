@@ -2,7 +2,7 @@
 
 namespace Genesis\API\Request;
 
-use \Genesis\API\Base as RequestBase;
+use \Genesis\API\Request as RequestBase;
 
 class Blacklist extends RequestBase
 {
@@ -17,7 +17,7 @@ class Blacklist extends RequestBase
         $this->setRequestURL('gateway', 'blacklists', false);
     }
 
-    protected function mapToTreeStructure()
+    protected function populateStructure()
     {
         $treeStructure = array (
             'blacklist_request' => array (
@@ -35,8 +35,8 @@ class Blacklist extends RequestBase
             'url'       => '',
             'port'      => 443,
             'type'      => 'POST',
+            'format'    => 'xml',
             'protocol'  => 'https',
-            'transport' => 'tls',
         );
 
         $this->createArrayObject('config', $config);

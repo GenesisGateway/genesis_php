@@ -15,19 +15,19 @@ class Authorize3DSpec extends ObjectBehavior
     function it_can_build_stucture()
     {
         $this->setRequestParameters();
-        $this->generateXML();
-        $this->getXMLDocument()->shouldNotBeEmpty();
+        $this->Build();
+        $this->getRequestDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow()->duringSubmitRequest();
+        $this->shouldThrow()->duringSend();
     }
 
     function it_should_send_without_issues()
     {
         $this->setRequestParameters();
-        $this->shouldNotThrow()->duringSubmitRequest();
+        $this->shouldNotThrow()->duringSend();
         $this->getGenesisResponse()->shouldNotBeEmpty();
     }
 

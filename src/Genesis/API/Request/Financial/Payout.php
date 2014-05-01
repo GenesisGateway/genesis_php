@@ -2,7 +2,7 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Base as RequestBase;
+use \Genesis\API\Request as RequestBase;
 
 class Payout extends RequestBase
 {
@@ -49,7 +49,7 @@ class Payout extends RequestBase
         $this->setRequestURL('gateway', 'process', true);
     }
 
-    protected function mapToTreeStructure()
+    protected function populateStructure()
     {
         $treeStructure = array (
             'payment_transaction' => array (
@@ -70,6 +70,7 @@ class Payout extends RequestBase
                     'first_name'        => $this->billing_first_name,
                     'last_name'         => $this->billing_last_name,
                     'address1'          => $this->billing_address1,
+                    'address2'          => $this->billing_address2,
                     'zip_code'          => $this->billing_zip_code,
                     'city'              => $this->billing_city,
                     'state'             => $this->billing_state,
@@ -79,6 +80,7 @@ class Payout extends RequestBase
                     'first_name'        => $this->shipping_first_name,
                     'last_name'         => $this->shipping_last_name,
                     'address1'          => $this->shipping_address1,
+                    'address2'          => $this->shipping_address2,
                     'zip_code'          => $this->shipping_zip_code,
                     'city'              => $this->shipping_city,
                     'state'             => $this->shipping_state,
@@ -94,10 +96,10 @@ class Payout extends RequestBase
     {
         $config = array (
             'url'       => '',
-            'port'      => null,
+            'port'      => 443,
             'type'      => 'POST',
+            'format'    => 'xml',
             'protocol'  => 'https',
-            'transport' => 'tls',
         );
 
         $this->createArrayObject('config', $config);

@@ -15,19 +15,19 @@ class InitRecurringSaleSpec extends ObjectBehavior
     function it_can_build_stucture()
     {
         $this->setRequestParameters();
-        $this->generateXML();
-        $this->getXMLDocument()->shouldNotBeEmpty();
+        $this->Build();
+        $this->getRequestDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSubmitRequest();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
     }
 
     function it_should_send_without_issues()
     {
         $this->setRequestParameters();
-        $this->shouldNotThrow('\Genesis\Exceptions\BlankRequiredField')->duringSubmitRequest();
+        $this->shouldNotThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
         $this->getGenesisResponse()->shouldNotBeEmpty();
     }
 

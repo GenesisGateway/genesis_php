@@ -15,22 +15,22 @@ class BlacklistSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Blacklist');
     }
 
-    function it_can_build_stucture()
+    function it_can_build_structure()
     {
         $this->setCardNumber('4200000000000000');
-        $this->generateXML();
-        $this->getXMLDocument()->shouldNotBeEmpty();
+        $this->Send(false);
+        $this->getRequestDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSubmitRequest();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
     }
 
     function it_should_send_without_issues()
     {
         $this->setCardNumber('4200000000000000');
-        $this->shouldNotThrow('\Genesis\Exceptions\BlankRequiredField')->duringSubmitRequest();
+        $this->shouldNotThrow()->duringSend();
         $this->getGenesisResponse()->shouldNotBeEmpty();
     }
 

@@ -9,22 +9,38 @@ class Response
     private $responseObj;
 
     /**
-     * Check whether the transaction was approved and
-     * whether the response_code is acceptable
+     * Check whether the request was successful
      *
      * @return bool
      */
-    public function checkResponseCode()
+    public function isSuccess()
     {
         $status = false;
 
         if (isset($this->responseObj->status) && $this->responseObj->status == 'approved') {
-            if ($this->responseObj->response_code == Errors::SUCCESS) {
+
+            $code = ($this->responseObj->response_code) ? intval($this->responseObj->response_code) : null;
+
+            if (Errors::SUCCESS === $code) {
                 $status = true;
             }
         }
 
         return $status;
+    }
+
+    /**
+     * Try to fetch a description of the received Error Code
+     * @return bool|string
+     */
+    public function getErrorDescription()
+    {
+        if (isset($this->responseObj->code)) {
+            return Errors::getErrorDescription($this->responseObj->code);
+        }
+        else {
+            return Errors::getIssuerResponseCode($this->responseObj->response_code);
+        }
     }
 
     /**

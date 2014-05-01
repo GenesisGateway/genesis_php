@@ -2,13 +2,13 @@
 
 namespace Genesis\API;
 
-use \Genesis\Base as GenesisBase;
-use \Genesis\Configuration as Configuration;
-use \Genesis\Exceptions as Exceptions;
+use \Genesis\Base as Base;
 use \Genesis\Network as Network;
-use \Genesis\Utils\Builders as Builders;
+use \Genesis\Builders as Builders;
+use \Genesis\Exceptions as Exceptions;
+use \Genesis\Configuration as Configuration;
 
-abstract class Base
+abstract class Request
 {
     /**
      * Store Request's configuration, like URL, Request Type, Transport Layer
@@ -51,18 +51,18 @@ abstract class Base
      *
      * @var String
      */
-    protected $xmlDocument;
+    protected $requestDocument;
 
     /**
      * Store the Network Request Handle
      * @var \Genesis\Network\Request
      */
-    protected $httpRequest;
+    protected $networkRequest;
 
     public function __call($method, $args)
     {
         $methodType     = substr($method, 0, 3);
-        $requestedKey   = strtolower(GenesisBase::uppercaseToUnderscore(substr($method, 3)));
+        $requestedKey   = strtolower(Base::uppercaseToUnderscore(substr($method, 3)));
 
         switch ($methodType) {
             case 'add' :
@@ -76,65 +76,45 @@ abstract class Base
                 array_push($arr, array($requestedKey => trim(reset($args))));
                 $this->$requestedKey = $arr;
                 break;
-            case 'get' :
-                return $this->config->offsetGet($requestedKey);
-                break;
             case 'set' :
                 $this->$requestedKey = trim(reset($args));
+                break;
+            case 'get' :
+                return $this->config->offsetGet($requestedKey);
                 break;
         }
 
         return null;
     }
 
-    /**
-     * Get the generated XML document
-     *
-     * @return mixed
-     */
-    public function getXMLDocument()
+    public function getRequestParameter($parameter)
     {
-        return $this->xmlDocument;
+        $this->populateStructure();
+        return $this->$parameter;
     }
 
     /**
-     * Get the response from Genesis
+     * Get the generated document
+     *
+     * @return mixed
+     */
+    public function getRequestDocument()
+    {
+        return $this->requestDocument;
+    }
+
+    /**
+     * Get response from Genesis
      *
      * @return mixed String
      */
     public function getGenesisResponse()
     {
-        return $this->httpRequest->getResponseBody();
+        return $this->networkRequest->getResponseBody();
     }
 
     /**
-     * Finalize the request (meaning you can't set variables anymore)
-     * and build the XML Markup
-     */
-    public function generateXML()
-    {
-        $this->finalizeRequest();
-
-        $xmlDocument = new Builders\XMLWriter();
-        $xmlDocument->populateXMLNodes($this->getRequestStructure());
-        $xmlDocument->finalizeXML();
-        $this->xmlDocument = $xmlDocument->getOutput();
-    }
-
-    /**
-     * Submit the generated XML Markup to Genesis
-     */
-    public function submitRequest()
-    {
-        $this->generateXML();
-
-        $this->httpRequest = new Network\Request();
-        $this->httpRequest->setRequestData($this);
-        $this->httpRequest->submitToGenesis();
-    }
-
-    /**
-     * Get array that represents the Tree structure in the XML Request
+     * Get associative array that represents the tree-structure of the request
      *
      * @return array (API_Request_Fields)
      */
@@ -144,13 +124,53 @@ abstract class Base
     }
 
     /**
-     * Rebuild, Sanitize and Verify Fields of the Tree structure
+     * Build the request in the specified format
      */
-    public function finalizeRequest()
+    public function Build()
     {
-        $this->mapToTreeStructure();
-        $this->sanitizeTreeStructure();
-        $this->verifyRequirements();
+        if (empty($this->treeStructure)) {
+            $this->Prepare();
+        }
+
+        switch($this->config->offsetGet('format')) {
+            default:
+            case 'xml':
+                $builder = new Builders\XML();
+                break;
+        }
+
+        $builder->parseStructure($this->getRequestStructure());
+        $this->requestDocument = $builder->getDocument();
+    }
+
+    /**
+     * Submit the request document to Genesis
+     */
+    public function Send()
+    {
+        $this->Prepare();
+        $this->Build();
+        $this->SendToGenesis();
+    }
+
+    /**
+     * Rebuild, Sanitize and Verify Fields of the tree-structure
+     */
+    protected function Prepare()
+    {
+        $this->populateStructure();
+        $this->sanitizeStructure();
+        $this->checkRequirements();
+    }
+
+    /**
+     * Initialize network and send the produced document
+     */
+    protected function SendToGenesis()
+    {
+        $this->networkRequest = new Network\Request();
+        $this->networkRequest->setRequestData($this);
+        $this->networkRequest->submitToGenesis();
     }
 
     /**
@@ -202,11 +222,11 @@ abstract class Base
     /**
      * Remove empty keys/values from the structure
      */
-    protected function sanitizeTreeStructure()
+    protected function sanitizeStructure()
     {
         $arrayObject = $this->treeStructure->getArrayCopy();
 
-        $arrayObject = GenesisBase::emptyValueRecursiveRemoval($arrayObject);
+        $arrayObject = Base::emptyValueRecursiveRemoval($arrayObject);
 
         $this->treeStructure->exchangeArray($arrayObject);
     }
@@ -214,10 +234,9 @@ abstract class Base
     /**
      * Perform field validation
      */
-    protected function verifyRequirements()
+    protected function checkRequirements()
     {
-        if ($this->requiredFields)
-        {
+        if (isset($this->requiredFields)) {
             $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
 
             $iterator = new \RecursiveIteratorIterator($this->requiredFields->getIterator());
@@ -230,8 +249,7 @@ abstract class Base
             }
         }
 
-        if ($this->requiredFieldsGroups)
-        {
+        if (isset($this->requiredFieldsGroups)) {
             $fields = $this->requiredFieldsGroups->getArrayCopy();
 
             $emptyFlag = false;
@@ -254,8 +272,7 @@ abstract class Base
             }
         }
 
-        if ($this->requiredFieldsConditional)
-        {
+        if (isset($this->requiredFieldsConditional)) {
             $fields = $this->requiredFieldsConditional->getArrayCopy();
 
             foreach($fields as $fieldName => $fieldDependencies)

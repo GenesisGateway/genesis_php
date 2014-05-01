@@ -1,6 +1,6 @@
 <?php
 
-namespace Genesis\Utils\Builders;
+namespace Genesis\Builders\XML;
 
 final class DOMDocument
 {
@@ -15,23 +15,24 @@ final class DOMDocument
 
     public function __destruct()
     {
-        if (isset($this->xmlDocument))
+        if (isset($this->xmlDocument)) {
             $this->xmlDocument = null;
+        }
     }
 
     /**
-     * Insert tree-structured Array as nodes in XMLWriter
+     * Parse tree-structured Array as nodes in XMLWriter
      *
-     * @param $data Array - Tree structure Array
+     * @param $data
      * @param $domElement \DOMDocument - current \DOMDocument node
      */
-    public function populateXMLNodes($data, $domElement = null)
+    public function populateNodes($data, $domElement = null)
     {
         $domElement = is_null($domElement) ? $this->xmlDocument : $domElement;
 
         if (is_array($data)) {
-            foreach( $data as $index => $mixedElement ) {
-
+            foreach( $data as $index => $mixedElement )
+            {
                 if ( is_int($index) ) {
                     $node = $domElement;
                 }
@@ -40,7 +41,7 @@ final class DOMDocument
                     $domElement->appendChild($node);
                 }
 
-                $this->populateXMLNodes($mixedElement, $node);
+                $this->populateNodes($mixedElement, $node);
             }
         }
         else {
@@ -49,15 +50,7 @@ final class DOMDocument
     }
 
     /**
-     * Dummy function to make the DOMDocument class interchangeable with XMLWriter
-     */
-    public function finalizeXML()
-    {
-
-    }
-
-    /**
-     * Get the XML output
+     * Get XML output
      *
      * @return mixed
      */

@@ -2,17 +2,39 @@
 
 namespace Genesis\Network\Wrapper;
 
+use \Genesis\Exceptions as Exceptions;
+
 class StreamContext
 {
+    /**
+     * Keep per-request data as other methods need it
+     * @var array
+     */
     private $requestData;
+    /**
+     * Storing Stream parameters
+     * @var Resource
+     */
     private $streamContext;
 
+    /**
+     * Storing the full incoming response
+     * @var string
+     */
     private $response;
+    /**
+     * Storing body from an incoming response
+     * @var string
+     */
     private $responseBody;
+    /**
+     * Storing headers from an incoming response
+     * @var string
+     */
     private $responseHeaders;
 
     /**
-     * Get the HTTP Status of the request
+     * Get HTTP Status Code from an incoming response
      *
      * @return mixed
      */
@@ -22,7 +44,7 @@ class StreamContext
     }
 
     /**
-     * Get cURL's cached exec output
+     * Get Body/Headers from an incoming response
      *
      * @return mixed
      */
@@ -32,7 +54,7 @@ class StreamContext
     }
 
     /**
-     * Get Response Headers
+     * Get Headers from an incoming response
      *
      * @return mixed
      */
@@ -42,7 +64,7 @@ class StreamContext
     }
 
     /**
-     * Get Response Body
+     * Get Body from an incoming response
      *
      * @return mixed
      */
@@ -52,28 +74,33 @@ class StreamContext
     }
 
     /**
-     * Set cURL headers/options, according to the request
+     * Set Stream parameters: url, data, auth etc.
      */
     public function prepareRequestBody($requestData)
     {
         $url = parse_url($requestData['url']);
 
+        $headers = array(
+            sprintf('Authorization: Basic %s', base64_encode($requestData['user_login'])),
+            sprintf('Content-Length: %s', strlen($requestData['body'])),
+            sprintf('User-Agent: %s', $requestData['user_agent']),
+            'Content-Type: text/xml',
+        );
+
         $contextOptions = array(
             'http'  => array(
                 'method'    => $requestData['type'],
-                'header'    =>  "Authorization: Basic " . base64_encode($requestData['user_login']) . "\r\n" .
-                                "Content-Type: text/xml\r\n" .
-                                "Content-Length: " . strlen($requestData['body']) . "\r\n" .
-                                "User-Agent: " . $requestData['user_agent'] . "\r\n" ,
+                'header'    => implode("\r\n", $headers),
                 'content'   => $requestData['body'],
             ),
             'ssl'   => array(
                 'verify_peer'   => true,
                 'cafile'        => $requestData['cert_ca'],
                 'verify_depth'  => 5,
-                // PHP does not support SAN matchin (as of yet), so any certificate with
+                // PHP does not support SAN matching (as of yet), so any certificate with
                 // SAN would fail this check
                 'CN_match'      => $url['host'],
+                // Mitigate BEAST attacks
                 'disable_compression' => true,
                 // SNI causes errors due to improper handling of alerts by OpenSSL in 0.9.8
                 // As many php releases are linked against 0.9.8, its better to disable SNI
@@ -88,18 +115,20 @@ class StreamContext
     }
 
     /**
-     * Execute the prepared request
+     * Send the request
      */
     public function submitRequest()
     {
-        $this->responseBody = file_get_contents($this->requestData['url'], NULL, $this->streamContext);
+        $stream = @fopen($this->requestData['url'], 'r', false, $this->streamContext);
 
-        $this->responseHeaders  = $http_response_header;
+        if (!$stream) {
+            throw new Exceptions\InvalidSSLCA();
+        }
+
+        $this->responseBody = stream_get_contents($stream);
+
+        $this->responseHeaders = stream_get_meta_data($stream)['wrapper_data'];
 
         $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
-
-        if (empty($this->response)) {
-            throw new \Genesis\Exceptions\InvalidSSLCA();
-        }
     }
 }

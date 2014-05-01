@@ -1,6 +1,6 @@
 <?php
 
-namespace Genesis\Utils\Builders;
+namespace Genesis\Builders\XML;
 
 final class XMLWriter
 {
@@ -23,8 +23,9 @@ final class XMLWriter
      */
     public function __destruct()
     {
-        if (isset($this->xmlWriter))
+        if (isset($this->xmlWriter)) {
             $this->xmlWriter->flush();
+        }
     }
 
     /**
@@ -32,23 +33,21 @@ final class XMLWriter
      *
      * @param $data Array - tree-structured array
      */
-    public function populateXMLNodes($data)
+    public function populateNodes($data)
     {
         foreach($data as $key => $value)
         {
-            if (is_null($value))
-            {
+            if (is_null($value)) {
                 continue;
             }
 
-            if (is_array($value))
-            {
+            if (is_array($value)) {
                 if (is_int($key))  {
-                    $this->populateXMLNodes($value);
+                    $this->populateNodes($value);
                 }
                 else {
                     $this->xmlWriter->startElement($key);
-                    $this->populateXMLNodes($value);
+                    $this->populateNodes($value);
                     $this->xmlWriter->endElement();
                 }
                 continue;
@@ -58,13 +57,16 @@ final class XMLWriter
         }
     }
 
-    public function finalizeXML()
+    /**
+     * Close the root node
+     */
+    public function finalizeDocument()
     {
         $this->xmlWriter->endDocument();
     }
 
     /**
-     * Get the XML output
+     * Get XML output
      *
      * @return mixed
      */

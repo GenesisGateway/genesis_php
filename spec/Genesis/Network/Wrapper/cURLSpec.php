@@ -19,7 +19,6 @@ class cURLSpec extends ObjectBehavior
 
         $options = array(
             CURLOPT_HEADER          => true,
-            CURLOPT_HTTPHEADER      => array('Expect:'),
             CURLOPT_URL             => $remote_url,
             CURLOPT_RETURNTRANSFER  => true,
         );
