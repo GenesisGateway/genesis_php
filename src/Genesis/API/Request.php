@@ -7,6 +7,7 @@ use \Genesis\Network as Network;
 use \Genesis\Builders as Builders;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Configuration as Configuration;
+use Genesis\Utils\Common;
 
 abstract class Request
 {
@@ -47,50 +48,74 @@ abstract class Request
     protected $requiredFieldsGroups;
 
     /**
-     * Store the generated XML Body
+     * Store the generated Builder Body
      *
-     * @var String
+     * @var \Genesis\Builders\Builder
      */
-    protected $requestDocument;
+    protected $builderContext;
 
     /**
      * Store the Network Request Handle
+     *
      * @var \Genesis\Network\Request
      */
-    protected $networkRequest;
+    protected $networkContext;
+
+    /**
+     * Store the API Response context
+     * s
+     * @var \Genesis\API\Response
+     */
+    public $response;
 
     public function __call($method, $args)
     {
         $methodType     = substr($method, 0, 3);
-        $requestedKey   = strtolower(Base::uppercaseToUnderscore(substr($method, 3)));
+        $requestedKey   = strtolower(Common::uppercaseToUnderscore(substr($method, 3)));
 
         switch ($methodType) {
             case 'add' :
                 if (isset($this->$requestedKey) && is_array($this->$requestedKey)) {
-                    $arr = $this->$requestedKey;
+                    $groupArray = $this->$requestedKey;
                 }
                 else {
-                    $arr = array();
+                    $groupArray = array();
                 }
 
-                array_push($arr, array($requestedKey => trim(reset($args))));
-                $this->$requestedKey = $arr;
+                array_push($groupArray, array($requestedKey => trim(reset($args))));
+                $this->$requestedKey = $groupArray;
                 break;
             case 'set' :
                 $this->$requestedKey = trim(reset($args));
-                break;
-            case 'get' :
-                return $this->config->offsetGet($requestedKey);
                 break;
         }
 
         return null;
     }
 
-    public function getRequestParameter($parameter)
+    /**
+     * Getter for per-request Configuration
+     *
+     * @param $key
+     *
+     * @return mixed
+     */
+    public function getApiConfig($key)
     {
-        $this->populateStructure();
-        return $this->$parameter;
+        return $this->config->offsetGet($key);
+    }
+
+    /**
+     * Setter for per-request Configuration
+     *
+     * Note: Its important for this to be protected
+     *
+     * @param $key
+     * @param $value
+     */
+    protected function setApiConfig($key, $value)
+    {
+        $this->config->offsetSet($key, $value);
     }
 
     /**
@@ -98,9 +123,18 @@ abstract class Request
      *
      * @return mixed
      */
-    public function getRequestDocument()
+    public function getDocument()
     {
-        return $this->requestDocument;
+        if ( !$this->builderContext) {
+            $this->populateStructure();
+            $this->sanitizeStructure();
+            $this->isRequirementsFulfilled();
+
+            $this->builderContext = new Builders\Builder();
+            $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
+        }
+
+        return $this->builderContext->getDocument();
     }
 
     /**
@@ -110,90 +144,31 @@ abstract class Request
      */
     public function getGenesisResponse()
     {
-        return $this->networkRequest->getResponseBody();
-    }
-
-    /**
-     * Get associative array that represents the tree-structure of the request
-     *
-     * @return array (API_Request_Fields)
-     */
-    public function getRequestStructure()
-    {
-        return $this->treeStructure->getArrayCopy();
-    }
-
-    /**
-     * Build the request in the specified format
-     */
-    public function Build()
-    {
-        if (empty($this->treeStructure)) {
-            $this->Prepare();
-        }
-
-        switch($this->config->offsetGet('format')) {
-            default:
-            case 'xml':
-                $builder = new Builders\XML();
-                break;
-        }
-
-        $builder->parseStructure($this->getRequestStructure());
-        $this->requestDocument = $builder->getDocument();
+        return $this->networkContext->getResponseBody();
     }
 
     /**
      * Submit the request document to Genesis
+     *
+     * Steps:
+     * 1) Build the tree structure from local variables
+     * 2) Remove null nodes
+     * 3) Check if all requirements for this request are filled
+     * 4) Instantiate builder Context (XML, JSON etc.)
+     * 5) Parse the tree structure
+     * 6) Instantiate Network
+     * 7) Set the request data
+     * 8) Send the request to Genesis
+     * 9) Parse the incoming response in a new instance of API\Response
+     *
      */
     public function Send()
     {
-        $this->Prepare();
-        $this->Build();
-        $this->SendToGenesis();
-    }
+        $this->networkContext = new Network\Request($this);
+        $this->networkContext->setRequestData();
+        $this->networkContext->sendRequest();
 
-    /**
-     * Rebuild, Sanitize and Verify Fields of the tree-structure
-     */
-    protected function Prepare()
-    {
-        $this->populateStructure();
-        $this->sanitizeStructure();
-        $this->checkRequirements();
-    }
-
-    /**
-     * Initialize network and send the produced document
-     */
-    protected function SendToGenesis()
-    {
-        $this->networkRequest = new Network\Request();
-        $this->networkRequest->setRequestData($this);
-        $this->networkRequest->submitToGenesis();
-    }
-
-    /**
-     * Create ArrayObject ($target) from passed Array ($source_array)
-     *
-     * @param $target - variable storing the instance of this object
-     * @param $source_array - input array
-     */
-    protected function createArrayObject($target, $source_array)
-    {
-        $this->$target = new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
-    }
-
-    /**
-     * Build and set the correct URL for the request
-     *
-     * @param $gateway String
-     * @param $path String
-     * @param $token Bool
-     */
-    protected function setRequestURL($gateway, $path, $token)
-    {
-        $this->config->url = $this->buildRequestURL($gateway, $path, $token);
+        Base::$Response = new Response($this->networkContext);
     }
 
     /**
@@ -206,11 +181,10 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $token      = Configuration::getToken();
-        $base_url   = Configuration::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
+        $base_url = Configuration::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
 
         if ($appendToken) {
-            $url = sprintf('%s/%s/%s', $base_url, $path, $token);
+            $url = sprintf('%s/%s/%s', $base_url, $path, Configuration::getToken());
         }
         else {
             $url = sprintf('%s/%s', $base_url, $path);
@@ -224,17 +198,13 @@ abstract class Request
      */
     protected function sanitizeStructure()
     {
-        $arrayObject = $this->treeStructure->getArrayCopy();
-
-        $arrayObject = Base::emptyValueRecursiveRemoval($arrayObject);
-
-        $this->treeStructure->exchangeArray($arrayObject);
+        $this->treeStructure->exchangeArray(Common::emptyValueRecursiveRemoval($this->treeStructure->getArrayCopy()));
     }
 
     /**
      * Perform field validation
      */
-    protected function checkRequirements()
+    protected function isRequirementsFulfilled()
     {
         if (isset($this->requiredFields)) {
             $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
@@ -288,4 +258,6 @@ abstract class Request
             }
         }
     }
+
+
 }

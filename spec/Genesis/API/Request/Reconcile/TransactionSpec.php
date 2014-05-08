@@ -16,7 +16,7 @@ class TransactionSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->Build();
-        $this->getRequestDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()

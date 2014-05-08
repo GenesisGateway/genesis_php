@@ -19,7 +19,7 @@ class CreateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->Build();
-        $this->getRequestDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
@@ -37,7 +37,7 @@ class CreateSpec extends ObjectBehavior
     function setRequestParameters()
     {
         $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
-        $this->setAmount(mt_rand(40, 16244600));
+        $this->setAmount(mt_rand(1, 10015523));
         $this->setCurrency('USD');
         $this->setUsage('40208 Concert Tickets');
         $this->setDescription('Genesis PHP Client Example Request');

@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\WPF;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\Utils\Common as Common;
+use \Genesis\API\Request as Request;
 
-class Reconcile extends RequestBase
+class Reconcile extends Request
 {
     protected $unique_id;
 
@@ -13,7 +14,7 @@ class Reconcile extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('wpf', 'wpf/reconcile', false);
+        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf/reconcile', false));
     }
 
     protected function populateStructure()
@@ -24,7 +25,7 @@ class Reconcile extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -37,7 +38,7 @@ class Reconcile extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -46,6 +47,6 @@ class Reconcile extends RequestBase
             'unique_id',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

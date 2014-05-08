@@ -8,44 +8,51 @@ use \Genesis\Configuration as Configuration;
 class Request
 {
     /**
-     * Store the Body of the incoming response
-     * @var string
+     * Store instance of the API Request
+     *
+     * @var \Genesis\API\Request
      */
-    private $responseBody;
-    /**
-     * Store the Headers of the incoming response
-     * @var string
-     */
-    private $responseHeaders;
+    private $apiContext;
 
     /**
      * Instance of the selected network wrapper
      * @var object
      */
-    private $wrapperContext;
+    private $context;
 
-    public function __construct()
+    public function __construct($apiContext)
     {
-        $wrapper = Configuration::getWrapper('network');
+        $this->apiContext = $apiContext;
 
-        switch ($wrapper) {
+        switch (Configuration::getWrapper('network')) {
             default:
             case 'curl':
-                $this->wrapperContext = new Wrapper\cURL();
+                $this->context = new Wrapper\cURL();
                 break;
             case 'stream';
-                $this->wrapperContext = new Wrapper\StreamContext();
+                $this->context = new Wrapper\StreamContext();
                 break;
         }
     }
 
     /**
+     * Get Genesis Response to a previously sent request
+     *
+     * @return mixed
+     */
+    public function getGenesisResponse()
+    {
+        return $this->context->getResponse();
+    }
+
+    /**
      * Get the Body of the response
+     *
      * @return mixed
      */
     public function getResponseBody()
     {
-        return $this->responseBody;
+        return $this->context->getResponseBody();
     }
 
     /**
@@ -55,48 +62,35 @@ class Request
      */
     public function getResponseHeaders()
     {
-        return $this->responseHeaders;
-    }
-
-    /**
-     * Get Genesis Response to a previously sent request
-     */
-    public function getGenesisResponse()
-    {
-        return $this->wrapperContext->getResponse();
+        return $this->context->getResponseHeaders();
     }
 
     /**
      * Set Header/Body of the HTTP request
-     *
-     * @param $request \Genesis\API\Request
      */
-    public function setRequestData($request)
+    public function setRequestData()
     {
         $requestData = array(
-            'url'           => $request->getUrl(),
-            'body'          => $request->getRequestDocument(),
-            'type'          => $request->getType(),
-            'port'          => $request->getPort(),
-            'protocol'      => $request->getProtocol(),
+            'body'          => $this->apiContext->getDocument(),
+            'url'           => $this->apiContext->getApiConfig('url'),
+            'type'          => $this->apiContext->getApiConfig('type'),
+            'port'          => $this->apiContext->getApiConfig('port'),
+            'protocol'      => $this->apiContext->getApiConfig('protocol'),
+            'timeout'       => 60,
             'debug'         => Configuration::getDebug(),
             'cert_ca'       => Configuration::getCertificateAuthority(),
-            'timeout'       => 60,
             'user_agent'    => sprintf('Genesis PHP Client v%s', Configuration::getVersion()),
             'user_login'    => sprintf('%s:%s', Configuration::getUsername(), Configuration::getPassword()),
         );
 
-        $this->wrapperContext->prepareRequestBody($requestData);
+        $this->context->prepareRequestBody($requestData);
     }
 
     /**
      * Submit the prepared request to Genesis
      */
-    public function submitToGenesis()
+    public function sendRequest()
     {
-        $this->wrapperContext->submitRequest();
-
-        $this->responseBody     = $this->wrapperContext->getResponseBody();
-        $this->responseHeaders  = $this->wrapperContext->getResponseHeaders();
+        $this->context->execute();
     }
 }

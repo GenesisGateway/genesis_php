@@ -40,8 +40,8 @@ final class Configuration
      * @var array
      */
     public static $wrappers = array (
-        'network'       => 'curl',
-        'xml_builder'   => 'xml_writer',
+        'builder'   => 'xml_writer',
+        'network'   => 'curl',
     );
 
     /**

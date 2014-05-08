@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\API\Request as Request;
+use \Genesis\Utils\Common as Common;
 
-class Payout extends RequestBase
+class Payout extends Request
 {
     protected $transaction_id;
 
@@ -46,7 +47,7 @@ class Payout extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'process', true);
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     protected function populateStructure()
@@ -89,7 +90,7 @@ class Payout extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -102,7 +103,7 @@ class Payout extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -126,6 +127,6 @@ class Payout extends RequestBase
             'billing_country'
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

@@ -2,20 +2,27 @@
 
 namespace Genesis\Builders\XML;
 
-final class XMLWriter
+use Genesis\Builders\BuilderInterface as BuilderInterface;
+
+final class XMLWriter implements BuilderInterface
 {
-    private $xmlWriter;
+    /**
+     * Store the XMLWriter instance
+     *
+     * @var \XMLWriter
+     */
+    private $context;
 
     /**
-     * Instantiate and start an empty XML Document
+     * Set and instantiate new UTF-8 XML document
      */
     public function __construct()
     {
-        $this->xmlWriter = new \XMLWriter();
+        $this->context = new \XMLWriter();
 
-        $this->xmlWriter->openMemory();
-        $this->xmlWriter->startDocument('1.0', 'UTF-8');
-        $this->xmlWriter->setIndent(4);
+        $this->context->openMemory();
+        $this->context->startDocument('1.0', 'UTF-8');
+        $this->context->setIndent(4);
     }
 
     /**
@@ -23,8 +30,8 @@ final class XMLWriter
      */
     public function __destruct()
     {
-        if (isset($this->xmlWriter)) {
-            $this->xmlWriter->flush();
+        if (isset($this->context)) {
+            $this->context->flush();
         }
     }
 
@@ -32,6 +39,7 @@ final class XMLWriter
      * Insert tree-structured array as nodes in XMLWriter
      *
      * @param $data Array - tree-structured array
+     * @return void
      */
     public function populateNodes($data)
     {
@@ -46,33 +54,25 @@ final class XMLWriter
                     $this->populateNodes($value);
                 }
                 else {
-                    $this->xmlWriter->startElement($key);
+                    $this->context->startElement($key);
                     $this->populateNodes($value);
-                    $this->xmlWriter->endElement();
+                    $this->context->endElement();
                 }
                 continue;
             }
 
-            $this->xmlWriter->writeElement($key, $value);
+            $this->context->writeElement($key, $value);
         }
     }
 
     /**
-     * Close the root node
-     */
-    public function finalizeDocument()
-    {
-        $this->xmlWriter->endDocument();
-    }
-
-    /**
-     * Get XML output
+     * Get Builder output
      *
      * @return mixed
      */
     public function getOutput()
     {
-        $contents = html_entity_decode($this->xmlWriter->outputMemory());
-        return $contents;
+        $this->context->endDocument();
+        return html_entity_decode($this->context->outputMemory(false));
     }
 }

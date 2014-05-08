@@ -5,6 +5,7 @@ namespace Genesis\API;
 use Genesis\Exceptions;
 use Genesis\Configuration;
 use Genesis\Builders as Builders;
+use Genesis\Utils\Common as Common;
 
 class Notification
 {
@@ -18,17 +19,17 @@ class Notification
     /**
      * Store the incoming notification as an object
      *
-     * @var \stdClass()
+     * @var \ArrayObject()
      */
     private $notificationObj;
 
     /**
-     * Generate XML response (Echo) required for acknowledging
+     * Generate Builder response (Echo) required for acknowledging
      * Genesis's Notification
      *
      * @return string
      */
-    public function generateResponse()
+    public function getEchoResponse()
     {
         $echo_structure = array (
             'notification_echo' => array (
@@ -36,9 +37,9 @@ class Notification
             )
         );
 
-        $xmlDocument = new Builders\XML();
-        $xmlDocument->parseStructure($echo_structure);
-        return $xmlDocument->getDocument();
+        $builder = new Builders\Builder();
+        $builder->parseStructure($echo_structure);
+        return $builder->getDocument();
     }
 
     /**
@@ -49,9 +50,7 @@ class Notification
      */
     public function parseNotification($response)
     {
-        $response_parser = new Response();
-        $response_parser->parseNotification($response);
-        $this->notificationObj = $response_parser->getResponseObject();
+        $this->notificationObj = Common::createArrayObject($response);
 
         if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
             $this->unique_id = $this->notificationObj->unique_id;
@@ -73,7 +72,7 @@ class Notification
      *
      * @return bool
      */
-    public function verifyAuthenticity()
+    public function isNotificationAuthentic()
     {
         $unique_id          = $this->unique_id;
         $message_signature  = $this->notificationObj->signature;

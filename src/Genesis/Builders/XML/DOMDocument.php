@@ -2,60 +2,66 @@
 
 namespace Genesis\Builders\XML;
 
-final class DOMDocument
-{
-    private $xmlDocument;
+use Genesis\Builders\BuilderInterface as BuilderInterface;
 
+final class DOMDocument implements BuilderInterface
+{
+    /**
+     * Store the DOMDocument instance
+     *
+     * @var \DOMDocument
+     */
+    private $context;
+
+    /**
+     * Set and instantiate new UTF-8 XML document
+     */
     public function __construct()
     {
-        $this->xmlDocument = new \DOMDocument('1.0', 'UTF-8');
-        $this->xmlDocument->formatOutput        = true;
-        $this->xmlDocument->preserveWhiteSpace  = true;
-    }
-
-    public function __destruct()
-    {
-        if (isset($this->xmlDocument)) {
-            $this->xmlDocument = null;
-        }
+        $this->context = new \DOMDocument('1.0', 'UTF-8');
+        $this->context->formatOutput        = true;
+        $this->context->preserveWhiteSpace  = true;
     }
 
     /**
-     * Parse tree-structured Array as nodes in XMLWriter
+     * Get Builder output
+     *
+     * @return mixed
+     */
+    public function getOutput()
+    {
+        echo 'call';
+        return $this->context->saveXML();
+    }
+
+    /**
+     * Parse tree-structured Array as nodes
      *
      * @param $data
-     * @param $domElement \DOMDocument - current \DOMDocument node
+     * @param $currElement \DOMDocument - current \DOMDocument node
+     *
+     * @return void
      */
-    public function populateNodes($data, $domElement = null)
+    public function populateNodes($data, $currElement = null)
     {
-        $domElement = is_null($domElement) ? $this->xmlDocument : $domElement;
+        $currElement = is_null($currElement) ? $this->context : $currElement;
 
         if (is_array($data)) {
             foreach( $data as $index => $mixedElement )
             {
                 if ( is_int($index) ) {
-                    $node = $domElement;
+                    $node = $currElement;
                 }
                 else {
-                    $node = $this->xmlDocument->createElement($index);
-                    $domElement->appendChild($node);
+                    $node = $this->context->createElement($index);
+                    $currElement->appendChild($node);
                 }
 
                 $this->populateNodes($mixedElement, $node);
             }
         }
         else {
-            $domElement->appendChild($this->xmlDocument->createTextNode($data));
+            $currElement->appendChild($this->context->createTextNode($data));
         }
-    }
-
-    /**
-     * Get XML output
-     *
-     * @return mixed
-     */
-    public function getOutput()
-    {
-        return $this->xmlDocument->saveXML();
     }
 }

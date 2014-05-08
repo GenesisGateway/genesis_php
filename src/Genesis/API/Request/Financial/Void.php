@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\API\Request as Request;
+use \Genesis\Utils\Common as Common;
 
-class Void extends RequestBase
+class Void extends Request
 {
     protected $transaction_id;
 
@@ -18,7 +19,7 @@ class Void extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'process', true);
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     protected function populateStructure()
@@ -33,7 +34,7 @@ class Void extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -46,7 +47,7 @@ class Void extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -57,6 +58,6 @@ class Void extends RequestBase
             'reference_id',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

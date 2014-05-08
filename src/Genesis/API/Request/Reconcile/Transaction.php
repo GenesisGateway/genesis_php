@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\Reconcile;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\API\Request as Request;
+use \Genesis\Utils\Common as Common;
 
-class Transaction extends RequestBase
+class Transaction extends Request
 {
     protected $unique_id;
 
@@ -13,7 +14,7 @@ class Transaction extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'reconcile', true);
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile', true));
     }
 
     protected function populateStructure()
@@ -24,7 +25,7 @@ class Transaction extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -37,7 +38,7 @@ class Transaction extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -46,6 +47,6 @@ class Transaction extends RequestBase
             'unique_id',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

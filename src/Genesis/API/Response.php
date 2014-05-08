@@ -3,10 +3,21 @@
 namespace Genesis\API;
 
 use Genesis\Exceptions;
+use Genesis\Network\Request as Network;
 
 class Response
 {
-    private $responseObj;
+    public $responseObj;
+
+    private $networkContext;
+
+    public function __construct(Network $networkContext)
+    {
+        $this->networkContext = $networkContext;
+
+        if ( strlen($this->networkContext->getResponseBody()) > 0 )
+            $this->parseResponse($this->networkContext->getResponseBody());
+    }
 
     /**
      * Check whether the request was successful
@@ -17,7 +28,7 @@ class Response
     {
         $status = false;
 
-        if (isset($this->responseObj->status) && $this->responseObj->status == 'approved') {
+        if (isset($this->responseObj->status) && in_array($this->responseObj->status, array('approved', 'pending'))) {
 
             $code = ($this->responseObj->response_code) ? intval($this->responseObj->response_code) : null;
 
@@ -31,6 +42,7 @@ class Response
 
     /**
      * Try to fetch a description of the received Error Code
+     *
      * @return bool|string
      */
     public function getErrorDescription()
@@ -66,19 +78,5 @@ class Response
         }
 
         $this->responseObj = simplexml_load_string($response);
-    }
-
-    /**
-     * Parse the POST data received from Genesis Notification
-     */
-    public function parseNotification($data)
-    {
-        if(!is_object($this->responseObj)) {
-            $this->responseObj = new \stdClass();
-        }
-
-        foreach ($data as $var => $value) {
-            $this->responseObj->$var = trim(urldecode($value));
-        }
     }
 }

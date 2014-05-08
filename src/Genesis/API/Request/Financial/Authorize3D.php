@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\API\Request as Request;
+use \Genesis\Utils\Common as Common;
 
-class Authorize3D extends RequestBase
+class Authorize3D extends Request
 {
     protected $transaction_type;
     protected $transaction_id;
@@ -70,7 +71,7 @@ class Authorize3D extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'process', true);
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     protected function populateStructure()
@@ -138,7 +139,7 @@ class Authorize3D extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -151,7 +152,7 @@ class Authorize3D extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -175,7 +176,7 @@ class Authorize3D extends RequestBase
             'billing_country',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
 
         $requiredFieldsConditional = array(
             'notification_url'      => array('return_success_url', 'return_failure_url'),
@@ -186,13 +187,13 @@ class Authorize3D extends RequestBase
             'mpi_xid'               => array('mpi_cavv', 'mpi_eci'),
         );
 
-        $this->createArrayObject('requiredFieldsConditional', $requiredFieldsConditional);
+        $this->requiredFieldsConditional = Common::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldsGroups = array(
             'synchronous'   => array('notification_url', 'return_success_url', 'return_failure_url'),
             'asynchronous'  => array('mpi_cavv', 'mpi_eci', 'mpi_xid'),
         );
 
-        $this->createArrayObject('requiredFieldsGroups', $requiredFieldsGroups);
+        $this->requiredFieldsGroups = Common::createArrayObject($requiredFieldsGroups);
     }
 }

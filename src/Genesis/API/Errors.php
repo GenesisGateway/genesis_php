@@ -114,7 +114,7 @@ final class Errors
             case 340:
                 return 'Argument passed in valid format but makes no sense (e.g. incorrect country code or currency).';
             case 350:
-                return 'The input XML could not be parsed due to invalid code.';
+                return 'The input Builder could not be parsed due to invalid code.';
             case 400:
                 return 'A transaction was triggered that is not possible at this time in the workflow, e.g. a refund on a declined transaction.';
             case 410:

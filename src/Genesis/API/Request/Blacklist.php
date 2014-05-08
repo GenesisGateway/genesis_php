@@ -3,6 +3,7 @@
 namespace Genesis\API\Request;
 
 use \Genesis\API\Request as RequestBase;
+use Genesis\Utils\Common;
 
 class Blacklist extends RequestBase
 {
@@ -14,7 +15,7 @@ class Blacklist extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('gateway', 'blacklists', false);
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', false));
     }
 
     protected function populateStructure()
@@ -26,7 +27,7 @@ class Blacklist extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -39,7 +40,7 @@ class Blacklist extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -48,6 +49,6 @@ class Blacklist extends RequestBase
             'card_number',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

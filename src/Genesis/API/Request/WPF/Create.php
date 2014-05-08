@@ -2,9 +2,10 @@
 
 namespace Genesis\API\Request\WPF;
 
-use \Genesis\API\Request as RequestBase;
+use \Genesis\Utils\Common as Common;
+use \Genesis\API\Request as Request;
 
-class Create extends RequestBase
+class Create extends Request
 {
     protected $transaction_id;
 
@@ -58,7 +59,7 @@ class Create extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setRequestURL('wpf', 'wpf', false);
+        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
 
     protected function populateStructure()
@@ -111,7 +112,7 @@ class Create extends RequestBase
             )
         );
 
-        $this->createArrayObject('treeStructure', $treeStructure);
+        $this->treeStructure = Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -124,7 +125,7 @@ class Create extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->createArrayObject('config', $config);
+        $this->config = Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -150,6 +151,6 @@ class Create extends RequestBase
             'transaction_type',
         );
 
-        $this->createArrayObject('requiredFields', $requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }

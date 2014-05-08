@@ -3,8 +3,9 @@
 namespace Genesis\Network\Wrapper;
 
 use \Genesis\Exceptions as Exceptions;
+use \Genesis\Network\NetworkInterface as NetworkInterface;
 
-class StreamContext
+class StreamContext implements NetworkInterface
 {
     /**
      * Keep per-request data as other methods need it
@@ -117,7 +118,7 @@ class StreamContext
     /**
      * Send the request
      */
-    public function submitRequest()
+    public function execute()
     {
         $stream = @fopen($this->requestData['url'], 'r', false, $this->streamContext);
 
@@ -127,7 +128,7 @@ class StreamContext
 
         $this->responseBody = stream_get_contents($stream);
 
-        $this->responseHeaders = stream_get_meta_data($stream)['wrapper_data'];
+        $this->responseHeaders = $http_response_header;
 
         $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
     }

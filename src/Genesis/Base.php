@@ -4,9 +4,13 @@ namespace Genesis;
 
 use \Genesis\API\Errors as Errors;
 use \Genesis\Exceptions as Exceptions;
+use \Genesis\Utils\Country as Country;
 
 final class Base
 {
+    public static $Request;
+    public static $Response;
+
     /**
      * Initialize and instantiate the desired request
      *
@@ -15,28 +19,27 @@ final class Base
      */
     static function loadRequest($request)
     {
-        if (strpos($request, '\\') === false) {
-            $request = sprintf('\Genesis\API\Request\%s', $request);
-        }
+        //if (strpos($request, '\\') !== false) {
+        $request = sprintf('\Genesis\API\Request\%s', $request);
+        //}
 
         if ( class_exists($request) ) {
-            return new $request;
+            Base::$Request = new $request;
+            return Base::$Request;
         }
         else {
             throw new Exceptions\InvalidMethod();
         }
     }
 
-    /**
-     * Helper function - replace uppercase letter with
-     * underscore, followed by small letter
-     *
-     * @param $string String  - uppercase string
-     * @return String         - processed string
-     */
-    static function uppercaseToUnderscore($string)
+    static function Request()
     {
-        return preg_replace("/(?<=[a-zA-Z])(?=[A-Z])/", "_", $string);
+        return self::$Request;
+    }
+
+    static function Response()
+    {
+        return self::$Response;
     }
 
     /**
@@ -47,7 +50,7 @@ final class Base
      */
     static function getErrorCode($error)
     {
-        return Errors::$error;
+        return constant('\Genesis\API\Errors::' . $error);
     }
 
     /**
@@ -63,42 +66,26 @@ final class Base
     }
 
     /**
-     * Recursive array cleanup
+     * Get a country full name by an ISO-4217 code
+     *
+     * @param $iso_code - ISO-4217 compliant code of the country
+     *
+     * @return mixed - full name of the country
      */
-    static function emptyValueRecursiveRemoval($haystack)
+    static function getFullCountryName($iso_code)
     {
-        foreach ($haystack as $key => $value) {
-            if (is_array($value)) {
-                $haystack[$key] = self::emptyValueRecursiveRemoval($haystack[$key]);
-            }
-
-            if (empty($haystack[$key])) {
-                unset($haystack[$key]);
-            }
-        }
-
-        return $haystack;
+        return Country::getCountryName($iso_code);
     }
 
-    /**
-     * Helper function - making sure we're not trying
-     * to set empty configuration key/value.
+    /*
+     * Get a country ISO code, by its full name in English
      *
-     * @param string $key   - configuration key
-     * @param string $value - configuration value
-     * @return bool
+     * @param $country_name - Name of the country in plain English
+     *
+     * @return mixed - ISO-4217 country code
      */
-    static function validateOption($key, $value)
+    static function getCountryISOCode($country_name)
     {
-        if (empty($key) || empty($value))
-        {
-            if (array_key_exists($key, Configuration::$vault))
-            {
-                return false;
-            }
-        }
-        else {
-            return true;
-        }
+        return Country::getCountryISO($country_name);
     }
 }

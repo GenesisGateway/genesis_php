@@ -2,7 +2,9 @@
 
 namespace Genesis\Network\Wrapper;
 
-class cURL
+use \Genesis\Network\NetworkInterface as NetworkInterface;
+
+class cURL implements NetworkInterface
 {
     /**
      * Storing cURL Handle
@@ -111,7 +113,7 @@ class cURL
     /**
      * Send the request
      */
-    public function submitRequest()
+    public function execute()
     {
         $this->response = curl_exec($this->curlHandle);
         list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);

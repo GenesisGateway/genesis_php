@@ -16,7 +16,7 @@ final class VoidSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->Build();
-        $this->getRequestDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
@@ -35,7 +35,7 @@ final class VoidSpec extends ObjectBehavior
     function setRequestParameters()
     {
         $this->setTransactionId(mt_rand(0, PHP_INT_MAX));
-        $this->setUsage('Genesis PHP Client Automated testing');
+        $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp('127.0.0.1');
         $this->setReferenceId(mt_rand(0, PHP_INT_MAX));
     }

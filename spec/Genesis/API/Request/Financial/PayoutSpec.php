@@ -16,7 +16,7 @@ class PayoutSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->Build();
-        $this->getRequestDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
@@ -34,15 +34,15 @@ class PayoutSpec extends ObjectBehavior
     function setRequestParameters()
     {
         $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
-        $this->setAmount(mt_rand(40, 16244600));
+        $this->setAmount(mt_rand(1, 10015523));
         $this->setCurrency('USD');
-        $this->setUsage('Genesis PHP Client Automated testing');
+        $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp('127.0.0.1');
         $this->setCardHolder('Max Musterman');
         $this->setCardNumber('4200000000000000');
-        $this->setCvv('000');
-        $this->setExpirationMonth('01');
-        $this->setExpirationYear('2014');
+        $this->setCvv(mt_rand(000,999));
+        $this->setExpirationMonth(mt_rand(01,12));
+        $this->setExpirationYear(mt_rand(2015,2020));
         $this->setCustomerEmail('test@emerchantpay.com');
         $this->setCustomerPhone('+359000');
         $this->setBillingFirstName('Max');

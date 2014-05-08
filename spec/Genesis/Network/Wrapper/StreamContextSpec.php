@@ -28,7 +28,7 @@ class StreamContextSpec extends ObjectBehavior
 
         $this->prepareRequestBody($options);
 
-        $this->shouldNotThrow()->duringSubmitRequest();
+        $this->shouldNotThrow()->duringExecute();
 
         $this->getResponseBody()->shouldNotBeEmpty();
 
@@ -37,13 +37,13 @@ class StreamContextSpec extends ObjectBehavior
 
     function getMatchers()
     {
-        return [
+        return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
                 },
             'beOlder' => function($subject) {
                     $diff = time() - strtotime($subject);
-                    return ($diff < 3600 ? false : true);
+                    return (($diff < 60) ? false : true);
                 },
             'beFalse' => function($subject) {
                     return (!$subject) ? true : false;
@@ -51,6 +51,6 @@ class StreamContextSpec extends ObjectBehavior
             'beTrue' => function($subject) {
                     return ($subject) ? true : false;
                 },
-        ];
+        );
     }
 }

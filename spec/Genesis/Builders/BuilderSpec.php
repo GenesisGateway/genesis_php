@@ -1,28 +1,28 @@
 <?php
 
-namespace spec\Genesis\Builders\XML;
+namespace spec\Genesis\Builders;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class DOMDocumentSpec extends ObjectBehavior
+class BuilderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Builders\XML\DOMDocument');
+        $this->shouldHaveType('Genesis\Builders\Builder');
     }
 
     function it_can_generate_content()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')), null);
-        $this->getOutput()->shouldNotBeEmpty();
+        $this->parseStructure(array('root' => array('node1'=>'value1', 'node2'=>'value2')), null);
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_can_generate_valid_xml()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')), null);
-        $this->getOutput()->shouldNotBeEmpty();
-        $this->getOutput()->shouldBeValidXML();
+        $this->parseStructure(array('root' => array('node1'=>'value1', 'node2'=>'value2')), null);
+        $this->getDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldBeValidXML();
     }
 
     function getMatchers()

@@ -16,7 +16,7 @@ class RecurringSaleSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->Build();
-        $this->getRequestDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
@@ -34,9 +34,9 @@ class RecurringSaleSpec extends ObjectBehavior
     function setRequestParameters()
     {
         $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
-        $this->setAmount(mt_rand(40, 16244600));
+        $this->setAmount(mt_rand(1, 10015523));
         $this->setCurrency('USD');
-        $this->setUsage('Genesis PHP Client Automated testing');
+        $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp('127.0.0.1');
         $this->setReferenceId(mt_rand(0, PHP_INT_MAX));
     }

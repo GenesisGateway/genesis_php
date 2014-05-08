@@ -5,9 +5,19 @@ namespace spec\Genesis\API;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+use \Genesis\API\Request as Request;
+use \Genesis\Network as Network;
+
 class ResponseSpec extends ObjectBehavior
 {
-    private $sampleXML = '<?xml version="1.0" encoding="UTF-8"?><response><status>approved</status><response_code>00</response_code></response>';
+
+    public $sampleXML   = '<?xml version="1.0" encoding="UTF-8"?><response><status>approved</status><response_code>00</response_code></response>';
+    public $invalidXML  = '<?xml version="1.0" encoding="UTF-8"?><response><status>approved</status><response_code>100</response_code></response>';
+
+    function let()
+    {
+        $this->beConstructedWith(new Network\Request(new Request\Blacklist()), null);
+    }
 
     function it_is_initializable()
     {
@@ -16,34 +26,32 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_parse_file()
     {
-        $this->shouldNotThrow()->duringParseResponse($this->sampleXML);
+        $this->shouldNotThrow()->during('parseResponse', array($this->sampleXML));
         $this->getResponseObject()->shouldNotBeEmpty();
     }
 
     function it_should_verify_the_code()
     {
-        $this->shouldNotThrow()->duringParseResponse($this->sampleXML);
+        $this->shouldNotThrow()->during('parseResponse', array($this->sampleXML));
         $this->getResponseObject()->shouldNotBeEmpty();
         $this->isSuccess()->shouldBeTrue();
     }
 
     function it_should_fail_parsing()
     {
-        $this->shouldThrow()->duringParseResponse(null);
+        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during('parseResponse', array(null));
     }
 
     function it_should_fail_during_verification()
     {
-        $invalidXML = str_replace('00', '100', $this->sampleXML);
-
-        $this->shouldNotThrow()->duringParseResponse($invalidXML);
+        $this->shouldNotThrow()->during('parseResponse', array($this->invalidXML));
         $this->getResponseObject()->shouldNotBeEmpty();
         $this->isSuccess()->shouldBeFalse();
     }
 
     function getMatchers()
     {
-        return [
+        return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
             },
@@ -53,6 +61,6 @@ class ResponseSpec extends ObjectBehavior
             'beTrue' => function($subject) {
                     return ($subject) ? true : false;
             },
-        ];
+        );
     }
 }

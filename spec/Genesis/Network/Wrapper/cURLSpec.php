@@ -18,14 +18,20 @@ class cURLSpec extends ObjectBehavior
         $remote_url = Configuration::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
-            CURLOPT_HEADER          => true,
-            CURLOPT_URL             => $remote_url,
-            CURLOPT_RETURNTRANSFER  => true,
+            'debug'         => 'false',
+            'type'          => 'GET',
+            'url'           => $remote_url,
+            'body'          => '',
+            'cert_ca'       => Configuration::getCertificateAuthority(),
+            'protocol'      => 'https',
+            'timeout'       => 60,
+            'user_login'    => '',
+            'user_agent'    => '',
         );
 
-        $this->setOptions($options);
+        $this->prepareRequestBody($options);
 
-        $this->shouldNotThrow()->duringSubmitRequest();
+        $this->shouldNotThrow()->duringExecute();
 
         $this->getResponseBody()->shouldNotBeEmpty();
 
@@ -34,14 +40,14 @@ class cURLSpec extends ObjectBehavior
 
     function getMatchers()
     {
-        return [
+        return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
                 },
             'beOlder' => function($subject) {
                     $diff = time() - strtotime($subject);
-                    return ($diff < 3600 ? false : true);
+                    return (($diff < 60) ? false : true);
                 },
-        ];
+        );
     }
 }
