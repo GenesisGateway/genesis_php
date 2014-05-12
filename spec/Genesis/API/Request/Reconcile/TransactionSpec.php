@@ -38,10 +38,10 @@ class TransactionSpec extends ObjectBehavior
 
     public function getMatchers()
     {
-        return [
+        return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
                 },
-        ];
+        );
     }
 }

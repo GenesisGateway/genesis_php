@@ -1,4 +1,10 @@
 <?php
+/**
+ * Blacklist Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request;
 

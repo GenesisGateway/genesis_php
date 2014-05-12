@@ -1,4 +1,10 @@
 <?php
+/**
+ * Reconcile request by Date Range
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request\Reconcile;
 

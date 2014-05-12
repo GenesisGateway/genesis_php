@@ -1,4 +1,5 @@
 <?php
+w
 
 namespace Genesis\Builders\XML;
 

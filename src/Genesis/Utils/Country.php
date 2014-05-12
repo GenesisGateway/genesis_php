@@ -1,4 +1,10 @@
 <?php
+/**
+ * List of all countries, in ISO 3166
+ *
+ * @package Genesis
+ * @subpackage Country
+ */
 
 namespace Genesis\Utils;
 

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Recurring Sale Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 namespace Genesis\API\Request\Financial\Recurring;
 
 use \Genesis\API\Request as Request;

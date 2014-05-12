@@ -1,4 +1,11 @@
 <?php
+/**
+ * cURL Network Interface
+ * Note: requires php curl extension
+ *
+ * @package Genesis
+ * @subpackage Network
+ */
 
 namespace Genesis\Network\Wrapper;
 

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Errors returned by Genesis or the Issuer
+ *
+ * @package Genesis
+ * @subpackage API
+ */
 
 namespace Genesis\API;
 
@@ -74,6 +80,7 @@ final class Errors
      * Get detailed description of the provided error code
      *
      * @param int $Error_Code
+     *
      * @return string
      */
     static function getErrorDescription($Error_Code = 1)
@@ -196,6 +203,13 @@ final class Errors
         }
     }
 
+    /**
+     * Resolve Issuer Response Code
+     *
+     * @param $issuerResponseCode
+     *
+     * @return bool|string
+     */
     static function getIssuerResponseCode($issuerResponseCode)
     {
         switch(strval($issuerResponseCode))

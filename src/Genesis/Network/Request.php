@@ -1,4 +1,10 @@
 <?php
+/**
+ * Network Requests Handler
+ *
+ * @package Genesis
+ * @subpackage Network
+ */
 
 namespace Genesis\Network;
 
@@ -24,7 +30,9 @@ class Request
     {
         $this->apiContext = $apiContext;
 
-        switch (Configuration::getWrapper('network')) {
+        $interface = Configuration::getInterfaceConfiguration('network');
+
+        switch ($interface) {
             default:
             case 'curl':
                 $this->context = new Wrapper\cURL();

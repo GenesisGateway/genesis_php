@@ -1,4 +1,10 @@
 <?php
+/**
+ * Sale Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request\Financial;
 

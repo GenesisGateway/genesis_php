@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Reconcile request by transaction id
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 namespace Genesis\API\Request\Reconcile;
 
 use \Genesis\API\Request as Request;

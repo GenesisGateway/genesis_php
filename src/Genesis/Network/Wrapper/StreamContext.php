@@ -1,4 +1,10 @@
 <?php
+/**
+ * Stream Context Network Interface
+ *
+ * @package Genesis
+ * @subpackage Network
+ */
 
 namespace Genesis\Network\Wrapper;
 

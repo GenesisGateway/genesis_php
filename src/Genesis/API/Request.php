@@ -1,4 +1,11 @@
 <?php
+/**
+ * Request Base
+ * This is the base of every API request
+ *
+ * @package Genesis
+ * @subpackage API
+ */
 
 namespace Genesis\API;
 
@@ -7,7 +14,7 @@ use \Genesis\Network as Network;
 use \Genesis\Builders as Builders;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Configuration as Configuration;
-use Genesis\Utils\Common;
+use \Genesis\Utils\Common;
 
 abstract class Request
 {
@@ -17,6 +24,13 @@ abstract class Request
      * @var \ArrayObject
      */
     public $config;
+
+    /**
+     * Store the API Response context
+     * s
+     * @var \Genesis\API\Response
+     */
+    public $response;
 
     /**
      * Store the Request's Tree structure
@@ -60,13 +74,6 @@ abstract class Request
      * @var \Genesis\Network\Request
      */
     protected $networkContext;
-
-    /**
-     * Store the API Response context
-     * s
-     * @var \Genesis\API\Response
-     */
-    public $response;
 
     public function __call($method, $args)
     {

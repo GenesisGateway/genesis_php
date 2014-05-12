@@ -2,7 +2,6 @@
 
 namespace spec\Genesis\Utils;
 
-use Genesis\Utils\Common;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

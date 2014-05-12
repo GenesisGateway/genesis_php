@@ -1,4 +1,10 @@
 <?php
+/**
+ * An interface for every builder abstraction (XMLWriter, DOMDocument, JSON etc.).
+ *
+ * @package Genesis
+ * @subpackage Builders
+ */
 
 namespace Genesis\Builders;
 

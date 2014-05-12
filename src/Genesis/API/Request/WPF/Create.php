@@ -1,4 +1,10 @@
 <?php
+/**
+ * Web-Payment-Form Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request\WPF;
 

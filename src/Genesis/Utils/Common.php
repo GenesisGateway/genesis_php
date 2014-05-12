@@ -1,9 +1,12 @@
 <?php
+/**
+ * Various helper functions used across the project
+ *
+ * @package Genesis
+ * @subpackage Utils
+ */
 
 namespace Genesis\Utils;
-
-use Genesis\Configuration as Configuration;
-
 
 final class Common {
 

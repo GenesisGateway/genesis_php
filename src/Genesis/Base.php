@@ -1,4 +1,9 @@
 <?php
+/**
+ * Base class of Genesis
+ *
+ * @package Genesis
+ */
 
 namespace Genesis;
 
@@ -19,9 +24,7 @@ final class Base
      */
     static function loadRequest($request)
     {
-        //if (strpos($request, '\\') !== false) {
         $request = sprintf('\Genesis\API\Request\%s', $request);
-        //}
 
         if ( class_exists($request) ) {
             Base::$Request = new $request;

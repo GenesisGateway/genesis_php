@@ -1,4 +1,10 @@
 <?php
+/**
+ * Notification handler
+ *
+ * @package Genesis
+ * @subpackage API
+ */
 
 namespace Genesis\API;
 
@@ -43,30 +49,6 @@ class Notification
     }
 
     /**
-     * Parse the incoming notification from Genesis
-     *
-     * @param $response
-     * @throws Exceptions\InvalidArgument()
-     */
-    public function parseNotification($response)
-    {
-        $this->notificationObj = Common::createArrayObject($response);
-
-        if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
-            $this->unique_id = $this->notificationObj->unique_id;
-        }
-
-        if (isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id)) {
-            $this->unique_id = $this->notificationObj->wpf_unique_id;
-        }
-
-        if (empty($this->notificationObj->unique_id) || empty($this->notificationObj->signature) || empty($this->notificationObj->status))
-        {
-            throw new Exceptions\InvalidArgument();
-        }
-    }
-
-    /**
      * Verify the signature that inside the Notification, to ensure that
      * this message is actually from Genesis and not an imposter.
      *
@@ -102,5 +84,29 @@ class Notification
         }
 
         return false;
+    }
+
+    /**
+     * Parse the incoming notification from Genesis
+     *
+     * @param $response
+     * @throws Exceptions\InvalidArgument()
+     */
+    public function parseNotification($response)
+    {
+        $this->notificationObj = Common::createArrayObject($response);
+
+        if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
+            $this->unique_id = $this->notificationObj->unique_id;
+        }
+
+        if (isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id)) {
+            $this->unique_id = $this->notificationObj->wpf_unique_id;
+        }
+
+        if (empty($this->notificationObj->unique_id) || empty($this->notificationObj->signature) || empty($this->notificationObj->status))
+        {
+            throw new Exceptions\InvalidArgument();
+        }
     }
 }

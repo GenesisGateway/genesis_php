@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Authorize 3D Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 namespace Genesis\API\Request\Financial;
 
 use \Genesis\API\Request as Request;

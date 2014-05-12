@@ -1,4 +1,10 @@
 <?php
+/**
+ * Response handler - handles responses from Genesis Gateway
+ *
+ * @package Genesis
+ * @subpackage API
+ */
 
 namespace Genesis\API;
 
@@ -15,8 +21,9 @@ class Response
     {
         $this->networkContext = $networkContext;
 
-        if ( strlen($this->networkContext->getResponseBody()) > 0 )
+        if ( strlen($this->networkContext->getResponseBody()) > 0 ) {
             $this->parseResponse($this->networkContext->getResponseBody());
+        }
     }
 
     /**
@@ -24,7 +31,7 @@ class Response
      *
      * @return bool
      */
-    public function isSuccess()
+    public function isSuccessful()
     {
         $status = false;
 

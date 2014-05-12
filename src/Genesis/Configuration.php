@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Configuration Object.
+ *
+ * @package Genesis
+ * @subpackage Configuration
+ */
 namespace Genesis;
 
 use \Genesis\Exceptions as Exceptions;
@@ -7,9 +12,9 @@ use \Genesis\Exceptions as Exceptions;
 final class Configuration
 {
     /**
-     * Current version
+     * Genesis base domain name
      */
-    const VERSION   = '1.0.0';
+    const DOMAIN    = 'e-comprocessing.net';
 
     /**
      * Default Protocol for the HTTP requests
@@ -17,9 +22,9 @@ final class Configuration
     const PROTOCOL  = 'https';
 
     /**
-     * Genesis base domain name
+     * Current version
      */
-    const DOMAIN    = 'e-comprocessing.net';
+    const VERSION   = '1.0.0';
 
     /**
      * Array storing all the configuration for this instance.
@@ -39,7 +44,7 @@ final class Configuration
      *
      * @var array
      */
-    public static $wrappers = array (
+    public static $interfaces = array (
         'builder'   => 'xml_writer',
         'network'   => 'curl',
     );
@@ -81,30 +86,11 @@ final class Configuration
                 }
                 break;
             case 'set' :
-                $ConfigValue = trim(reset($args));
-
-                if (Base::validateOption($ConfigKey, $ConfigValue)) {
-                    self::$vault[$ConfigKey] = $ConfigValue;
-                }
+                self::$vault[$ConfigKey] = trim(reset($args));
                 break;
         }
 
         return null;
-    }
-
-    /**
-     * Get the current Environment
-     *
-     * @return mixed
-     * @throws Exceptions\EnvironmentNotSet()
-     */
-    final public static function getEnvironment()
-    {
-        if (!array_key_exists('environment', self::$vault)) {
-            throw new Exceptions\EnvironmentNotSet();
-        }
-
-        return self::$vault['environment'];
     }
 
     /**
@@ -128,7 +114,23 @@ final class Configuration
                 break;
             default:
                 throw new Exceptions\EnvironmentNotSet();
+                break;
         }
+    }
+
+    /**
+     * Get the current Environment
+     *
+     * @return mixed
+     * @throws Exceptions\EnvironmentNotSet()
+     */
+    final public static function getEnvironment()
+    {
+        if (!array_key_exists('environment', self::$vault)) {
+            throw new Exceptions\EnvironmentNotSet();
+        }
+
+        return self::$vault['environment'];
     }
 
     /**
@@ -152,6 +154,7 @@ final class Configuration
                 break;
             default:
                 throw new Exceptions\EnvironmentNotSet();
+                break;
         }
 
         if (intval($port) > 0) {
@@ -162,10 +165,19 @@ final class Configuration
         }
     }
 
-    final public static function getWrapper($type)
+
+    /**
+     * Get selected interface option
+     *
+     * @param $type - type of the interface
+     *
+     * @return mixed - string name
+     */
+    final public static function getInterfaceConfiguration($type)
     {
-        if (array_key_exists($type, self::$wrappers))
-            return self::$wrappers[$type];
+        if (array_key_exists($type, self::$interfaces)) {
+            return self::$interfaces[$type];
+        }
     }
 
     /**
@@ -182,6 +194,7 @@ final class Configuration
      * Load settings from an ini File
      *
      * @param $settings_file String - path to an ini file containing the settings
+     * @throws Exceptions\InvalidArgument()
      */
     final public static function loadSettings($settings_file)
     {
@@ -196,6 +209,18 @@ final class Configuration
                     }
                 }
             }
+
+            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && sizeof($settings['Interfaces']) > 1) {
+                foreach ($settings['Interfaces'] as $option => $value)
+                {
+                    if (array_key_exists($option, self::$interfaces)) {
+                        self::$interfaces[$option] = $value;
+                    }
+                }
+            }
+        }
+        else {
+            throw new Exceptions\InvalidArgument('The Settings file does not exist! Please correct your path to the ini file and try again');
         }
     }
 }

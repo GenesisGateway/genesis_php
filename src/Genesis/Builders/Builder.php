@@ -1,4 +1,10 @@
 <?php
+/**
+ * Builder handler
+ *
+ * @package Genesis
+ * @subpackage Builders
+ */
 
 namespace Genesis\Builders;
 
@@ -19,13 +25,15 @@ class Builder
      */
     public function __construct()
     {
-        switch (Configuration::getWrapper('builder')) {
+        $interface = Configuration::getInterfaceConfiguration('builder');
+
+        switch ($interface) {
+            case 'xml_dom';
+                $this->context = new XML\DOMDocument();
+                break;
             default:
             case 'xml_writer':
                 $this->context = new XML\XMLWriter();
-                break;
-            case 'xml_dom';
-                $this->context = new XML\DOMDocument();
                 break;
         }
     }

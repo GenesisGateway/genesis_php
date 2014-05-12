@@ -1,4 +1,10 @@
 <?php
+/**
+ * Address Verification System Request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request\NonFinancial;
 

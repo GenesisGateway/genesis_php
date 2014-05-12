@@ -1,4 +1,10 @@
 <?php
+/**
+ * Refund request
+ *
+ * @package Genesis
+ * @subpackage Request
+ */
 
 namespace Genesis\API\Request\Financial;
 

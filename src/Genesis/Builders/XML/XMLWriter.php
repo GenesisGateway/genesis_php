@@ -1,4 +1,11 @@
 <?php
+/**
+ * XMLWriter Builder Interface
+ * Note: requires libxml2 support
+ *
+ * @package Genesis
+ * @subpackage Builders
+ */
 
 namespace Genesis\Builders\XML;
 
