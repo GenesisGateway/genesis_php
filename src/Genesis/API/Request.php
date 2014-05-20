@@ -136,7 +136,6 @@ abstract class Request
             $this->populateStructure();
             $this->sanitizeStructure();
             $this->isRequirementsFulfilled();
-
             $this->builderContext = new Builders\Builder();
             $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
         }

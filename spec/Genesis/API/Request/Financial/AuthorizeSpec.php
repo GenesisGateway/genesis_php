@@ -40,7 +40,7 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setRemoteIp('127.0.0.1');
         $this->setCardHolder('Max Musterman');
         $this->setCardNumber('4200000000000000');
-        $this->setCvv(mt_rand(000,999));
+        $this->setCvv(sprintf("%03s", mt_rand(1,999)));
         $this->setExpirationMonth(mt_rand(01,12));
         $this->setExpirationYear(mt_rand(2015,2020));
         $this->setCustomerEmail('test@emerchantpay.com');

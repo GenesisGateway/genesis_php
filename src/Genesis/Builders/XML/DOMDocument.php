@@ -1,5 +1,10 @@
 <?php
-w
+/**
+ * DOMDocument Builder Interface
+ *
+ * @package Genesis
+ * @subpackage Builders
+ */
 
 namespace Genesis\Builders\XML;
 
