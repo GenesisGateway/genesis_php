@@ -5,6 +5,8 @@ namespace spec\Genesis\API\Request\Reconcile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+require 'spec/Genesis/SpecHelper.php';
+
 class DateRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()
@@ -33,7 +35,11 @@ class DateRangeSpec extends ObjectBehavior
 
     function setRequestParameters()
     {
-        $this->setStartDate('2014-01-01');
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new \Faker\Provider\DateTime($faker));
+
+        $this->setStartDate($faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'));
     }
 
     public function getMatchers()

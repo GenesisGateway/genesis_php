@@ -34,9 +34,13 @@ final class VoidSpec extends ObjectBehavior
 
     function setRequestParameters()
     {
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new \Faker\Provider\Internet($faker));
+
         $this->setTransactionId(mt_rand(0, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp('127.0.0.1');
+        $this->setRemoteIp($faker->ipv4);
         $this->setReferenceId(mt_rand(0, PHP_INT_MAX));
     }
 

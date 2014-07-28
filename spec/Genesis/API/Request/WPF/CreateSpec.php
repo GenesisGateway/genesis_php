@@ -36,24 +36,32 @@ class CreateSpec extends ObjectBehavior
 
     function setRequestParameters()
     {
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
+        $faker->addProvider(new \Faker\Provider\Payment($faker));
+        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
+        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
+        $faker->addProvider(new \Faker\Provider\Internet($faker));
+
         $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
-        $this->setAmount(mt_rand(1, 10015523));
+        $this->setAmount(mt_rand(100, 100000));
         $this->setCurrency('USD');
-        $this->setUsage('40208 Concert Tickets');
+        $this->setUsage($faker->text);
         $this->setDescription('Genesis PHP Client Example Request');
-        $this->setNotificationUrl('https://94.26.28.144:22303/handleGenesis.php');
-        $this->setReturnSuccessUrl('https://94.26.28.144:22303/handleGenesis.php?redir=success');
-        $this->setReturnFailureUrl('https://94.26.28.144:22303/handleGenesis.php?redir=failure');
-        $this->setReturnCancelUrl('https://94.26.28.144:22303/handleGenesis.php?redir=cancel');
-        $this->setCustomerEmail('test@emerchantpay.com');
-        $this->setCustomerPhone('+359000');
-        $this->setBillingFirstName('Max');
-        $this->setBillingLastName('Musterman');
-        $this->setBillingAddress1('Muster Str. 12');
-        $this->setBillingZipCode('89110');
-        $this->setBillingCity('Las Vegas');
-        $this->setBillingState('NV');
-        $this->setBillingCountry('US');
+        $this->setNotificationUrl($faker->url);
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
+        $this->setReturnCancelUrl($faker->url);
+        $this->setCustomerEmail($faker->email);
+        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingAddress1($faker->streetAddress);
+        $this->setBillingZipCode($faker->postcode);
+        $this->setBillingCity($faker->city);
+        $this->setBillingState($faker->state);
+        $this->setBillingCountry($faker->countryCode);
         $this->addTransactionType('sale');
         $this->addTransactionType('sale3d');
     }

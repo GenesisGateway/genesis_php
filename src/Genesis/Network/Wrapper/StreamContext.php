@@ -126,7 +126,7 @@ class StreamContext implements NetworkInterface
      */
     public function execute()
     {
-        $stream = @fopen($this->requestData['url'], 'r', false, $this->streamContext);
+        $stream = fopen($this->requestData['url'], 'r', false, $this->streamContext);
 
         if (!$stream) {
             throw new Exceptions\InvalidSSLCA();

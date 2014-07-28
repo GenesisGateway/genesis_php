@@ -17,6 +17,7 @@
         "ext-xmlwriter": "*"
     },
     "require-dev": {
+        "fzaninotto/faker": "1.*@stable",
         "phpspec/phpspec": "2.0.*@stable"
     },
     "autoload": {

@@ -2,6 +2,8 @@
 
 namespace spec\Genesis\Network\Wrapper;
 
+require_once 'spec/Genesis/SpecHelper.php';
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\Configuration;
@@ -15,6 +17,10 @@ class cURLSpec extends ObjectBehavior
 
     function it_can_send_remote_connections()
     {
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new \Faker\Provider\UserAgent($faker));
+
         $remote_url = Configuration::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
@@ -25,8 +31,8 @@ class cURLSpec extends ObjectBehavior
             'cert_ca'       => Configuration::getCertificateAuthority(),
             'protocol'      => 'https',
             'timeout'       => 60,
-            'user_login'    => '',
-            'user_agent'    => '',
+            'user_login'    => Configuration::getUsername() . ':' . Configuration::getPassword(),
+            'user_agent'    => $faker->userAgent,
         );
 
         $this->prepareRequestBody($options);

@@ -9,6 +9,7 @@ class RequestSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
+        // This has to be true as you can't initialize Abstract Class
         return true;
         //$this->shouldNotHaveType('Genesis\API\Request');
     }
