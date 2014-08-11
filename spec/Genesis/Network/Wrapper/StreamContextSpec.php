@@ -24,12 +24,12 @@ class StreamContextSpec extends ObjectBehavior
         $remote_url = Configuration::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
-            'type'  => 'GET',
-            'url'   => $remote_url,
-            'body'  => '',
-            'cert_ca'    => Configuration::getCertificateAuthority(),
-            'user_login' => Configuration::getUsername() . ':' . Configuration::getPassword(),
-            'user_agent' => $faker->userAgent,
+            'body'          => '',
+            'type'          => 'GET',
+            'url'           => $remote_url,
+            'cert_ca'       => Configuration::getCertificateAuthority(),
+            'user_login'    => Configuration::getUsername() . ':' . Configuration::getPassword(),
+            'user_agent'    => $faker->userAgent,
         );
 
         $this->prepareRequestBody($options);
