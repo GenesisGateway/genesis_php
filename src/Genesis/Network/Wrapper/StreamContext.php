@@ -8,6 +8,7 @@
 
 namespace Genesis\Network\Wrapper;
 
+use \Genesis\Utils as Utils;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Network\NetworkInterface as NetworkInterface;
 
@@ -110,19 +111,26 @@ class StreamContext implements NetworkInterface
                 'verify_peer'           => true,
                 // Abort if the certificate-chain is longer than 5 nodes
                 'verify_depth'          => 5,
-                // PHP does NOT support SAN certs (support coming in 5.6), validation will
-                // fail for domain and a SAN certificate on PHP < 5.6
-                'CN_match'              => $url['host'],
                 // Mitigate CRIME/BEAST attacks
                 'disable_compression'   => true,
                 // SNI causes errors due to improper handling of alerts by OpenSSL in 0.9.8
                 // As many php releases are linked against 0.9.8, its better to disable SNI
-                'SNI_enabled'           => false,
+                // in case you can't upgrade.
+                'SNI_enabled'           => true,
                 // You can tweak what Ciphers should be used (if available), this list is
                 // recommended by Mozilla and its built with 'Forward Secrecy' in mind
                 'ciphers'               => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK',
             )
         );
+
+        if (Utils\Common::getPHPVersion() < 50600) {
+            // Note: PHP does NOT support SAN certs on PHP version < 5.6
+            $contextOptions['ssl']['CN_match']          = $url['host'];
+            $contextOptions['ssl']['SNI_server_name']   = $url['host'];
+        } else {
+            $contextOptions['ssl']['peer_name']         = $url['host'];
+            $contextOptions['ssl']['verify_peer_name']  = true;
+        }
 
         $this->streamContext = stream_context_create($contextOptions);
 

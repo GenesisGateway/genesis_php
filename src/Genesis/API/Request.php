@@ -244,7 +244,7 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new Exceptions\BlankRequiredField('One of the following groups of fields: ' . implode(' / ', $groupsFormatted) . ' must be filled in!', 1);
+                throw new Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!', 1);
             }
         }
 
@@ -263,7 +263,23 @@ abstract class Request
                 }
             }
         }
-    }
 
+        if (isset($this->requiredFieldsOR)) {
+            $fields = $this->requiredFieldsOR->getArrayCopy();
+
+            $status = false;
+
+            foreach ($fields as $fieldName)
+            {
+                if (isset($this->$fieldName)) {
+                    $status = true;
+                }
+            }
+
+            if (!$status) {
+                throw new Exceptions\BlankRequiredField('You should set at least one of the following fields: ' . implode($fields), 0);
+            }
+        }
+    }
 
 }
