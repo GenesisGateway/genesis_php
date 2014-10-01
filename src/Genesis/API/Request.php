@@ -253,7 +253,7 @@ abstract class Request
 
             foreach($fields as $fieldName => $fieldDependencies)
             {
-                if (isset($this->$fieldName)) {
+                if (isset($this->$fieldName) && !empty($this->$fieldName)) {
                     foreach ($fieldDependencies as $field)
                     {
                         if (empty($this->$field)) {
@@ -271,7 +271,7 @@ abstract class Request
 
             foreach ($fields as $fieldName)
             {
-                if (isset($this->$fieldName)) {
+                if (isset($this->$fieldName) && !empty($this->$fieldName)) {
                     $status = true;
                 }
             }
