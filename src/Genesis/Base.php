@@ -11,10 +11,26 @@ use \Genesis\API\Errors as Errors;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Utils\Country as Country;
 
-final class Base
+class Base
 {
-    public static $Request;
-    public static $Response;
+    /**
+     * Store the Network Request Instance
+     *
+     * @var \Genesis\API\Request
+     */
+    public $requestContext;
+    /**
+     * Store the Network Request Instance
+     *
+     * @var \Genesis\API\Response
+     */
+    public $responseContext;
+    /**
+     * Store the Network Request Instance
+     *
+     * @var \Genesis\Network\Request
+     */
+    protected $networkContext;
 
     /**
      * Initialize and instantiate the desired request
@@ -22,27 +38,51 @@ final class Base
      * @param $request - name of the API request
      * @throws Exceptions\InvalidMethod()
      */
-    static function loadRequest($request)
+    public function __construct($request)
     {
         $request = sprintf('\Genesis\API\Request\%s', $request);
 
         if ( class_exists($request) ) {
-            Base::$Request = new $request;
-            return Base::$Request;
+            $this->requestContext = new $request;
         }
         else {
             throw new Exceptions\InvalidMethod();
         }
     }
 
-    static function Request()
+    /**
+     * Get request instance
+     *
+     * @return \Genesis\API\Request
+     */
+    public function request()
     {
-        return self::$Request;
+        return $this->requestContext;
     }
 
-    static function Response()
+    /**
+     * Get Response instance
+     *
+     * @return \Genesis\API\Response
+     */
+    public function response()
     {
-        return self::$Response;
+        return $this->responseContext;
+    }
+
+    /*
+     * Send the request
+     *
+     */
+    public function sendRequest()
+    {
+        // Send the request
+        $this->networkContext = new Network\Request($this->requestContext);
+        $this->networkContext->setRequestData();
+        $this->networkContext->sendRequest();
+
+        // Parse the response
+        $this->responseContext = new Response($this->networkContext);
     }
 
     /**

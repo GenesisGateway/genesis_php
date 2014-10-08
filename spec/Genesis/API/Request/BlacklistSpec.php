@@ -18,21 +18,14 @@ class BlacklistSpec extends ObjectBehavior
     function it_can_build_structure()
     {
         $this->setCardNumber('4200000000000000');
-        $this->shouldNotThrow()->duringSend();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringGetDocument();
     }
 
-    function it_should_send_without_issues()
-    {
-        $this->setCardNumber('4200000000000000');
-        $this->shouldNotThrow()->duringSend();
-        $this->getGenesisResponse()->shouldNotBeEmpty();
-    }
 
     public function getMatchers()
     {

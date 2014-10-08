@@ -9,6 +9,7 @@
 namespace Genesis\Network;
 
 use \Genesis\Exceptions as Exceptions;
+use \Genesis\API\Request as APIRequest;
 use \Genesis\Configuration as Configuration;
 
 class Request
@@ -26,7 +27,7 @@ class Request
      */
     private $context;
 
-    public function __construct($apiContext)
+    public function __construct(APIRequest $apiContext)
     {
         $this->apiContext = $apiContext;
 

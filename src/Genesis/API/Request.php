@@ -68,13 +68,6 @@ abstract class Request
      */
     protected $builderContext;
 
-    /**
-     * Store the Network Request Handle
-     *
-     * @var \Genesis\Network\Request
-     */
-    protected $networkContext;
-
     public function __call($method, $args)
     {
         $methodType     = substr($method, 0, 3);
@@ -150,7 +143,7 @@ abstract class Request
      */
     public function getGenesisResponse()
     {
-        return $this->networkContext->getResponseBody();
+        //return $this->networkContext->getResponseBody();
     }
 
     /**
@@ -170,11 +163,10 @@ abstract class Request
      */
     public function Send()
     {
-        $this->networkContext = new Network\Request($this);
-        $this->networkContext->setRequestData();
-        $this->networkContext->sendRequest();
 
-        Base::$Response = new Response($this->networkContext);
+        //$this->networkContext->setRequestData();
+        //$this->networkContext->sendRequest();
+        //$this->setResponse(new Response($this->networkContext));
     }
 
     /**

@@ -23,14 +23,7 @@ class DateRangeSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
-    }
-
-    function it_should_send_without_issues()
-    {
-        $this->setRequestParameters();
-        $this->shouldNotThrow('\Genesis\Exceptions\BlankRequiredField')->duringSend();
-        $this->getGenesisResponse()->shouldNotBeEmpty();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
     }
 
     function setRequestParameters()

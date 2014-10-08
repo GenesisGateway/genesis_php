@@ -15,22 +15,13 @@ class Authorize3DSpec extends ObjectBehavior
     function it_can_build_stucture()
     {
         $this->setRequestParameters();
-        $this->Build();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow()->duringSend();
+        $this->shouldThrow()->duringgetDocument();
     }
-
-    function it_should_send_without_issues()
-    {
-        $this->setRequestParameters();
-        $this->shouldNotThrow()->duringSend();
-        $this->getGenesisResponse()->shouldNotBeEmpty();
-    }
-
     function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
