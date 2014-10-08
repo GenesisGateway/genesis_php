@@ -8,6 +8,7 @@
 namespace Genesis;
 
 use \Genesis\API\Errors as Errors;
+use \Genesis\API\Response as Response;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Utils\Country as Country;
 
