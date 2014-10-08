@@ -15,6 +15,8 @@ class Response
 {
     public $responseObj;
 
+    public $responseRaw;
+
     private $networkContext;
 
     public function __construct(Network $networkContext)
@@ -84,6 +86,7 @@ class Response
             throw new Exceptions\InvalidArgument();
         }
 
+        $this->responseRaw = $response;
         $this->responseObj = simplexml_load_string($response);
     }
 }
