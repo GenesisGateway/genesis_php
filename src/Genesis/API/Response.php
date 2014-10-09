@@ -13,10 +13,25 @@ use Genesis\Network\Request as Network;
 
 class Response
 {
+    /**
+     * Store parsed, response object
+     *
+     * @var \stdClass
+     */
     public $responseObj;
 
+    /**
+     * Store the response raw data
+     *
+     * @var String
+     */
     public $responseRaw;
 
+    /**
+     * Network Context Handle
+     *
+     * @var Network
+     */
     private $networkContext;
 
     public function __construct(Network $networkContext)
@@ -41,7 +56,7 @@ class Response
 
             $code = ($this->responseObj->response_code) ? intval($this->responseObj->response_code) : null;
 
-            if (Errors::SUCCESS === $code) {
+            if ($code === Errors::SUCCESS) {
                 $status = true;
             }
         }
@@ -65,9 +80,19 @@ class Response
     }
 
     /**
-     * Return the parsed response
+     * Get the raw Genesis output
      *
-     * @return mixed
+     * @return String
+     */
+    public function getResponseRaw()
+    {
+        return $this->responseRaw;
+    }
+
+    /**
+     * Get the parsed response
+     *
+     * @return \stdClass
      */
     public function getResponseObject()
     {

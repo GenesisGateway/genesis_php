@@ -45,6 +45,7 @@ class Notification
 
         $builder = new Builders\Builder();
         $builder->parseStructure($echo_structure);
+
         return $builder->getDocument();
     }
 

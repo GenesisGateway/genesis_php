@@ -63,7 +63,7 @@ final class Common {
     static function getPHPVersion()
     {
         // PHP_VERSION_ID is available as of PHP 5.2.7, if our
-        // version is lower than that, then emulate it
+        // version is lower than that - emulate it
         if (!defined('PHP_VERSION_ID')) {
             $version = explode('.', PHP_VERSION);
 

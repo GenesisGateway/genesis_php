@@ -9,7 +9,6 @@
 
 namespace Genesis\API;
 
-use \Genesis\Base as Base;
 use \Genesis\Network as Network;
 use \Genesis\Builders as Builders;
 use \Genesis\Exceptions as Exceptions;
@@ -90,7 +89,7 @@ abstract class Request
                 break;
         }
 
-        return null;
+        return $this;
     }
 
     /**
@@ -125,48 +124,14 @@ abstract class Request
      */
     public function getDocument()
     {
-        if ( !$this->builderContext) {
-            $this->populateStructure();
-            $this->sanitizeStructure();
-            $this->isRequirementsFulfilled();
-            $this->builderContext = new Builders\Builder();
-            $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
-        }
+        $this->populateStructure();
+        $this->sanitizeStructure();
+        $this->checkRequirements();
+
+        $this->builderContext = new Builders\Builder();
+        $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
         return $this->builderContext->getDocument();
-    }
-
-    /**
-     * Get response from Genesis
-     *
-     * @return mixed String
-     */
-    public function getGenesisResponse()
-    {
-        //return $this->networkContext->getResponseBody();
-    }
-
-    /**
-     * Submit the request document to Genesis
-     *
-     * Steps:
-     * 1) Build the tree structure from local variables
-     * 2) Remove null nodes
-     * 3) Check if all requirements for this request are filled
-     * 4) Instantiate builder Context (XML, JSON etc.)
-     * 5) Parse the tree structure
-     * 6) Instantiate Network
-     * 7) Set the request data
-     * 8) Send the request to Genesis
-     * 9) Parse the incoming response in a new instance of API\Response
-     *
-     */
-    public function Send()
-    {
-
-        //$this->networkContext->setRequestData();
-        //$this->networkContext->sendRequest();
-        //$this->setResponse(new Response($this->networkContext));
     }
 
     /**
@@ -175,24 +140,22 @@ abstract class Request
      * @param $sub_domain String    - gateway/wpf etc.
      * @param $path String          - path of the current request
      * @param $appendToken Bool     - should we append the token to the end of the url
+     *
      * @return string               - complete URL (sub_domain,path,token)
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
         $base_url = Configuration::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
 
-        if ($appendToken) {
-            $url = sprintf('%s/%s/%s', $base_url, $path, Configuration::getToken());
-        }
-        else {
-            $url = sprintf('%s/%s', $base_url, $path);
-        }
+        $token = $appendToken ? Configuration::getToken() : '';
 
-        return $url;
+        return sprintf('%s/%s/%s', $base_url, $path, $token);
     }
 
     /**
      * Remove empty keys/values from the structure
+     *
+     * @return void
      */
     protected function sanitizeStructure()
     {
@@ -201,8 +164,10 @@ abstract class Request
 
     /**
      * Perform field validation
+     *
+     * @return void
      */
-    protected function isRequirementsFulfilled()
+    protected function checkRequirements()
     {
         if (isset($this->requiredFields)) {
             $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
