@@ -2,7 +2,7 @@
 
 namespace Genesis\Utils;
 
-class Currency
+final class Currency
 {
     public static $iso4217 = array (
         'AED' =>
@@ -1260,6 +1260,14 @@ class Currency
             ),
     );
 
+    /**
+     * Convert ISO-4217 compatible int to float
+     *
+     * @param $amount   - amount to convert
+     * @param $iso      - iso code of the currency
+     *
+     * @return float    - float if we found the currency iso and the exponent is > 0, original type otherwise
+     */
     public static function exponentToReal($amount, $iso) {
         if (array_key_exists($iso, self::$iso4217)) {
             $exp = intval(self::$iso4217[$iso]['exponent']);
@@ -1272,12 +1280,20 @@ class Currency
         return $amount;
     }
 
+    /**
+     * Convert int/float to an ISO-4217 compatible value
+     *
+     * @param $amount   - amount to convert
+     * @param $iso      - iso code of the currency
+     *
+     * @return mixed    - int if we found the currency iso and the exponent is > 0, original type otherwise
+     */
     public static function realToExponent($amount, $iso) {
         if (array_key_exists($iso, self::$iso4217)) {
             $exp = intval(self::$iso4217[$iso]['exponent']);
 
             if ($exp > 0) {
-                return $amount * pow(10, $exp);
+                return intval($amount * pow(10, $exp));
             }
         }
 

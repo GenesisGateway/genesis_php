@@ -13,7 +13,8 @@ use \Genesis\Network as Network;
 use \Genesis\Builders as Builders;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Configuration as Configuration;
-use \Genesis\Utils\Common;
+use \Genesis\Utils\Common as Common;
+use \Genesis\Utils\Currency as Currency;
 
 abstract class Request
 {
@@ -93,11 +94,29 @@ abstract class Request
     }
 
     /**
+     * Process the amount set by user to comply with ISO-4217
+     *
+     * @param $amount - raw amount value
+     *
+     * @throws \Exception
+     *
+     * @return int ISO-4217
+     */
+    public function setAmount($amount)
+    {
+        if (!isset($this->currency)) {
+            throw new Exceptions\BlankRequiredField('currency');
+        }
+
+        $this->amount = Currency::realToExponent($amount, $this->currency);
+    }
+
+    /**
      * Getter for per-request Configuration
      *
-     * @param $key
+     * @param $key - setting name
      *
-     * @return mixed
+     * @return mixed - contents of the specified setting
      */
     public function getApiConfig($key)
     {
@@ -109,8 +128,10 @@ abstract class Request
      *
      * Note: Its important for this to be protected
      *
-     * @param $key
-     * @param $value
+     * @param $key      - setting name
+     * @param $value    - setting value
+     *
+     * @return void
      */
     protected function setApiConfig($key, $value)
     {
@@ -118,9 +139,10 @@ abstract class Request
     }
 
     /**
-     * Get the generated document
+     * Generate the XML output, based on the currently populated
+     * request structure
      *
-     * @return mixed
+     * @return string - XML Document with request data
      */
     public function getDocument()
     {
@@ -165,10 +187,12 @@ abstract class Request
     /**
      * Perform field validation
      *
+     * @throws Exceptions\BlankRequiredField
      * @return void
      */
     protected function checkRequirements()
     {
+        /* Verify that all required fields are populated */
         if (isset($this->requiredFields)) {
             $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
 
@@ -177,11 +201,12 @@ abstract class Request
             foreach($iterator as $fieldName)
             {
                 if (empty($this->$fieldName)) {
-                    throw new Exceptions\BlankRequiredField($fieldName, 0);
+                    throw new Exceptions\BlankRequiredField($fieldName);
                 }
             }
         }
 
+        /* Verify that the group fields in the request are populated */
         if (isset($this->requiredFieldsGroups)) {
             $fields = $this->requiredFieldsGroups->getArrayCopy();
 
@@ -201,10 +226,11 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!', 1);
+                throw new Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!', true);
             }
         }
 
+        /* Verify that all fields (who depend on previously populated fields) are populated */
         if (isset($this->requiredFieldsConditional)) {
             $fields = $this->requiredFieldsConditional->getArrayCopy();
 
@@ -214,13 +240,14 @@ abstract class Request
                     foreach ($fieldDependencies as $field)
                     {
                         if (empty($this->$field)) {
-                            throw new Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field, 0);
+                            throw new Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field . ' which');
                         }
                     }
                 }
             }
         }
 
+        /* Verify conditional requirement, where either one of the fields are populated */
         if (isset($this->requiredFieldsOR)) {
             $fields = $this->requiredFieldsOR->getArrayCopy();
 
@@ -234,7 +261,7 @@ abstract class Request
             }
 
             if (!$status) {
-                throw new Exceptions\BlankRequiredField('You should set at least one of the following fields: ' . implode($fields), 0);
+                throw new Exceptions\BlankRequiredField(implode($fields));
             }
         }
     }

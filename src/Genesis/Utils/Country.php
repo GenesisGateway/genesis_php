@@ -259,13 +259,32 @@ final class Country
         'ZW' => 'Zimbabwe',
     );
 
-    static function getCountryName($iso_code)
+    /**
+     * Get a country's name by its ISO Code
+     *
+     * @param $iso_code - country's iso code
+     *
+     * @return mixed    - string if code is present, false otherwise
+     */
+    public static function getCountryName($iso_code)
     {
-        return self::$countries[$iso_code];
+        if (isset(self::$countries[$iso_code])) {
+            return self::$countries[$iso_code];
+        }
+        else {
+            return false;
+        }
     }
 
-    static function getCountryISO($country_name)
+    /**
+     * Get a country's ISO code by its name
+     *
+     * @param $country_name - name of the country
+     *
+     * @return string       - iso
+     */
+    public static function getCountryISO($country_name)
     {
-        return array_search($country_name, self::$countries);
+        return array_search(strtolower($country_name),array_map('strtolower', self::$countries));
     }
 }

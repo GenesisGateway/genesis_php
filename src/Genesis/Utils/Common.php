@@ -14,8 +14,8 @@ final class Common {
      * Helper function - replace uppercase letter with
      * underscore, followed by small letter
      *
-     * @param $string String  - uppercase string
-     * @return String         - processed string
+     * @param $string string  - uppercase string
+     * @return string         - processed string
      */
     static function uppercaseToUnderscore($string)
     {
@@ -26,8 +26,8 @@ final class Common {
      * Helper function - iterate over array ($haystack) and
      * remove every key with empty value
      *
-     * @param Array $haystack - input array
-     * @return Array
+     * @param array $haystack - input array
+     * @return array
      */
     static function emptyValueRecursiveRemoval($haystack)
     {
@@ -62,8 +62,7 @@ final class Common {
      */
     static function getPHPVersion()
     {
-        // PHP_VERSION_ID is available as of PHP 5.2.7, if our
-        // version is lower than that - emulate it
+        // PHP_VERSION_ID is available as of PHP 5.2.7, if the current version is older than that - emulate it
         if (!defined('PHP_VERSION_ID')) {
             $version = explode('.', PHP_VERSION);
 
