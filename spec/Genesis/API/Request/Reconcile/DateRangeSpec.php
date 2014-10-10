@@ -5,8 +5,6 @@ namespace spec\Genesis\API\Request\Reconcile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-require 'spec/Genesis/SpecHelper.php';
-
 class DateRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()

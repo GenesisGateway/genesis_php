@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Retrieval;
+namespace spec\Genesis\API\Request\FraudRelated\Retrieval;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class TransactionSpec extends ObjectBehavior
+class DateRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Retrieval\Transaction');
+        $this->shouldHaveType('Genesis\API\Request\FraudRelated\Retrieval\DateRange');
     }
 
     function it_can_build_stucture()
@@ -27,9 +27,9 @@ class TransactionSpec extends ObjectBehavior
     {
         $faker = \Faker\Factory::create();
 
-        $faker->addProvider(new \Faker\Provider\Uuid($faker));
+        $faker->addProvider(new \Faker\Provider\DateTime($faker));
 
-        $this->setOriginalTransactionUniqueId($faker->uuid);
+        $this->setStartDate($faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'));
     }
 
     public function getMatchers()

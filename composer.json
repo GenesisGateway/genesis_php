@@ -1,28 +1,23 @@
 {
-    "name": "eMerchantPay/genesis_php",
+    "name": "Genesis PHP Client",
     "description": "PHP Client for Genesis Payment Processing Gateway",
-    "minimum-stability": "beta",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "P Manchev",
-            "email": "p.manchev@emerchantpay.com",
-            "role": "Developer"
-        }
-    ],
+    "keywords": ["genesis", "payment_gateway", "transaction", "client_integration"],
+    "version": "1.0.0",
+    "support": {
+        "email": "tech-support@e-comprocessing.com"
+    },
     "require": {
         "php": ">=5.3.0",
         "ext-curl": "*",
         "ext-openssl": "*",
-        "ext-xmlwriter": "*"
-    },
-    "require-dev": {
+        "ext-xmlwriter": "*",
         "fzaninotto/faker": "1.*@stable",
-        "phpspec/phpspec": "2.0.*@stable"
+        "phpspec/phpspec": "2.*@stable"
     },
     "autoload": {
         "psr-0": {
             "Genesis": "src/"
         }
-    }
+    },
+    "license": "MIT"
 }

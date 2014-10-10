@@ -1,17 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Chargeback;
+namespace spec\Genesis\API\Request\FraudRelated\Chargeback;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-require 'spec/Genesis/SpecHelper.php';
-
-class DateRangeSpec extends ObjectBehavior
+class TransactionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Chargeback\DateRange');
+        $this->shouldHaveType('Genesis\API\Request\FraudRelated\Chargeback\Transaction');
     }
 
     function it_can_build_stucture()
@@ -29,9 +27,9 @@ class DateRangeSpec extends ObjectBehavior
     {
         $faker = \Faker\Factory::create();
 
-        $faker->addProvider(new \Faker\Provider\DateTime($faker));
+        $faker->addProvider(new  \Faker\Provider\Uuid($faker));
 
-        $this->setStartDate($faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'));
+        $this->setArn($faker->uuid);
     }
 
     public function getMatchers()

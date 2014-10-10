@@ -16,7 +16,7 @@ class ResponseSpec extends ObjectBehavior
 
     function let()
     {
-        $this->beConstructedWith(new Network\Request(new Request\Blacklist()), null);
+        $this->beConstructedWith(new Network\Request(new Request\FraudRelated\Blacklist()), null);
     }
 
     function it_is_initializable()

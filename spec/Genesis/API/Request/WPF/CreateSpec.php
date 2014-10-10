@@ -6,8 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use \Genesis\API as API;
 
-require_once __DIR__ . '/../../../SpecHelper.php';
-
 class CreateSpec extends ObjectBehavior
 {
     function it_is_initializable()

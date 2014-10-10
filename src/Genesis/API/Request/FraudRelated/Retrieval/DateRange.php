@@ -1,12 +1,12 @@
 <?php
 /**
- * Chargeback request by Date Range
+ * Retrieval request by Date Range
  *
  * @package Genesis
  * @subpackage Request
  */
 
-namespace Genesis\API\Request\Chargeback;
+namespace Genesis\API\Request\FraudRelated\Retrieval;
 
 use \Genesis\API\Request as RequestBase;
 use Genesis\Utils\Common;
@@ -22,13 +22,13 @@ class DateRange extends RequestBase
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'chargebacks/by_date', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests/by_date', false));
     }
 
     protected function populateStructure()
     {
         $treeStructure = array (
-            'chargeback_request' => array (
+            'retrieval_request_request' => array (
                 'start_date'    => $this->start_date,
                 'end_date'      => $this->end_date,
                 'page'          => $this->page,
@@ -60,3 +60,4 @@ class DateRange extends RequestBase
     }
 
 }
+

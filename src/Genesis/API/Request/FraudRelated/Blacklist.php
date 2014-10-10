@@ -1,36 +1,35 @@
 <?php
 /**
- * Retrieval request by ARN/Unique Transaction Id
+ * Blacklist Request
  *
  * @package Genesis
  * @subpackage Request
  */
 
-namespace Genesis\API\Request\Retrieval;
-
+namespace Genesis\API\Request\FraudRelated;
 
 use \Genesis\API\Request as RequestBase;
 use Genesis\Utils\Common;
 
-class Transaction extends RequestBase
+class Blacklist extends RequestBase
 {
-    protected $arn;
-    protected $original_transaction_unique_id;
+    protected $card_number;
+    protected $terminal_token;
 
     public function __construct()
     {
         $this->initConfiguration();
         $this->setRequiredFields();
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', false));
     }
 
     protected function populateStructure()
     {
         $treeStructure = array (
-            'retrieval_request_request' => array (
-                'arn'                               => $this->arn,
-                'original_transaction_unique_id'    => $this->original_transaction_unique_id,
+            'blacklist_request' => array (
+                'card_number'       => $this->card_number,
+                'terminal_token'    => $this->terminal_token,
             )
         );
 
@@ -52,12 +51,10 @@ class Transaction extends RequestBase
 
     private function setRequiredFields()
     {
-        $requiredFieldsOR = array (
-            'arn',
-            'original_transaction_unique_id'
+        $requiredFields = array (
+            'card_number',
         );
 
-        $this->requiredFieldsOR = Common::createArrayObject($requiredFieldsOR);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 }
-

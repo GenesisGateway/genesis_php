@@ -1,6 +1,2 @@
 .idea
-legacy
 vendor
-runner.php
-tester.php
-bin

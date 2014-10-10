@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\Retrieval;
+namespace spec\Genesis\API\Request\FraudRelated\Chargeback;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class DateRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Retrieval\DateRange');
+        $this->shouldHaveType('Genesis\API\Request\FraudRelated\Chargeback\DateRange');
     }
 
     function it_can_build_stucture()

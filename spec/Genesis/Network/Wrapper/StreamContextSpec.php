@@ -6,8 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\Configuration;
 
-require "spec/Genesis/SpecHelper.php";
-
 class StreamContextSpec extends ObjectBehavior
 {
     function it_is_initializable()

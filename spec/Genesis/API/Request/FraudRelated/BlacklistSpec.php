@@ -1,18 +1,16 @@
 <?php
 
-namespace spec\Genesis\API\Request;
+namespace spec\Genesis\API\Request\FraudRelated;
 
 use Genesis\API as API;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-require_once __DIR__ . '/../../SpecHelper.php';
-
 class BlacklistSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Blacklist');
+        $this->shouldHaveType('Genesis\API\Request\FraudRelated\Blacklist');
     }
 
     function it_can_build_structure()

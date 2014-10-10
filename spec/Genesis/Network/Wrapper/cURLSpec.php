@@ -2,8 +2,6 @@
 
 namespace spec\Genesis\Network\Wrapper;
 
-require_once 'spec/Genesis/SpecHelper.php';
-
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\Configuration;

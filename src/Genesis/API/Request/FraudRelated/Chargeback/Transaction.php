@@ -6,7 +6,7 @@
  * @subpackage Request
  */
 
-namespace Genesis\API\Request\Chargeback;
+namespace Genesis\API\Request\FraudRelated\Chargeback;
 
 
 use \Genesis\API\Request as RequestBase;

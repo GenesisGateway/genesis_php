@@ -5,11 +5,11 @@ namespace spec\Genesis\API\Request\NonFinancial;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class AVSpec extends ObjectBehavior
+class AccountVerificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\AV');
+        $this->shouldHaveType('Genesis\API\Request\NonFinancial\AccountVerification');
     }
 
     function it_can_build_stucture()
@@ -34,6 +34,7 @@ class AVSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
         $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
+
         $this->setCurrency('USD');
         $this->setAmount(mt_rand(100, 100000));
         $this->setUsage('Genesis PHP Client Automated Request');

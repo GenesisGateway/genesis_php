@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\Chargeback;
+namespace spec\Genesis\API\Request\FraudRelated\Retrieval;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class TransactionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Chargeback\Transaction');
+        $this->shouldHaveType('Genesis\API\Request\FraudRelated\Retrieval\Transaction');
     }
 
     function it_can_build_stucture()
@@ -27,9 +27,9 @@ class TransactionSpec extends ObjectBehavior
     {
         $faker = \Faker\Factory::create();
 
-        $faker->addProvider(new  \Faker\Provider\Uuid($faker));
+        $faker->addProvider(new \Faker\Provider\Uuid($faker));
 
-        $this->setArn($faker->uuid);
+        $this->setOriginalTransactionUniqueId($faker->uuid);
     }
 
     public function getMatchers()

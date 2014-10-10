@@ -5,8 +5,6 @@ namespace spec\Genesis\API\Request\Financial;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-require "spec/Genesis/SpecHelper.php";
-
 class SaleSpec extends ObjectBehavior
 {
     function it_is_initializable()

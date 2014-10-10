@@ -11,7 +11,7 @@ namespace Genesis\API\Request\NonFinancial;
 use \Genesis\API\Request as Request;
 use \Genesis\Utils\Common as Common;
 
-class AV extends Request
+class AccountVerification extends Request
 {
     protected $transaction_id;
 
