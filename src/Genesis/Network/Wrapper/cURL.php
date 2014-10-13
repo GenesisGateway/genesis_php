@@ -109,11 +109,6 @@ class cURL implements NetworkInterface
             $cURLOpt[CURLOPT_SSL_VERIFYHOST]    = 2;
         }
 
-        if ($requestData['debug']) {
-            $cURLOpt[CURLOPT_VERBOSE]           = true;
-            $cURLOpt[CURLINFO_HEADER_OUT]       = true;
-        }
-
         curl_setopt_array($this->curlHandle, $cURLOpt);
     }
 

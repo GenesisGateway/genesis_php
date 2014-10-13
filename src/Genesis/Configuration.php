@@ -32,7 +32,6 @@ final class Configuration
      * @var Array
      */
     public static $vault = array (
-        'debug'             => null,
         'environment'       => null,
         'token'             => null,
         'username'          => null,
@@ -109,11 +108,9 @@ final class Configuration
             case 'production':
                 return sprintf('%s/Certificates/genesis_production_verisign_ca.pem', $genesis_dir);
                 break;
+            default:
             case 'sandbox':
                 return sprintf('%s/Certificates/genesis_sandbox_comodo_ca.pem', $genesis_dir);
-                break;
-            default:
-                throw new Exceptions\EnvironmentNotSet();
                 break;
         }
     }
@@ -142,7 +139,7 @@ final class Configuration
      * @return String
      * @throws Exceptions\EnvironmentNotSet()
      */
-    final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port)
+    final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
     {
         switch (self::getEnvironment())
         {
@@ -157,12 +154,7 @@ final class Configuration
                 break;
         }
 
-        if (intval($port) > 0) {
-            return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
-        }
-        else {
-            return sprintf('%s://%s%s', $protocol, $sub_domain, self::DOMAIN);
-        }
+        return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
     }
 
 
@@ -173,7 +165,7 @@ final class Configuration
      *
      * @return mixed - string name
      */
-    final public static function getInterfaceConfiguration($type)
+    final public static function getInterfaceSetup($type)
     {
         if (array_key_exists($type, self::$interfaces)) {
             return self::$interfaces[$type];
@@ -220,7 +212,7 @@ final class Configuration
             }
         }
         else {
-            throw new Exceptions\InvalidArgument('The Settings file does not exist! Please correct your path to the ini file and try again');
+            throw new Exceptions\InvalidArgument('The provided ini file is invalid or does not exist!');
         }
     }
 }

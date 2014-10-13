@@ -25,10 +25,10 @@ class Builder
      */
     public function __construct()
     {
-        $interface = Configuration::getInterfaceConfiguration('builder');
+        $interface = Configuration::getInterfaceSetup('builder');
 
         switch ($interface) {
-            case 'xml_dom';
+            case 'xml_domdocument';
                 $this->context = new XML\DOMDocument();
                 break;
             default:

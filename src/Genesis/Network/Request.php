@@ -31,14 +31,14 @@ class Request
     {
         $this->apiContext = $apiContext;
 
-        $interface = Configuration::getInterfaceConfiguration('network');
+        $interface = Configuration::getInterfaceSetup('network');
 
         switch ($interface) {
             default:
             case 'curl':
                 $this->context = new Wrapper\cURL();
                 break;
-            case 'stream';
+            case 'stream_context';
                 $this->context = new Wrapper\StreamContext();
                 break;
         }
@@ -86,7 +86,6 @@ class Request
             'port'          => $this->apiContext->getApiConfig('port'),
             'protocol'      => $this->apiContext->getApiConfig('protocol'),
             'timeout'       => 60,
-            'debug'         => Configuration::getDebug(),
             'cert_ca'       => Configuration::getCertificateAuthority(),
             'user_agent'    => sprintf('Genesis PHP Client v%s', Configuration::getVersion()),
             'user_login'    => sprintf('%s:%s', Configuration::getUsername(), Configuration::getPassword()),
