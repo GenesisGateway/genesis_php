@@ -109,6 +109,8 @@ abstract class Request
         }
 
         $this->amount = Currency::realToExponent($amount, $this->currency);
+
+        return $this;
     }
 
     /**
