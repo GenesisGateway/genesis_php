@@ -4,7 +4,7 @@ namespace spec\Genesis\Network\Wrapper;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Genesis\Configuration;
+use Genesis\GenesisConfig;
 
 class cURLSpec extends ObjectBehavior
 {
@@ -19,17 +19,17 @@ class cURLSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $remote_url = Configuration::getEnvironmentURL('https','gateway', 443);
+        $remote_url = GenesisConfig::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
             'debug'         => 'false',
             'type'          => 'GET',
             'url'           => $remote_url,
             'body'          => '',
-            'cert_ca'       => Configuration::getCertificateAuthority(),
+            'cert_ca'       => GenesisConfig::getCertificateAuthority(),
             'protocol'      => 'https',
             'timeout'       => 60,
-            'user_login'    => Configuration::getUsername() . ':' . Configuration::getPassword(),
+            'user_login'    => GenesisConfig::getUsername() . ':' . GenesisConfig::getPassword(),
             'user_agent'    => $faker->userAgent,
         );
 

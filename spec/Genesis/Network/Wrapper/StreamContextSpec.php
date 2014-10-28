@@ -4,7 +4,7 @@ namespace spec\Genesis\Network\Wrapper;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Genesis\Configuration;
+use Genesis\GenesisConfig;
 
 class StreamContextSpec extends ObjectBehavior
 {
@@ -19,14 +19,14 @@ class StreamContextSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $remote_url = Configuration::getEnvironmentURL('https','gateway', 443);
+        $remote_url = GenesisConfig::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
             'body'          => '',
             'type'          => 'GET',
             'url'           => $remote_url,
-            'cert_ca'       => Configuration::getCertificateAuthority(),
-            'user_login'    => Configuration::getUsername() . ':' . Configuration::getPassword(),
+            'cert_ca'       => GenesisConfig::getCertificateAuthority(),
+            'user_login'    => GenesisConfig::getUsername() . ':' . GenesisConfig::getPassword(),
             'user_agent'    => $faker->userAgent,
         );
 

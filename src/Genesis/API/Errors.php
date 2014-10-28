@@ -97,7 +97,7 @@ final class Errors
             case 110:
                 return 'Login failed. Check your API credentials.';
             case 120:
-                return 'Configuration error occurred, e.g. terminal not configured properly. Check terminal settings.';
+                return 'GenesisConfig error occurred, e.g. terminal not configured properly. Check terminal settings.';
             case 200:
                 return 'Communication with issuer failed, please contact support.';
             case 210:

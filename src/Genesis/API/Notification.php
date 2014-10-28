@@ -9,7 +9,7 @@
 namespace Genesis\API;
 
 use Genesis\Exceptions;
-use Genesis\Configuration;
+use Genesis\GenesisConfig;
 use Genesis\Builders as Builders;
 use Genesis\Utils\Common as Common;
 
@@ -55,11 +55,11 @@ class Notification
      *
      * @return bool
      */
-    public function isNotificationAuthentic()
+    public function isAuthentic()
     {
         $unique_id          = $this->unique_id;
         $message_signature  = $this->notificationObj->signature;
-        $customer_password  = Configuration::getPassword();
+        $customer_password  = GenesisConfig::getPassword();
 
         switch(strlen($message_signature))
         {
@@ -75,16 +75,20 @@ class Notification
         $calc_signature = hash($hash_type, $unique_id . $customer_password);
 
         if ($message_signature === $calc_signature) {
-            if (isset($this->notificationObj->status) && $this->notificationObj->status == 'approved') {
-                return true;
-            }
-
-            if (isset($this->notificationObj->wpf_status) && $this->notificationObj->wpf_status == 'approved') {
-                return true;
-            }
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * Return the already parsed, notification Object
+     *
+     * @return \ArrayObject
+     */
+    public function getParsedNotification()
+    {
+        return $this->notificationObj;
     }
 
     /**

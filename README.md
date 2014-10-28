@@ -49,7 +49,7 @@ Example
 require 'vendor/autoload.php';
 
 // this namespace assignments are arbitrary
-use \Genesis\Base as Genesis;
+use \Genesis\Genesis as Genesis;
 use \Genesis\Config as GenesisConfig;
 
 // load the pre-configured ini file
@@ -73,7 +73,7 @@ $genesis->request()
             ->setCurrency('<currency>');
             
 // send the request
-$genesis->sendRequest();
+$genesis->execute();
 
 // check if our request is successful
 if ($genesis->response()->isSuccessful()) {

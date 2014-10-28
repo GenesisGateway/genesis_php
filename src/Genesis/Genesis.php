@@ -12,7 +12,7 @@ use \Genesis\API\Response as Response;
 use \Genesis\Exceptions as Exceptions;
 use \Genesis\Utils\Country as Country;
 
-class Base
+class Genesis
 {
     /**
      * Store the Network Request Instance
@@ -75,7 +75,7 @@ class Base
      * Send the request
      *
      */
-    public function sendRequest()
+    public function execute()
     {
         // Send the request
         $this->networkContext = new Network\Request($this->requestContext);
@@ -90,6 +90,7 @@ class Base
      * Get Genesis Error Code
      *
      * @param $error - error_msg to retrieve error code
+     *
      * @return mixed
      */
     static function getErrorCode($error)

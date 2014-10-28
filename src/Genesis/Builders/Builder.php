@@ -8,8 +8,6 @@
 
 namespace Genesis\Builders;
 
-use \Genesis\Configuration as Configuration;
-
 class Builder
 {
     /**
@@ -25,7 +23,7 @@ class Builder
      */
     public function __construct()
     {
-        $interface = Configuration::getInterfaceSetup('builder');
+        $interface = \Genesis\GenesisConfig::getInterfaceSetup('builder');
 
         switch ($interface) {
             case 'xml_domdocument';

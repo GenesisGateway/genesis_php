@@ -1,6 +1,6 @@
 <?php
 /**
- * Request Base
+ * Request Genesis
  * This is the base of every API request
  *
  * @package Genesis
@@ -12,7 +12,7 @@ namespace Genesis\API;
 use \Genesis\Network as Network;
 use \Genesis\Builders as Builders;
 use \Genesis\Exceptions as Exceptions;
-use \Genesis\Configuration as Configuration;
+use \Genesis\GenesisConfig as GenesisConfig;
 use \Genesis\Utils\Common as Common;
 use \Genesis\Utils\Currency as Currency;
 
@@ -114,7 +114,7 @@ abstract class Request
     }
 
     /**
-     * Getter for per-request Configuration
+     * Getter for per-request GenesisConfig
      *
      * @param $key - setting name
      *
@@ -126,7 +126,7 @@ abstract class Request
     }
 
     /**
-     * Setter for per-request Configuration
+     * Setter for per-request GenesisConfig
      *
      * Note: Its important for this to be protected
      *
@@ -169,9 +169,9 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $base_url = Configuration::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
+        $base_url = GenesisConfig::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
 
-        $token = $appendToken ? Configuration::getToken() : '';
+        $token = $appendToken ? GenesisConfig::getToken() : '';
 
         return sprintf('%s/%s/%s', $base_url, $path, $token);
     }

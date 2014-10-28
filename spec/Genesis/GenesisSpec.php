@@ -7,12 +7,12 @@ require_once 'SpecHelper.php';
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class BaseSpec extends ObjectBehavior
+class GenesisSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith('FraudRelated\Blacklist');
-        $this->shouldHaveType('Genesis\Base');
+        $this->shouldHaveType('Genesis\Genesis');
     }
 
     function it_can_load_request()

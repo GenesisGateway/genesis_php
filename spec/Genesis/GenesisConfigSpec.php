@@ -5,10 +5,10 @@ namespace spec\Genesis;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ConfigurationSpec extends ObjectBehavior
+class GenesisConfigSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Configuration');
+        $this->shouldHaveType('Genesis\GenesisConfig');
     }
 }

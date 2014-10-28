@@ -1,15 +1,15 @@
 <?php
 /**
- * Configuration Object.
+ * GenesisConfig Object.
  *
  * @package Genesis
- * @subpackage Configuration
+ * @subpackage GenesisConfig
  */
 namespace Genesis;
 
 use \Genesis\Exceptions as Exceptions;
 
-final class Configuration
+final class GenesisConfig
 {
     /**
      * Genesis base domain name
