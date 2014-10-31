@@ -40,7 +40,7 @@ class NotificationSpec extends ObjectBehavior
     {
         $this->data['signature'] = hash('sha1', $this->data['unique_id'] . GenesisConfig::getPassword() . 'FAIL');
 
-        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->parseNotification($this->data);
         $this->isAuthentic()->shouldBeFalse();
     }
 
@@ -49,7 +49,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['wpf_unique_id'] = $this->data['unique_id'];
         $this->data['signature'] = hash('sha512', $this->data['unique_id'] . GenesisConfig::getPassword() . 'FAIL');
 
-        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->parseNotification($this->data);
         $this->isAuthentic()->shouldBeFalse();
     }
 
@@ -63,7 +63,7 @@ class NotificationSpec extends ObjectBehavior
     {
         unset($this->data['status']);
 
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->parseNotification($this->data);
         $this->isAuthentic()->shouldBeFalse();
     }
 
@@ -71,14 +71,14 @@ class NotificationSpec extends ObjectBehavior
     {
         unset($this->data['unique_id']);
 
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->parseNotification($this->data);
     }
 
     function it_should_fail_without_signature()
     {
         unset($this->data['signature']);
 
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->parseNotification($this->data);
     }
 
     function it_should_parse_notification()

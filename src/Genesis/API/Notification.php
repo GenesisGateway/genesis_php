@@ -108,10 +108,5 @@ class Notification
         if (isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id)) {
             $this->unique_id = $this->notificationObj->wpf_unique_id;
         }
-
-        if (empty($this->notificationObj->unique_id) || empty($this->notificationObj->signature) || empty($this->notificationObj->status))
-        {
-            throw new Exceptions\InvalidArgument();
-        }
     }
 }
