@@ -64,13 +64,14 @@ GenesisConfig::setPassword('<enter_your_password>');
 $genesis = new Genesis('Financial\Recurring\RecurringSale');
 
 // set request parameters
-$genesis->request()
-            ->setTransactionId('<transaction_id>')
-            ->setUsage('<usage>')
-            ->setRemoteIp('<remote_ip>')
-            ->setReferenceId('<reference_id>')
-            ->setAmount('<amount>')
-            ->setCurrency('<currency>');
+$genesis
+    ->request()
+        ->setTransactionId('<transaction_id>')
+        ->setUsage('<usage>')
+        ->setRemoteIp('<remote_ip>')
+        ->setReferenceId('<reference_id>')
+        ->setAmount('<amount>')
+        ->setCurrency('<currency>');
             
 // send the request
 $genesis->execute();
