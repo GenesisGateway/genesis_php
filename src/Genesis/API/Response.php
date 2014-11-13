@@ -46,19 +46,17 @@ class Response
     /**
      * Check whether the request was successful
      *
+     * Note: You should consult with the documentation
+     * which transaction responses have status available.
+     *
      * @return bool
      */
     public function isSuccessful()
     {
         $status = false;
 
-        if (isset($this->responseObj->status) && in_array($this->responseObj->status, array('approved', 'pending'))) {
-
-            $code = ($this->responseObj->response_code) ? intval($this->responseObj->response_code) : null;
-
-            if ($code === Errors::SUCCESS) {
-                $status = true;
-            }
+        if (isset($this->responseObj->status) && in_array($this->responseObj->status, array('approved', 'pending_async'))) {
+            $status = true;
         }
 
         return $status;

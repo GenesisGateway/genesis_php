@@ -11,9 +11,6 @@ use \Genesis\Network as Network;
 class ResponseSpec extends ObjectBehavior
 {
 
-    public $sampleXML   = '<?xml version="1.0" encoding="UTF-8"?><response><status>approved</status><response_code>00</response_code></response>';
-    public $invalidXML  = '<?xml version="1.0" encoding="UTF-8"?><response><status>approved</status><response_code>100</response_code></response>';
-
     function let()
     {
         $this->beConstructedWith(new Network\Request(new Request\FraudRelated\Blacklist()), null);
@@ -24,29 +21,54 @@ class ResponseSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Response');
     }
 
-    function it_should_parse_file()
+    function it_should_be_successful_on_approved_status()
     {
-        $this->shouldNotThrow()->during('parseResponse', array($this->sampleXML));
-        $this->getResponseObject()->shouldNotBeEmpty();
-    }
-
-    function it_should_verify_the_code()
-    {
-        $this->shouldNotThrow()->during('parseResponse', array($this->sampleXML));
-        $this->getResponseObject()->shouldNotBeEmpty();
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved')));
         $this->isSuccessful()->shouldBeTrue();
     }
 
-    function it_should_fail_parsing()
+    function it_should_be_successful_on_pending_async_status()
+    {
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('pending_async')));
+        $this->isSuccessful()->shouldBeTrue();
+    }
+
+    function it_should_be_unsuccessful_on_error()
+    {
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('error')));
+        $this->isSuccessful()->shouldBeFalse();
+    }
+
+    function it_should_be_unsuccessful_on_unknown_status()
+    {
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('non-existing-status')));
+        $this->isSuccessful()->shouldBeFalse();
+    }
+
+    function it_should_maintain_response_integrity()
+    {
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 999)));
+        $this->getResponseRaw()->shouldBe($this->buildSample('approved', 999));
+    }
+
+    function it_should_fail_parsing_on_null_response()
     {
         $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during('parseResponse', array(null));
     }
 
-    function it_should_fail_during_verification()
+    function it_should_fail_parsing_on_empty_response()
     {
-        $this->shouldNotThrow()->during('parseResponse', array($this->invalidXML));
-        $this->getResponseObject()->shouldNotBeEmpty();
-        $this->isSuccessful()->shouldBeFalse();
+        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during('parseResponse', array(''));
+    }
+
+    function it_should_return_correct_error_message()
+    {
+        $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 420)));
+        $this->getErrorDescription()->shouldBe('Wrong Workflow specified.');
+    }
+
+    function buildSample($response = '', $code = 00) {
+        return '<?xml version="1.0" encoding="UTF-8"?><response><status>' . $response . '</status><code>' . $code . '</code></response>';
     }
 
     function getMatchers()

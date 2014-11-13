@@ -1,14 +1,13 @@
-genesis_php
+Overview
 ===========
 
-Genesis PHP client library interface for communication with E-Comprocessing's Payment Processing Gateway - Genesis. You can use this library to integrate your current system with Genesis Payment Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, to get a detailed overview of Genesis's Payment Gateway.
+PHP Client Library interface for communication with E-ComProcessing's Payment Processing Gateway - Genesis. You can use this library to integrate your current system with Genesis Payment Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, to get an overview of Genesis's Payment Gateway API and functionality.
 
 Requirements
 ------------
 
-* PHP version >= 5.3 (however since 5.3 is EoL, we recommend at least PHP v5.4)
-* PHP with libxml
-* PHP ext: cURL (optionally you can use StreamContext)
+* PHP >= 5.3 (built w/ libxml)
+* PHP Extensions: cURL (optionally you can use Streams, but its not recommended on PHP < 5.6)
 * Composer
 
 Installation
@@ -16,7 +15,7 @@ Installation
 
 * clone this repo / download the archive
 ````bash
-git clone https://github.com/<genesis_php> genesis_php && cd genesis_php
+git clone http://github.com/E-ComProcessing/genesis_php genesis_php && cd genesis_php
 ````
 
 * install [Composer]
@@ -31,15 +30,8 @@ php composer.phar install
 
 * optionally, you may run: ````vendor/bin/phpspec run````, in order to ensure everything is working as intended
 
-* optionally, update the credentials needed to access Genesis inside ```settings_sample.ini``` and place it in a safe, non www-accessible directory
+* optionally, update the credentials needed to access Genesis inside ```settings_sample.ini``` and place it in a safe, non web-accessible, directory
 
-Usage
------
-
-In order to investigate Genesis's API, test parameters or check out basic examples, you can go to: [Genesis Client Integration]
-
-[Composer]: https://getcomposer.org/
-[Genesis Client Integration]: https://github.com/<client_integration>
 
 Example
 ------
@@ -48,9 +40,12 @@ Example
 <?php
 require 'vendor/autoload.php';
 
-// this namespace assignments are arbitrary
+// init/ Work inside the Genesis Workspace
+use \Genesis;
+
+// or, you can list only the classes you need
 use \Genesis\Genesis as Genesis;
-use \Genesis\Config as GenesisConfig;
+use \Genesis\GenesisConfg as GenesisConf;
 
 // load the pre-configured ini file
 GenesisConfig::loadSettings('<path-to-your-ini-file>');
@@ -59,9 +54,10 @@ GenesisConfig::loadSettings('<path-to-your-ini-file>');
 GenesisConfig::setToken('<enter_your_token>');
 GenesisConfig::setUsername('<enter_your_username>');
 GenesisConfig::setPassword('<enter_your_password>');
+GenesisConfig::setEnvironment('sandbox|production');
 
 // create a new Genesis instance with desired API request
-$genesis = new Genesis('Financial\Recurring\RecurringSale');
+$genesis = new Genesis('Financial\Authorize');
 
 // set request parameters
 $genesis
@@ -70,17 +66,36 @@ $genesis
         ->setUsage('<usage>')
         ->setRemoteIp('<remote_ip>')
         ->setReferenceId('<reference_id>')
+        ->setCurrency('<currency>')
         ->setAmount('<amount>')
-        ->setCurrency('<currency>');
+        // Customer Details
+        ->setCustomerEmail('<customer_email>')
+        ->setCustomerPhone('<customer_phone>')
+        // Credit Card Details
+        ->setCardHolder('<card_holder>')
+        ->setCardNumber('<card_number>')
+        ->setExpirationMonth('<expiration_month>')
+        ->setExpirationYear('<expiration_year>')
+        ->setCvv('<cvv>')
+        // Billing/Invoice Details
+        ->setBillingFirstName('<billing_first_name>')
+        ->setBillingLastName('<billing_last_name>')
+        ->setBillingAddress1('<billing_address1>'
+        ->setBillingZipCode('<billing_zip_code>')
+        ->setBillingCity('<billing_city>')
+        ->setBillingCountry('<billing_country>');
             
 // send the request
 $genesis->execute();
 
 // check if our request is successful
 if ($genesis->response()->isSuccessful()) {
-    echo 'OK';
-} else {
-    echo 'NOK';
+    $response_obj  = $genesis->response()->getResponseObject();
+    // process the payment as successful
+}
+else {
+    $error_message = $genesis->response()->getErrorDescription();
+    // handle payment errors
 }
 ?>
 ````
@@ -127,3 +142,12 @@ WPF\Reconcile
 ````
 
 More information about each one of the request types can be found in the Genesis API Documentation and the Wiki
+
+API Examples
+------------
+
+You can explore Genesis's API, test parameters or get examples for different transaction types with: [Genesis Client Integration]
+
+
+[Composer]: https://getcomposer.org/
+[Genesis Client Integration]: http://github.com/E-ComProcessing/genesis_api_examples

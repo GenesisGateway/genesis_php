@@ -11,6 +11,5 @@ class RequestSpec extends ObjectBehavior
     {
         // This has to be true as you can't initialize Abstract Class
         return true;
-        //$this->shouldNotHaveType('Genesis\API\Request');
     }
 }
