@@ -150,4 +150,4 @@ You can explore Genesis's API, test parameters or get examples for different tra
 
 
 [Composer]: https://getcomposer.org/
-[Genesis Client Integration]: http://github.com/E-ComProcessing/genesis_api_examples
+[Genesis Client Integration]: https://github.com/E-ComProcessing/genesis_api_examples

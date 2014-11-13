@@ -154,23 +154,23 @@ abstract class Request
     /**
      * Process Everything the variables set previously
      *
-     * Step 1: Update the Tree structure
-     * Step 2: Clean the empty leafs
-     * Step 3: Check for Required Fields
-     * Step 4: Execute per-field actions
+     * Step 1: Execute per-field actions
+     * Step 2: Update the Tree structure
+     * Step 3: Clean the empty leafs
+     * Step 4: Check for Required Fields
      *
      * @return void
      */
     protected function processRequestParameters()
     {
         // Step 1
-        $this->populateStructure();
-        // Step 2
-        $this->sanitizeStructure();
-        // Step 3
-        $this->checkRequirements();
-        // Step 4
         $this->processAmount();
+        // Step 2
+        $this->populateStructure();
+        // Step 3
+        $this->sanitizeStructure();
+        // Step 4
+        $this->checkRequirements();
     }
 
     /**
