@@ -1,3 +1,12 @@
+1.0.1
+
+* Add type-casting to Genesis\Utils\Currency
+* Move the ISO-4217 currency handling to the post-processing
+* Fix Genesis\API\Response\isSuccessful() returning wrong status on some transaction types
+* Update PHPDoc Comments
+* Update README
+* Update Specs
+
 1.0.0
 
 * Initial PHP client integration library, using Genesis API 3.2

@@ -94,23 +94,18 @@ abstract class Request
     }
 
     /**
-     * Process the amount set by user to comply with ISO-4217
+     * Generate the XML output
      *
-     * @param $amount - raw amount value
-     *
-     * @throws \Exception
-     *
-     * @return int ISO-4217
+     * @return string - XML Document with request data
      */
-    public function setAmount($amount)
+    public function getDocument()
     {
-        if (!isset($this->currency)) {
-            throw new Exceptions\BlankRequiredField('currency');
-        }
+        $this->processRequestParameters();
 
-        $this->amount = Currency::realToExponent($amount, $this->currency);
+        $this->builderContext = new Builders\Builder();
+        $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
-        return $this;
+        return $this->builderContext->getDocument();
     }
 
     /**
@@ -128,8 +123,6 @@ abstract class Request
     /**
      * Setter for per-request GenesisConfig
      *
-     * Note: Its important for this to be protected
-     *
      * @param $key      - setting name
      * @param $value    - setting value
      *
@@ -138,24 +131,6 @@ abstract class Request
     protected function setApiConfig($key, $value)
     {
         $this->config->offsetSet($key, $value);
-    }
-
-    /**
-     * Generate the XML output, based on the currently populated
-     * request structure
-     *
-     * @return string - XML Document with request data
-     */
-    public function getDocument()
-    {
-        $this->populateStructure();
-        $this->sanitizeStructure();
-        $this->checkRequirements();
-
-        $this->builderContext = new Builders\Builder();
-        $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
-
-        return $this->builderContext->getDocument();
     }
 
     /**
@@ -174,6 +149,28 @@ abstract class Request
         $token = $appendToken ? GenesisConfig::getToken() : '';
 
         return sprintf('%s/%s/%s', $base_url, $path, $token);
+    }
+
+    /**
+     * Process Everything the variables set previously
+     *
+     * Step 1: Execute per-field actions
+     * Step 2: Update the Tree structure
+     * Step 3: Clean the empty leafs
+     * Step 4: Check for Required Fields
+     *
+     * @return void
+     */
+    protected function processRequestParameters()
+    {
+        // Step 1
+        $this->processAmount();
+        // Step 2
+        $this->populateStructure();
+        // Step 3
+        $this->sanitizeStructure();
+        // Step 4
+        $this->checkRequirements();
     }
 
     /**
@@ -268,4 +265,15 @@ abstract class Request
         }
     }
 
+    /**
+     * Process the amount set by user to comply with ISO-4217
+     *
+     * @return void
+     */
+    protected function processAmount()
+    {
+        if (isset($this->amount) && isset($this->currency)) {
+            $this->amount = Currency::realToExponent($this->amount, $this->currency);
+        }
+    }
 }

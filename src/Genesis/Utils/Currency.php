@@ -1269,11 +1269,14 @@ final class Currency
      * @return float    - float if we found the currency iso and the exponent is > 0, original type otherwise
      */
     public static function exponentToReal($amount, $iso) {
+        $amount = intval($amount);
+        $iso    = strval($iso);
+
         if (array_key_exists($iso, self::$iso4217)) {
             $exp = intval(self::$iso4217[$iso]['exponent']);
 
             if ($exp > 0) {
-                return $amount / pow(10, $exp);
+                return floatval($amount / pow(10, $exp));
             }
         }
 
@@ -1289,6 +1292,9 @@ final class Currency
      * @return mixed    - int if we found the currency iso and the exponent is > 0, original type otherwise
      */
     public static function realToExponent($amount, $iso) {
+        $amount = floatval($amount);
+        $iso    = strval($iso);
+
         if (array_key_exists($iso, self::$iso4217)) {
             $exp = intval(self::$iso4217[$iso]['exponent']);
 
