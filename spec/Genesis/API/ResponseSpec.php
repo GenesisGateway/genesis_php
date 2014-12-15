@@ -24,26 +24,40 @@ class ResponseSpec extends ObjectBehavior
     function it_should_be_successful_on_approved_status()
     {
         $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved')));
-        $this->isSuccessful()->shouldBeTrue();
+        $this->isSuccessful()->shouldBe(true);
     }
+
+	function it_should_be_successful_on_new_status()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('new')));
+		$this->isSuccessful()->shouldBe(true);
+	}
 
     function it_should_be_successful_on_pending_async_status()
     {
         $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('pending_async')));
-        $this->isSuccessful()->shouldBeTrue();
+        $this->isSuccessful()->shouldBe(true);
     }
 
     function it_should_be_unsuccessful_on_error()
     {
         $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('error')));
-        $this->isSuccessful()->shouldBeFalse();
+        $this->isSuccessful()->shouldBe(false);
     }
 
     function it_should_be_unsuccessful_on_unknown_status()
     {
         $this->shouldNotThrow()->during('parseResponse', array($this->buildSample('non-existing-status')));
-        $this->isSuccessful()->shouldBeFalse();
+        $this->isSuccessful()->shouldBe(false);
     }
+
+	function it_should_parse_transaction_without_status()
+	{
+		$sample = '<?xml version="1.0" encoding="UTF-8"?><response><code>00</code><amount>00</amount></response>';
+
+		$this->shouldNotThrow()->during('parseResponse', array($sample));
+		$this->isSuccessful()->shouldBe(null);
+	}
 
     function it_should_maintain_response_integrity()
     {
@@ -67,8 +81,38 @@ class ResponseSpec extends ObjectBehavior
         $this->getErrorDescription()->shouldBe('Wrong Workflow specified.');
     }
 
-    function buildSample($response = '', $code = 00) {
-        return '<?xml version="1.0" encoding="UTF-8"?><response><status>' . $response . '</status><code>' . $code . '</code></response>';
+	function it_should_successfully_parse_partial_approval()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 00, 90, 'USD', 'true')));
+		$this->isPartiallyApproved()->shouldBe(true);
+	}
+
+	function it_should_fail_parsing_partial_approval()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 00, 90, 'USD', 'false')));
+		$this->isPartiallyApproved()->shouldBe(false);
+	}
+
+	function it_should_get_formatted_amount()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 00, '314', 'USD')));
+		$this->getFormattedAmount()->shouldBe('3.14');
+	}
+
+	function it_should_get_formatted_timestamp()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 00, '314', 'USD', 'false')));
+		$this->getFormattedTimestamp()->shouldHaveType("DateTime");
+	}
+
+	function it_should_throw_on_invalid_timestamp()
+	{
+		$this->shouldNotThrow()->during('parseResponse', array($this->buildSample('approved', 00, '314', 'USD', 'false', 'INVALID_TIMESTAMP')));
+		$this->shouldThrow()->during('getFormattedTimestamp');
+	}
+
+    function buildSample($response = '', $code = 00, $amount = '9000', $currency = 'USD', $partial_approval = false, $timestamp  = '2014-01-30T14:21:48Z') {
+        return '<?xml version="1.0" encoding="UTF-8"?><response><status>' . $response . '</status><code>' . $code . '</code><amount>' . $amount . '</amount><currency>' . $currency . '</currency><partial_approval>' . $partial_approval . '</partial_approval><timestamp>' . $timestamp . '</timestamp></response>';
     }
 
     function getMatchers()
@@ -76,12 +120,6 @@ class ResponseSpec extends ObjectBehavior
         return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
-            },
-            'beFalse' => function($subject) {
-                    return (!$subject) ? true : false;
-            },
-            'beTrue' => function($subject) {
-                    return ($subject) ? true : false;
             },
         );
     }
