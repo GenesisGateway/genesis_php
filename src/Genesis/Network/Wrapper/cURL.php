@@ -105,6 +105,7 @@ class cURL implements NetworkInterface
 
         if ($requestData['protocol'] == 'https') {
             $cURLOpt[CURLOPT_CAINFO]            = $requestData['cert_ca'];
+	        $cURLOpt[CURLOPT_SSLVERSION]        = 1; // CURL_SSLVERSION_TLSv1
             $cURLOpt[CURLOPT_SSL_VERIFYPEER]    = true;
             $cURLOpt[CURLOPT_SSL_VERIFYHOST]    = 2;
         }
