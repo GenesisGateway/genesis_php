@@ -68,6 +68,13 @@ class Create extends Request
         $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
 
+	public function setLanguage($language = '')
+	{
+		$path = sprintf('%s/wpf', substr($language, 0, 2));
+
+		$this->setApiConfig('url', $this->buildRequestURL('wpf', $path, false));
+	}
+
     protected function populateStructure()
     {
         $treeStructure = array (

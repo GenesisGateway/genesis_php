@@ -9,6 +9,7 @@
 namespace Genesis\API;
 
 use Genesis\Exceptions;
+use Genesis\Utils\Currency as Currency;
 use Genesis\Network\Request as Network;
 
 class Response
@@ -49,32 +50,59 @@ class Response
      * Note: You should consult with the documentation
      * which transaction responses have status available.
      *
-     * @return bool
+     * @return bool | null (on missing status)
      */
     public function isSuccessful()
     {
         $status = false;
 
-        if (isset($this->responseObj->status) && in_array($this->responseObj->status, array('approved', 'pending_async'))) {
+	    $successfulStatuses = array('approved', 'pending_async', 'new');
+
+        if (isset($this->responseObj->status) && in_array($this->responseObj->status, $successfulStatuses)) {
             $status = true;
         }
+
+	    if (!isset($this->responseObj->status)) {
+		    $status = null;
+	    }
 
         return $status;
     }
 
+	/**
+	 * Check whether the transaction was partially approved
+	 *
+	 * @see Genesis_API_Documentation for more information
+	 *
+	 * @return bool
+	 */
+	public function isPartiallyApproved()
+	{
+		$status = false;
+
+		if (isset($this->responseObj->partial_approval) && strval($this->responseObj->partial_approval) == 'true') {
+			$status = true;
+		}
+
+		return $status;
+	}
+
     /**
      * Try to fetch a description of the received Error Code
      *
-     * @return bool|string
+     * @return string | null (if no code/issuer_code is available)
      */
     public function getErrorDescription()
     {
-        if (isset($this->responseObj->code)) {
+        if (isset($this->responseObj->code) && !empty($this->responseObj->code)) {
             return Errors::getErrorDescription($this->responseObj->code);
         }
-        else {
+
+        if (isset($this->responseObj->response_code) && !empty($this->responseObj->response_code)) {
             return Errors::getIssuerResponseCode($this->responseObj->response_code);
         }
+
+	    return null;
     }
 
     /**
@@ -96,6 +124,36 @@ class Response
     {
         return $this->responseObj;
     }
+
+	/**
+	 * Get formatted amount (instead of ISO4217, return in float)
+	 *
+	 * @return String | null (if no amount&currency is available)
+	 */
+	public function getFormattedAmount()
+	{
+		if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
+			if ( isset( $this->responseObj->amount ) && ! empty( $this->responseObj->amount ) ) {
+				return Currency::exponentToReal( $this->responseObj->amount, $this->responseObj->currency );
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get DateTime object from the timestamp inside the response
+	 *
+	 * @return \DateTime|null (if invalid timestamp)
+	 */
+	public function getFormattedTimestamp()
+	{
+		if (isset($this->responseObj->timestamp) && !empty($this->responseObj->timestamp)) {
+			return new \DateTime($this->responseObj->timestamp);
+		}
+
+		return null;
+	}
 
     /**
      * Parse Genesis response to SimpleXMLElement

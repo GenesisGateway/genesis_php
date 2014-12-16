@@ -24,7 +24,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha1', $this->data['unique_id'] . GenesisConfig::getPassword());
 
         $this->shouldNotThrow()->duringParseNotification($this->data);
-        $this->isAuthentic()->shouldBeTrue();
+        $this->isAuthentic()->shouldBe(true);
     }
 
     function it_can_verify_wpf_notification()
@@ -33,7 +33,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha512', $this->data['unique_id'] . GenesisConfig::getPassword());
 
         $this->shouldNotThrow()->duringParseNotification($this->data);
-        $this->isAuthentic()->shouldBeTrue();
+        $this->isAuthentic()->shouldBe(true);
     }
 
     function it_should_fail_auth_verification()
@@ -41,7 +41,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha1', $this->data['unique_id'] . GenesisConfig::getPassword() . 'FAIL');
 
         $this->parseNotification($this->data);
-        $this->isAuthentic()->shouldBeFalse();
+        $this->isAuthentic()->shouldBe(false);
     }
 
     function it_should_fail_wpf_auth_verification()
@@ -50,7 +50,7 @@ class NotificationSpec extends ObjectBehavior
         $this->data['signature'] = hash('sha512', $this->data['unique_id'] . GenesisConfig::getPassword() . 'FAIL');
 
         $this->parseNotification($this->data);
-        $this->isAuthentic()->shouldBeFalse();
+        $this->isAuthentic()->shouldBe(false);
     }
 
     function it_can_generate_xml_response()
@@ -64,7 +64,7 @@ class NotificationSpec extends ObjectBehavior
         unset($this->data['status']);
 
         $this->parseNotification($this->data);
-        $this->isAuthentic()->shouldBeFalse();
+        $this->isAuthentic()->shouldBe(false);
     }
 
     function it_should_fail_without_id()
@@ -95,12 +95,6 @@ class NotificationSpec extends ObjectBehavior
         return array(
             'beEmpty' => function($subject) {
                     return empty($subject);
-            },
-            'beFalse' => function($subject) {
-                    return (!$subject) ? true : false;
-            },
-            'beTrue' => function($subject) {
-                    return ($subject) ? true : false;
             },
         );
     }

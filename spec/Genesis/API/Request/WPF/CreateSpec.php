@@ -24,6 +24,18 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
     }
 
+	public function it_should_set_language_parameter()
+	{
+		$this->setLanguage('xx');
+		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/xx/wpf/');
+	}
+
+	public function it_should_parse_only_two_letters()
+	{
+		$this->setLanguage('xxooxx');
+		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/xx/wpf/');
+	}
+
     function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
