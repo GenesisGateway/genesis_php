@@ -1,21 +1,13 @@
 <?php
+
+namespace Genesis\API;
+
 /**
- * Request Genesis
- * This is the base of every API request
+ * Request - base of every API request
  *
  * @package Genesis
  * @subpackage API
  */
-
-namespace Genesis\API;
-
-use \Genesis\Network as Network;
-use \Genesis\Builders as Builders;
-use \Genesis\Exceptions as Exceptions;
-use \Genesis\GenesisConfig as GenesisConfig;
-use \Genesis\Utils\Common as Common;
-use \Genesis\Utils\Currency as Currency;
-
 abstract class Request
 {
     /**
@@ -68,10 +60,28 @@ abstract class Request
      */
     protected $builderContext;
 
+
+	/**
+	 * Add ISO 639-1 language code to the URL
+	 *
+	 * @note currently used only for WPF requests
+	 * @return void
+	 */
+	public function setLanguage() {}
+
+	/**
+	 * Create the Tree structure \ArrayObject
+	 * and populate the fields with the set
+	 * parameters.
+	 *
+	 * @return void
+	 */
+	protected function populateStructure() {}
+
     public function __call($method, $args)
     {
         $methodType     = substr($method, 0, 3);
-        $requestedKey   = strtolower(Common::uppercaseToUnderscore(substr($method, 3)));
+        $requestedKey   = strtolower(\Genesis\Utils\Common::uppercaseToUnderscore(substr($method, 3)));
 
         switch ($methodType) {
             case 'add' :
@@ -102,7 +112,7 @@ abstract class Request
     {
         $this->processRequestParameters();
 
-        $this->builderContext = new Builders\Builder();
+        $this->builderContext = new \Genesis\Builders\Builder();
         $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
         return $this->builderContext->getDocument();
@@ -144,9 +154,9 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $base_url = GenesisConfig::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
+        $base_url = \Genesis\GenesisConfig::getEnvironmentURL($this->config->protocol, $sub_domain, $this->config->port);
 
-        $token = $appendToken ? GenesisConfig::getToken() : '';
+        $token = $appendToken ? \Genesis\GenesisConfig::getToken() : '';
 
         return sprintf('%s/%s/%s', $base_url, $path, $token);
     }
@@ -180,13 +190,13 @@ abstract class Request
      */
     protected function sanitizeStructure()
     {
-        $this->treeStructure->exchangeArray(Common::emptyValueRecursiveRemoval($this->treeStructure->getArrayCopy()));
+        $this->treeStructure->exchangeArray(\Genesis\Utils\Common::emptyValueRecursiveRemoval($this->treeStructure->getArrayCopy()));
     }
 
     /**
      * Perform field validation
      *
-     * @throws Exceptions\BlankRequiredField
+     * @throws \Genesis\Exceptions\BlankRequiredField
      * @return void
      */
     protected function checkRequirements()
@@ -200,7 +210,7 @@ abstract class Request
             foreach($iterator as $fieldName)
             {
                 if (empty($this->$fieldName)) {
-                    throw new Exceptions\BlankRequiredField($fieldName);
+                    throw new \Genesis\Exceptions\BlankRequiredField($fieldName);
                 }
             }
         }
@@ -225,7 +235,7 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!', true);
+                throw new \Genesis\Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!', true);
             }
         }
 
@@ -239,7 +249,7 @@ abstract class Request
                     foreach ($fieldDependencies as $field)
                     {
                         if (empty($this->$field)) {
-                            throw new Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field . ' which');
+                            throw new \Genesis\Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field . ' which');
                         }
                     }
                 }
@@ -260,7 +270,7 @@ abstract class Request
             }
 
             if (!$status) {
-                throw new Exceptions\BlankRequiredField(implode($fields));
+                throw new \Genesis\Exceptions\BlankRequiredField(implode($fields));
             }
         }
     }
@@ -273,7 +283,7 @@ abstract class Request
     protected function processAmount()
     {
         if (isset($this->amount) && isset($this->currency)) {
-            $this->amount = Currency::realToExponent($this->amount, $this->currency);
+            $this->amount = \Genesis\Utils\Currency::realToExponent($this->amount, $this->currency);
         }
     }
 }

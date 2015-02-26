@@ -24,11 +24,11 @@ class cURLSpec extends ObjectBehavior
         $options = array(
             'debug'         => 'false',
             'type'          => 'GET',
+            'protocol'      => 'https',
             'url'           => $remote_url,
             'body'          => '',
-            'cert_ca'       => GenesisConfig::getCertificateAuthority(),
-            'protocol'      => 'https',
-            'timeout'       => 60,
+            'timeout'       => GenesisConfig::getNetworkTimeout(),
+            'ca_bundle'     => GenesisConfig::getCertificateBundle(),
             'user_login'    => GenesisConfig::getUsername() . ':' . GenesisConfig::getPassword(),
             'user_agent'    => $faker->userAgent,
         );

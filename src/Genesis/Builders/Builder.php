@@ -1,13 +1,13 @@
 <?php
+
+namespace Genesis\Builders;
+
 /**
  * Builder handler
  *
  * @package Genesis
  * @subpackage Builders
  */
-
-namespace Genesis\Builders;
-
 class Builder
 {
     /**

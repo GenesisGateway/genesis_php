@@ -1,16 +1,14 @@
 <?php
+
+namespace Genesis\Builders\XML;
+
 /**
  * DOMDocument Builder Interface
  *
  * @package Genesis
  * @subpackage Builders
  */
-
-namespace Genesis\Builders\XML;
-
-use Genesis\Builders\BuilderInterface as BuilderInterface;
-
-final class DOMDocument implements BuilderInterface
+final class DOMDocument implements \Genesis\Builders\BuilderInterface
 {
     /**
      * Store the DOMDocument instance

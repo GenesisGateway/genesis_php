@@ -1,17 +1,13 @@
 <?php
+
+namespace Genesis\API;
+
 /**
- * Response handler - handles responses from Genesis Gateway
+ * Response - process/format an incoming Genesis response
  *
  * @package Genesis
  * @subpackage API
  */
-
-namespace Genesis\API;
-
-use Genesis\Exceptions;
-use Genesis\Utils\Currency as Currency;
-use Genesis\Network\Request as Network;
-
 class Response
 {
     /**
@@ -28,20 +24,11 @@ class Response
      */
     public $responseRaw;
 
-    /**
-     * Network Context Handle
-     *
-     * @var Network
-     */
-    private $networkContext;
-
-    public function __construct(Network $networkContext)
+    public function __construct($networkContext = null)
     {
-        $this->networkContext = $networkContext;
-
-        if ( strlen($this->networkContext->getResponseBody()) > 0 ) {
-            $this->parseResponse($this->networkContext->getResponseBody());
-        }
+	    if (is_a($networkContext, '\Genesis\Network\Request')) {
+		    $this->parseResponse( $networkContext->getResponseBody() );
+	    }
     }
 
     /**
@@ -78,13 +65,11 @@ class Response
 	 */
 	public function isPartiallyApproved()
 	{
-		$status = false;
-
 		if (isset($this->responseObj->partial_approval) && strval($this->responseObj->partial_approval) == 'true') {
-			$status = true;
+			return true;
 		}
 
-		return $status;
+		return false;
 	}
 
     /**
@@ -134,7 +119,7 @@ class Response
 	{
 		if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
 			if ( isset( $this->responseObj->amount ) && ! empty( $this->responseObj->amount ) ) {
-				return Currency::exponentToReal( $this->responseObj->amount, $this->responseObj->currency );
+				return \Genesis\Utils\Currency::exponentToReal( $this->responseObj->amount, $this->responseObj->currency );
 			}
 		}
 
@@ -158,13 +143,13 @@ class Response
     /**
      * Parse Genesis response to SimpleXMLElement
      *
-     * @param $response \SimpleXMLElement
+     * @param string $response
      * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function parseResponse($response)
     {
         if (empty($response)) {
-            throw new Exceptions\InvalidArgument();
+            throw new \Genesis\Exceptions\InvalidArgument('Invalid document!');
         }
 
         $this->responseRaw = $response;

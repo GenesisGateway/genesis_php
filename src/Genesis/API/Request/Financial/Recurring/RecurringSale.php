@@ -5,12 +5,10 @@
  * @package Genesis
  * @subpackage Request
  */
+
 namespace Genesis\API\Request\Financial\Recurring;
 
-use \Genesis\API\Request as Request;
-use \Genesis\Utils\Common as Common;
-
-class RecurringSale extends Request
+class RecurringSale extends \Genesis\API\Request
 {
     protected $transaction_id;
 
@@ -43,7 +41,7 @@ class RecurringSale extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -56,7 +54,7 @@ class RecurringSale extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -69,6 +67,6 @@ class RecurringSale extends Request
             'currency'
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

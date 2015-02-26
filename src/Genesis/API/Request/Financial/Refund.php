@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\Financial;
 
-use \Genesis\API\Request as Request;
-use \Genesis\Utils\Common as Common;
-
-class Refund extends Request
+class Refund extends \Genesis\API\Request
 {
     protected $transaction_id;
 
@@ -44,7 +41,7 @@ class Refund extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -57,7 +54,7 @@ class Refund extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -70,6 +67,6 @@ class Refund extends Request
             'currency'
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

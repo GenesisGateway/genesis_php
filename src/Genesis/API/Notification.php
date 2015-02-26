@@ -1,18 +1,13 @@
 <?php
+
+namespace Genesis\API;
+
 /**
- * Notification handler
+ * Notification - process/validate incoming Async notifications
  *
  * @package Genesis
  * @subpackage API
  */
-
-namespace Genesis\API;
-
-use Genesis\Exceptions;
-use Genesis\GenesisConfig;
-use Genesis\Builders as Builders;
-use Genesis\Utils\Common as Common;
-
 class Notification
 {
     /**
@@ -29,37 +24,54 @@ class Notification
      */
     private $notificationObj;
 
+	/**
+	 * Flag whether or not this notification is for a 3D transaction
+	 *
+	 * @var \bool
+	 */
+	private $is3DNotification;
+
+	/**
+	 * Flag whether or not this notification is for a WPC transaction
+	 *
+	 * @var \boolean
+	 */
+	private $isWPFNotification;
+
+	/**
+	 * Is this a 3D notification?
+	 *
+	 * @return bool
+	 */
+	public function is3DNotification()
+	{
+		return (bool)$this->is3DNotification;
+	}
+
+	/**
+	 * Is this WPF Notification
+	 *
+	 * @return bool
+	 */
+	public function isWPFNotification()
+	{
+		return (bool)$this->isWPFNotification;
+	}
+
     /**
-     * Generate Builder response (Echo) required for acknowledging
-     * Genesis's Notification
-     *
-     * @return string
-     */
-    public function getEchoResponse()
-    {
-        $echo_structure = array (
-            'notification_echo' => array (
-                'unique_id' => $this->unique_id,
-            )
-        );
-
-        $builder = new Builders\Builder();
-        $builder->parseStructure($echo_structure);
-
-        return $builder->getDocument();
-    }
-
-    /**
-     * Verify the signature that inside the Notification, to ensure that
-     * this message is actually from Genesis and not an imposter.
+     * Verify the signature on the parsed Notification
      *
      * @return bool
+     * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function isAuthentic()
     {
-        $unique_id          = $this->unique_id;
-        $message_signature  = $this->notificationObj->signature;
-        $customer_password  = GenesisConfig::getPassword();
+	    if (!isset($this->unique_id) || !isset($this->notificationObj->signature)) {
+		    throw new \Genesis\Exceptions\InvalidArgument('Missing field(s), required for validation!');
+	    }
+
+        $message_signature  = (string)$this->notificationObj->signature;
+        $customer_password  = (string)\Genesis\GenesisConfig::getPassword();
 
         switch(strlen($message_signature))
         {
@@ -72,7 +84,7 @@ class Notification
                 break;
         }
 
-        $calc_signature = hash($hash_type, $unique_id . $customer_password);
+        $calc_signature = hash($hash_type, $this->unique_id . $customer_password);
 
         if ($message_signature === $calc_signature) {
             return true;
@@ -80,6 +92,50 @@ class Notification
 
         return false;
     }
+
+	/**
+	 * Generate Builder response (Echo) required for acknowledging
+	 * Genesis's Notification
+	 *
+	 * @return string
+	 */
+	public function getEchoResponse()
+	{
+		$structure = array (
+			'notification_echo' => array (
+				'unique_id' => $this->unique_id,
+			)
+		);
+
+		$builder = new \Genesis\Builders\Builder();
+		$builder->parseStructure($structure);
+
+		return $builder->getDocument();
+	}
+
+	/**
+	 * Render the Gateway response
+	 *
+	 * @param bool $terminate Exit after render (default: false)
+	 *
+	 * @return void
+	 */
+	public function renderResponse($terminate = false)
+	{
+		$structure = array (
+			'notification_echo' => array (
+				'unique_id' => $this->unique_id,
+			)
+		);
+
+		$builder = new \Genesis\Builders\Builder();
+		$builder->parseStructure($structure);
+
+		header('Content-type: application/xml');
+		echo $builder->getDocument();
+
+		if ($terminate) exit(0);
+	}
 
     /**
      * Return the already parsed, notification Object
@@ -92,21 +148,30 @@ class Notification
     }
 
     /**
-     * Parse the incoming notification from Genesis
+     * Parse and Authenticate the incoming notification from Genesis
      *
-     * @param $response
-     * @throws Exceptions\InvalidArgument()
+     * @param array $notification - Incoming notification ($_POST)
+     * @param bool  $authenticate - Set to true if you want to validate the notification
+     * @throws \Genesis\Exceptions\InvalidArgument()
      */
-    public function parseNotification($response)
+    public function parseNotification($notification = array(), $authenticate = true)
     {
-        $this->notificationObj = Common::createArrayObject($response);
+        $this->notificationObj = \Genesis\Utils\Common::createArrayObject($notification);
 
         if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
-            $this->unique_id = $this->notificationObj->unique_id;
+            $this->is3DNotification = true;
+
+	        $this->unique_id = (string)$this->notificationObj->unique_id;
         }
 
         if (isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id)) {
-            $this->unique_id = $this->notificationObj->wpf_unique_id;
+	        $this->isWPFNotification = true;
+
+            $this->unique_id = (string)$this->notificationObj->wpf_unique_id;
         }
+
+	    if ($authenticate && !$this->isAuthentic()) {
+		    throw new \Genesis\Exceptions\InvalidArgument('Invalid Genesis Notification!');
+	    }
     }
 }

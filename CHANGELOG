@@ -1,12 +1,45 @@
-1.0.1
+1.1.0
+-----
 
-* Add type-casting to Genesis\Utils\Currency
+* Add flags for 3D/WPF notifications: API\Notification\is3DNotification(), API\Notification\isWPFNotification()
+* Add notification render method
+* Add support for immediate validation when parsing API\Notification
+* Add support for alias-based environment setting in GenesisConfig
+* Add system requirements verification
+* Fix Genesis Certificate Bundle unable to validate the Staging environment
+* Fix Network\Wrapper\cURL silent return
+* Fix Network\Wrapper\StreamContext error handling
+* Fix API\Response initialization
+* Remove unused variables in various classes
+* Remove namespace shortcuts (use keyword)
+* Remove the need for set environment variable, in order to get the CA bundle
+* Update PHPSpec and its dependencies
+* Update PHPDoc comments
+* Update file headers
+
+1.0.2
+-----
+
+* Add support for internationalization (currently only in WPF)
+* Add flag (API\Response\isPartiallyApproved()) for partially-approved transactions
+* Add helper method API\Response\getFormattedAmount()
+* Add helper method API\Response\getFormattedTimestamp()
+* Add Network\Wrapper\StreamContext configuration based on the PHP version
+* Fix transaction amount conversion between ISO-4217 and Nominal
+* Update PHPDoc comments
+* Update Specs
+
+1.0.1
+-----
+
 * Move the ISO-4217 currency handling to the post-processing
-* Fix Genesis\API\Response\isSuccessful() returning wrong status on some transaction types
+* Fix API\Response\isSuccessful() returning wrong status on some transaction types
+* Fix Utils\Currency types
 * Update PHPDoc Comments
 * Update README
 * Update Specs
 
 1.0.0
+-----
 
-* Initial PHP client integration library, using Genesis API 3.2
+* Initial version

@@ -25,7 +25,7 @@ class StreamContextSpec extends ObjectBehavior
             'body'          => '',
             'type'          => 'GET',
             'url'           => $remote_url,
-            'cert_ca'       => GenesisConfig::getCertificateAuthority(),
+            'ca_bundle'     => GenesisConfig::getCertificateBundle(),
             'user_login'    => GenesisConfig::getUsername() . ':' . GenesisConfig::getPassword(),
             'user_agent'    => $faker->userAgent,
         );

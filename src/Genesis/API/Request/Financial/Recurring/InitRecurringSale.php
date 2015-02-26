@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\Financial\Recurring;
 
-use \Genesis\API\Request as Request;
-use \Genesis\Utils\Common as Common;
-
-class InitRecurringSale extends Request
+class InitRecurringSale extends \Genesis\API\Request
 {
     protected $transaction_id;
 
@@ -128,7 +125,7 @@ class InitRecurringSale extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -141,7 +138,7 @@ class InitRecurringSale extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -165,6 +162,6 @@ class InitRecurringSale extends Request
             'billing_country'
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

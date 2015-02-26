@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\WPF;
 
-use \Genesis\Utils\Common as Common;
-use \Genesis\API\Request as Request;
-
-class Create extends Request
+class Create extends \Genesis\API\Request
 {
     protected $transaction_id;
 
@@ -70,6 +67,10 @@ class Create extends Request
 
 	public function setLanguage($language = '')
 	{
+		if (empty($language)) {
+			throw new \Genesis\Exceptions\InvalidArgument('The provided argument is not a valid ISO-639-1 language code!');
+		}
+
 		$path = sprintf('%s/wpf', substr($language, 0, 2));
 
 		$this->setApiConfig('url', $this->buildRequestURL('wpf', $path, false));
@@ -125,7 +126,7 @@ class Create extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -138,7 +139,7 @@ class Create extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -164,6 +165,6 @@ class Create extends Request
             'transaction_type',
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

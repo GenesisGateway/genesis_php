@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\Reconcile;
 
-use \Genesis\API\Request as Request;
-use \Genesis\Utils\Common as Common;
-
-class DateRange extends Request
+class DateRange extends \Genesis\API\Request
 {
     protected $start_date;
     protected $end_date;
@@ -36,7 +33,7 @@ class DateRange extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -49,7 +46,7 @@ class DateRange extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -58,6 +55,6 @@ class DateRange extends Request
             'start_date',
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

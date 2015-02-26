@@ -1,17 +1,17 @@
 <?php
+
+namespace Genesis\API;
+
 /**
- * Errors returned by Genesis or the Issuer
+ * Error codes used by Genesis / Issuer
  *
  * @package Genesis
  * @subpackage API
  */
-
-namespace Genesis\API;
-
 final class Errors
 {
-    const SUCCESS                           = 0;
-    const ERROR                             = 1;
+    const SUCCESS                           = 000;
+    const ERROR                             = 001;
 
     const SYSTEM_ERROR                      = 100;
     const MAINTENANCE_ERROR                 = 101;
@@ -79,16 +79,16 @@ final class Errors
     /**
      * Get detailed description of the provided error code
      *
-     * @param int $Error_Code
+     * @param int $errorCode
      *
      * @return string
      */
-    static function getErrorDescription($Error_Code = 1)
+    static function getErrorDescription($errorCode)
     {
-        switch ($Error_Code)
+        switch (intval($errorCode))
         {
             default:
-            case 1:
+            case 001:
                 return 'Undefined error.';
             case 100:
                 return 'A general system error occurred.';

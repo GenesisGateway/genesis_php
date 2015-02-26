@@ -1,16 +1,29 @@
 <?php
-/**
- * GenesisConfig Object.
- *
- * @package Genesis
- * @subpackage GenesisConfig
- */
+
 namespace Genesis;
 
-use \Genesis\Exceptions as Exceptions;
-
+/**
+ * Class GenesisConfig
+ * @package Genesis
+ *
+ * @method static \Genesis\GenesisConfig getUsername()  Get the Username, set in configuration
+ * @method static \Genesis\GenesisConfig getPassword()  Get the Password, set in the configuration
+ * @method static \Genesis\GenesisConfig getToken()     Get the Terminal Token, set in configuration
+ *
+ */
 final class GenesisConfig
 {
+	/**
+	 * Library Version
+	 */
+	const VERSION   = '1.1.0';
+
+	/**
+	 * Environment definitions
+	 */
+	const ENV_STAG = 0;
+	const ENV_PROD = 1;
+
     /**
      * Genesis base domain name
      */
@@ -20,11 +33,6 @@ final class GenesisConfig
      * Default Protocol for the HTTP requests
      */
     const PROTOCOL  = 'https';
-
-    /**
-     * Current version
-     */
-    const VERSION   = '1.0.0';
 
     /**
      * Array storing all the configuration for this instance.
@@ -93,41 +101,43 @@ final class GenesisConfig
     }
 
     /**
-     * Get the CA PEM (needed for cURL), based on the selected
-     * enviorment
+     * Get the CA PEM (needed for cURL)
      *
-     * @return string - Path to the PEM file with the certificates
-     * @throws Exceptions\EnvironmentNotSet()
+     * @return string - Path to the Genesis CA Bundle; false otherwise
+     * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
-    final public static function getCertificateAuthority()
+    final public static function getCertificateBundle()
     {
-        $genesis_dir = dirname(__FILE__);
+	    $CABundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
 
-        switch (self::getEnvironment())
-        {
-            case 'production':
-                return sprintf('%s/Certificates/genesis_production_verisign_ca.pem', $genesis_dir);
-                break;
-            default:
-            case 'sandbox':
-                return sprintf('%s/Certificates/genesis_sandbox_comodo_ca.pem', $genesis_dir);
-                break;
+        if (file_exists($CABundle)) {
+	        return $CABundle;
         }
+
+	    return false;
     }
 
     /**
-     * Get the current Environment
+     * Get the current Environment based on the the set variable
      *
      * @return mixed
-     * @throws Exceptions\EnvironmentNotSet()
+     * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
     final public static function getEnvironment()
     {
         if (!array_key_exists('environment', self::$vault)) {
-            throw new Exceptions\EnvironmentNotSet();
+            throw new \Genesis\Exceptions\EnvironmentNotSet();
         }
 
-        return self::$vault['environment'];
+	    $PRODAlternateNames = array('prod', 'production', 'live');
+
+	    foreach ($PRODAlternateNames as $name) {
+		    if (strcasecmp(self::$vault['environment'], $name) === 0) {
+			    return self::ENV_PROD;
+		    }
+	    }
+
+	    return self::ENV_STAG;
     }
 
     /**
@@ -137,22 +147,16 @@ final class GenesisConfig
      * @param $sub_domain String - preferred sub_domain
      * @param $port Integer - port of the server
      * @return String
-     * @throws Exceptions\EnvironmentNotSet()
+     * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
     final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
     {
-        switch (self::getEnvironment())
-        {
-            case 'production':
-                $sub_domain = self::$sub_domains[$sub_domain]['production'];
-                break;
-            case 'sandbox':
-                $sub_domain = self::$sub_domains[$sub_domain]['sandbox'];
-                break;
-            default:
-                throw new Exceptions\EnvironmentNotSet();
-                break;
-        }
+	    if (self::getEnvironment() == self::ENV_PROD) {
+		    $sub_domain = self::$sub_domains[$sub_domain]['production'];
+	    }
+	    else {
+		    $sub_domain = self::$sub_domains[$sub_domain]['sandbox'];
+	    }
 
         return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
     }
@@ -163,14 +167,28 @@ final class GenesisConfig
      *
      * @param $type - type of the interface
      *
-     * @return mixed - string name
+     * @return mixed - interface name or false if non-existing
      */
     final public static function getInterfaceSetup($type)
     {
         if (array_key_exists($type, self::$interfaces)) {
             return self::$interfaces[$type];
         }
+
+	    return false;
     }
+
+	/**
+	 * Network timeout.
+	 *
+	 * @note Hard-code for now
+	 *
+	 * @return int
+	 */
+	final public static function getNetworkTimeout()
+	{
+		return 60;
+	}
 
     /**
      * Get the version of this Library API
@@ -186,7 +204,7 @@ final class GenesisConfig
      * Load settings from an ini File
      *
      * @param $settings_file String - path to an ini file containing the settings
-     * @throws Exceptions\InvalidArgument()
+     * @throws \Genesis\Exceptions\InvalidArgument()
      */
     final public static function loadSettings($settings_file)
     {
@@ -212,7 +230,7 @@ final class GenesisConfig
             }
         }
         else {
-            throw new Exceptions\InvalidArgument('The provided ini file is invalid or does not exist!');
+            throw new \Genesis\Exceptions\InvalidArgument('The provided configuration file is invalid!');
         }
     }
 }

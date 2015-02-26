@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\NonFinancial;
 
-use \Genesis\API\Request as Request;
-use \Genesis\Utils\Common as Common;
-
-class AVS extends Request
+class AVS extends \Genesis\API\Request
 {
     protected $transaction_type;
     protected $transaction_id;
@@ -116,7 +113,7 @@ class AVS extends Request
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -129,7 +126,7 @@ class AVS extends Request
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -151,6 +148,6 @@ class AVS extends Request
             'billing_country'
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

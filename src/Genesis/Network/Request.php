@@ -8,10 +8,6 @@
 
 namespace Genesis\Network;
 
-use \Genesis\Exceptions as Exceptions;
-use \Genesis\API\Request as APIRequest;
-use \Genesis\GenesisConfig as GenesisConfig;
-
 class Request
 {
     /**
@@ -27,7 +23,7 @@ class Request
      */
     private $context;
 
-    public function __construct(APIRequest $apiContext)
+    public function __construct(\Genesis\API\Request $apiContext)
     {
         $this->apiContext = $apiContext;
 
@@ -85,10 +81,10 @@ class Request
             'type'          => $this->apiContext->getApiConfig('type'),
             'port'          => $this->apiContext->getApiConfig('port'),
             'protocol'      => $this->apiContext->getApiConfig('protocol'),
-            'timeout'       => 60,
-            'cert_ca'       => GenesisConfig::getCertificateAuthority(),
-            'user_agent'    => sprintf('Genesis PHP Client v%s', GenesisConfig::getVersion()),
-            'user_login'    => sprintf('%s:%s', GenesisConfig::getUsername(), GenesisConfig::getPassword()),
+            'timeout'       => \Genesis\GenesisConfig::getNetworkTimeout(),
+            'ca_bundle'     => \Genesis\GenesisConfig::getCertificateBundle(),
+            'user_agent'    => sprintf('Genesis PHP Client v%s', \Genesis\GenesisConfig::getVersion()),
+            'user_login'    => sprintf('%s:%s', \Genesis\GenesisConfig::getUsername(), \Genesis\GenesisConfig::getPassword()),
         );
 
         $this->context->prepareRequestBody($requestData);

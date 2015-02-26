@@ -1,4 +1,7 @@
 <?php
+
+namespace Genesis\Network\Wrapper;
+
 /**
  * cURL Network Interface
  * Note: requires php curl extension
@@ -6,31 +9,32 @@
  * @package Genesis
  * @subpackage Network
  */
-
-namespace Genesis\Network\Wrapper;
-
-use \Genesis\Network\NetworkInterface as NetworkInterface;
-
-class cURL implements NetworkInterface
+class cURL implements \Genesis\Network\NetworkInterface
 {
     /**
      * Storing cURL Handle
+     *
      * @var resource
      */
     private $curlHandle;
 
     /**
      * Storing the full incoming response
+     *
      * @var string
      */
     private $response;
+
     /**
      * Storing body from an incoming response
+     *
      * @var string
      */
     private $responseBody;
+
     /**
      * Storing headers from an incoming response
+     *
      * @var string
      */
     private $responseHeaders;
@@ -83,10 +87,12 @@ class cURL implements NetworkInterface
 
     /**
      * Set cURL headers/options, based on the request data
+     *
+     * @return void
      */
     public function prepareRequestBody($requestData)
     {
-        $cURLOpt = array(
+        $options = array(
             CURLOPT_ENCODING        => 'gzip',
             CURLOPT_HEADER          => true,
             CURLOPT_HTTPHEADER      => array('Content-Type: text/xml', 'Expect:'),
@@ -96,29 +102,53 @@ class cURL implements NetworkInterface
             CURLOPT_USERAGENT       => $requestData['user_agent'],
             CURLOPT_USERPWD         => $requestData['user_login'],
             CURLOPT_RETURNTRANSFER  => true,
+	        // SSL/TLS Configuration
+            CURLOPT_CAINFO          => $requestData['ca_bundle'],
+            CURLOPT_SSL_VERIFYPEER  => true,
+            CURLOPT_SSL_VERIFYHOST  => 2,
         );
 
-        if($requestData['type'] == 'POST') {
-            $cURLOpt[CURLOPT_POST]              = false;
-            $cURLOpt[CURLOPT_POSTFIELDS]        = $requestData['body'];
+	    $post = array(
+		    CURLOPT_POST            => false,
+		    CURLOPT_POSTFIELDS      => $requestData['body']
+	    );
+
+        if('POST' == strtoupper($requestData['type'])) {
+            $options = array_merge($options, $post);
         }
 
-        if ($requestData['protocol'] == 'https') {
-            $cURLOpt[CURLOPT_CAINFO]            = $requestData['cert_ca'];
-	        $cURLOpt[CURLOPT_SSLVERSION]        = 1; // CURL_SSLVERSION_TLSv1
-            $cURLOpt[CURLOPT_SSL_VERIFYPEER]    = true;
-            $cURLOpt[CURLOPT_SSL_VERIFYHOST]    = 2;
-        }
-
-        curl_setopt_array($this->curlHandle, $cURLOpt);
+        curl_setopt_array($this->curlHandle, $options);
     }
 
     /**
      * Send the request
+     *
+     * @return void
+     *
+     * @throws
      */
     public function execute()
     {
         $this->response = curl_exec($this->curlHandle);
+
+	    $this->checkForErrors();
+
         list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
     }
+
+	/**
+	 * Check whether or not a cURL request is successful
+	 *
+	 * @return string
+	 * @throws \Genesis\Exceptions\NetworkError
+	 */
+	private function checkForErrors()
+	{
+		$errNo  = curl_errno($this->curlHandle);
+		$errStr = curl_error($this->curlHandle);
+
+		if ($errStr) {
+			throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
+		}
+	}
 }

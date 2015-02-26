@@ -1,15 +1,36 @@
 <?php
+
+namespace Genesis\Utils;
+
 /**
  * Various helper functions used across the project
  *
  * @package Genesis
  * @subpackage Utils
  */
+final class Common
+{
+	static function checkRequirements()
+	{
+		// PHP version requirements
+		if (version_compare(self::getPHPVersion(), '5.3.0', '<')) {
+			throw new \Exception('Unsupported PHP version, please upgrade!');
+		}
 
-namespace Genesis\Utils;
+		// cURL requirements
+		if (\Genesis\GenesisConfig::getInterfaceSetup('network') == 'curl') {
+			if (!function_exists('curl_init')) {
+				throw new \Exception('cURL is selected, but its not installed on your system! You can use "stream_context" alternatively or install the cURL PHP extension.');
+			}
+		}
 
-final class Common {
-
+		// XMLWriter requirements
+		if (\Genesis\GenesisConfig::getInterfaceSetup('builder') == 'xmlwriter') {
+			if (!class_exists('XMLWriter')) {
+				throw new \Exception('XMLWriter is selected, but its not installed on your system!, You can use "domdocument" alternatively or re-compile PHP with XML support!');
+			}
+		}
+	}
     /**
      * Helper function - replace uppercase letter with
      * underscore, followed by small letter

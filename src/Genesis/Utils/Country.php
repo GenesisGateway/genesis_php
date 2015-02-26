@@ -1,15 +1,20 @@
 <?php
+
+namespace Genesis\Utils;
+
 /**
- * List of all countries, in ISO 3166
+ * Country-related methods
  *
  * @package Genesis
  * @subpackage Country
  */
-
-namespace Genesis\Utils;
-
 final class Country
 {
+	/**
+	 * List of all countries, defined by ISO 3166
+	 *
+	 * @var array
+	 */
     static $countries = array
     (
         'AF' => 'Afghanistan',
@@ -263,7 +268,6 @@ final class Country
      * Get a country's name by its ISO Code
      *
      * @param $iso_code - country's iso code
-     *
      * @return mixed    - string if code is present, false otherwise
      */
     public static function getCountryName($iso_code)
@@ -271,20 +275,18 @@ final class Country
         if (isset(self::$countries[$iso_code])) {
             return self::$countries[$iso_code];
         }
-        else {
-            return false;
-        }
+
+	    return false;
     }
 
     /**
      * Get a country's ISO code by its name
      *
      * @param $country_name - name of the country
-     *
      * @return string       - iso
      */
     public static function getCountryISO($country_name)
     {
-        return array_search(strtolower($country_name),array_map('strtolower', self::$countries));
+        return array_search( strtolower($country_name), array_map('strtolower', self::$countries) );
     }
 }

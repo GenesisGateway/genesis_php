@@ -8,11 +8,7 @@
 
 namespace Genesis\API\Request\FraudRelated\Retrieval;
 
-
-use \Genesis\API\Request as RequestBase;
-use Genesis\Utils\Common;
-
-class Transaction extends RequestBase
+class Transaction extends \Genesis\API\Request
 {
     protected $arn;
     protected $original_transaction_unique_id;
@@ -34,7 +30,7 @@ class Transaction extends RequestBase
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -47,7 +43,7 @@ class Transaction extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -57,7 +53,7 @@ class Transaction extends RequestBase
             'original_transaction_unique_id'
         );
 
-        $this->requiredFieldsOR = Common::createArrayObject($requiredFieldsOR);
+        $this->requiredFieldsOR = \Genesis\Utils\Common::createArrayObject($requiredFieldsOR);
     }
 }
 

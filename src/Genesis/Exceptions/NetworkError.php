@@ -2,12 +2,12 @@
 
 namespace Genesis\Exceptions;
 
-class MissingComponent extends \Exception
+class NetworkError extends \Exception
 {
     public function __construct($message = '', $code = 0, $previous = null)
     {
 	    if (empty($message)) {
-		    $message = "Missing component, update and verify your installation!";
+		    $message = 'Unknown error during network request!';
 	    }
 
         parent::__construct($message, $code, $previous);

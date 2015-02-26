@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\FraudRelated\Retrieval;
 
-use \Genesis\API\Request as RequestBase;
-use Genesis\Utils\Common;
-
-class DateRange extends RequestBase
+class DateRange extends \Genesis\API\Request
 {
     protected $start_date;
     protected $end_date;
@@ -35,7 +32,7 @@ class DateRange extends RequestBase
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -48,7 +45,7 @@ class DateRange extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
     private function setRequiredFields()
     {
@@ -56,7 +53,7 @@ class DateRange extends RequestBase
             'start_date',
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 
 }

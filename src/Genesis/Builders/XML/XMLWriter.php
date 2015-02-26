@@ -1,17 +1,15 @@
 <?php
+
+namespace Genesis\Builders\XML;
+
 /**
  * XMLWriter Builder Interface
- * Note: requires libxml2 support
+ * Note: requires libxml2 support (either built-in or as extension)
  *
  * @package Genesis
  * @subpackage Builders
  */
-
-namespace Genesis\Builders\XML;
-
-use Genesis\Builders\BuilderInterface as BuilderInterface;
-
-final class XMLWriter implements BuilderInterface
+final class XMLWriter implements \Genesis\Builders\BuilderInterface
 {
     /**
      * Store the XMLWriter instance

@@ -1,17 +1,12 @@
 <?php
+
+namespace Genesis;
+
 /**
  * Base class of Genesis
  *
  * @package Genesis
  */
-
-namespace Genesis;
-
-use \Genesis\API\Errors as Errors;
-use \Genesis\API\Response as Response;
-use \Genesis\Exceptions as Exceptions;
-use \Genesis\Utils\Country as Country;
-
 class Genesis
 {
     /**
@@ -19,24 +14,27 @@ class Genesis
      *
      * @var \Genesis\API\Request
      */
-    public $requestContext;
+	protected $requestCtx;
+
     /**
-     * Store the Network Request Instance
+     * Store the Network Response Instance
      *
      * @var \Genesis\API\Response
      */
-    public $responseContext;
+	protected $responseCtx;
+
     /**
      * Store the Network Request Instance
      *
      * @var \Genesis\Network\Request
      */
-    protected $networkContext;
+    protected $networkCtx;
 
     /**
      * Initialize and instantiate the desired request
      *
-     * @param $request - name of the API request
+     * @param $request - API Request name, please consult the README for a list of all requests
+     *
      * @throws Exceptions\InvalidMethod()
      */
     public function __construct($request)
@@ -44,10 +42,10 @@ class Genesis
         $request = sprintf('\Genesis\API\Request\%s', $request);
 
         if ( class_exists($request) ) {
-            $this->requestContext = new $request;
+            $this->requestCtx = new $request;
         }
         else {
-            throw new Exceptions\InvalidMethod();
+            throw new \Genesis\Exceptions\InvalidMethod('The select request is invalid!');
         }
     }
 
@@ -58,7 +56,7 @@ class Genesis
      */
     public function request()
     {
-        return $this->requestContext;
+        return $this->requestCtx;
     }
 
     /**
@@ -68,22 +66,23 @@ class Genesis
      */
     public function response()
     {
-        return $this->responseContext;
+        return $this->responseCtx;
     }
 
     /*
      * Send the request
      *
+     * @return void
      */
     public function execute()
     {
         // Send the request
-        $this->networkContext = new Network\Request($this->requestContext);
-        $this->networkContext->setRequestData();
-        $this->networkContext->sendRequest();
+        $this->networkCtx = new Network\Request($this->requestCtx);
+        $this->networkCtx->setRequestData();
+        $this->networkCtx->sendRequest();
 
         // Parse the response
-        $this->responseContext = new Response($this->networkContext);
+        $this->responseCtx = new \Genesis\API\Response($this->networkCtx);
     }
 
     /**
@@ -103,11 +102,12 @@ class Genesis
      * on the Error Code
      *
      * @param $error_code
+     *
      * @return string
      */
     static function getErrorDescription($error_code)
     {
-        return Errors::getErrorDescription($error_code);
+        return \Genesis\API\Errors::getErrorDescription($error_code);
     }
 
     /**
@@ -119,7 +119,7 @@ class Genesis
      */
     static function getFullCountryName($iso_code)
     {
-        return Country::getCountryName($iso_code);
+        return \Genesis\Utils\Country::getCountryName($iso_code);
     }
 
     /*
@@ -131,6 +131,6 @@ class Genesis
      */
     static function getCountryISOCode($country_name)
     {
-        return Country::getCountryISO($country_name);
+        return \Genesis\Utils\Country::getCountryISO($country_name);
     }
 }

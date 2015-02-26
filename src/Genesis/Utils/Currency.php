@@ -2,8 +2,18 @@
 
 namespace Genesis\Utils;
 
+/**
+ * Currency-related methods
+ *
+ * @package Genesis\Utils
+ */
 final class Currency
 {
+	/**
+	 * List of currencies, defined by ISO-4217
+	 *
+	 * @var array
+	 */
 	public static $iso4217 = array (
 		'AED' =>
 			array (
@@ -1268,7 +1278,8 @@ final class Currency
 	 *
 	 * @return string   - using string as we don't want to cast it without knowing how much precision is required
 	 */
-	public static function exponentToReal($amount, $iso) {
+	public static function exponentToReal($amount, $iso)
+	{
 		$iso = strtoupper($iso);
 
 		if (array_key_exists($iso, self::$iso4217)) {
@@ -1290,7 +1301,8 @@ final class Currency
 	 *
 	 * @return mixed    - using string as we don't want to cast it without knowing how much precision is required
 	 */
-	public static function realToExponent($amount, $iso) {
+	public static function realToExponent($amount, $iso)
+	{
 		$iso = strtoupper($iso);
 
 		if (array_key_exists($iso, self::$iso4217)) {

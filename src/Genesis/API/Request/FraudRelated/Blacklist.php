@@ -8,10 +8,7 @@
 
 namespace Genesis\API\Request\FraudRelated;
 
-use \Genesis\API\Request as RequestBase;
-use Genesis\Utils\Common;
-
-class Blacklist extends RequestBase
+class Blacklist extends \Genesis\API\Request
 {
     protected $card_number;
     protected $terminal_token;
@@ -33,7 +30,7 @@ class Blacklist extends RequestBase
             )
         );
 
-        $this->treeStructure = Common::createArrayObject($treeStructure);
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 
     private function initConfiguration()
@@ -46,7 +43,7 @@ class Blacklist extends RequestBase
             'protocol'  => 'https',
         );
 
-        $this->config = Common::createArrayObject($config);
+        $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
     private function setRequiredFields()
@@ -55,6 +52,6 @@ class Blacklist extends RequestBase
             'card_number',
         );
 
-        $this->requiredFields = Common::createArrayObject($requiredFields);
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }
