@@ -1,5 +1,25 @@
 <?php
-
+/*
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @license     http://opensource.org/licenses/MIT The MIT License
+ */
 namespace Genesis;
 
 /**
@@ -18,12 +38,6 @@ final class GenesisConfig
 	 */
 	const VERSION   = '1.1.0';
 
-	/**
-	 * Environment definitions
-	 */
-	const ENV_STAG = 0;
-	const ENV_PROD = 1;
-
     /**
      * Genesis base domain name
      */
@@ -33,6 +47,12 @@ final class GenesisConfig
      * Default Protocol for the HTTP requests
      */
     const PROTOCOL  = 'https';
+
+	/**
+	 * Environment definitions
+	 */
+	const ENV_STAG = 'sandbox';
+	const ENV_PROD = 'production';
 
     /**
      * Array storing all the configuration for this instance.
@@ -47,7 +67,7 @@ final class GenesisConfig
     );
 
     /**
-     * Array storing wrapper choice
+     * Array storing interface choice
      *
      * @var array
      */
@@ -129,9 +149,9 @@ final class GenesisConfig
             throw new \Genesis\Exceptions\EnvironmentNotSet();
         }
 
-	    $PRODAlternateNames = array('prod', 'production', 'live');
+	    $alternate_names = array('prod', 'production', 'live');
 
-	    foreach ($PRODAlternateNames as $name) {
+	    foreach ($alternate_names as $name) {
 		    if (strcasecmp(self::$vault['environment'], $name) === 0) {
 			    return self::ENV_PROD;
 		    }
@@ -152,10 +172,10 @@ final class GenesisConfig
     final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
     {
 	    if (self::getEnvironment() == self::ENV_PROD) {
-		    $sub_domain = self::$sub_domains[$sub_domain]['production'];
+		    $sub_domain = self::$sub_domains[$sub_domain][self::ENV_PROD];
 	    }
 	    else {
-		    $sub_domain = self::$sub_domains[$sub_domain]['sandbox'];
+		    $sub_domain = self::$sub_domains[$sub_domain][self::ENV_STAG];
 	    }
 
         return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);

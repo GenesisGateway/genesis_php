@@ -1,13 +1,33 @@
 <?php
+/*
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @license     http://opensource.org/licenses/MIT The MIT License
+ */
+namespace Genesis\API\Request\WPF;
+
 /**
  * Web-Payment-Form Request
  *
  * @package Genesis
  * @subpackage Request
  */
-
-namespace Genesis\API\Request\WPF;
-
 class Create extends \Genesis\API\Request
 {
     protected $transaction_id;
@@ -65,13 +85,13 @@ class Create extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
 
-	public function setLanguage($language = '')
+	public function setLanguage($language = 'en')
 	{
 		if (empty($language)) {
 			throw new \Genesis\Exceptions\InvalidArgument('The provided argument is not a valid ISO-639-1 language code!');
 		}
 
-		$path = sprintf('%s/wpf', substr($language, 0, 2));
+		$path = sprintf('%s/wpf', substr(strtolower($language), 0, 2));
 
 		$this->setApiConfig('url', $this->buildRequestURL('wpf', $path, false));
 	}

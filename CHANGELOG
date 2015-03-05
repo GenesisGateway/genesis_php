@@ -6,6 +6,7 @@
 * Add support for immediate validation when parsing API\Notification
 * Add support for alias-based environment setting in GenesisConfig
 * Add system requirements verification
+* Add LICENSE file
 * Fix Genesis Certificate Bundle unable to validate the Staging environment
 * Fix Network\Wrapper\cURL silent return
 * Fix Network\Wrapper\StreamContext error handling

@@ -6,8 +6,7 @@ PHP Client Library interface for communication with E-ComProcessing's Payment Pr
 Requirements
 ------------
 
-* PHP >= 5.3 (built w/ libxml)
-* PHP Extensions: cURL (optionally you can use Streams, but its not recommended on PHP < 5.6)
+* PHP version > 5.3.0
 * Composer
 
 Installation
