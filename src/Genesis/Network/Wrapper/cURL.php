@@ -134,7 +134,7 @@ class cURL implements \Genesis\Network\NetworkInterface
 	    );
 
         if('POST' == strtoupper($requestData['type'])) {
-            $options = array_merge($options, $post);
+            $options = $options + $post;
         }
 
         curl_setopt_array($this->curlHandle, $options);
