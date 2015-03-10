@@ -54,7 +54,6 @@ final class DOMDocument implements \Genesis\Builders\BuilderInterface
      */
     public function getOutput()
     {
-        echo 'call';
         return $this->context->saveXML();
     }
 

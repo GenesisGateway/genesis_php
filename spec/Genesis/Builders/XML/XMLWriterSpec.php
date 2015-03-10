@@ -25,15 +25,25 @@ class XMLWriterSpec extends ObjectBehavior
         $this->getOutput()->shouldBeValidXML();
     }
 
+	function it_can_escape_illegal_characters()
+	{
+		$this->populateNodes(array('root' => array('amp'=>'http://domain.tld/?arg1=normal&arg2=<&arg3=>'), null));
+		$this->getOutput()->shouldNotBeEmpty();
+		$this->getOutput()->shouldBeValidXML();
+		$this->getOutput()->shouldMatch('/&lt;/');
+		$this->getOutput()->shouldMatch('/&amp;/');
+		$this->getOutput()->shouldMatch('/&gt;/');
+	}
+
     function getMatchers()
     {
         return array(
             'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
+                return empty($subject);
+            },
             'beValidXML' => function($subject) {
-                    return (simplexml_load_string($subject)) ? true : false;
-                },
+                return (simplexml_load_string($subject)) ? true : false;
+            },
         );
     }
 }

@@ -58,8 +58,8 @@ class AuthorizeSpec extends ObjectBehavior
     {
         return array(
             'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
+                return empty($subject);
+            },
         );
     }
 }

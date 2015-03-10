@@ -25,6 +25,16 @@ class BuilderSpec extends ObjectBehavior
         $this->getDocument()->shouldBeValidXML();
     }
 
+	function it_can_escape_illegal_characters()
+	{
+		$this->parseStructure(array('root' => array('amp'=>'http://domain.tld/?arg1=normal&arg2=<&arg3=>'), null));
+		$this->getDocument()->shouldNotBeEmpty();
+		$this->getDocument()->shouldBeValidXML();
+		$this->getDocument()->shouldMatch('/&lt;/');
+		$this->getDocument()->shouldMatch('/&amp;/');
+		$this->getDocument()->shouldMatch('/&gt;/');
+	}
+
     function getMatchers()
     {
         return array(

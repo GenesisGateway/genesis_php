@@ -173,6 +173,6 @@ class Response
         }
 
         $this->responseRaw = $response;
-        $this->responseObj = simplexml_load_string($response);
+        $this->responseObj = \Genesis\Utils\Common::parseXMLtoArrayObject($response);
     }
 }

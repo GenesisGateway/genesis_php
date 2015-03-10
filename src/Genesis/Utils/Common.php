@@ -51,17 +51,27 @@ final class Common
 			}
 		}
 	}
-    /**
-     * Helper function - replace uppercase letter with
-     * underscore, followed by small letter
-     *
-     * @param $string string  - uppercase string
-     * @return string         - processed string
-     */
-    static function uppercaseToUnderscore($string)
-    {
-        return preg_replace("/(?<=[a-zA-Z])(?=[A-Z])/", "_", $string);
-    }
+
+	/**
+	 * Convert PascalCase string to a SnakeCase
+	 * useful for argument parsing
+	 *
+	 * @param  string $input
+	 *
+	 * @return string
+	 */
+	static function PascalCaseToSnakeCase($input)
+	{
+		preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
+
+		$ret = reset($matches);
+
+		foreach ($ret as &$match) {
+			$match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+		}
+
+		return implode('_', $ret);
+	}
 
     /**
      * Helper function - iterate over array ($haystack) and
@@ -95,6 +105,51 @@ final class Common
     {
         return new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
     }
+
+	/**
+	 * Get an ArrayObject from an XML string
+	 *
+	 * @param string $xml_document
+	 *
+	 * @return \ArrayObject
+	 */
+	static function parseXMLtoArrayObject($xml_document = null)
+	{
+		$simple_xml = @simplexml_load_string($xml_document);
+
+		if (is_object($simple_xml)) {
+			return
+				self::createArrayObject(
+					self::simpleXMLtoArray($simple_xml)
+				);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Traverse the SimpleXML document recursively
+	 * and cast everything as string
+	 *
+	 * @param \SimpleXMLElement $simple_xml_object
+	 *
+	 * @return array
+	 */
+	static function simpleXMLtoArray($simple_xml_object)
+	{
+		$output = array();
+
+		foreach ($simple_xml_object->children() as $node) {
+			if (is_array($node)) {
+				$output[ $node->getName() ] = self::simpleXMLtoArray($node);
+			}
+			else {
+				$output[ $node->getName() ] = (string)$node;
+			}
+		}
+
+		return $output;
+	}
 
 	/**
 	 * Helper for version_compare()

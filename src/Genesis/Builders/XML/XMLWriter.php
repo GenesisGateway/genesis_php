@@ -98,6 +98,6 @@ final class XMLWriter implements \Genesis\Builders\BuilderInterface
     public function getOutput()
     {
         $this->context->endDocument();
-        return html_entity_decode($this->context->outputMemory(false));
+        return $this->context->outputMemory(false);
     }
 }

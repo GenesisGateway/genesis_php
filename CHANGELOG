@@ -2,15 +2,18 @@
 -----
 
 * Add flags for 3D/WPF notifications: API\Notification\is3DNotification(), API\Notification\isWPFNotification()
-* Add notification render method
+* Add API\Notification\renderResponse() method
 * Add support for immediate validation when parsing API\Notification
 * Add support for alias-based environment setting in GenesisConfig
 * Add system requirements verification
 * Add LICENSE file
-* Fix Genesis Certificate Bundle unable to validate the Staging environment
+* Fix API\Response initialization
 * Fix Network\Wrapper\cURL silent return
 * Fix Network\Wrapper\StreamContext error handling
-* Fix API\Response initialization
+* Fix Genesis Certificate Bundle chain
+* Fix illegal XML characters in the request body
+* Fix PascalCase support
+* Change API\Response\getResponseObject() from SimpleXMLElement to ArrayObject
 * Remove unused variables in various classes
 * Remove namespace shortcuts (use keyword)
 * Remove the need for set environment variable, in order to get the CA bundle
