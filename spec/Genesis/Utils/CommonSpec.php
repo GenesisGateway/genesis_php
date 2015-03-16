@@ -47,7 +47,7 @@ class CommonSpec extends ObjectBehavior
 	    );
 
 	    foreach ($tests as $test => $result) {
-		    $this->PascalCaseToSnakeCase($test)->shouldBeLike($result);
+		    $this->pascalToSnakeCase($test)->shouldBeLike($result);
 	    }
     }
 

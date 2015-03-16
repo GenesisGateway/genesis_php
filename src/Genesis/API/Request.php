@@ -102,7 +102,7 @@ abstract class Request
     public function __call($method, $args)
     {
         $methodType = substr($method, 0, 3);
-        $requestedKey = strtolower(\Genesis\Utils\Common::PascalCaseToSnakeCase(substr($method, 3)));
+        $requestedKey = strtolower(\Genesis\Utils\Common::pascalToSnakeCase(substr($method, 3)));
 
         switch ($methodType) {
             case 'add':

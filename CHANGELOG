@@ -13,6 +13,7 @@
 * Fix Genesis Certificate Bundle chain
 * Fix illegal XML characters in the request body
 * Fix PascalCase support
+* Fix Conform to PSR standard
 * Change API\Response\getResponseObject() from SimpleXMLElement to ArrayObject
 * Remove unused variables in various classes
 * Remove namespace shortcuts (use keyword)
