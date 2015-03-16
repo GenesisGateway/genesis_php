@@ -25,7 +25,7 @@ namespace Genesis\Builders;
 /**
  * An interface for every builder abstraction (XMLWriter, DOMDocument, JSON etc.).
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Builders
  */
 interface BuilderInterface

@@ -25,7 +25,7 @@ namespace Genesis\API\Request\Reconcile;
 /**
  * Reconcile request by Date Range
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class DateRange extends \Genesis\API\Request
@@ -43,27 +43,14 @@ class DateRange extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile/by_date', true));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'reconcile' => array (
-                'start_date'  => $this->start_date,
-                'end_date'    => $this->end_date,
-                'page'        => $this->page,
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -71,10 +58,23 @@ class DateRange extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'start_date',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'reconcile' => array(
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+                'page' => $this->page,
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

@@ -25,7 +25,7 @@ namespace Genesis\API\Request\Financial;
 /**
  * Authorize 3D Request
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class Authorize3D extends \Genesis\API\Request
@@ -97,82 +97,14 @@ class Authorize3D extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'payment_transaction' => array (
-                'transaction_type'      => 'authorize3d',
-                'transaction_id'        => $this->transaction_id,
-                'usage'                 => $this->usage,
-                'gaming'                => $this->gaming,
-                'moto'                  => $this->moto,
-                'remote_ip'             => $this->remote_ip,
-                'notification_url'      => $this->notification_url,
-                'return_success_url'    => $this->return_success_url,
-                'return_failure_url'    => $this->return_failure_url,
-                'amount'                => $this->amount,
-                'currency'              => $this->currency,
-                'card_holder'           => $this->card_holder,
-                'card_number'           => $this->card_number,
-                'cvv'                   => $this->cvv,
-                'expiration_month'      => $this->expiration_month,
-                'expiration_year'       => $this->expiration_year,
-                'customer_email'        => $this->customer_email,
-                'customer_phone'        => $this->customer_phone,
-                'billing_address'           => array(
-                    'first_name'        => $this->billing_first_name,
-                    'last_name'         => $this->billing_last_name,
-                    'address1'          => $this->billing_address1,
-                    'address2'          => $this->billing_address2,
-                    'zip_code'          => $this->billing_zip_code,
-                    'city'              => $this->billing_city,
-                    'state'             => $this->billing_state,
-                    'country'           => $this->billing_country,
-                ),
-                'shipping_address'          => array(
-                    'first_name'        => $this->shipping_first_name,
-                    'last_name'         => $this->shipping_last_name,
-                    'address1'          => $this->shipping_address1,
-                    'address2'          => $this->shipping_address2,
-                    'zip_code'          => $this->shipping_zip_code,
-                    'city'              => $this->shipping_city,
-                    'state'             => $this->shipping_state,
-                    'country'           => $this->shipping_country,
-                ),
-                'mpi_params'                => array(
-                    'cavv'              => $this->mpi_cavv,
-                    'eci'               => $this->mpi_eci,
-                    'xid'               => $this->mpi_xid,
-                ),
-                'risk_params'               => array(
-                    'ssn'               => $this->risk_ssn,
-                    'mac_address'       => $this->risk_mac_address,
-                    'session_id'        => $this->risk_session_id,
-                    'user_id'           => $this->risk_user_id,
-                    'user_level'        => $this->risk_user_level,
-                    'email'             => $this->risk_email,
-                    'phone'             => $this->risk_phone,
-                    'remote_ip'         => $this->risk_remote_ip,
-                    'serial_number'     => $this->risk_serial_number,
-                ),
-                'dynamic_descriptor_params' => array(
-                    'merchant_name'     => $this->dynamic_merchant_name,
-                    'merchant_city'     => $this->dynamic_merchant_city,
-                )
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -180,7 +112,7 @@ class Authorize3D extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'transaction_id',
             'remote_ip',
             'amount',
@@ -202,21 +134,89 @@ class Authorize3D extends \Genesis\API\Request
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldsConditional = array(
-            'notification_url'      => array('return_success_url', 'return_failure_url'),
-            'return_success_url'    => array('notification_url', 'return_failure_url'),
-            'return_failure_url'    => array('notification_url', 'return_success_url'),
-            'mpi_cavv'              => array('mpi_eci', 'mpi_xid'),
-            'mpi_eci'               => array('mpi_cavv', 'mpi_xid'),
-            'mpi_xid'               => array('mpi_cavv', 'mpi_eci'),
+            'notification_url' => array('return_success_url', 'return_failure_url'),
+            'return_success_url' => array('notification_url', 'return_failure_url'),
+            'return_failure_url' => array('notification_url', 'return_success_url'),
+            'mpi_cavv' => array('mpi_eci', 'mpi_xid'),
+            'mpi_eci' => array('mpi_cavv', 'mpi_xid'),
+            'mpi_xid' => array('mpi_cavv', 'mpi_eci'),
         );
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldsGroups = array(
-            'synchronous'   => array('notification_url', 'return_success_url', 'return_failure_url'),
-            'asynchronous'  => array('mpi_cavv', 'mpi_eci', 'mpi_xid'),
+            'synchronous' => array('notification_url', 'return_success_url', 'return_failure_url'),
+            'asynchronous' => array('mpi_cavv', 'mpi_eci', 'mpi_xid'),
         );
 
         $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'payment_transaction' => array(
+                'transaction_type' => 'authorize3d',
+                'transaction_id' => $this->transaction_id,
+                'usage' => $this->usage,
+                'gaming' => $this->gaming,
+                'moto' => $this->moto,
+                'remote_ip' => $this->remote_ip,
+                'notification_url' => $this->notification_url,
+                'return_success_url' => $this->return_success_url,
+                'return_failure_url' => $this->return_failure_url,
+                'amount' => $this->amount,
+                'currency' => $this->currency,
+                'card_holder' => $this->card_holder,
+                'card_number' => $this->card_number,
+                'cvv' => $this->cvv,
+                'expiration_month' => $this->expiration_month,
+                'expiration_year' => $this->expiration_year,
+                'customer_email' => $this->customer_email,
+                'customer_phone' => $this->customer_phone,
+                'billing_address' => array(
+                    'first_name' => $this->billing_first_name,
+                    'last_name' => $this->billing_last_name,
+                    'address1' => $this->billing_address1,
+                    'address2' => $this->billing_address2,
+                    'zip_code' => $this->billing_zip_code,
+                    'city' => $this->billing_city,
+                    'state' => $this->billing_state,
+                    'country' => $this->billing_country,
+                ),
+                'shipping_address' => array(
+                    'first_name' => $this->shipping_first_name,
+                    'last_name' => $this->shipping_last_name,
+                    'address1' => $this->shipping_address1,
+                    'address2' => $this->shipping_address2,
+                    'zip_code' => $this->shipping_zip_code,
+                    'city' => $this->shipping_city,
+                    'state' => $this->shipping_state,
+                    'country' => $this->shipping_country,
+                ),
+                'mpi_params' => array(
+                    'cavv' => $this->mpi_cavv,
+                    'eci' => $this->mpi_eci,
+                    'xid' => $this->mpi_xid,
+                ),
+                'risk_params' => array(
+                    'ssn' => $this->risk_ssn,
+                    'mac_address' => $this->risk_mac_address,
+                    'session_id' => $this->risk_session_id,
+                    'user_id' => $this->risk_user_id,
+                    'user_level' => $this->risk_user_level,
+                    'email' => $this->risk_email,
+                    'phone' => $this->risk_phone,
+                    'remote_ip' => $this->risk_remote_ip,
+                    'serial_number' => $this->risk_serial_number,
+                ),
+                'dynamic_descriptor_params' => array(
+                    'merchant_name' => $this->dynamic_merchant_name,
+                    'merchant_city' => $this->dynamic_merchant_city,
+                )
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

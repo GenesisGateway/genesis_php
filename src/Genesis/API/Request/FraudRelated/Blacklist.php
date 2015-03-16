@@ -25,7 +25,7 @@ namespace Genesis\API\Request\FraudRelated;
 /**
  * Blacklist Request
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class Blacklist extends \Genesis\API\Request
@@ -41,26 +41,14 @@ class Blacklist extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', false));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'blacklist_request' => array (
-                'card_number'       => $this->card_number,
-                'terminal_token'    => $this->terminal_token,
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -68,10 +56,22 @@ class Blacklist extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'card_number',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'blacklist_request' => array(
+                'card_number' => $this->card_number,
+                'terminal_token' => $this->terminal_token,
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

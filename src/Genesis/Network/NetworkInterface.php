@@ -25,7 +25,7 @@ namespace Genesis\Network;
 /**
  * An interface for every network abstraction (cURL, Stream etc.).
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Network
  */
 interface NetworkInterface

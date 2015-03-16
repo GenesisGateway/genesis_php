@@ -25,7 +25,7 @@ namespace Genesis\API\Request\NonFinancial;
 /**
  * Address Verification System Request
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class AVS extends \Genesis\API\Request
@@ -83,67 +83,14 @@ class AVS extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'payment_transaction' => array (
-                'transaction_type'  => 'avs',
-                'transaction_id'    => $this->transaction_id,
-                'usage'             => $this->usage,
-                'moto'              => $this->moto,
-                'remote_ip'         => $this->remote_ip,
-                'card_holder'       => $this->card_holder,
-                'card_number'       => $this->card_number,
-                'cvv'               => $this->cvv,
-                'expiration_month'  => $this->expiration_month,
-                'expiration_year'   => $this->expiration_year,
-                'customer_email'    => $this->customer_email,
-                'customer_phone'    => $this->customer_phone,
-                'billing_address'           => array(
-                    'first_name'        => $this->billing_first_name,
-                    'last_name'         => $this->billing_last_name,
-                    'address1'          => $this->billing_address1,
-                    'address2'          => $this->billing_address2,
-                    'zip_code'          => $this->billing_zip_code,
-                    'city'              => $this->billing_city,
-                    'state'             => $this->billing_state,
-                    'country'           => $this->billing_country,
-                ),
-                'shipping_address'          => array(
-                    'first_name'        => $this->shipping_first_name,
-                    'last_name'         => $this->shipping_last_name,
-                    'address1'          => $this->shipping_address1,
-                    'address2'          => $this->shipping_address2,
-                    'zip_code'          => $this->shipping_zip_code,
-                    'city'              => $this->shipping_city,
-                    'state'             => $this->shipping_state,
-                    'country'           => $this->shipping_country,
-                ),
-                'risk_params'               => array(
-                    'ssn'               => $this->risk_ssn,
-                    'mac_address'       => $this->risk_mac_address,
-                    'session_id'        => $this->risk_session_id,
-                    'user_id'           => $this->risk_user_id,
-                    'user_level'        => $this->risk_user_level,
-                    'email'             => $this->risk_email,
-                    'phone'             => $this->risk_phone,
-                    'remote_ip'         => $this->risk_remote_ip,
-                    'serial_number'     => $this->risk_serial_number,
-                )
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -151,7 +98,7 @@ class AVS extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'transaction_id',
             'remote_ip',
             'card_holder',
@@ -169,5 +116,58 @@ class AVS extends \Genesis\API\Request
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'payment_transaction' => array(
+                'transaction_type' => 'avs',
+                'transaction_id' => $this->transaction_id,
+                'usage' => $this->usage,
+                'moto' => $this->moto,
+                'remote_ip' => $this->remote_ip,
+                'card_holder' => $this->card_holder,
+                'card_number' => $this->card_number,
+                'cvv' => $this->cvv,
+                'expiration_month' => $this->expiration_month,
+                'expiration_year' => $this->expiration_year,
+                'customer_email' => $this->customer_email,
+                'customer_phone' => $this->customer_phone,
+                'billing_address' => array(
+                    'first_name' => $this->billing_first_name,
+                    'last_name' => $this->billing_last_name,
+                    'address1' => $this->billing_address1,
+                    'address2' => $this->billing_address2,
+                    'zip_code' => $this->billing_zip_code,
+                    'city' => $this->billing_city,
+                    'state' => $this->billing_state,
+                    'country' => $this->billing_country,
+                ),
+                'shipping_address' => array(
+                    'first_name' => $this->shipping_first_name,
+                    'last_name' => $this->shipping_last_name,
+                    'address1' => $this->shipping_address1,
+                    'address2' => $this->shipping_address2,
+                    'zip_code' => $this->shipping_zip_code,
+                    'city' => $this->shipping_city,
+                    'state' => $this->shipping_state,
+                    'country' => $this->shipping_country,
+                ),
+                'risk_params' => array(
+                    'ssn' => $this->risk_ssn,
+                    'mac_address' => $this->risk_mac_address,
+                    'session_id' => $this->risk_session_id,
+                    'user_id' => $this->risk_user_id,
+                    'user_level' => $this->risk_user_level,
+                    'email' => $this->risk_email,
+                    'phone' => $this->risk_phone,
+                    'remote_ip' => $this->risk_remote_ip,
+                    'serial_number' => $this->risk_serial_number,
+                )
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

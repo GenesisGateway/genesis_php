@@ -25,76 +25,76 @@ namespace Genesis\API;
 /**
  * Error codes used by Genesis / Issuer
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage API
  */
 final class Errors
 {
-    const SUCCESS                           = 000;
-    const ERROR                             = 001;
+    const SUCCESS = 000;
+    const ERROR = 001;
 
-    const SYSTEM_ERROR                      = 100;
-    const MAINTENANCE_ERROR                 = 101;
-    const AUTHENTICATION_ERROR              = 110;
-    const CONFIGURATION_ERROR               = 120;
+    const SYSTEM_ERROR = 100;
+    const MAINTENANCE_ERROR = 101;
+    const AUTHENTICATION_ERROR = 110;
+    const CONFIGURATION_ERROR = 120;
 
-    const COMMUNICATION_ERROR               = 200;
-    const CONNECTION_ERROR                  = 210;
-    const ACCOUNT_ERROR                     = 220;
-    const TIMEOUT_ERROR                     = 230;
-    const RESPONSE_ERROR                    = 240;
-    const PARSING_ERROR                     = 250;
+    const COMMUNICATION_ERROR = 200;
+    const CONNECTION_ERROR = 210;
+    const ACCOUNT_ERROR = 220;
+    const TIMEOUT_ERROR = 230;
+    const RESPONSE_ERROR = 240;
+    const PARSING_ERROR = 250;
 
-    const INPUT_DATA_ERROR                  = 300;
-    const INVALID_TRANSACTION_TYPE_ERROR    = 310;
-    const INPUT_DATA_MISSING_ERROR          = 320;
-    const INPUT_DATA_FORMAT_ERROR           = 330;
-    const INPUT_DATA_INVALID_ERROR          = 340;
-    const INVALID_XML_ERROR                 = 350;
-    const INVALID_CONTENT_TYPE_ERROR        = 360;
+    const INPUT_DATA_ERROR = 300;
+    const INVALID_TRANSACTION_TYPE_ERROR = 310;
+    const INPUT_DATA_MISSING_ERROR = 320;
+    const INPUT_DATA_FORMAT_ERROR = 330;
+    const INPUT_DATA_INVALID_ERROR = 340;
+    const INVALID_XML_ERROR = 350;
+    const INVALID_CONTENT_TYPE_ERROR = 360;
 
-    const WORKFLOW_ERROR                    = 400;
-    const REFERENCE_NOT_FOUND_ERROR         = 410;
-    const REFERENCE_WORKFLOW_ERROR          = 420;
-    const REFERENCE_INVALIDATED_ERROR       = 430;
-    const REFERENCE_MISMATCH_ERROR          = 440;
-    const DOUBLE_TRANSACTION_ERROR          = 450;
-    const TRANSACTION_NOT_FOUND_ERROR       = 460;
+    const WORKFLOW_ERROR = 400;
+    const REFERENCE_NOT_FOUND_ERROR = 410;
+    const REFERENCE_WORKFLOW_ERROR = 420;
+    const REFERENCE_INVALIDATED_ERROR = 430;
+    const REFERENCE_MISMATCH_ERROR = 440;
+    const DOUBLE_TRANSACTION_ERROR = 450;
+    const TRANSACTION_NOT_FOUND_ERROR = 460;
 
-    const PROCESSING_ERROR                  = 500;
-    const INVALID_CARD_ERROR                = 510;
-    const EXPIRED_CARD_ERROR                = 520;
-    const TRANSACTION_PENDING_ERROR         = 530;
-    const CREDIT_EXCEEDED_ERROR             = 540;
+    const PROCESSING_ERROR = 500;
+    const INVALID_CARD_ERROR = 510;
+    const EXPIRED_CARD_ERROR = 520;
+    const TRANSACTION_PENDING_ERROR = 530;
+    const CREDIT_EXCEEDED_ERROR = 540;
 
-    const RISK_ERROR                        = 600;
-    const BIN_COUNTRY_CHECK_ERROR           = 609;
-    const CARD_BLACKLIST_ERROR              = 610;
-    const BIN_BLACKLIST_ERROR               = 611;
-    const COUNTRY_BLACKLIST_ERROR           = 612;
-    const IP_BLACKLIST_ERROR                = 613;
-    const BLACKLIST_ERROR                   = 614;
-    const CARD_WHITELIST_ERROR              = 615;
-    const CARD_LIMIT_EXCEEDED_ERROR         = 620;
-    const TERMINAL_LIMIT_EXCEEDED_ERROR     = 621;
-    const CONTRACT_LIMIT_EXCEEDED_ERROR     = 622;
-    const CARD_VELOCITY_EXCEEDED_ERROR      = 623;
-    const CARD_TICKET_SIZE_EXCEEDED_ERROR   = 624;
-    const USER_LIMIT_EXCEEDED_ERROR         = 625;
-    const MULTIPLE_FAILURE_DETECTION_ERROR  = 626;
-    const CS_DETECTION_ERROR                = 627;
-    const RECURRING_LIMIT_EXCEEDED_ERROR    = 628;
-    const AVS_ERROR                         = 690;
-    const MAX_MIND_RISK_ERROR               = 691;
-    const THREAT_METRIX_RISK_ERROR          = 692;
+    const RISK_ERROR = 600;
+    const BIN_COUNTRY_CHECK_ERROR = 609;
+    const CARD_BLACKLIST_ERROR = 610;
+    const BIN_BLACKLIST_ERROR = 611;
+    const COUNTRY_BLACKLIST_ERROR = 612;
+    const IP_BLACKLIST_ERROR = 613;
+    const BLACKLIST_ERROR = 614;
+    const CARD_WHITELIST_ERROR = 615;
+    const CARD_LIMIT_EXCEEDED_ERROR = 620;
+    const TERMINAL_LIMIT_EXCEEDED_ERROR = 621;
+    const CONTRACT_LIMIT_EXCEEDED_ERROR = 622;
+    const CARD_VELOCITY_EXCEEDED_ERROR = 623;
+    const CARD_TICKET_SIZE_EXCEEDED_ERROR = 624;
+    const USER_LIMIT_EXCEEDED_ERROR = 625;
+    const MULTIPLE_FAILURE_DETECTION_ERROR = 626;
+    const CS_DETECTION_ERROR = 627;
+    const RECURRING_LIMIT_EXCEEDED_ERROR = 628;
+    const AVS_ERROR = 690;
+    const MAX_MIND_RISK_ERROR = 691;
+    const THREAT_METRIX_RISK_ERROR = 692;
 
-    const REMOTE_ERROR                      = 900;
-    const REMOTE_SYSTEM_ERROR               = 910;
-    const REMOTE_CONFIGURATION_ERROR        = 920;
-    const REMOTE_DATA_ERROR                 = 930;
-    const REMOTE_WORKFLOW_ERROR             = 940;
-    const REMOTE_TIMEOUT_ERROR              = 950;
-    const REMOTE_CONNECTION_ERROR           = 960;
+    const REMOTE_ERROR = 900;
+    const REMOTE_SYSTEM_ERROR = 910;
+    const REMOTE_CONFIGURATION_ERROR = 920;
+    const REMOTE_DATA_ERROR = 930;
+    const REMOTE_WORKFLOW_ERROR = 940;
+    const REMOTE_TIMEOUT_ERROR = 950;
+    const REMOTE_CONNECTION_ERROR = 960;
 
     /**
      * Get detailed description of the provided error code
@@ -103,10 +103,9 @@ final class Errors
      *
      * @return string
      */
-    static function getErrorDescription($errorCode)
+    public static function getErrorDescription($errorCode)
     {
-        switch (intval($errorCode))
-        {
+        switch (intval($errorCode)) {
             default:
             case 001:
                 return 'Undefined error.';
@@ -230,10 +229,9 @@ final class Errors
      *
      * @return bool|string
      */
-    static function getIssuerResponseCode($issuerResponseCode)
+    public static function getIssuerResponseCode($issuerResponseCode)
     {
-        switch(strval($issuerResponseCode))
-        {
+        switch (strval($issuerResponseCode)) {
             case '00':
                 return 'Approved or completed successfully';
             case '02':

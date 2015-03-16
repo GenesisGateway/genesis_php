@@ -26,7 +26,7 @@ namespace Genesis\Builders\XML;
  * XMLWriter Builder Interface
  * Note: requires libxml2 support (either built-in or as extension)
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Builders
  */
 final class XMLWriter implements \Genesis\Builders\BuilderInterface
@@ -64,21 +64,20 @@ final class XMLWriter implements \Genesis\Builders\BuilderInterface
      * Insert tree-structured array as nodes in XMLWriter
      *
      * @param $data Array - tree-structured array
+     *
      * @return void
      */
     public function populateNodes($data)
     {
-        foreach($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             if (is_null($value)) {
                 continue;
             }
 
             if (is_array($value)) {
-                if (is_int($key))  {
+                if (is_int($key)) {
                     $this->populateNodes($value);
-                }
-                else {
+                } else {
                     $this->context->startElement($key);
                     $this->populateNodes($value);
                     $this->context->endElement();
@@ -98,6 +97,7 @@ final class XMLWriter implements \Genesis\Builders\BuilderInterface
     public function getOutput()
     {
         $this->context->endDocument();
+
         return $this->context->outputMemory(false);
     }
 }

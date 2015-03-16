@@ -25,7 +25,7 @@ namespace Genesis\Builders\XML;
 /**
  * DOMDocument Builder Interface
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Builders
  */
 final class DOMDocument implements \Genesis\Builders\BuilderInterface
@@ -43,8 +43,8 @@ final class DOMDocument implements \Genesis\Builders\BuilderInterface
     public function __construct()
     {
         $this->context = new \DOMDocument('1.0', 'UTF-8');
-        $this->context->formatOutput        = true;
-        $this->context->preserveWhiteSpace  = true;
+        $this->context->formatOutput = true;
+        $this->context->preserveWhiteSpace = true;
     }
 
     /**
@@ -70,20 +70,17 @@ final class DOMDocument implements \Genesis\Builders\BuilderInterface
         $currElement = is_null($currElement) ? $this->context : $currElement;
 
         if (is_array($data)) {
-            foreach( $data as $index => $mixedElement )
-            {
-                if ( is_int($index) ) {
+            foreach ($data as $index => $mixedElement) {
+                if (is_int($index)) {
                     $node = $currElement;
-                }
-                else {
+                } else {
                     $node = $this->context->createElement($index);
                     $currElement->appendChild($node);
                 }
 
                 $this->populateNodes($mixedElement, $node);
             }
-        }
-        else {
+        } else {
             $currElement->appendChild($this->context->createTextNode($data));
         }
     }

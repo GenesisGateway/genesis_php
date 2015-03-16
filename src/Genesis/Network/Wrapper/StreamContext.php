@@ -25,7 +25,7 @@ namespace Genesis\Network\Wrapper;
 /**
  * Stream Context Network Interface
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Network
  */
 class StreamContext implements \Genesis\Network\NetworkInterface
@@ -100,6 +100,8 @@ class StreamContext implements \Genesis\Network\NetworkInterface
     /**
      * Set Stream parameters: url, data, auth etc.
      *
+     * @param array $requestData
+     *
      * @return void
      * @throws \Genesis\Exceptions\MissingComponent
      */
@@ -109,54 +111,54 @@ class StreamContext implements \Genesis\Network\NetworkInterface
 
         $headers = array(
             'Content-Type: text/xml',
-	        sprintf('Authorization: Basic %s', base64_encode($requestData['user_login'])),
+            sprintf('Authorization: Basic %s', base64_encode($requestData['user_login'])),
             sprintf('Content-Length: %s', strlen($requestData['body'])),
             sprintf('User-Agent: %s', $requestData['user_agent']),
         );
 
         $contextOptions = array(
-            'http'  => array(
-                'method'    => $requestData['type'],
-                'header'    => implode("\r\n", $headers),
-                'content'   => $requestData['body'],
+            'http' => array(
+                'method' => $requestData['type'],
+                'header' => implode("\r\n", $headers),
+                'content' => $requestData['body'],
             ),
-            'ssl'   => array(
+            'ssl' => array(
                 // DO NOT allow self-signed certificates
-                'allow_self_signed'     => false,
+                'allow_self_signed' => false,
                 // Path to certificate/s PEM files used to validate the server authenticity
-                'cafile'                => $requestData['ca_bundle'],
+                'cafile' => $requestData['ca_bundle'],
                 // Validate Certificates
-                'verify_peer'           => true,
+                'verify_peer' => true,
                 // Abort if the certificate-chain is longer than 5 nodes
-                'verify_depth'          => 5,
+                'verify_depth' => 5,
                 // SNI causes errors due to improper handling of alerts by OpenSSL in 0.9.8
                 // As many php releases are linked against 0.9.8, its better to disable SNI
                 // in case you can't upgrade.
-                'SNI_enabled'           => true,
-                // You can tweak what Ciphers should be used (if available), this list is
-                // recommended by Mozilla and its built with 'Forward Secrecy' in mind
-                'ciphers'               => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!SSLv2',
+                'SNI_enabled' => true,
+                // You can tweak the accepted Cipher list (if needed)
+                'ciphers' => implode(':', $this->getCiphers())
             )
         );
 
-	    // Warn about unsupported version
-	    if (\Genesis\Utils\Common::compareVersions('5.3.2', '<')) {
-		    throw new \Genesis\Exceptions\MissingComponent('Unsupported version, please upgrade your PHP installation or switch to cURL');
-	    }
-
-	    // Note: Mitigate CRIME/BEAST attacks
-	    if (\Genesis\Utils\Common::compareVersions('5.4.13', '>=')) {
-			$contextOptions['ssl']['disable_compression'] = true;
-	    }
-
-	    // Note: PHP does NOT support SAN certs on PHP version < 5.6
-        if (\Genesis\Utils\Common::compareVersions('5.6.0', '<')) {
-            $contextOptions['ssl']['CN_match']          = $url['host'];
-            $contextOptions['ssl']['SNI_server_name']   = $url['host'];
+        // Warn about unsupported version
+        if (\Genesis\Utils\Common::compareVersions('5.3.2', '<')) {
+            throw new \Genesis\Exceptions\MissingComponent(
+                'Unsupported version, please upgrade your PHP installation or switch to cURL'
+            );
         }
-        else {
-            $contextOptions['ssl']['peer_name']         = $url['host'];
-            $contextOptions['ssl']['verify_peer_name']  = true;
+
+        // Note: Mitigate CRIME/BEAST attacks
+        if (\Genesis\Utils\Common::compareVersions('5.4.13', '>=')) {
+            $contextOptions['ssl']['disable_compression'] = true;
+        }
+
+        // Note: PHP does NOT support SAN certs on PHP version < 5.6
+        if (\Genesis\Utils\Common::compareVersions('5.6.0', '<')) {
+            $contextOptions['ssl']['CN_match'] = $url['host'];
+            $contextOptions['ssl']['SNI_server_name'] = $url['host'];
+        } else {
+            $contextOptions['ssl']['peer_name'] = $url['host'];
+            $contextOptions['ssl']['verify_peer_name'] = true;
         }
 
         $this->streamContext = stream_context_create($contextOptions);
@@ -171,11 +173,11 @@ class StreamContext implements \Genesis\Network\NetworkInterface
      */
     public function execute()
     {
-	    set_error_handler(array($this, 'processErrors'), E_WARNING);
+        set_error_handler(array($this, 'processErrors'), E_WARNING);
 
         $stream = fopen($this->requestData['url'], 'r', false, $this->streamContext);
 
-	    restore_error_handler();
+        restore_error_handler();
 
         $this->responseBody = stream_get_contents($stream);
 
@@ -184,15 +186,64 @@ class StreamContext implements \Genesis\Network\NetworkInterface
         $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
     }
 
-	/**
-	 * Handle stream-related errors
-	 *
-	 * @param $errNo    - error code
-	 * @param $errStr   - error message
-	 *
-	 * @throws \Genesis\Exceptions\NetworkError
-	 */
-	public function processErrors($errNo, $errStr) {
-		throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
-	}
+    /**
+     * Handle stream-related errors
+     *
+     * @param $errNo  - error code
+     * @param $errStr - error message
+     *
+     * @throws \Genesis\Exceptions\NetworkError
+     */
+    public function processErrors($errNo, $errStr)
+    {
+        throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
+    }
+
+    /**
+     * Grab an array of Cipher definitions
+     *
+     * @return array
+     */
+    private function getCiphers()
+    {
+        return array(
+            'ECDHE-RSA-AES128-GCM-SHA256',
+            'ECDHE-ECDSA-AES128-GCM-SHA256',
+            'ECDHE-RSA-AES256-GCM-SHA384',
+            'ECDHE-ECDSA-AES256-GCM-SHA384',
+            'DHE-RSA-AES128-GCM-SHA256',
+            'DHE-DSS-AES128-GCM-SHA256',
+            'kEDH+AESGCM',
+            'ECDHE-RSA-AES128-SHA256',
+            'ECDHE-ECDSA-AES128-SHA256',
+            'ECDHE-RSA-AES128-SHA',
+            'ECDHE-ECDSA-AES128-SHA',
+            'ECDHE-RSA-AES256-SHA384',
+            'ECDHE-ECDSA-AES256-SHA384',
+            'ECDHE-RSA-AES256-SHA',
+            'ECDHE-ECDSA-AES256-SHA',
+            'DHE-RSA-AES128-SHA256',
+            'DHE-RSA-AES128-SHA',
+            'DHE-DSS-AES128-SHA256',
+            'DHE-RSA-AES256-SHA256',
+            'DHE-DSS-AES256-SHA',
+            'DHE-RSA-AES256-SHA',
+            'AES128-GCM-SHA256',
+            'AES256-GCM-SHA384',
+            'ECDHE-RSA-RC4-SHA',
+            'ECDHE-ECDSA-RC4-SHA',
+            'AES128',
+            'AES256',
+            'RC4-SHA',
+            'HIGH',
+            '!aNULL',
+            '!eNULL',
+            '!EXPORT',
+            '!DES',
+            '!3DES',
+            '!MD5',
+            '!PSK',
+            '!SSLv2',
+        );
+    }
 }

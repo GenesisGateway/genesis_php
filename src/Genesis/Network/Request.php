@@ -25,7 +25,7 @@ namespace Genesis\Network;
 /**
  * Network Requests Handler
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Network
  */
 class Request
@@ -54,7 +54,7 @@ class Request
             case 'curl':
                 $this->context = new Wrapper\cURL();
                 break;
-            case 'stream_context';
+            case 'stream_context':
                 $this->context = new Wrapper\StreamContext();
                 break;
         }
@@ -104,7 +104,11 @@ class Request
             'timeout'       => \Genesis\GenesisConfig::getNetworkTimeout(),
             'ca_bundle'     => \Genesis\GenesisConfig::getCertificateBundle(),
             'user_agent'    => sprintf('Genesis PHP Client v%s', \Genesis\GenesisConfig::getVersion()),
-            'user_login'    => sprintf('%s:%s', \Genesis\GenesisConfig::getUsername(), \Genesis\GenesisConfig::getPassword()),
+            'user_login'    => sprintf(
+                '%s:%s',
+                \Genesis\GenesisConfig::getUsername(),
+                \Genesis\GenesisConfig::getPassword()
+            ),
         );
 
         $this->context->prepareRequestBody($requestData);

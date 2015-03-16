@@ -25,7 +25,7 @@ namespace Genesis\API\Request\Financial;
 /**
  * Void Request
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class Void extends \Genesis\API\Request
@@ -45,29 +45,14 @@ class Void extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'payment_transaction' => array (
-                'transaction_type'  => 'void',
-                'transaction_id'    => $this->transaction_id,
-                'usage'             => $this->usage,
-                'remote_ip'         => $this->remote_ip,
-                'reference_id'      => $this->reference_id,
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -75,12 +60,27 @@ class Void extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'transaction_id',
             'remote_ip',
             'reference_id',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'payment_transaction' => array(
+                'transaction_type' => 'void',
+                'transaction_id' => $this->transaction_id,
+                'usage' => $this->usage,
+                'remote_ip' => $this->remote_ip,
+                'reference_id' => $this->reference_id,
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

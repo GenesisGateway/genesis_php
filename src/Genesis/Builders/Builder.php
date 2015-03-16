@@ -25,7 +25,7 @@ namespace Genesis\Builders;
 /**
  * Builder handler
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Builders
  */
 class Builder
@@ -46,7 +46,7 @@ class Builder
         $interface = \Genesis\GenesisConfig::getInterfaceSetup('builder');
 
         switch ($interface) {
-            case 'xml_domdocument';
+            case 'xml_domdocument':
                 $this->context = new XML\DOMDocument();
                 break;
             default:

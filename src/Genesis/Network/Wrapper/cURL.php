@@ -26,7 +26,7 @@ namespace Genesis\Network\Wrapper;
  * cURL Network Interface
  * Note: requires php curl extension
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Network
  */
 class cURL implements \Genesis\Network\NetworkInterface
@@ -108,32 +108,34 @@ class cURL implements \Genesis\Network\NetworkInterface
     /**
      * Set cURL headers/options, based on the request data
      *
+     * @param array $requestData
+     *
      * @return void
      */
     public function prepareRequestBody($requestData)
     {
         $options = array(
-            CURLOPT_ENCODING        => 'gzip',
-            CURLOPT_HEADER          => true,
-            CURLOPT_HTTPHEADER      => array('Content-Type: text/xml', 'Expect:'),
-            CURLOPT_HTTPAUTH        => CURLAUTH_BASIC,
-            CURLOPT_URL             => $requestData['url'],
-            CURLOPT_TIMEOUT         => $requestData['timeout'],
-            CURLOPT_USERAGENT       => $requestData['user_agent'],
-            CURLOPT_USERPWD         => $requestData['user_login'],
-            CURLOPT_RETURNTRANSFER  => true,
-	        // SSL/TLS Configuration
-            CURLOPT_CAINFO          => $requestData['ca_bundle'],
-            CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_SSL_VERIFYHOST  => 2,
+            CURLOPT_ENCODING => 'gzip',
+            CURLOPT_HEADER => true,
+            CURLOPT_HTTPHEADER => array('Content-Type: text/xml', 'Expect:'),
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_URL => $requestData['url'],
+            CURLOPT_TIMEOUT => $requestData['timeout'],
+            CURLOPT_USERAGENT => $requestData['user_agent'],
+            CURLOPT_USERPWD => $requestData['user_login'],
+            CURLOPT_RETURNTRANSFER => true,
+            // SSL/TLS Configuration
+            CURLOPT_CAINFO => $requestData['ca_bundle'],
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
         );
 
-	    $post = array(
-		    CURLOPT_POST            => false,
-		    CURLOPT_POSTFIELDS      => $requestData['body']
-	    );
+        $post = array(
+            CURLOPT_POST => false,
+            CURLOPT_POSTFIELDS => $requestData['body']
+        );
 
-        if('POST' == strtoupper($requestData['type'])) {
+        if ('POST' == strtoupper($requestData['type'])) {
             $options = $options + $post;
         }
 
@@ -151,24 +153,24 @@ class cURL implements \Genesis\Network\NetworkInterface
     {
         $this->response = curl_exec($this->curlHandle);
 
-	    $this->checkForErrors();
+        $this->checkForErrors();
 
         list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
     }
 
-	/**
-	 * Check whether or not a cURL request is successful
-	 *
-	 * @return string
-	 * @throws \Genesis\Exceptions\NetworkError
-	 */
-	private function checkForErrors()
-	{
-		$errNo  = curl_errno($this->curlHandle);
-		$errStr = curl_error($this->curlHandle);
+    /**
+     * Check whether or not a cURL request is successful
+     *
+     * @return string
+     * @throws \Genesis\Exceptions\NetworkError
+     */
+    private function checkForErrors()
+    {
+        $errNo = curl_errno($this->curlHandle);
+        $errStr = curl_error($this->curlHandle);
 
-		if ($errStr) {
-			throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
-		}
-	}
+        if ($errStr) {
+            throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
+        }
+    }
 }

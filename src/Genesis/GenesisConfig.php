@@ -33,37 +33,41 @@ namespace Genesis;
  */
 final class GenesisConfig
 {
-	/**
-	 * Library Version
-	 */
-	const VERSION   = '1.1.0';
+    /**
+     * Library Version
+     */
+    const VERSION = '1.1.0';
 
     /**
      * Genesis base domain name
      */
-    const DOMAIN    = 'e-comprocessing.net';
+    const DOMAIN = 'e-comprocessing.net';
 
     /**
      * Default Protocol for the HTTP requests
      */
-    const PROTOCOL  = 'https';
+    const PROTOCOL = 'https';
 
-	/**
-	 * Environment definitions
-	 */
-	const ENV_STAG = 'sandbox';
-	const ENV_PROD = 'production';
+    /**
+     * Environment definiton: Staging
+     */
+    const ENV_STAG = 'sandbox';
+
+    /**
+     * Environment definition: PROD
+     */
+    const ENV_PROD = 'production';
 
     /**
      * Array storing all the configuration for this instance.
      *
      * @var Array
      */
-    public static $vault = array (
-        'environment'       => null,
-        'token'             => null,
-        'username'          => null,
-        'password'          => null,
+    public static $vault = array(
+        'environment' => null,
+        'token' => null,
+        'username' => null,
+        'password' => null,
     );
 
     /**
@@ -71,9 +75,9 @@ final class GenesisConfig
      *
      * @var array
      */
-    public static $interfaces = array (
-        'builder'   => 'xml_writer',
-        'network'   => 'curl',
+    public static $interfaces = array(
+        'builder' => 'xml_writer',
+        'network' => 'curl',
     );
 
     /**
@@ -83,14 +87,14 @@ final class GenesisConfig
      *
      * @var Array
      */
-    public static $sub_domains = array (
-        'gateway'   => array (
-            'production'    => 'gate.',
-            'sandbox'       => 'staging.gate.'
+    public static $sub_domains = array(
+        'gateway' => array(
+            'production' => 'gate.',
+            'sandbox' => 'staging.gate.'
         ),
-        'wpf'       => array (
-            'production'    => 'wpf.',
-            'sandbox'       => 'staging.wpf.',
+        'wpf' => array(
+            'production' => 'wpf.',
+            'sandbox' => 'staging.wpf.',
         ),
     );
 
@@ -99,20 +103,20 @@ final class GenesisConfig
      *
      * @param $method
      * @param $args
+     *
      * @return mixed
      */
     final public static function __callStatic($method, $args)
     {
         $ConfigKey = strtolower(substr($method, 3));
 
-        switch (substr($method, 0, 3))
-        {
-            case 'get' :
+        switch (substr($method, 0, 3)) {
+            case 'get':
                 if (isset(self::$vault[$ConfigKey])) {
                     return self::$vault[$ConfigKey];
                 }
                 break;
-            case 'set' :
+            case 'set':
                 self::$vault[$ConfigKey] = trim(reset($args));
                 break;
         }
@@ -128,13 +132,34 @@ final class GenesisConfig
      */
     final public static function getCertificateBundle()
     {
-	    $CABundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
+        $CABundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
 
         if (file_exists($CABundle)) {
-	        return $CABundle;
+            return $CABundle;
         }
 
-	    return false;
+        return false;
+    }
+
+    /**
+     * Get Basic URL for Genesis Requests
+     *
+     * @param $protocol   String - set the request protocol
+     * @param $sub_domain String - preferred sub_domain
+     * @param $port       Integer - port of the server
+     *
+     * @return String
+     * @throws \Genesis\Exceptions\EnvironmentNotSet()
+     */
+    final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
+    {
+        if (self::getEnvironment() == self::ENV_PROD) {
+            $sub_domain = self::$sub_domains[$sub_domain][self::ENV_PROD];
+        } else {
+            $sub_domain = self::$sub_domains[$sub_domain][self::ENV_STAG];
+        }
+
+        return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
     }
 
     /**
@@ -149,38 +174,16 @@ final class GenesisConfig
             throw new \Genesis\Exceptions\EnvironmentNotSet();
         }
 
-	    $alternate_names = array('prod', 'production', 'live');
+        $alternate_names = array('prod', 'production', 'live');
 
-	    foreach ($alternate_names as $name) {
-		    if (strcasecmp(self::$vault['environment'], $name) === 0) {
-			    return self::ENV_PROD;
-		    }
-	    }
+        foreach ($alternate_names as $name) {
+            if (strcasecmp(self::$vault['environment'], $name) === 0) {
+                return self::ENV_PROD;
+            }
+        }
 
-	    return self::ENV_STAG;
+        return self::ENV_STAG;
     }
-
-    /**
-     * Get Basic URL for Genesis Requests
-     *
-     * @param $protocol String - set the request protocol
-     * @param $sub_domain String - preferred sub_domain
-     * @param $port Integer - port of the server
-     * @return String
-     * @throws \Genesis\Exceptions\EnvironmentNotSet()
-     */
-    final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
-    {
-	    if (self::getEnvironment() == self::ENV_PROD) {
-		    $sub_domain = self::$sub_domains[$sub_domain][self::ENV_PROD];
-	    }
-	    else {
-		    $sub_domain = self::$sub_domains[$sub_domain][self::ENV_STAG];
-	    }
-
-        return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
-    }
-
 
     /**
      * Get selected interface option
@@ -195,20 +198,20 @@ final class GenesisConfig
             return self::$interfaces[$type];
         }
 
-	    return false;
+        return false;
     }
 
-	/**
-	 * Network timeout.
-	 *
-	 * @note Hard-code for now
-	 *
-	 * @return int
-	 */
-	final public static function getNetworkTimeout()
-	{
-		return 60;
-	}
+    /**
+     * Network timeout.
+     *
+     * @note Hard-code for now
+     *
+     * @return int
+     */
+    final public static function getNetworkTimeout()
+    {
+        return 60;
+    }
 
     /**
      * Get the version of this Library API
@@ -224,6 +227,7 @@ final class GenesisConfig
      * Load settings from an ini File
      *
      * @param $settings_file String - path to an ini file containing the settings
+     *
      * @throws \Genesis\Exceptions\InvalidArgument()
      */
     final public static function loadSettings($settings_file)
@@ -232,24 +236,24 @@ final class GenesisConfig
             $settings = parse_ini_file($settings_file, true);
 
             if (isset($settings['Genesis']) && is_array($settings['Genesis']) && sizeof($settings['Genesis']) > 1) {
-                foreach ($settings['Genesis'] as $option => $value)
-                {
+                foreach ($settings['Genesis'] as $option => $value) {
                     if (array_key_exists($option, self::$vault)) {
                         self::$vault[$option] = $value;
                     }
                 }
             }
 
-            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && sizeof($settings['Interfaces']) > 1) {
-                foreach ($settings['Interfaces'] as $option => $value)
-                {
+            if (isset($settings['Interfaces']) &&
+                is_array($settings['Interfaces']) &&
+                sizeof($settings['Interfaces']) > 1
+            ) {
+                foreach ($settings['Interfaces'] as $option => $value) {
                     if (array_key_exists($option, self::$interfaces)) {
                         self::$interfaces[$option] = $value;
                     }
                 }
             }
-        }
-        else {
+        } else {
             throw new \Genesis\Exceptions\InvalidArgument('The provided configuration file is invalid!');
         }
     }

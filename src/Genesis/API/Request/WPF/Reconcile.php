@@ -25,7 +25,7 @@ namespace Genesis\API\Request\WPF;
 /**
  * Web-Payment-Form Reconcile
  *
- * @package Genesis
+ * @package    Genesis
  * @subpackage Request
  */
 class Reconcile extends \Genesis\API\Request
@@ -40,25 +40,14 @@ class Reconcile extends \Genesis\API\Request
         $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf/reconcile', false));
     }
 
-    protected function populateStructure()
-    {
-        $treeStructure = array (
-            'wpf_reconcile' => array (
-                'unique_id' => $this->unique_id,
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
     private function initConfiguration()
     {
-        $config = array (
-            'url'       => '',
-            'port'      => 443,
-            'type'      => 'POST',
-            'format'    => 'xml',
-            'protocol'  => 'https',
+        $config = array(
+            'url' => '',
+            'port' => 443,
+            'type' => 'POST',
+            'format' => 'xml',
+            'protocol' => 'https',
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
@@ -66,10 +55,21 @@ class Reconcile extends \Genesis\API\Request
 
     private function setRequiredFields()
     {
-        $requiredFields = array (
+        $requiredFields = array(
             'unique_id',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    protected function populateStructure()
+    {
+        $treeStructure = array(
+            'wpf_reconcile' => array(
+                'unique_id' => $this->unique_id,
+            )
+        );
+
+        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

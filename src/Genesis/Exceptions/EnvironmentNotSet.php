@@ -22,12 +22,17 @@
  */
 namespace Genesis\Exceptions;
 
+/**
+ * Class EnvironmentNotSet
+ *
+ * @package Genesis\Exceptions
+ */
 class EnvironmentNotSet extends \Exception
 {
     public function __construct($message = '', $code = 0, $previous = null)
     {
         if (empty($message)) {
-	        $message = "No working enviorment has been set, please consult the API and set the enviorment.";
+            $message = "No working enviorment has been set, please consult the API and set the enviorment.";
         }
 
         parent::__construct($message, $code, $previous);
