@@ -1107,37 +1107,14 @@ YUGOSLAV REPUBLIC OF',
     );
 
     /**
-     * Convert ISO-4217 compatible int to float
+     * Convert amount to ISO-4217 minor currency unit
      *
      * @param $amount - amount to convert
      * @param $iso    - iso code of the currency
      *
-     * @return string   - using string as we don't want to cast it without knowing how much precision is required
+     * @return mixed  - using string as we don't want to cast it without knowing how much precision is required
      */
-    public static function exponentToReal($amount, $iso)
-    {
-        $iso = strtoupper($iso);
-
-        if (array_key_exists($iso, self::$iso4217)) {
-            $exp = intval(self::$iso4217[$iso]['exponent']);
-
-            if ($exp > 0) {
-                return bcdiv($amount, pow(10, $exp), $exp);
-            }
-        }
-
-        return strval($amount);
-    }
-
-    /**
-     * Convert int/float to an ISO-4217 compatible value
-     *
-     * @param $amount - amount to convert
-     * @param $iso    - iso code of the currency
-     *
-     * @return mixed    - using string as we don't want to cast it without knowing how much precision is required
-     */
-    public static function realToExponent($amount, $iso)
+    public static function amountToExponent($amount, $iso)
     {
         $iso = strtoupper($iso);
 
@@ -1146,6 +1123,29 @@ YUGOSLAV REPUBLIC OF',
 
             if ($exp > 0) {
                 return bcmul($amount, pow(10, $exp), 0);
+            }
+        }
+
+        return strval($amount);
+    }
+
+    /**
+     * Convert ISO-4217 minor currency unit to amount
+     *
+     * @param $amount - amount to convert
+     * @param $iso    - iso code of the currency
+     *
+     * @return string - using string as we don't want to cast it without knowing how much precision is required
+     */
+    public static function exponentToAmount($amount, $iso)
+    {
+        $iso = strtoupper($iso);
+
+        if (array_key_exists($iso, self::$iso4217)) {
+            $exp = intval(self::$iso4217[$iso]['exponent']);
+
+            if ($exp > 0) {
+                return bcdiv($amount, pow(10, $exp), $exp);
             }
         }
 

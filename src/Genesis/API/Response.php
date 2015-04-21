@@ -163,7 +163,7 @@ class Response
     {
         if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
             if (isset($this->responseObj->amount) && !empty($this->responseObj->amount)) {
-                return \Genesis\Utils\Currency::exponentToReal(
+                return \Genesis\Utils\Currency::exponentToAmount(
                     $this->responseObj->amount,
                     $this->responseObj->currency
                 );

@@ -158,6 +158,22 @@ final class Common
     }
 
     /**
+     * Check if the passed argument is a valid XML tag name
+     *
+     * @param $tag
+     *
+     * @return bool
+     */
+    public static function isValidXMLName($tag)
+    {
+        if (!is_array($tag)) {
+            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
+        }
+
+        return false;
+    }
+
+    /**
      * Create ArrayObject ($target) from passed Array ($source_array)
      *
      * @param $source_array - input array

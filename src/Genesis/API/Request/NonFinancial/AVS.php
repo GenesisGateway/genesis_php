@@ -30,73 +30,299 @@ namespace Genesis\API\Request\NonFinancial;
  */
 class AVS extends \Genesis\API\Request
 {
-    protected $transaction_type;
+    /**
+     * Unique transaction id defined by merchant
+     *
+     * @var string
+     */
     protected $transaction_id;
 
+    /**
+     * Description of the transaction for later use
+     *
+     * @var string
+     */
     protected $usage;
+
+    /**
+     * Signifies whether a MOTO (mail order telephone order) transaction is performed.
+     *
+     * Contact tech support for more details.
+     *
+     * @var bool
+     */
     protected $moto;
 
+    /**
+     * IPv4 address of customer
+     *
+     * @var string
+     */
     protected $remote_ip;
+
+    /**
+     * Full name of customer as printed on credit card (first name and last name at least)
+     *
+     * @var string
+     */
     protected $card_holder;
+
+    /**
+     * Complete CC number of customer
+     *
+     * @var int
+     */
     protected $card_number;
+
+    /**
+     * CVV of CC, requirement is based on terminal configuration
+     *
+     * @var int
+     */
     protected $cvv;
+
+    /**
+     * Expiration month as printed on credit card
+     *
+     * @var string (mm)
+     */
     protected $expiration_month;
+
+    /**
+     * Expiration year as printed on credit card
+     *
+     * @var string (yyyy)
+     */
     protected $expiration_year;
+
+    /**
+     * Email address of the Customer
+     *
+     * @var string
+     */
     protected $customer_email;
+
+    /**
+     * Phone number of the customer
+     *
+     * @var string
+     */
     protected $customer_phone;
 
-    protected $billing_address;
+    /**
+     *Customer's Billing Address: First name
+     *
+     * @var string
+     */
     protected $billing_first_name;
+
+    /**
+     * Customer's Billing Address: Last name
+     *
+     * @var string
+     */
     protected $billing_last_name;
+
+    /**
+     * Customer's Billing Address: Part 1
+     *
+     * @var string
+     */
     protected $billing_address1;
+
+    /**
+     * Customer's Billing Address: Part 2
+     * @var string
+     */
     protected $billing_address2;
+
+    /**
+     * Customer's Billing Address: ZIP
+     *
+     * @var string
+     */
     protected $billing_zip_code;
+
+    /**
+     * Customer's Billing Address: City
+     *
+     * @var string
+     */
     protected $billing_city;
+
+    /**
+     * Customer's Billing Address: State
+     *
+     * format: ISO-3166-2
+     *
+     * @var string
+     */
     protected $billing_state;
+
+    /**
+     * Customer's Billing Address: Country
+     *
+     * format: ISO-3166
+     *
+     * @var string
+     */
     protected $billing_country;
 
-    protected $shipping_address;
+    /**
+     * Customer's Shipping Address: First name
+     *
+     * @var string
+     */
     protected $shipping_first_name;
+
+    /**
+     * Customer's Shipping Address: Last name
+     *
+     * @var string
+     */
     protected $shipping_last_name;
+
+    /**
+     * Customer's Shipping Address: Part 1
+     *
+     * @var string
+     */
     protected $shipping_address1;
+
+    /**
+     * Customer's Shipping Address: Part 2
+     *
+     * @var string
+     */
     protected $shipping_address2;
+
+    /**
+     * Customer's Shipping Address: ZIP
+     *
+     * @var string
+     */
     protected $shipping_zip_code;
+
+    /**
+     * Customer's Shipping Address: City
+     *
+     * @var string
+     */
     protected $shipping_city;
+
+    /**
+     * Customer's Shipping Address: State
+     *
+     * format: ISO-3166-2
+     *
+     * @var string
+     */
     protected $shipping_state;
+
+    /**
+     * Customer's Shipping Address
+     *
+     * format: ISO-3166
+     *
+     * @var string
+     */
     protected $shipping_country;
 
+    /**
+     * Social Security number or equivalent value for non US customers.
+     *
+     * @var string
+     */
     protected $risk_ssn;
+
+    /**
+     * Customer's MAC address
+     *
+     * @var string
+     */
     protected $risk_mac_address;
+
+    /**
+     * Customer's Session Id
+     *
+     * @var string
+     */
     protected $risk_session_id;
+
+    /**
+     * Customer's User Id
+     *
+     * @var string
+     */
     protected $risk_user_id;
+
+    /**
+     * Customer's User Level
+     *
+     * @var string
+     */
     protected $risk_user_level;
+
+    /**
+     * Customer's Email address
+     *
+     * @note Set here if different from
+     *       shipping / billing
+     *
+     * @var string
+     */
     protected $risk_email;
+
+    /**
+     * Customer's Phone number
+     *
+     * @note Set here if different from
+     *       shipping / billing
+     *
+     * @var string
+     */
     protected $risk_phone;
+
+    /**
+     * Customer's IP address
+     *
+     * @note Set here if different from remote_ip
+     *
+     * @var string
+     */
     protected $risk_remote_ip;
+
+    /**
+     * Customer's Serial Number
+     *
+     * @var string
+     */
     protected $risk_serial_number;
 
-    public function __construct()
-    {
-        $this->initConfiguration();
-        $this->setRequiredFields();
-
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
-    }
-
-    private function initConfiguration()
+    /**
+     * Set the per-request configuration
+     *
+     * @return void
+     */
+    protected function initConfiguration()
     {
         $config = array(
-            'url' => '',
-            'port' => 443,
-            'type' => 'POST',
-            'format' => 'xml',
-            'protocol' => 'https',
+            'proto' => 'https',
+            'port'  => 443,
+            'type'  => 'POST',
+            'format'=> 'xml',
+            'url'   => $this->buildRequestURL('gateway', 'process', true),
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
-    private function setRequiredFields()
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
     {
         $requiredFields = array(
             'transaction_id',
@@ -118,6 +344,11 @@ class AVS extends \Genesis\API\Request
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 
+    /**
+     * Create the request's Tree structure
+     *
+     * @return void
+     */
     protected function populateStructure()
     {
         $treeStructure = array(

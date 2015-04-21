@@ -30,37 +30,72 @@ namespace Genesis\API\Request\Financial;
  */
 class Refund extends \Genesis\API\Request
 {
+    /**
+     * Unique transaction id defined by merchant
+     *
+     * @var string
+     */
     protected $transaction_id;
 
+    /**
+     * Description of the transaction for later use
+     *
+     * @var string
+     */
     protected $usage;
 
+    /**
+     * IPv4 address of customer
+     *
+     * @var string
+     */
     protected $remote_ip;
-    protected $reference_id;
+
+    /**
+     * Amount of transaction in minor currency unit
+     *
+     * @var int
+     */
     protected $amount;
+
+    /**
+     * Currency code in ISO-4217
+     *
+     * @var string
+     */
     protected $currency;
 
-    public function __construct()
-    {
-        $this->initConfiguration();
-        $this->setRequiredFields();
+    /**
+     * Unique id of the existing (target) transaction
+     *
+     * @var string
+     */
+    protected $reference_id;
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
-    }
-
-    private function initConfiguration()
+    /**
+     * Set the per-request configuration
+     *
+     * @return void
+     */
+    protected function initConfiguration()
     {
         $config = array(
-            'url' => '',
-            'port' => 443,
-            'type' => 'POST',
-            'format' => 'xml',
-            'protocol' => 'https',
+            'proto' => 'https',
+            'port'  => 443,
+            'type'  => 'POST',
+            'format'=> 'xml',
+            'url'   => $this->buildRequestURL('gateway', 'process', true),
         );
 
         $this->config = \Genesis\Utils\Common::createArrayObject($config);
     }
 
-    private function setRequiredFields()
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
     {
         $requiredFields = array(
             'transaction_id',
@@ -73,6 +108,11 @@ class Refund extends \Genesis\API\Request
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 
+    /**
+     * Create the request's Tree structure
+     *
+     * @return void
+     */
     protected function populateStructure()
     {
         $treeStructure = array(

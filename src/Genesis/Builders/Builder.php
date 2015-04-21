@@ -46,12 +46,12 @@ class Builder
         $interface = \Genesis\GenesisConfig::getInterfaceSetup('builder');
 
         switch ($interface) {
-            case 'xml_domdocument':
-                $this->context = new XML\DOMDocument();
+            case 'json':
+                $this->context = new Wrapper\JSON();
                 break;
             default:
-            case 'xml_writer':
-                $this->context = new XML\XMLWriter();
+            case 'xml':
+                $this->context = new Wrapper\XML();
                 break;
         }
     }

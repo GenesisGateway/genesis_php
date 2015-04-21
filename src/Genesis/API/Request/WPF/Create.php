@@ -30,75 +30,308 @@ namespace Genesis\API\Request\WPF;
  */
 class Create extends \Genesis\API\Request
 {
+    /**
+     * unique transaction id defined by merchant
+     *
+     * @var string
+     */
     protected $transaction_id;
 
+    /**
+     * Amount of transaction in minor currency unit
+     *
+     * @var int
+     */
     protected $amount;
+
+    /**
+     * Currency code in ISO-4217
+     *
+     * @var string
+     */
     protected $currency;
+
+    /**
+     * Statement, as it appears in the customer’s bank statement
+     *
+     * @var string
+     */
     protected $usage;
+
+    /**
+     * a text describing the reason of the payment
+     *
+     * e.g. "you’re buying concert tickets"
+     *
+     * @var string
+     */
     protected $description;
 
+    /**
+     * Email address of the Customer
+     *
+     * @var string
+     */
     protected $customer_email;
+
+    /**
+     * Phone number of the customer
+     *
+     * @var string
+     */
     protected $customer_phone;
 
+
+    /**
+     * URL endpoint for Genesis Notifications
+     *
+     * @var string
+     */
     protected $notification_url;
+
+    /**
+     * URL where customer is sent to after successful payment
+     *
+     * @var string
+     */
     protected $return_success_url;
+
+    /**
+     * URL where customer is sent to after un-successful payment
+     *
+     * @var string
+     */
     protected $return_failure_url;
+
+    /**
+     * URL where the customer is sent to after they cancel the payment
+     *
+     * @var string
+     */
     protected $return_cancel_url;
 
-    protected $billing_address;
+    /**
+     *Customer's Billing Address: First name
+     *
+     * @var string
+     */
     protected $billing_first_name;
+
+    /**
+     * Customer's Billing Address: Last name
+     *
+     * @var string
+     */
     protected $billing_last_name;
+
+    /**
+     * Customer's Billing Address: Part 1
+     *
+     * @var string
+     */
     protected $billing_address1;
+
+    /**
+     * Customer's Billing Address: Part 2
+     * @var string
+     */
     protected $billing_address2;
+
+    /**
+     * Customer's Billing Address: ZIP
+     *
+     * @var string
+     */
     protected $billing_zip_code;
+
+    /**
+     * Customer's Billing Address: City
+     *
+     * @var string
+     */
     protected $billing_city;
+
+    /**
+     * Customer's Billing Address: State
+     *
+     * format: ISO-3166-2
+     *
+     * @var string
+     */
     protected $billing_state;
+
+    /**
+     * Customer's Billing Address: Country
+     *
+     * format: ISO-3166
+     *
+     * @var string
+     */
     protected $billing_country;
 
-    protected $shipping_address;
+    /**
+     * Customer's Shipping Address: First name
+     *
+     * @var string
+     */
     protected $shipping_first_name;
+
+    /**
+     * Customer's Shipping Address: Last name
+     *
+     * @var string
+     */
     protected $shipping_last_name;
+
+    /**
+     * Customer's Shipping Address: Part 1
+     *
+     * @var string
+     */
     protected $shipping_address1;
+
+    /**
+     * Customer's Shipping Address: Part 2
+     *
+     * @var string
+     */
     protected $shipping_address2;
+
+    /**
+     * Customer's Shipping Address: ZIP
+     *
+     * @var string
+     */
     protected $shipping_zip_code;
+
+    /**
+     * Customer's Shipping Address: City
+     *
+     * @var string
+     */
     protected $shipping_city;
+
+    /**
+     * Customer's Shipping Address: State
+     *
+     * format: ISO-3166-2
+     *
+     * @var string
+     */
     protected $shipping_state;
+
+    /**
+     * Customer's Shipping Address
+     *
+     * format: ISO-3166
+     *
+     * @var string
+     */
     protected $shipping_country;
 
-    protected $transaction_type;
+    /**
+     * The transaction types that the merchant is willing to accept payments for
+     *
+     * @var array
+     */
+    protected $transaction_types = array();
 
+    /**
+     * Social Security number or equivalent value for non US customers.
+     *
+     * @var string
+     */
     protected $risk_ssn;
+
+    /**
+     * Customer's MAC address
+     *
+     * @var string
+     */
     protected $risk_mac_address;
+
+    /**
+     * Customer's Session Id
+     *
+     * @var string
+     */
     protected $risk_session_id;
+
+    /**
+     * Customer's User Id
+     *
+     * @var string
+     */
     protected $risk_user_id;
+
+    /**
+     * Customer's User Level
+     *
+     * @var string
+     */
     protected $risk_user_level;
+
+    /**
+     * Customer's Email address
+     *
+     * @note Set here if different from
+     *       shipping / billing
+     *
+     * @var string
+     */
     protected $risk_email;
+
+    /**
+     * Customer's Phone number
+     *
+     * @note Set here if different from
+     *       shipping / billing
+     *
+     * @var string
+     */
     protected $risk_phone;
+
+    /**
+     * Customer's IP address
+     *
+     * @note Set here if different from remote_ip
+     *
+     * @var string
+     */
     protected $risk_remote_ip;
+
+    /**
+     * Customer's Serial Number
+     *
+     * @var string
+     */
     protected $risk_serial_number;
 
-    public function __construct()
+    /**
+     * Set the per-request configuration
+     *
+     * @return void
+     */
+    protected function initConfiguration()
     {
-        $this->initConfiguration();
-        $this->setRequiredFields();
-
-        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
-    }
-
-    private function initConfiguration()
-    {
-        $config = array(
-            'url' => '',
-            'port' => 443,
-            'type' => 'POST',
-            'format' => 'xml',
-            'protocol' => 'https',
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'proto' => 'https',
+                'port'  => 443,
+                'type'  => 'POST',
+                'format'=> 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', true));
     }
 
-    private function setRequiredFields()
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
     {
         $requiredFields = array(
             'transaction_id',
@@ -118,25 +351,17 @@ class Create extends \Genesis\API\Request
             'billing_zip_code',
             'billing_city',
             'billing_country',
-            'transaction_type',
+            'transaction_types',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 
-    public function setLanguage($language = 'en')
-    {
-        if (empty($language)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'The provided argument is not a valid ISO-639-1 language code!'
-            );
-        }
-
-        $path = sprintf('%s/wpf', substr(strtolower($language), 0, 2));
-
-        $this->setApiConfig('url', $this->buildRequestURL('wpf', $path, false));
-    }
-
+    /**
+     * Create the request's Tree structure
+     *
+     * @return void
+     */
     protected function populateStructure()
     {
         $treeStructure = array(
@@ -172,7 +397,7 @@ class Create extends \Genesis\API\Request
                     'state' => $this->shipping_state,
                     'country' => $this->shipping_country,
                 ),
-                'transaction_types' => $this->transaction_type,
+                'transaction_types' => $this->transaction_types,
                 'risk_params' => array(
                     'ssn' => $this->risk_ssn,
                     'mac_address' => $this->risk_mac_address,
@@ -188,5 +413,59 @@ class Create extends \Genesis\API\Request
         );
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
+    }
+
+    /**
+     * Add transaction type to the list of available types
+     *
+     * @param string $name
+     * @param array  $opts
+     */
+    public function addTransactionType($name, $opts = array())
+    {
+        if (empty($opts) || !is_array($opts)) {
+            $type = array(
+                'transaction_type' => array(
+                    'name'  => $name
+                )
+            );
+        }
+        else {
+            $opts = array_merge($opts, array('name' => $name));
+
+            $type =  array(
+                'transaction_type' => $opts
+            );
+        }
+
+        array_push($this->transaction_types, $type);
+    }
+
+    /**
+     * Add ISO 639-1 language code to the URL
+     *
+     * @param string $language iso code of the language
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setLanguage($language = 'en')
+    {
+        if (empty($language)) {
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'The provided argument is not a valid ISO-639-1 language code!'
+            );
+        }
+
+        parent::setApiConfig(
+            'url',
+            parent::buildRequestURL(
+                'wpf',
+                sprintf(
+                    '%s/wpf',
+                    substr(strtolower($language), 0, 2)
+                ),
+                false
+            )
+        );
     }
 }

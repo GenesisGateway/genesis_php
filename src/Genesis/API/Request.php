@@ -23,7 +23,9 @@
 namespace Genesis\API;
 
 /**
- * Request - base of every API request
+ * Class Request
+ *
+ * Base of every API request
  *
  * @package    Genesis
  * @subpackage API
@@ -88,17 +90,55 @@ abstract class Request
      */
     protected $builderContext;
 
+    /**
+     * Add transaction type
+     */
+    public function addTransactionType($name, $opts = array())
+    {
+
+    }
 
     /**
-     * Add ISO 639-1 language code to the URL
-     *
-     * @note currently used only for WPF requests
-     * @return void
+     * Set the language of a WPF form
      */
     public function setLanguage()
     {
+
     }
 
+    /**
+     * Initialize per-request configuration
+     */
+    protected function initConfiguration()
+    {
+
+    }
+
+    /**
+     * Set the *required fields for the request
+     */
+    protected function setRequiredFields()
+    {
+
+    }
+
+    /**
+     * Create the Tree structure and populate
+     * the fields with the set parameters.
+     */
+    protected function populateStructure()
+    {
+
+    }
+
+    /**
+     * Convert Pascal to Camel case and set the correct property
+     *
+     * @param $method
+     * @param $args
+     *
+     * @return $this
+     */
     public function __call($method, $args)
     {
         $methodType = substr($method, 0, 3);
@@ -121,6 +161,15 @@ abstract class Request
         }
 
         return $this;
+    }
+
+    /**
+     * Bootstrap per-request configuration
+     */
+    public function __construct()
+    {
+        $this->initConfiguration();
+        $this->setRequiredFields();
     }
 
     /**
@@ -161,26 +210,15 @@ abstract class Request
     }
 
     /**
-     * Process the amount set by user to comply with ISO-4217
+     * Convert the amount from Minor cur
      *
      * @return void
      */
     protected function processAmount()
     {
         if (isset($this->amount) && isset($this->currency)) {
-            $this->amount = \Genesis\Utils\Currency::realToExponent($this->amount, $this->currency);
+            $this->amount = \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency);
         }
-    }
-
-    /**
-     * Create the Tree structure \ArrayObject
-     * and populate the fields with the set
-     * parameters.
-     *
-     * @return void
-     */
-    protected function populateStructure()
-    {
     }
 
     /**
@@ -316,13 +354,11 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $base_url = \Genesis\GenesisConfig::getEnvironmentURL(
-            $this->config->protocol,
-            $sub_domain,
-            $this->config->port
-        );
+        $proto  = isset($this->config)  ? $this->getApiConfig('proto')          : '';
+        $port   = isset($this->config)  ? $this->getApiConfig('port')           : '';
+        $token  = ($appendToken)        ? \Genesis\GenesisConfig::getToken()    : '';
 
-        $token = $appendToken ? \Genesis\GenesisConfig::getToken() : '';
+        $base_url = \Genesis\GenesisConfig::getEnvironmentURL($proto, $sub_domain, $port);
 
         return sprintf('%s/%s/%s', $base_url, $path, $token);
     }

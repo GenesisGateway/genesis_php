@@ -26,14 +26,15 @@ class CreateSpec extends ObjectBehavior
 
 	public function it_should_set_language_parameter()
 	{
-		$this->setLanguage('xx');
-		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/xx/wpf/');
+		$this->setLanguage('cn');
+		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/cn/wpf/');
 	}
 
 	public function it_should_parse_only_two_letters()
 	{
-		$this->setLanguage('xxooxx');
-		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/xx/wpf/');
+		$this->setLanguage('yzabcdef');
+		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/yz/wpf/');
+
 	}
 
     function setRequestParameters()
@@ -74,6 +75,9 @@ class CreateSpec extends ObjectBehavior
             'beEmpty' => function($subject) {
 	            return empty($subject);
             },
+            'bePrinted' => function($subject) {
+                var_dump($subject);
+            }
         );
     }
 }
