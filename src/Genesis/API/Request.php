@@ -93,7 +93,7 @@ abstract class Request
     /**
      * Add transaction type
      */
-    public function addTransactionType($name, $opts = array())
+    public function addTransactionType($name, $parameters = array())
     {
 
     }

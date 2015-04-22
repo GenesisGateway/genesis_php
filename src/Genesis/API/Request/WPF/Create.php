@@ -419,26 +419,21 @@ class Create extends \Genesis\API\Request
      * Add transaction type to the list of available types
      *
      * @param string $name
-     * @param array  $opts
+     * @param array  $parameters
      */
-    public function addTransactionType($name, $opts = array())
+    public function addTransactionType($name, $parameters = array())
     {
-        if (empty($opts) || !is_array($opts)) {
-            $type = array(
+        array_push(
+            $this->transaction_types,
+            array(
                 'transaction_type' => array(
-                    'name'  => $name
+                   '@attributes' => array(
+                       'name' => $name
+                   ),
+                   $parameters
                 )
-            );
-        }
-        else {
-            $opts = array_merge($opts, array('name' => $name));
-
-            $type =  array(
-                'transaction_type' => $opts
-            );
-        }
-
-        array_push($this->transaction_types, $type);
+            )
+        );
     }
 
     /**

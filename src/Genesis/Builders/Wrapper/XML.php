@@ -21,6 +21,7 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 namespace Genesis\Builders\Wrapper;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * XMLWriter Builder Interface
@@ -47,7 +48,8 @@ final class XML implements \Genesis\Builders\BuilderInterface
 
         $this->context->openMemory();
         $this->context->startDocument('1.0', 'UTF-8');
-        $this->context->setIndent(4);
+        $this->context->setIndent(true);
+        $this->context->setIndentString("\t");
     }
 
     /**
@@ -62,15 +64,43 @@ final class XML implements \Genesis\Builders\BuilderInterface
 
     /**
      * Insert tree-structured array as nodes in XMLWriter
+     * and end the current Document.
      *
      * @param $data Array - tree-structured array
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
      *
      * @return void
      */
     public function populateNodes($data)
     {
-        if (\Genesis\Utils\Common::isValidXMLName(key($data))) {
-            $this->context->startElement(key($data));
+        if (!\Genesis\Utils\Common::isValidArray($data)) {
+            throw new InvalidArgument(
+                'Invalid data structure'
+            );
+        }
+
+        // Ensure that the Array position is 0
+        reset($data);
+
+        $this->iterateArray(key($data), reset($data));
+
+        // Finish the document
+        $this->context->endDocument();
+    }
+
+    /**
+     * Recursive iteration over array
+     *
+     * @param string $name name of the current leave
+     * @param array  $data value of the current leave
+     *
+     * @return void
+     */
+    private function iterateArray($name, $data)
+    {
+        if (self::isValidXMLName($name)) {
+            $this->context->startElement($name);
         }
 
         foreach ($data as $key => $value) {
@@ -78,6 +108,8 @@ final class XML implements \Genesis\Builders\BuilderInterface
                 continue;
             }
 
+            // Note: XMLWriter discards Attribute writes if they are written
+            // after an Element, so make sure the attributes are at the top
             if ($key === '@attributes') {
                 if (is_array($value)) {
                     foreach ($value as $attribute_name => $attribute_value) {
@@ -91,7 +123,7 @@ final class XML implements \Genesis\Builders\BuilderInterface
             if ($key === '@cdata') {
                 if (is_array($value)) {
                     foreach ($value as $attribute_name => $attribute_value) {
-                        $this->context->writeCData($value);
+                        $this->context->writeCData($attribute_value);
                     }
                 }
                 else {
@@ -115,27 +147,41 @@ final class XML implements \Genesis\Builders\BuilderInterface
             }
 
             if (is_array($value)) {
-                $this->populateNodes($value);
+                $this->iterateArray($key, $value);
             }
             else {
                 $this->context->writeElement($key, $value);
             }
         }
 
-        if (\Genesis\Utils\Common::isValidXMLName($data)) {
+        if (self::isValidXMLName($name)) {
             $this->context->endElement();
         }
     }
 
     /**
+     * Check if the passed argument is a valid XML tag name
+     *
+     * @param $tag
+     *
+     * @return bool
+     */
+    private function isValidXMLName($tag)
+    {
+        if (!is_array($tag)) {
+            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
+        }
+
+        return false;
+    }
+
+    /**
      * Get Builder output
      *
-     * @return mixed
+     * @return string XML Document
      */
     public function getOutput()
     {
-        $this->context->endDocument();
-
         return $this->context->outputMemory(false);
     }
 }

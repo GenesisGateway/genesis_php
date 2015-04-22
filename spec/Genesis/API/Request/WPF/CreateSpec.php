@@ -17,6 +17,7 @@ class CreateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
+        $this->getDocument()->shouldContain('transaction_types');
     }
 
     function it_should_fail_when_no_parameters()
@@ -34,7 +35,6 @@ class CreateSpec extends ObjectBehavior
 	{
 		$this->setLanguage('yzabcdef');
 		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/yz/wpf/');
-
 	}
 
     function setRequestParameters()
@@ -67,6 +67,17 @@ class CreateSpec extends ObjectBehavior
         $this->setBillingCountry($faker->countryCode);
         $this->addTransactionType('sale');
         $this->addTransactionType('sale3d');
+        $this->addTransactionType('ezeewallet',
+                                  array(
+                                      'wallet_id'   => 'john@doe.com',
+                                      'wallet_pass' => 'ask|ksa'
+                                  )
+        );
+        $this->addTransactionType('paybyvoucher',
+                                  array(
+                                      'source_id' => 'this-is-source-id',
+                                      'target_id' => 'this-is-target-id'
+                                  ));
     }
 
     public function getMatchers()
@@ -75,9 +86,6 @@ class CreateSpec extends ObjectBehavior
             'beEmpty' => function($subject) {
 	            return empty($subject);
             },
-            'bePrinted' => function($subject) {
-                var_dump($subject);
-            }
         );
     }
 }
