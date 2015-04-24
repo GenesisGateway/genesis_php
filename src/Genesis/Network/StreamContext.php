@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Network\Wrapper;
+namespace Genesis\Network;
 
 /**
  * Stream Context Network Interface
@@ -28,7 +28,7 @@ namespace Genesis\Network\Wrapper;
  * @package    Genesis
  * @subpackage Network
  */
-class StreamContext implements \Genesis\Network\NetworkInterface
+class StreamContext implements \Genesis\Interfaces\Network
 {
     /**
      * Keep per-request data as other methods need it
@@ -194,7 +194,7 @@ class StreamContext implements \Genesis\Network\NetworkInterface
      *
      * @throws \Genesis\Exceptions\NetworkError
      */
-    public function processErrors($errNo, $errStr)
+    private function processErrors($errNo, $errStr)
     {
         throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
     }

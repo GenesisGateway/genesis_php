@@ -51,15 +51,16 @@ class Blacklist extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $config = array(
-            'proto' => 'https',
-            'port'  => 443,
-            'type'  => 'POST',
-            'format'=> 'xml',
-            'url'   => $this->buildRequestURL('gateway', 'blacklists', true),
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol'  => 'https',
+                'port'      => 443,
+                'type'      => 'POST',
+                'format'    => 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', false));
     }
 
     /**

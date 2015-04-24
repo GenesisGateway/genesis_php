@@ -73,16 +73,15 @@ class CommonSpec extends ObjectBehavior
 	{
 		$xml = '<?xml version="1.0" encoding="UTF-8"?><response><arg1>val1</arg1><arg2>val2</arg2></response>';
 
-		$this->shouldNotThrow()->during('parseXMLtoArrayObject', array($xml));
-		$this->parseXMLtoArrayObject($xml)->shouldBeAnInstanceOf('\ArrayObject');
-		$this->parseXMLtoArrayObject($xml)->arg1->shouldBeLike('val1');
-		$this->parseXMLtoArrayObject($xml)->arg2->shouldBeLike('val2');
+		$this->shouldNotThrow()->during('xmlToObj', array($xml));
+		$this->xmlToObj($xml)->shouldBeAnInstanceOf('\stdClass');
+		$this->xmlToObj($xml)->arg1->shouldBeLike('val1');
+		$this->xmlToObj($xml)->arg2->shouldBeLike('val2');
 	}
 
-	function it_can_recover_from_invalid_xml()
+	function it_should_throw_on_invalid_xml()
 	{
-		$this->shouldNotThrow()->during('parseXMLtoArrayObject', array(''));
-		$this->parseXMLtoArrayObject('')->shouldBe(false);
+		$this->shouldThrow()->during('xmlToObj', array(''));
 	}
 
     function getMatchers()

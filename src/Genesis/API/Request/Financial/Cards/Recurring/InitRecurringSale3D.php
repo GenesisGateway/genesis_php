@@ -388,15 +388,16 @@ class InitRecurringSale3D extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $config = array(
-            'proto' => 'https',
-            'port'  => 443,
-            'type'  => 'POST',
-            'format'=> 'xml',
-            'url'   => $this->buildRequestURL('gateway', 'process', true),
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol'  => 'https',
+                'port'      => 443,
+                'type'      => 'POST',
+                'format'    => 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -455,7 +456,7 @@ class InitRecurringSale3D extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'init_recurring_sale3d',
+                'transaction_type' => \Genesis\API\Constants\Transcation\Types::INIT_RECURRING_SALE_3D,
                 'transaction_id' => $this->transaction_id,
                 'usage' => $this->usage,
                 'gaming' => $this->gaming,
@@ -464,7 +465,13 @@ class InitRecurringSale3D extends \Genesis\API\Request
                 'notification_url' => $this->notification_url,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
-                'amount' => $this->amount,
+                'amount' => parent::transform(
+                    'amount',
+                    array(
+                        $this->amount,
+                        $this->currency,
+                    )
+                ),
                 'currency' => $this->currency,
                 'card_holder' => $this->card_holder,
                 'card_number' => $this->card_number,

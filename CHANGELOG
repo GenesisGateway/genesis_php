@@ -4,7 +4,7 @@
 * Add flags for 3D/WPF notifications: API\Notification\is3DNotification(), API\Notification\isWPFNotification()
 * Add API\Notification\renderResponse() method
 * Add support for immediate validation when parsing API\Notification
-* Add support for alias-based environment setting in GenesisConfig
+* Add support for alias-based environment setting in Config
 * Add system requirements verification
 * Add LICENSE file
 * Fix API\Response initialization

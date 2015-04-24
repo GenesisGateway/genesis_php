@@ -20,29 +20,59 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Builders;
+namespace Genesis;
 
 /**
- * An interface for every builder abstraction (XMLWriter, DOMDocument, JSON etc.).
+ * Builder handler
  *
  * @package    Genesis
  * @subpackage Builders
  */
-interface BuilderInterface
+class Builder
 {
     /**
-     * Get the generated Builder output
+     * Instance of the selected builder wrapper
      *
-     * @return mixed
+     * @var object
      */
-    public function getOutput();
+    private $context;
 
     /**
-     * Tree-structured array representing the data structure
+     * Initialize the required builder, based on the use's
+     * preference (set inside the configuration ini file)
+     */
+    public function __construct($interface = null)
+    {
+        $interface = $interface ?: \Genesis\Config::getInterfaceSetup('builder');
+
+        switch ($interface) {
+            case 'json':
+                $this->context = new Builders\JSON();
+                break;
+            default:
+            case 'xml':
+                $this->context = new Builders\XML();
+                break;
+        }
+    }
+
+    /**
+     * Get the printable Builder Output
+     *
+     * @return string
+     */
+    public function getDocument()
+    {
+        return $this->context->getOutput();
+    }
+
+    /**
+     * Parse tree-structure into Builder document
      *
      * @param array $structure
-     *
-     * @return mixed
      */
-    public function populateNodes($structure);
+    public function parseStructure(Array $structure)
+    {
+        $this->context->populateNodes($structure);
+    }
 }

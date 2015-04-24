@@ -20,57 +20,79 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Network;
+namespace Genesis\API\Constants;
 
 /**
- * An interface for every network abstraction (cURL, Stream etc.).
+ * Class i18n
  *
- * @package    Genesis
- * @subpackage Network
+ * Get internationalisation (i18n) codes
+ *
+ * @package Genesis\API\Constants
  */
-interface NetworkInterface
+class i18n
 {
     /**
-     * Get HTTP Status code
-     *
-     * @return mixed
+     * Arabic locale and language
      */
-    public function getStatus();
+    const AR = 'Arabic';
 
     /**
-     * Get the full response (headers/body)
-     *
-     * @return mixed
+     * Bulgarian locale and language
      */
-    public function getResponse();
+    const BG = 'Bulgarian';
 
     /**
-     * Get response headers
-     *
-     * @return mixed
+     * German locale and language
      */
-    public function getResponseHeaders();
+    const DE = 'German';
 
     /**
-     * Get response body
-     *
-     * @return mixed
+     * English locale and language settings (this is the default)
      */
-    public function getResponseBody();
+    const EN = 'English';
 
     /**
-     * Set the request parameters
-     *
-     * @param $requestData
-     *
-     * @return mixed
+     * Spanish locale and language settings
      */
-    public function prepareRequestBody($requestData);
+    const ES = 'Spanish';
 
     /**
-     * Execute pre-set request
-     *
-     * @return mixed
+     * French locale and language settings
      */
-    public function execute();
+    const FR = 'French';
+
+    /**
+     * Hindu locale and language
+     */
+    const HI = 'Hindu';
+
+    /**
+     * Japanese locale and language
+     */
+    const JA = 'Japanese';
+
+    /**
+     * Italian locale and language settings
+     */
+    const IT = 'Italian';
+
+    /**
+     * Portuguese locale and language
+     */
+    const PT = 'Portuguese';
+
+    /**
+     * Russian locale and language
+     */
+    const RU = 'Russian';
+
+    /**
+     * Turkish locale and language
+     */
+    const TR = 'Turkish';
+
+    /**
+     * Mandarin Chinese locale and language
+     */
+    const ZH ='Chinese (Mandarin)';
 }

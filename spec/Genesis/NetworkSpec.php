@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Genesis\Network;
+namespace spec\Genesis;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\API\Request as Request;
 
-class RequestSpec extends ObjectBehavior
+class NetworkSpec extends ObjectBehavior
 {
     function let(Request\NonFinancial\Fraud\Blacklist $apiCtx)
     {
@@ -15,6 +15,6 @@ class RequestSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Network\Request');
+        $this->shouldHaveType('Genesis\Network');
     }
 }

@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Network;
+namespace Genesis;
 
 /**
  * Network Requests Handler
@@ -28,34 +28,30 @@ namespace Genesis\Network;
  * @package    Genesis
  * @subpackage Network
  */
-class Request
+class Network
 {
-    /**
-     * Store instance of the API Request
-     *
-     * @var \Genesis\API\Request
-     */
-    private $apiContext;
-
     /**
      * Instance of the selected network wrapper
      * @var object
      */
     private $context;
 
-    public function __construct(\Genesis\API\Request $apiContext)
+    /**
+     * Initialize the Network instance with API Request instance
+     *
+     * @param string $interface
+     */
+    public function __construct($interface = null)
     {
-        $this->apiContext = $apiContext;
-
-        $interface = \Genesis\GenesisConfig::getInterfaceSetup('network');
+        $interface = $interface ?: \Genesis\Config::getInterfaceSetup('network');
 
         switch ($interface) {
             default:
             case 'curl':
-                $this->context = new Wrapper\cURL();
+                $this->context = new Network\cURL();
                 break;
             case 'stream_context':
-                $this->context = new Wrapper\StreamContext();
+                $this->context = new Network\StreamContext();
                 break;
         }
     }
@@ -92,26 +88,28 @@ class Request
 
     /**
      * Set Header/Body of the HTTP request
+     *
+     * @param \Genesis\API\Request $apiContext
      */
-    public function setRequestData()
+    public function setApiCtxData($apiContext)
     {
-        $requestData = array(
-            'body'          => $this->apiContext->getDocument(),
-            'url'           => $this->apiContext->getApiConfig('url'),
-            'type'          => $this->apiContext->getApiConfig('type'),
-            'port'          => $this->apiContext->getApiConfig('port'),
-            'protocol'      => $this->apiContext->getApiConfig('protocol'),
-            'timeout'       => \Genesis\GenesisConfig::getNetworkTimeout(),
-            'ca_bundle'     => \Genesis\GenesisConfig::getCertificateBundle(),
-            'user_agent'    => sprintf('Genesis PHP Client v%s', \Genesis\GenesisConfig::getVersion()),
-            'user_login'    => sprintf(
-                '%s:%s',
-                \Genesis\GenesisConfig::getUsername(),
-                \Genesis\GenesisConfig::getPassword()
-            ),
+        $this->context->prepareRequestBody(
+            array(
+                'body'          => $apiContext->getDocument(),
+                'url'           => $apiContext->getApiConfig('url'),
+                'type'          => $apiContext->getApiConfig('type'),
+                'port'          => $apiContext->getApiConfig('port'),
+                'protocol'      => $apiContext->getApiConfig('protocol'),
+                'timeout'       => \Genesis\Config::getNetworkTimeout(),
+                'ca_bundle'     => \Genesis\Config::getCertificateBundle(),
+                'user_agent'    => sprintf('Genesis PHP Client v%s', \Genesis\Config::getVersion()),
+                'user_login'    => sprintf(
+                    '%s:%s',
+                    \Genesis\Config::getUsername(),
+                    \Genesis\Config::getPassword()
+                ),
+            )
         );
-
-        $this->context->prepareRequestBody($requestData);
     }
 
     /**

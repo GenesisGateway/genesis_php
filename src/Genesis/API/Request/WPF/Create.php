@@ -81,6 +81,14 @@ class Create extends \Genesis\API\Request
      */
     protected $customer_phone;
 
+    /**
+     * Card Holder
+     *
+     * Note: required only for PayByVoucher
+     *
+     * @var string
+     */
+    protected $card_holder;
 
     /**
      * URL endpoint for Genesis Notifications
@@ -316,14 +324,14 @@ class Create extends \Genesis\API\Request
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(
             array(
-                'proto' => 'https',
+                'protocol' => 'https',
                 'port'  => 443,
                 'type'  => 'POST',
                 'format'=> 'xml',
             )
         );
 
-        parent::setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', true));
+        parent::setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
 
     /**
@@ -367,12 +375,19 @@ class Create extends \Genesis\API\Request
         $treeStructure = array(
             'wpf_payment' => array(
                 'transaction_id' => $this->transaction_id,
-                'amount' => $this->amount,
+                'amount' => parent::transform(
+                    'amount',
+                    array(
+                        $this->amount,
+                        $this->currency,
+                    )
+                ),
                 'currency' => $this->currency,
                 'usage' => $this->usage,
                 'description' => $this->description,
                 'customer_email' => $this->customer_email,
                 'customer_phone' => $this->customer_phone,
+                'card_holder' => $this->card_holder,
                 'notification_url' => $this->notification_url,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
@@ -443,7 +458,7 @@ class Create extends \Genesis\API\Request
      *
      * @throws \Genesis\Exceptions\InvalidArgument
      */
-    public function setLanguage($language = 'en')
+    public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
     {
         if (empty($language)) {
             throw new \Genesis\Exceptions\InvalidArgument(

@@ -1,16 +1,16 @@
 <?php
 
-namespace spec\Genesis\Network\Wrapper;
+namespace spec\Genesis\Network;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Genesis\GenesisConfig;
+use Genesis\Config;
 
-class StreamContextSpec extends ObjectBehavior
+class cURLSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Network\Wrapper\StreamContext');
+        $this->shouldHaveType('Genesis\Network\cURL');
     }
 
     function it_can_send_remote_connections()
@@ -19,14 +19,17 @@ class StreamContextSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $remote_url = GenesisConfig::getEnvironmentURL('https','gateway', 443);
+        $remote_url = Config::getEnvironmentURL('https','gateway', 443);
 
         $options = array(
-            'body'          => '',
+            'debug'         => 'false',
             'type'          => 'GET',
+            'protocol'      => 'https',
             'url'           => $remote_url,
-            'ca_bundle'     => GenesisConfig::getCertificateBundle(),
-            'user_login'    => GenesisConfig::getUsername() . ':' . GenesisConfig::getPassword(),
+            'body'          => '',
+            'timeout'       => Config::getNetworkTimeout(),
+            'ca_bundle'     => Config::getCertificateBundle(),
+            'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
             'user_agent'    => $faker->userAgent,
         );
 
@@ -48,12 +51,6 @@ class StreamContextSpec extends ObjectBehavior
             'beOlder' => function($subject) {
                     $diff = time() - strtotime($subject);
                     return (($diff < 60) ? false : true);
-                },
-            'beFalse' => function($subject) {
-                    return (!$subject) ? true : false;
-                },
-            'beTrue' => function($subject) {
-                    return ($subject) ? true : false;
                 },
         );
     }

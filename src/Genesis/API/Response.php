@@ -47,13 +47,13 @@ class Response
     /**
      * Initialize with NetworkContext (if available)
      *
-     * @param \Genesis\Network\Request|null $networkContext
+     * @param \Genesis\Network|null $networkContext
      *
      * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function __construct($networkContext = null)
     {
-        if (is_a($networkContext, '\Genesis\Network\Request')) {
+        if (is_a($networkContext, '\Genesis\Network')) {
             $this->parseResponse($networkContext->getResponseBody());
         }
     }
@@ -72,7 +72,7 @@ class Response
         }
 
         $this->responseRaw = $response;
-        $this->responseObj = \Genesis\Utils\Common::parseXMLtoArrayObject($response);
+        $this->responseObj = \Genesis\Utils\Common::xmlToObj($response);
     }
 
     /**
@@ -87,7 +87,11 @@ class Response
     {
         $status = false;
 
-        $successfulStatuses = array('approved', 'pending_async', 'new');
+        $successfulStatuses = array(
+            \Genesis\API\Constants\Transcation\States::APPROVED,
+            \Genesis\API\Constants\Transcation\States::PENDING_ASYNC,
+            \Genesis\API\Constants\Transcation\States::NEW_STATUS,
+        );
 
         if (isset($this->responseObj->status) && in_array($this->responseObj->status, $successfulStatuses)) {
             $status = true;
@@ -109,8 +113,10 @@ class Response
      */
     public function isPartiallyApproved()
     {
-        if (isset($this->responseObj->partial_approval) && strval($this->responseObj->partial_approval) == 'true') {
-            return true;
+        if (isset($this->responseObj->partial_approval)) {
+            if (\Genesis\Utils\Common::stringToBoolean($this->responseObj->partial_approval)) {
+                return true;
+            }
         }
 
         return false;
@@ -124,11 +130,11 @@ class Response
     public function getErrorDescription()
     {
         if (isset($this->responseObj->code) && !empty($this->responseObj->code)) {
-            return Errors::getErrorDescription($this->responseObj->code);
+            return Constants\Errors::getErrorDescription($this->responseObj->code);
         }
 
         if (isset($this->responseObj->response_code) && !empty($this->responseObj->response_code)) {
-            return Errors::getIssuerResponseCode($this->responseObj->response_code);
+            return Constants\Errors::getIssuerResponseCode($this->responseObj->response_code);
         }
 
         return null;

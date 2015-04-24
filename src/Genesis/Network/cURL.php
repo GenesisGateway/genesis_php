@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Network\Wrapper;
+namespace Genesis\Network;
 
 /**
  * cURL Network Interface
@@ -29,7 +29,7 @@ namespace Genesis\Network\Wrapper;
  * @package    Genesis
  * @subpackage Network
  */
-class cURL implements \Genesis\Network\NetworkInterface
+class cURL implements \Genesis\Interfaces\Network
 {
     /**
      * Storing cURL Handle
@@ -59,7 +59,11 @@ class cURL implements \Genesis\Network\NetworkInterface
      */
     private $responseHeaders;
 
-
+    /**
+     * Initialize cURL
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->curlHandle = curl_init();

@@ -20,59 +20,57 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Builders;
+namespace Genesis\Interfaces;
 
 /**
- * Builder handler
+ * An interface for every network abstraction (cURL, Stream etc.).
  *
  * @package    Genesis
- * @subpackage Builders
+ * @subpackage Network
  */
-class Builder
+interface Network
 {
     /**
-     * Instance of the selected builder wrapper
+     * Get HTTP Status code
      *
-     * @var object
+     * @return mixed
      */
-    private $context;
+    public function getStatus();
 
     /**
-     * Initialize the required builder, based on the use's
-     * preference (set inside the configuration ini file)
+     * Get the full response (headers/body)
+     *
+     * @return mixed
      */
-    public function __construct()
-    {
-        $interface = \Genesis\GenesisConfig::getInterfaceSetup('builder');
-
-        switch ($interface) {
-            case 'json':
-                $this->context = new Wrapper\JSON();
-                break;
-            default:
-            case 'xml':
-                $this->context = new Wrapper\XML();
-                break;
-        }
-    }
+    public function getResponse();
 
     /**
-     * Get the printable Builder Output
+     * Get response headers
      *
-     * @return string
+     * @return mixed
      */
-    public function getDocument()
-    {
-        return $this->context->getOutput();
-    }
+    public function getResponseHeaders();
 
     /**
-     * Parse tree-structure into Builder document
+     * Get response body
      *
-     * @param array $structure
+     * @return mixed
      */
-    public function parseStructure(Array $structure)
-    {
-        $this->context->populateNodes($structure);
-    }
+    public function getResponseBody();
+
+    /**
+     * Set the request parameters
+     *
+     * @param $requestData
+     *
+     * @return mixed
+     */
+    public function prepareRequestBody($requestData);
+
+    /**
+     * Execute pre-set request
+     *
+     * @return mixed
+     */
+    public function execute();
 }

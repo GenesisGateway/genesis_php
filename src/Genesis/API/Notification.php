@@ -92,7 +92,7 @@ class Notification
             )
         );
 
-        $builder = new \Genesis\Builders\Builder();
+        $builder = new \Genesis\Builder('xml');
         $builder->parseStructure($structure);
 
         return $builder->getDocument();
@@ -113,7 +113,7 @@ class Notification
             )
         );
 
-        $builder = new \Genesis\Builders\Builder();
+        $builder = new \Genesis\Builder('xml');
         $builder->parseStructure($structure);
 
         header('Content-type: application/xml');
@@ -176,7 +176,7 @@ class Notification
         }
 
         $message_signature = (string)$this->notificationObj->signature;
-        $customer_password = (string)\Genesis\GenesisConfig::getPassword();
+        $customer_password = (string)\Genesis\Config::getPassword();
 
         switch (strlen($message_signature)) {
             default:

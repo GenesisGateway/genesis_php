@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Builders\Wrapper;
+namespace Genesis\Builders;
 
 /**
  * Class JSON
@@ -29,7 +29,7 @@ namespace Genesis\Builders\Wrapper;
  *
  * @package Genesis\Builders\Wrapper
  */
-final class JSON implements \Genesis\Builders\BuilderInterface
+final class JSON implements \Genesis\Interfaces\Builder
 {
     /**
      * JSON storage
@@ -60,7 +60,7 @@ final class JSON implements \Genesis\Builders\BuilderInterface
     public function populateNodes($structure)
     {
         try {
-            $this->$output = json_encode($structure);
+            $this->output = json_encode($structure);
         }
         catch (\Exception $e) {
             throw new \Genesis\Exceptions\InvalidArgument(

@@ -17,7 +17,7 @@ class CreateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
-        $this->getDocument()->shouldContain('transaction_types');
+        $this->getDocument()->shouldContainString('transaction_types');
     }
 
     function it_should_fail_when_no_parameters()
@@ -69,14 +69,14 @@ class CreateSpec extends ObjectBehavior
         $this->addTransactionType('sale3d');
         $this->addTransactionType('ezeewallet',
                                   array(
-                                      'wallet_id'   => 'john@doe.com',
-                                      'wallet_pass' => 'ask|ksa'
+                                      'wallet_id'   => 'john@example.com',
+                                      'wallet_pass' => 'password'
                                   )
         );
         $this->addTransactionType('paybyvoucher',
                                   array(
-                                      'source_id' => 'this-is-source-id',
-                                      'target_id' => 'this-is-target-id'
+                                      'source_id' => 'john@example.com',
+                                      'target_id' => 'john@example.com'
                                   ));
     }
 
@@ -86,6 +86,9 @@ class CreateSpec extends ObjectBehavior
             'beEmpty' => function($subject) {
 	            return empty($subject);
             },
+            'containString' => function($haystack, $needle) {
+                return (stripos($haystack, $needle) !== false);
+            }
         );
     }
 }

@@ -20,8 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Builders\Wrapper;
-use Genesis\Exceptions\InvalidArgument;
+namespace Genesis\Builders;
 
 /**
  * XMLWriter Builder Interface
@@ -30,7 +29,7 @@ use Genesis\Exceptions\InvalidArgument;
  * @package    Genesis
  * @subpackage Builders
  */
-final class XML implements \Genesis\Builders\BuilderInterface
+final class XML implements \Genesis\Interfaces\Builder
 {
     /**
      * Store the XMLWriter instance
@@ -75,7 +74,7 @@ final class XML implements \Genesis\Builders\BuilderInterface
     public function populateNodes($data)
     {
         if (!\Genesis\Utils\Common::isValidArray($data)) {
-            throw new InvalidArgument(
+            throw new \Genesis\Exceptions\InvalidArgument(
                 'Invalid data structure'
             );
         }
@@ -99,7 +98,7 @@ final class XML implements \Genesis\Builders\BuilderInterface
      */
     private function iterateArray($name, $data)
     {
-        if (self::isValidXMLName($name)) {
+        if (\Genesis\Utils\Common::isValidXMLName($name)) {
             $this->context->startElement($name);
         }
 
@@ -150,29 +149,15 @@ final class XML implements \Genesis\Builders\BuilderInterface
                 $this->iterateArray($key, $value);
             }
             else {
+                $value = \Genesis\Utils\Common::booleanToString($value);
+
                 $this->context->writeElement($key, $value);
             }
         }
 
-        if (self::isValidXMLName($name)) {
+        if (\Genesis\Utils\Common::isValidXMLName($name)) {
             $this->context->endElement();
         }
-    }
-
-    /**
-     * Check if the passed argument is a valid XML tag name
-     *
-     * @param $tag
-     *
-     * @return bool
-     */
-    private function isValidXMLName($tag)
-    {
-        if (!is_array($tag)) {
-            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
-        }
-
-        return false;
     }
 
     /**

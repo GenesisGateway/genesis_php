@@ -23,15 +23,15 @@
 namespace Genesis;
 
 /**
- * Class GenesisConfig
+ * Class Config
  * @package Genesis
  *
- * @method static \Genesis\GenesisConfig getUsername()  Get the Username, set in configuration
- * @method static \Genesis\GenesisConfig getPassword()  Get the Password, set in the configuration
- * @method static \Genesis\GenesisConfig getToken()     Get the Terminal Token, set in configuration
+ * @method static \Genesis\Config getUsername()  Get the Username, set in configuration
+ * @method static \Genesis\Config getPassword()  Get the Password, set in the configuration
+ * @method static \Genesis\Config getToken()     Get the Terminal Token, set in configuration
  *
  */
-final class GenesisConfig
+final class Config
 {
     /**
      * Library Version

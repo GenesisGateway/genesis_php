@@ -47,13 +47,13 @@ use \Genesis\Genesis as Genesis;
 use \Genesis\GenesisConfg as GenesisConf;
 
 // load the pre-configured ini file
-GenesisConfig::loadSettings('<path-to-your-ini-file>');
+Config::loadSettings('<path-to-your-ini-file>');
 
 // optionally you can set each of the credentials manually
-GenesisConfig::setToken('<enter_your_token>');
-GenesisConfig::setUsername('<enter_your_username>');
-GenesisConfig::setPassword('<enter_your_password>');
-GenesisConfig::setEnvironment('sandbox|production');
+Config::setToken('<enter_your_token>');
+Config::setUsername('<enter_your_username>');
+Config::setPassword('<enter_your_password>');
+Config::setEnvironment('sandbox|production');
 
 // create a new Genesis instance with desired API request
 $genesis = new Genesis('Financial\Authorize');

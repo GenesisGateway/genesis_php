@@ -86,50 +86,9 @@ abstract class Request
     /**
      * Store the generated Builder Body
      *
-     * @var \Genesis\Builders\Builder
+     * @var \Genesis\Builder
      */
     protected $builderContext;
-
-    /**
-     * Add transaction type
-     */
-    public function addTransactionType($name, $parameters = array())
-    {
-
-    }
-
-    /**
-     * Set the language of a WPF form
-     */
-    public function setLanguage()
-    {
-
-    }
-
-    /**
-     * Initialize per-request configuration
-     */
-    protected function initConfiguration()
-    {
-
-    }
-
-    /**
-     * Set the *required fields for the request
-     */
-    protected function setRequiredFields()
-    {
-
-    }
-
-    /**
-     * Create the Tree structure and populate
-     * the fields with the set parameters.
-     */
-    protected function populateStructure()
-    {
-
-    }
 
     /**
      * Convert Pascal to Camel case and set the correct property
@@ -181,7 +140,7 @@ abstract class Request
     {
         $this->processRequestParameters();
 
-        $this->builderContext = new \Genesis\Builders\Builder();
+        $this->builderContext = new \Genesis\Builder();
         $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
         return $this->builderContext->getDocument();
@@ -200,25 +159,56 @@ abstract class Request
     protected function processRequestParameters()
     {
         // Step 1
-        $this->processAmount();
-        // Step 2
         $this->populateStructure();
-        // Step 3
+        // Step 2
         $this->sanitizeStructure();
-        // Step 4
+        // Step 3
         $this->checkRequirements();
+    }
+
+    /**
+     * Perform a field transformation
+     * and return the result
+     *
+     * @param string $method
+     * @param array  $args
+     * @param string $prefix
+     *
+     * @return mixed
+     */
+    protected function transform($method, $args, $prefix = 'transform')
+    {
+        $method = $prefix . \Genesis\Utils\Common::snakeCaseToCamelCase($method);
+
+        if (method_exists($this, $method)) {
+            $result = call_user_func_array(
+                array($this, $method),
+                $args
+            );
+
+            if ($result) {
+                return $result;
+            }
+        }
+
+        return reset($args);
     }
 
     /**
      * Convert the amount from Minor cur
      *
-     * @return void
+     * @param string $amount
+     * @param string $currency
+     *
+     * @return string
      */
-    protected function processAmount()
+    protected function transformAmount($amount = '', $currency = '')
     {
-        if (isset($this->amount) && isset($this->currency)) {
-            $this->amount = \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency);
+        if (!empty($amount) && !empty($currency)) {
+            return \Genesis\Utils\Currency::amountToExponent($amount, $currency);
         }
+
+        return false;
     }
 
     /**
@@ -319,7 +309,7 @@ abstract class Request
     }
 
     /**
-     * Getter for per-request GenesisConfig
+     * Getter for per-request Config
      *
      * @param $key - setting name
      *
@@ -331,7 +321,7 @@ abstract class Request
     }
 
     /**
-     * Setter for per-request GenesisConfig
+     * Setter for per-request Config
      *
      * @param $key   - setting name
      * @param $value - setting value
@@ -354,12 +344,53 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $proto  = isset($this->config)  ? $this->getApiConfig('proto')          : '';
+        $proto  = isset($this->config)  ? $this->getApiConfig('protocol')       : '';
         $port   = isset($this->config)  ? $this->getApiConfig('port')           : '';
-        $token  = ($appendToken)        ? \Genesis\GenesisConfig::getToken()    : '';
+        $token  = ($appendToken)        ? \Genesis\Config::getToken()    : '';
 
-        $base_url = \Genesis\GenesisConfig::getEnvironmentURL($proto, $sub_domain, $port);
+        $base_url = \Genesis\Config::getEnvironmentURL($proto, $sub_domain, $port);
 
         return sprintf('%s/%s/%s', $base_url, $path, $token);
+    }
+
+    /**
+     * Add transaction type
+     */
+    public function addTransactionType($name, $parameters = array())
+    {
+
+    }
+
+    /**
+     * Set the language of a WPF form
+     */
+    public function setLanguage()
+    {
+
+    }
+
+    /**
+     * Initialize per-request configuration
+     */
+    protected function initConfiguration()
+    {
+
+    }
+
+    /**
+     * Set the *required fields for the request
+     */
+    protected function setRequiredFields()
+    {
+
+    }
+
+    /**
+     * Create the Tree structure and populate
+     * the fields with the set parameters.
+     */
+    protected function populateStructure()
+    {
+
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\Builders\Wrapper;
+namespace spec\Genesis\Builders;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class XMLSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Builders\Wrapper\XML');
+        $this->shouldHaveType('Genesis\Builders\XML');
     }
 
     function it_can_generate_content()

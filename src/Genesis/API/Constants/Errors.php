@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API;
+namespace Genesis\API\Constants;
 
 /**
  * Error codes used by Genesis / Issuer
@@ -116,7 +116,7 @@ final class Errors
             case 110:
                 return 'Login failed. Check your API credentials.';
             case 120:
-                return 'GenesisConfig error occurred, e.g. terminal not configured properly. Check terminal settings.';
+                return 'Config error occurred, e.g. terminal not configured properly. Check terminal settings.';
             case 200:
                 return 'Communication with issuer failed, please contact support.';
             case 210:

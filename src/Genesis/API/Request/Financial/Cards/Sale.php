@@ -343,15 +343,16 @@ class Sale extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $config = array(
-            'proto' => 'https',
-            'port'  => 443,
-            'type'  => 'POST',
-            'format'=> 'xml',
-            'url'   => $this->buildRequestURL('gateway', 'process', true),
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol'  => 'https',
+                'port'      => 443,
+                'type'      => 'POST',
+                'format'    => 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -392,13 +393,19 @@ class Sale extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'sale',
+                'transaction_type' => \Genesis\API\Constants\Transcation\Types::SALE,
                 'transaction_id' => $this->transaction_id,
                 'usage' => $this->usage,
                 'gaming' => $this->gaming,
                 'moto' => $this->moto,
                 'remote_ip' => $this->remote_ip,
-                'amount' => $this->amount,
+                'amount' => parent::transform(
+                    'amount',
+                    array(
+                        $this->amount,
+                        $this->currency,
+                    )
+                ),
                 'currency' => $this->currency,
                 'card_holder' => $this->card_holder,
                 'card_number' => $this->card_number,

@@ -46,7 +46,7 @@ class Genesis
     /**
      * Store the Network Request Instance
      *
-     * @var \Genesis\Network\Request
+     * @var \Genesis\Network\
      */
     protected $networkCtx;
 
@@ -81,7 +81,7 @@ class Genesis
      */
     public static function getErrorCode($error)
     {
-        return constant('\Genesis\API\Errors::' . $error);
+        return constant('\Genesis\API\Constants\Errors::' . $error);
     }
 
     /**
@@ -94,7 +94,7 @@ class Genesis
      */
     public static function getErrorDescription($error_code)
     {
-        return \Genesis\API\Errors::getErrorDescription($error_code);
+        return \Genesis\API\Constants\Errors::getErrorDescription($error_code);
     }
 
     /*
@@ -115,6 +115,13 @@ class Genesis
         return \Genesis\Utils\Country::getCountryName($iso_code);
     }
 
+    /**
+     * Get a country ISO-4217 code by its name
+     *
+     * @param string $country_name - country name
+     *
+     * @return string
+     */
     public static function getCountryISOCode($country_name)
     {
         return \Genesis\Utils\Country::getCountryISO($country_name);
@@ -150,8 +157,8 @@ class Genesis
     public function execute()
     {
         // Send the request
-        $this->networkCtx = new Network\Request($this->requestCtx);
-        $this->networkCtx->setRequestData();
+        $this->networkCtx = new Network();
+        $this->networkCtx->setApiCtxData($this->requestCtx);
         $this->networkCtx->sendRequest();
 
         // Parse the response

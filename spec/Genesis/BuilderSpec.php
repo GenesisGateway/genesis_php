@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\Builders;
+namespace spec\Genesis;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class BuilderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Builders\Builder');
+        $this->shouldHaveType('Genesis\Builder');
     }
 
     function it_can_generate_content()

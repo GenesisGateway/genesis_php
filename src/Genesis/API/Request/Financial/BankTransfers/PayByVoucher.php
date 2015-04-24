@@ -139,15 +139,16 @@ class PayByVoucher extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $config = array(
-            'proto' => 'https',
-            'port'  => 443,
-            'type'  => 'POST',
-            'format'=> 'xml',
-            'url'   => $this->buildRequestURL('gateway', 'process', true),
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol'  => 'https',
+                'port'      => 443,
+                'type'      => 'POST',
+                'format'    => 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -184,10 +185,16 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'paybyvoucher',
+                'transaction_type' => \Genesis\API\Constants\Transcation\Types::PAYBYVOUCHER,
                 'transaction_id' => $this->transaction_id,
                 'remote_ip' => $this->remote_ip,
-                'amount' => $this->amount,
+                'amount' => parent::transform(
+                    'amount',
+                    array(
+                        $this->amount,
+                        $this->currency,
+                    )
+                ),
                 'currency' => $this->currency,
                 'product_name' => $this->product_name,
                 'product_category' => $this->product_category,

@@ -353,15 +353,16 @@ class PPRO extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $config = array(
-            'proto' => 'https',
-            'port'  => 443,
-            'type'  => 'POST',
-            'format'=> 'xml',
-            'url'   => $this->buildRequestURL('gateway', 'process', true),
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol'  => 'https',
+                'port'      => 443,
+                'type'      => 'POST',
+                'format'    => 'xml',
+            )
         );
 
-        $this->config = \Genesis\Utils\Common::createArrayObject($config);
+        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -406,12 +407,18 @@ class PPRO extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'ppro',
+                'transaction_type' => \Genesis\API\Constants\Transcation\Types::PPRO,
                 'transaction_id' => $this->transaction_id,
                 'payment_type' => $this->payment_type,
                 'usage' => $this->usage,
                 'remote_ip' => $this->remote_ip,
-                'amount' => $this->amount,
+                'amount' => parent::transform(
+                    'amount',
+                    array(
+                        $this->amount,
+                        $this->currency,
+                    )
+                ),
                 'currency' => $this->currency,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
