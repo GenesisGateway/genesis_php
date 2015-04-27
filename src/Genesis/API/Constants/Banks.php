@@ -94,7 +94,7 @@ class Banks
     /**
      * Bank of East Asia
      */
-    const PAYBYVOUCHER_HKBEA ='Bank of East Asia';
+    const PAYBYVOUCHER_HKBEA = 'Bank of East Asia';
 
     /**
      * Bank of Ningbo
@@ -114,7 +114,7 @@ class Banks
     /**
      * Guangdong Development Bank
      */
-    const PAYBYVOUCHER_GDB ='Guangdong Development Bank';
+    const PAYBYVOUCHER_GDB = 'Guangdong Development Bank';
 
     /**
      * Bank of Shanghai
@@ -129,12 +129,12 @@ class Banks
     /**
      * China Post
      */
-    const PAYBYVOUCHER_POST ='China Post';
+    const PAYBYVOUCHER_POST = 'China Post';
 
     /**
      * BEIJING RURAL COMMERCIAL BANK
      */
-    const PAYBYVOUCHER_BJRCB ='BEIJING RURAL COMMERCIAL BANK';
+    const PAYBYVOUCHER_BJRCB = 'BEIJING RURAL COMMERCIAL BANK';
 
     /**
      * Hua Xia Bank Co Ltd'
@@ -149,5 +149,5 @@ class Banks
     /**
      * Shanghai Rural Commercial Bank
      */
-    const PAYBYVOUCHER_SRCB ='Shanghai Rural Commercial Bank';
+    const PAYBYVOUCHER_SRCB = 'Shanghai Rural Commercial Bank';
 }

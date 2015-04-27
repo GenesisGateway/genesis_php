@@ -101,14 +101,12 @@ class eZeeWallet extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -145,27 +143,21 @@ class eZeeWallet extends \Genesis\API\Request
 
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transcation\Types::EZEEWALLET,
-                'transaction_id' => $this->transaction_id,
-                'usage' => $this->usage,
-                'remote_ip' => $this->remote_ip,
-                'amount' => parent::transform(
-                    'amount',
-                    array(
+                'transaction_type'   => \Genesis\API\Constants\Transcation\Types::EZEEWALLET,
+                'transaction_id'     => $this->transaction_id,
+                'usage'              => $this->usage,
+                'remote_ip'          => $this->remote_ip,
+                'amount'             => parent::transform('amount', array(
                         $this->amount,
                         $this->currency,
-                    )
-                ),
-                'currency' => $this->currency,
+                    )),
+                'currency'           => $this->currency,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
-                'source_wallet_id' => $this->source_wallet_id,
-                'source_wallet_pwd' => parent::transform(
-                    'wallet_password',
-                    array(
+                'source_wallet_id'   => $this->source_wallet_id,
+                'source_wallet_pwd'  => parent::transform('wallet_password', array(
                         $this->source_wallet_pwd
-                    )
-                ),
+                    )),
             )
         );
 

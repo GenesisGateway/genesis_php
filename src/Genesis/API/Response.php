@@ -93,7 +93,9 @@ class Response
             \Genesis\API\Constants\Transcation\States::NEW_STATUS,
         );
 
-        if (isset($this->responseObj->status) && in_array($this->responseObj->status, $successfulStatuses)) {
+        if (isset($this->responseObj->status) && in_array($this->responseObj->status,
+                $successfulStatuses)
+        ) {
             $status = true;
         }
 
@@ -169,10 +171,8 @@ class Response
     {
         if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
             if (isset($this->responseObj->amount) && !empty($this->responseObj->amount)) {
-                return \Genesis\Utils\Currency::exponentToAmount(
-                    $this->responseObj->amount,
-                    $this->responseObj->currency
-                );
+                return \Genesis\Utils\Currency::exponentToAmount($this->responseObj->amount,
+                    $this->responseObj->currency);
             }
         }
 

@@ -40,14 +40,12 @@ class Transaction extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'chargebacks', false));
     }
@@ -76,7 +74,7 @@ class Transaction extends \Genesis\API\Request
     {
         $treeStructure = array(
             'chargeback_request' => array(
-                'arn' => $this->arn,
+                'arn'                            => $this->arn,
                 'original_transaction_unique_id' => $this->original_transaction_unique_id,
             )
         );

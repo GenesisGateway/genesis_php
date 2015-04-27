@@ -65,14 +65,12 @@ class Void extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -103,10 +101,10 @@ class Void extends \Genesis\API\Request
         $treeStructure = array(
             'payment_transaction' => array(
                 'transaction_type' => \Genesis\API\Constants\Transcation\Types::VOID,
-                'transaction_id' => $this->transaction_id,
-                'usage' => $this->usage,
-                'remote_ip' => $this->remote_ip,
-                'reference_id' => $this->reference_id,
+                'transaction_id'   => $this->transaction_id,
+                'usage'            => $this->usage,
+                'remote_ip'        => $this->remote_ip,
+                'reference_id'     => $this->reference_id,
             )
         );
 

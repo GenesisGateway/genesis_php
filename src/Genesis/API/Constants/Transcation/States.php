@@ -49,7 +49,8 @@ class States
     const PENDING = 'pending';
 
     /**
-     * An asynchronous transaction (3-D secure payment) has been initiated and is waiting for user input.
+     * An asynchronous transaction (3-D secure payment) has been initiated and is waiting for user
+     * input.
      *
      * Updates of this state will be sent to the notification url specified in request.
      */

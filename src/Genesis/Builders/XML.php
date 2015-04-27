@@ -74,9 +74,7 @@ final class XML implements \Genesis\Interfaces\Builder
     public function populateNodes($data)
     {
         if (!\Genesis\Utils\Common::isValidArray($data)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'Invalid data structure'
-            );
+            throw new \Genesis\Exceptions\InvalidArgument('Invalid data structure');
         }
 
         // Ensure that the Array position is 0
@@ -124,8 +122,7 @@ final class XML implements \Genesis\Interfaces\Builder
                     foreach ($value as $attribute_name => $attribute_value) {
                         $this->context->writeCData($attribute_value);
                     }
-                }
-                else {
+                } else {
                     $this->context->writeCData($value);
                 }
 
@@ -137,8 +134,7 @@ final class XML implements \Genesis\Interfaces\Builder
                     foreach ($value as $attribute_name => $attribute_value) {
                         $this->context->text($attribute_value);
                     }
-                }
-                else {
+                } else {
                     $this->context->text($value);
                 }
 
@@ -147,8 +143,7 @@ final class XML implements \Genesis\Interfaces\Builder
 
             if (is_array($value)) {
                 $this->iterateArray($key, $value);
-            }
-            else {
+            } else {
                 $value = \Genesis\Utils\Common::booleanToString($value);
 
                 $this->context->writeElement($key, $value);

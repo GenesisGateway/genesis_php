@@ -139,14 +139,12 @@ class PayByVoucher extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -185,24 +183,21 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transcation\Types::PAYBYVOUCHER,
-                'transaction_id' => $this->transaction_id,
-                'remote_ip' => $this->remote_ip,
-                'amount' => parent::transform(
-                    'amount',
-                    array(
+                'transaction_type'    => \Genesis\API\Constants\Transcation\Types::PAYBYVOUCHER,
+                'transaction_id'      => $this->transaction_id,
+                'remote_ip'           => $this->remote_ip,
+                'amount'              => parent::transform('amount', array(
                         $this->amount,
                         $this->currency,
-                    )
-                ),
-                'currency' => $this->currency,
-                'product_name' => $this->product_name,
-                'product_category' => $this->product_category,
-                'card_holder' => $this->card_holder,
-                'customer_email' => $this->customer_email,
-                'customer_phone' => $this->customer_phone,
-                'customer_id_number' => $this->customer_id_number,
-                'customer_bank_id' => $this->customer_bank_id,
+                    )),
+                'currency'            => $this->currency,
+                'product_name'        => $this->product_name,
+                'product_category'    => $this->product_category,
+                'card_holder'         => $this->card_holder,
+                'customer_email'      => $this->customer_email,
+                'customer_phone'      => $this->customer_phone,
+                'customer_id_number'  => $this->customer_id_number,
+                'customer_bank_id'    => $this->customer_bank_id,
                 'bank_account_number' => $this->bank_account_number,
             )
         );

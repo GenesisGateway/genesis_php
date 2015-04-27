@@ -60,14 +60,12 @@ class DateRange extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile/by_date', true));
     }
@@ -96,8 +94,8 @@ class DateRange extends \Genesis\API\Request
         $treeStructure = array(
             'reconcile' => array(
                 'start_date' => $this->start_date,
-                'end_date' => $this->end_date,
-                'page' => $this->page,
+                'end_date'   => $this->end_date,
+                'page'       => $this->page,
             )
         );
 

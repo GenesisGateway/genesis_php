@@ -56,21 +56,11 @@ class XML
     }
 
     /**
-     * Get the parsed object
-     *
-     * @return \stdClass
-     */
-    public function getObject()
-    {
-        return $this->stdClassObj;
-    }
-
-    /**
      * Iterate over the elements and return object
      * representing the tree structure
      *
-     * @param \SimpleXMLIterator    $sxi
-     * @param array                 $isMultiNode
+     * @param \SimpleXMLIterator $sxi
+     * @param array              $isMultiNode
      *
      * @return \stdClass|mixed
      */
@@ -89,17 +79,9 @@ class XML
                 }
 
                 if ($sxi->hasChildren()) {
-                    array_push(
-                        $stdObj->{$sxi->key()},
-                        self::sxiToArray(
-                            $sxi->current(),
-                            self::checkForDuplicates(
-                                $sxi->current()
-                            )
-                        )
-                    );
-                }
-                else {
+                    array_push($stdObj->{$sxi->key()}, self::sxiToArray($sxi->current(),
+                        self::checkForDuplicates($sxi->current())));
+                } else {
                     if (count($sxi->current()->attributes()) > 0) {
                         $object = json_decode(json_encode($sxi->current()));
 
@@ -108,36 +90,26 @@ class XML
                         if (!empty($content)) {
                             $object->content = $content;
                         }
-                    }
-                    else {
+                    } else {
                         $object = $sxi->current()->__toString();
                     }
 
                     if (in_array($sxi->key(), $isMultiNode)) {
                         array_push($stdObj->{$sxi->key()}, $object);
-                    }
-                    else {
+                    } else {
                         $stdObj->{$sxi->key()} = $object;
                     }
 
                 }
-            }
-            else {
+            } else {
                 if ($sxi->hasChildren()) {
-                    $stdObj->{$sxi->key()} = self::sxiToArray(
-                        $sxi->current(),
-                        self::checkForDuplicates($sxi->current())
-                    );
-                }
-                else {
+                    $stdObj->{$sxi->key()} = self::sxiToArray($sxi->current(),
+                        self::checkForDuplicates($sxi->current()));
+                } else {
                     $content = trim($sxi->current()->__toString());
 
                     if (count($sxi->current()->attributes()) > 0) {
-                        $object = json_decode(
-                            json_encode(
-                                $sxi->current()->attributes()
-                            )
-                        );
+                        $object = json_decode(json_encode($sxi->current()->attributes()));
 
                         if (!empty($content)) {
                             $object->content = $content;
@@ -173,5 +145,15 @@ class XML
         }
 
         return $duplicate_list;
+    }
+
+    /**
+     * Get the parsed object
+     *
+     * @return \stdClass
+     */
+    public function getObject()
+    {
+        return $this->stdClassObj;
     }
 }

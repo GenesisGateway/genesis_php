@@ -316,20 +316,54 @@ class Create extends \Genesis\API\Request
     protected $risk_serial_number;
 
     /**
+     * Add transaction type to the list of available types
+     *
+     * @param string $name
+     * @param array  $parameters
+     */
+    public function addTransactionType($name, $parameters = array())
+    {
+        array_push($this->transaction_types, array(
+                'transaction_type' => array(
+                    '@attributes' => array(
+                        'name' => $name
+                    ),
+                    $parameters
+                )
+            ));
+    }
+
+    /**
+     * Add ISO 639-1 language code to the URL
+     *
+     * @param string $language iso code of the language
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
+    {
+        if (empty($language)) {
+            throw new \Genesis\Exceptions\InvalidArgument('The provided argument is not a valid ISO-639-1 language code!');
+        }
+
+        parent::setApiConfig('url',
+            parent::buildRequestURL('wpf', sprintf('%s/wpf', substr(strtolower($language), 0, 2)),
+                false));
+    }
+
+    /**
      * Set the per-request configuration
      *
      * @return void
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
                 'protocol' => 'https',
-                'port'  => 443,
-                'type'  => 'POST',
-                'format'=> 'xml',
-            )
-        );
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
@@ -374,108 +408,56 @@ class Create extends \Genesis\API\Request
     {
         $treeStructure = array(
             'wpf_payment' => array(
-                'transaction_id' => $this->transaction_id,
-                'amount' => parent::transform(
-                    'amount',
-                    array(
+                'transaction_id'     => $this->transaction_id,
+                'amount'             => parent::transform('amount', array(
                         $this->amount,
                         $this->currency,
-                    )
-                ),
-                'currency' => $this->currency,
-                'usage' => $this->usage,
-                'description' => $this->description,
-                'customer_email' => $this->customer_email,
-                'customer_phone' => $this->customer_phone,
-                'card_holder' => $this->card_holder,
-                'notification_url' => $this->notification_url,
+                    )),
+                'currency'           => $this->currency,
+                'usage'              => $this->usage,
+                'description'        => $this->description,
+                'customer_email'     => $this->customer_email,
+                'customer_phone'     => $this->customer_phone,
+                'card_holder'        => $this->card_holder,
+                'notification_url'   => $this->notification_url,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
-                'return_cancel_url' => $this->return_cancel_url,
-                'billing_address' => array(
+                'return_cancel_url'  => $this->return_cancel_url,
+                'billing_address'    => array(
                     'first_name' => $this->billing_first_name,
-                    'last_name' => $this->billing_last_name,
-                    'address1' => $this->billing_address1,
-                    'address2' => $this->billing_address2,
-                    'zip_code' => $this->billing_zip_code,
-                    'city' => $this->billing_city,
-                    'state' => $this->billing_state,
-                    'country' => $this->billing_country,
+                    'last_name'  => $this->billing_last_name,
+                    'address1'   => $this->billing_address1,
+                    'address2'   => $this->billing_address2,
+                    'zip_code'   => $this->billing_zip_code,
+                    'city'       => $this->billing_city,
+                    'state'      => $this->billing_state,
+                    'country'    => $this->billing_country,
                 ),
-                'shipping_address' => array(
+                'shipping_address'   => array(
                     'first_name' => $this->shipping_first_name,
-                    'last_name' => $this->shipping_last_name,
-                    'address1' => $this->shipping_address1,
-                    'address2' => $this->shipping_address2,
-                    'zip_code' => $this->shipping_zip_code,
-                    'city' => $this->shipping_city,
-                    'state' => $this->shipping_state,
-                    'country' => $this->shipping_country,
+                    'last_name'  => $this->shipping_last_name,
+                    'address1'   => $this->shipping_address1,
+                    'address2'   => $this->shipping_address2,
+                    'zip_code'   => $this->shipping_zip_code,
+                    'city'       => $this->shipping_city,
+                    'state'      => $this->shipping_state,
+                    'country'    => $this->shipping_country,
                 ),
-                'transaction_types' => $this->transaction_types,
-                'risk_params' => array(
-                    'ssn' => $this->risk_ssn,
-                    'mac_address' => $this->risk_mac_address,
-                    'session_id' => $this->risk_session_id,
-                    'user_id' => $this->risk_user_id,
-                    'user_level' => $this->risk_user_level,
-                    'email' => $this->risk_email,
-                    'phone' => $this->risk_phone,
-                    'remote_ip' => $this->risk_remote_ip,
+                'transaction_types'  => $this->transaction_types,
+                'risk_params'        => array(
+                    'ssn'           => $this->risk_ssn,
+                    'mac_address'   => $this->risk_mac_address,
+                    'session_id'    => $this->risk_session_id,
+                    'user_id'       => $this->risk_user_id,
+                    'user_level'    => $this->risk_user_level,
+                    'email'         => $this->risk_email,
+                    'phone'         => $this->risk_phone,
+                    'remote_ip'     => $this->risk_remote_ip,
                     'serial_number' => $this->risk_serial_number,
                 ),
             )
         );
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
-    }
-
-    /**
-     * Add transaction type to the list of available types
-     *
-     * @param string $name
-     * @param array  $parameters
-     */
-    public function addTransactionType($name, $parameters = array())
-    {
-        array_push(
-            $this->transaction_types,
-            array(
-                'transaction_type' => array(
-                   '@attributes' => array(
-                       'name' => $name
-                   ),
-                   $parameters
-                )
-            )
-        );
-    }
-
-    /**
-     * Add ISO 639-1 language code to the URL
-     *
-     * @param string $language iso code of the language
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
-    {
-        if (empty($language)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'The provided argument is not a valid ISO-639-1 language code!'
-            );
-        }
-
-        parent::setApiConfig(
-            'url',
-            parent::buildRequestURL(
-                'wpf',
-                sprintf(
-                    '%s/wpf',
-                    substr(strtolower($language), 0, 2)
-                ),
-                false
-            )
-        );
     }
 }

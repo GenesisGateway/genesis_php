@@ -94,5 +94,5 @@ class i18n
     /**
      * Mandarin Chinese locale and language
      */
-    const ZH ='Chinese (Mandarin)';
+    const ZH = 'Chinese (Mandarin)';
 }

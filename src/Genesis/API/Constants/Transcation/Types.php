@@ -113,7 +113,8 @@ class Types
     const PAYSAFECARD = 'paysafecard';
 
     /**
-     * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and GiroPay
+     * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and
+     * GiroPay
      */
     const PPRO = 'ppro';
 

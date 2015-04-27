@@ -61,16 +61,15 @@ class DateRange extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests/by_date', false));
+        parent::setApiConfig('url',
+            $this->buildRequestURL('gateway', 'retrieval_requests/by_date', false));
     }
 
     /**
@@ -97,8 +96,8 @@ class DateRange extends \Genesis\API\Request
         $treeStructure = array(
             'retrieval_request_request' => array(
                 'start_date' => $this->start_date,
-                'end_date' => $this->end_date,
-                'page' => $this->page,
+                'end_date'   => $this->end_date,
+                'page'       => $this->page,
             )
         );
 

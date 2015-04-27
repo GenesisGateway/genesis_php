@@ -61,11 +61,8 @@ final class JSON implements \Genesis\Interfaces\Builder
     {
         try {
             $this->output = json_encode($structure);
-        }
-        catch (\Exception $e) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'Invalid data/tree'
-            );
+        } catch (\Exception $e) {
+            throw new \Genesis\Exceptions\InvalidArgument('Invalid data/tree');
         }
     }
 }

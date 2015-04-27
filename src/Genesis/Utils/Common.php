@@ -34,30 +34,24 @@ final class Common
     {
         // PHP version requirements
         if (self::compareVersions('5.3.0', '<')) {
-            throw new \Exception(
-                'Unsupported PHP version.
+            throw new \Exception('Unsupported PHP version.
 				This projects requires PHP version > 5.3.0.
-				Please upgrade!'
-            );
+				Please upgrade!');
         }
 
         // cURL requirements
         if (\Genesis\Config::getInterfaceSetup('network') == 'curl') {
             if (!function_exists('curl_init')) {
-                throw new \Exception(
-                    'cURL is selected, but its not installed on your system!
-					You can use "stream_context" alternatively, or install the cURL PHP extension.'
-                );
+                throw new \Exception('cURL is selected, but its not installed on your system!
+					You can use "stream_context" alternatively, or install the cURL PHP extension.');
             }
         }
 
         // XMLWriter requirements
         if (\Genesis\Config::getInterfaceSetup('builder') == 'xmlwriter') {
             if (!class_exists('XMLWriter')) {
-                throw new \Exception(
-                    'XMLWriter is selected, but its not installed on your system!,
-					You can use "domdocument" alternatively, or re-compile PHP with XML support!'
-                );
+                throw new \Exception('XMLWriter is selected, but its not installed on your system!,
+					You can use "domdocument" alternatively, or re-compile PHP with XML support!');
             }
         }
     }
@@ -128,13 +122,9 @@ final class Common
      */
     public static function snakeCaseToCamelCase($input)
     {
-        return preg_replace_callback(
-            '/(?:^|_)(.?)/',
-            function ($v) {
-                return strtoupper($v[1]);
-            },
-            $input
-        );
+        return preg_replace_callback('/(?:^|_)(.?)/', function ($v) {
+            return strtoupper($v[1]);
+        }, $input);
     }
 
     /**
@@ -214,7 +204,8 @@ final class Common
     public static function isValidXMLName($tag)
     {
         if (!is_array($tag)) {
-            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
+            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag,
+                $matches) && reset($matches) == $tag;
         }
 
         return false;
@@ -234,11 +225,9 @@ final class Common
 
         if ($flag) {
             return true;
-        }
-        elseif (is_null($flag)) {
+        } elseif (is_null($flag)) {
             return $string;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -255,8 +244,7 @@ final class Common
         if (is_bool($bool)) {
             if ($bool) {
                 return 'true';
-            }
-            else {
+            } else {
                 return 'false';
             }
         }

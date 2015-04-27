@@ -91,6 +91,31 @@ abstract class Request
     protected $builderContext;
 
     /**
+     * Bootstrap per-request configuration
+     */
+    public function __construct()
+    {
+        $this->initConfiguration();
+        $this->setRequiredFields();
+    }
+
+    /**
+     * Initialize per-request configuration
+     */
+    protected function initConfiguration()
+    {
+
+    }
+
+    /**
+     * Set the *required fields for the request
+     */
+    protected function setRequiredFields()
+    {
+
+    }
+
+    /**
      * Convert Pascal to Camel case and set the correct property
      *
      * @param $method
@@ -120,15 +145,6 @@ abstract class Request
         }
 
         return $this;
-    }
-
-    /**
-     * Bootstrap per-request configuration
-     */
-    public function __construct()
-    {
-        $this->initConfiguration();
-        $this->setRequiredFields();
     }
 
     /**
@@ -167,48 +183,12 @@ abstract class Request
     }
 
     /**
-     * Perform a field transformation
-     * and return the result
-     *
-     * @param string $method
-     * @param array  $args
-     * @param string $prefix
-     *
-     * @return mixed
+     * Create the Tree structure and populate
+     * the fields with the set parameters.
      */
-    protected function transform($method, $args, $prefix = 'transform')
+    protected function populateStructure()
     {
-        $method = $prefix . \Genesis\Utils\Common::snakeCaseToCamelCase($method);
 
-        if (method_exists($this, $method)) {
-            $result = call_user_func_array(
-                array($this, $method),
-                $args
-            );
-
-            if ($result) {
-                return $result;
-            }
-        }
-
-        return reset($args);
-    }
-
-    /**
-     * Convert the amount from Minor cur
-     *
-     * @param string $amount
-     * @param string $currency
-     *
-     * @return string
-     */
-    protected function transformAmount($amount = '', $currency = '')
-    {
-        if (!empty($amount) && !empty($currency)) {
-            return \Genesis\Utils\Currency::amountToExponent($amount, $currency);
-        }
-
-        return false;
     }
 
     /**
@@ -218,11 +198,7 @@ abstract class Request
      */
     protected function sanitizeStructure()
     {
-        $this->treeStructure->exchangeArray(
-            \Genesis\Utils\Common::emptyValueRecursiveRemoval(
-                $this->treeStructure->getArrayCopy()
-            )
-        );
+        $this->treeStructure->exchangeArray(\Genesis\Utils\Common::emptyValueRecursiveRemoval($this->treeStructure->getArrayCopy()));
     }
 
     /**
@@ -254,7 +230,8 @@ abstract class Request
             $groupsFormatted = array();
 
             foreach ($fields as $group => $groupFields) {
-                $groupsFormatted[] = sprintf('%s (%s)', ucfirst($group), implode(', ', $groupFields));
+                $groupsFormatted[] = sprintf('%s (%s)', ucfirst($group),
+                    implode(', ', $groupFields));
 
                 foreach ($groupFields as $field) {
                     if (!empty($this->$field)) {
@@ -264,12 +241,8 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new \Genesis\Exceptions\BlankRequiredField(
-                    'One of the following group(s) of field(s): ' .
-                    implode(' / ', $groupsFormatted) .
-                    ' must be filled in!',
-                    true
-                );
+                throw new \Genesis\Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ',
+                        $groupsFormatted) . ' must be filled in!', true);
             }
         }
 
@@ -281,9 +254,7 @@ abstract class Request
                 if (isset($this->$fieldName) && !empty($this->$fieldName)) {
                     foreach ($fieldDependencies as $field) {
                         if (empty($this->$field)) {
-                            throw new \Genesis\Exceptions\BlankRequiredField(
-                                $fieldName . ' is depending on field: ' . $field . ' which'
-                            );
+                            throw new \Genesis\Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field . ' which');
                         }
                     }
                 }
@@ -309,15 +280,61 @@ abstract class Request
     }
 
     /**
-     * Getter for per-request Config
-     *
-     * @param $key - setting name
-     *
-     * @return mixed - contents of the specified setting
+     * Add transaction type
      */
-    public function getApiConfig($key)
+    public function addTransactionType($name, $parameters = array())
     {
-        return $this->config->offsetGet($key);
+
+    }
+
+    /**
+     * Set the language of a WPF form
+     */
+    public function setLanguage()
+    {
+
+    }
+
+    /**
+     * Perform a field transformation
+     * and return the result
+     *
+     * @param string $method
+     * @param array  $args
+     * @param string $prefix
+     *
+     * @return mixed
+     */
+    protected function transform($method, $args, $prefix = 'transform')
+    {
+        $method = $prefix . \Genesis\Utils\Common::snakeCaseToCamelCase($method);
+
+        if (method_exists($this, $method)) {
+            $result = call_user_func_array(array($this, $method), $args);
+
+            if ($result) {
+                return $result;
+            }
+        }
+
+        return reset($args);
+    }
+
+    /**
+     * Convert the amount from Minor cur
+     *
+     * @param string $amount
+     * @param string $currency
+     *
+     * @return string
+     */
+    protected function transformAmount($amount = '', $currency = '')
+    {
+        if (!empty($amount) && !empty($currency)) {
+            return \Genesis\Utils\Currency::amountToExponent($amount, $currency);
+        }
+
+        return false;
     }
 
     /**
@@ -344,9 +361,9 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $proto  = isset($this->config)  ? $this->getApiConfig('protocol')       : '';
-        $port   = isset($this->config)  ? $this->getApiConfig('port')           : '';
-        $token  = ($appendToken)        ? \Genesis\Config::getToken()    : '';
+        $proto = isset($this->config) ? $this->getApiConfig('protocol') : '';
+        $port = isset($this->config) ? $this->getApiConfig('port') : '';
+        $token = ($appendToken) ? \Genesis\Config::getToken() : '';
 
         $base_url = \Genesis\Config::getEnvironmentURL($proto, $sub_domain, $port);
 
@@ -354,43 +371,14 @@ abstract class Request
     }
 
     /**
-     * Add transaction type
+     * Getter for per-request Config
+     *
+     * @param $key - setting name
+     *
+     * @return mixed - contents of the specified setting
      */
-    public function addTransactionType($name, $parameters = array())
+    public function getApiConfig($key)
     {
-
-    }
-
-    /**
-     * Set the language of a WPF form
-     */
-    public function setLanguage()
-    {
-
-    }
-
-    /**
-     * Initialize per-request configuration
-     */
-    protected function initConfiguration()
-    {
-
-    }
-
-    /**
-     * Set the *required fields for the request
-     */
-    protected function setRequiredFields()
-    {
-
-    }
-
-    /**
-     * Create the Tree structure and populate
-     * the fields with the set parameters.
-     */
-    protected function populateStructure()
-    {
-
+        return $this->config->offsetGet($key);
     }
 }

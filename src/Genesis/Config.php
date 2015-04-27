@@ -63,22 +63,24 @@ final class Config
      *
      * @var Array
      */
-    public static $vault = array(
-        'environment' => null,
-        'token' => null,
-        'username' => null,
-        'password' => null,
-    );
+    public static $vault
+        = array(
+            'environment' => null,
+            'token'       => null,
+            'username'    => null,
+            'password'    => null,
+        );
 
     /**
      * Array storing interface choice
      *
      * @var array
      */
-    public static $interfaces = array(
-        'builder' => 'xml_writer',
-        'network' => 'curl',
-    );
+    public static $interfaces
+        = array(
+            'builder' => 'xml_writer',
+            'network' => 'curl',
+        );
 
     /**
      * Some requests are targeting different sub-domains.
@@ -87,16 +89,17 @@ final class Config
      *
      * @var Array
      */
-    public static $sub_domains = array(
-        'gateway' => array(
-            'production' => 'gate.',
-            'sandbox' => 'staging.gate.'
-        ),
-        'wpf' => array(
-            'production' => 'wpf.',
-            'sandbox' => 'staging.wpf.',
-        ),
-    );
+    public static $sub_domains
+        = array(
+            'gateway' => array(
+                'production' => 'gate.',
+                'sandbox'    => 'staging.gate.'
+            ),
+            'wpf'     => array(
+                'production' => 'wpf.',
+                'sandbox'    => 'staging.wpf.',
+            ),
+        );
 
     /**
      * Dynamic Getters/Setter for getting/setting configuration parameters
@@ -151,8 +154,11 @@ final class Config
      * @return String
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
-    final public static function getEnvironmentURL($protocol = self::PROTOCOL, $sub_domain = 'gateway', $port = 443)
-    {
+    final public static function getEnvironmentURL(
+        $protocol = self::PROTOCOL,
+        $sub_domain = 'gateway',
+        $port = 443
+    ) {
         if (self::getEnvironment() == self::ENV_PROD) {
             $sub_domain = self::$sub_domains[$sub_domain][self::ENV_PROD];
         } else {
@@ -243,9 +249,7 @@ final class Config
                 }
             }
 
-            if (isset($settings['Interfaces']) &&
-                is_array($settings['Interfaces']) &&
-                sizeof($settings['Interfaces']) > 1
+            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && sizeof($settings['Interfaces']) > 1
             ) {
                 foreach ($settings['Interfaces'] as $option => $value) {
                     if (array_key_exists($option, self::$interfaces)) {

@@ -353,14 +353,12 @@ class PPRO extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol'  => 'https',
-                'port'      => 443,
-                'type'      => 'POST',
-                'format'    => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            ));
 
         parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -407,57 +405,54 @@ class PPRO extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transcation\Types::PPRO,
-                'transaction_id' => $this->transaction_id,
-                'payment_type' => $this->payment_type,
-                'usage' => $this->usage,
-                'remote_ip' => $this->remote_ip,
-                'amount' => parent::transform(
-                    'amount',
-                    array(
+                'transaction_type'   => \Genesis\API\Constants\Transcation\Types::PPRO,
+                'transaction_id'     => $this->transaction_id,
+                'payment_type'       => $this->payment_type,
+                'usage'              => $this->usage,
+                'remote_ip'          => $this->remote_ip,
+                'amount'             => parent::transform('amount', array(
                         $this->amount,
                         $this->currency,
-                    )
-                ),
-                'currency' => $this->currency,
+                    )),
+                'currency'           => $this->currency,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
-                'customer_email' => $this->customer_email,
-                'customer_phone' => $this->customer_phone,
-                'account_number' => $this->account_number,
-                'bank_code' => $this->bank_code,
-                'bic' => $this->bic,
-                'iban' => $this->iban,
-                'account_phone' => $this->account_phone,
-                'billing_address' => array(
+                'customer_email'     => $this->customer_email,
+                'customer_phone'     => $this->customer_phone,
+                'account_number'     => $this->account_number,
+                'bank_code'          => $this->bank_code,
+                'bic'                => $this->bic,
+                'iban'               => $this->iban,
+                'account_phone'      => $this->account_phone,
+                'billing_address'    => array(
                     'first_name' => $this->billing_first_name,
-                    'last_name' => $this->billing_last_name,
-                    'address1' => $this->billing_address1,
-                    'address2' => $this->billing_address2,
-                    'zip_code' => $this->billing_zip_code,
-                    'city' => $this->billing_city,
-                    'state' => $this->billing_state,
-                    'country' => $this->billing_country,
+                    'last_name'  => $this->billing_last_name,
+                    'address1'   => $this->billing_address1,
+                    'address2'   => $this->billing_address2,
+                    'zip_code'   => $this->billing_zip_code,
+                    'city'       => $this->billing_city,
+                    'state'      => $this->billing_state,
+                    'country'    => $this->billing_country,
                 ),
-                'shipping_address' => array(
+                'shipping_address'   => array(
                     'first_name' => $this->shipping_first_name,
-                    'last_name' => $this->shipping_last_name,
-                    'address1' => $this->shipping_address1,
-                    'address2' => $this->shipping_address2,
-                    'zip_code' => $this->shipping_zip_code,
-                    'city' => $this->shipping_city,
-                    'state' => $this->shipping_state,
-                    'country' => $this->shipping_country,
+                    'last_name'  => $this->shipping_last_name,
+                    'address1'   => $this->shipping_address1,
+                    'address2'   => $this->shipping_address2,
+                    'zip_code'   => $this->shipping_zip_code,
+                    'city'       => $this->shipping_city,
+                    'state'      => $this->shipping_state,
+                    'country'    => $this->shipping_country,
                 ),
-                'risk_params' => array(
-                    'ssn' => $this->risk_ssn,
-                    'mac_address' => $this->risk_mac_address,
-                    'session_id' => $this->risk_session_id,
-                    'user_id' => $this->risk_user_id,
-                    'user_level' => $this->risk_user_level,
-                    'email' => $this->risk_email,
-                    'phone' => $this->risk_phone,
-                    'remote_ip' => $this->risk_remote_ip,
+                'risk_params'        => array(
+                    'ssn'           => $this->risk_ssn,
+                    'mac_address'   => $this->risk_mac_address,
+                    'session_id'    => $this->risk_session_id,
+                    'user_id'       => $this->risk_user_id,
+                    'user_level'    => $this->risk_user_level,
+                    'email'         => $this->risk_email,
+                    'phone'         => $this->risk_phone,
+                    'remote_ip'     => $this->risk_remote_ip,
                     'serial_number' => $this->risk_serial_number,
                 ),
             )
