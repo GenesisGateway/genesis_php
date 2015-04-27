@@ -1,34 +1,26 @@
+1.2.0
+-----
+
+* Add support for Genesis Gateway v3.9
+* Update the included CA Bundle
+* Internal refactoring
+
 1.1.0
 -----
 
-* Add flags for 3D/WPF notifications: API\Notification\is3DNotification(), API\Notification\isWPFNotification()
-* Add API\Notification\renderResponse() method
-* Add support for immediate validation when parsing API\Notification
-* Add support for alias-based environment setting in Config
-* Add system requirements verification
-* Add LICENSE file
-* Fix API\Response initialization
-* Fix Network\Wrapper\cURL silent return
-* Fix Network\Wrapper\StreamContext error handling
-* Fix Genesis Certificate Bundle chain
-* Fix illegal XML characters in the request body
-* Fix PascalCase support
-* Fix Conform to PSR standard
-* Change API\Response\getResponseObject() from SimpleXMLElement to ArrayObject
-* Remove unused variables in various classes
-* Remove namespace shortcuts (use keyword)
-* Remove the need for set environment variable, in order to get the CA bundle
-* Update PHPSpec and its dependencies
-* Update PHPDoc comments
-* Update file headers
+* Add is3DNotification/isWPFNotification methods to API\Notification
+* Add API\Notification::renderResponse() method
+* Change API\Response::getResponseObject type from SimpleXMLElement to stdClass
+* Internal refactoring
+* Update comments/headers
 
 1.0.2
 -----
 
 * Add support for internationalization (currently only in WPF)
-* Add flag (API\Response\isPartiallyApproved()) for partially-approved transactions
-* Add helper method API\Response\getFormattedAmount()
-* Add helper method API\Response\getFormattedTimestamp()
+* Add flag "API\Response::isPartiallyApproved()" for partially-approved transactions
+* Add helper method API\Response::getFormattedAmount()
+* Add helper method API\Response::getFormattedTimestamp()
 * Add Network\Wrapper\StreamContext configuration based on the PHP version
 * Fix transaction amount conversion between ISO-4217 and Nominal
 * Update PHPDoc comments
@@ -38,7 +30,7 @@
 -----
 
 * Move the ISO-4217 currency handling to the post-processing
-* Fix API\Response\isSuccessful() returning wrong status on some transaction types
+* Fix API\Response::isSuccessful() returning wrong status on some transaction types
 * Fix Utils\Currency types
 * Update PHPDoc Comments
 * Update README
