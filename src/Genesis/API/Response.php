@@ -88,9 +88,9 @@ class Response
         $status = false;
 
         $successfulStatuses = array(
-            \Genesis\API\Constants\Transcation\States::APPROVED,
-            \Genesis\API\Constants\Transcation\States::PENDING_ASYNC,
-            \Genesis\API\Constants\Transcation\States::NEW_STATUS,
+            \Genesis\API\Constants\Transaction\States::APPROVED,
+            \Genesis\API\Constants\Transaction\States::PENDING_ASYNC,
+            \Genesis\API\Constants\Transaction\States::NEW_STATUS,
         );
 
         if (isset($this->responseObj->status) && in_array($this->responseObj->status,

@@ -337,7 +337,7 @@ class CashU extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transcation\Types::CASHU,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::CASHU,
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,

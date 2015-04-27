@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Constants\Transcation;
+namespace spec\Genesis\API\Constants\Transaction;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

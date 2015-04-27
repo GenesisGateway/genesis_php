@@ -405,7 +405,7 @@ class PPRO extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transcation\Types::PPRO,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::PPRO,
                 'transaction_id'     => $this->transaction_id,
                 'payment_type'       => $this->payment_type,
                 'usage'              => $this->usage,

@@ -68,8 +68,14 @@ class DateRange extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url',
-            $this->buildRequestURL('gateway', 'retrieval_requests/by_date', false));
+        parent::setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'retrieval_requests/by_date',
+                false
+            )
+        );
     }
 
     /**

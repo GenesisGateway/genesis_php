@@ -337,7 +337,7 @@ class Paysafecard extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transcation\Types::PAYSAFECARD,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::PAYSAFECARD,
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,

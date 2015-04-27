@@ -61,8 +61,6 @@ class cURL implements \Genesis\Interfaces\Network
 
     /**
      * Initialize cURL
-     *
-     * @return void
      */
     public function __construct()
     {

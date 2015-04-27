@@ -20,14 +20,14 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Transcation;
+namespace Genesis\API\Constants\Transaction;
 
 /**
  * Class States
  *
  * Transaction states of a Genesis Transaction
  *
- * @package Genesis\API\Constants\Transcation
+ * @package Genesis\API\Constants\Transaction
  */
 class States
 {

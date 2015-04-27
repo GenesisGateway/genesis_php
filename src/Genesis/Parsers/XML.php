@@ -46,13 +46,13 @@ class XML
     private $sxi;
 
     /**
-     * @param $xml_document XML Document
+     * @param string $xml_document XML Document
      */
     public function __construct($xml_document)
     {
         $this->sxi = new \SimpleXmlIterator($xml_document);
 
-        $this->stdClassObj = self::sxiToArray($this->sxi);
+        $this->stdClassObj = self::sxiToClass($this->sxi);
     }
 
     /**
@@ -64,11 +64,11 @@ class XML
      *
      * @return \stdClass|mixed
      */
-    public static function sxiToArray($sxi, $isMultiNode = array())
+    public static function sxiToClass($sxi, $isMultiNode = array())
     {
         $stdObj = new \stdClass();
 
-        if (count($sxi->attributes()) > 0) {
+        if ($sxi->attributes()->count() > 0) {
             $stdObj = json_decode(json_encode($sxi->attributes()));
         }
 
@@ -79,7 +79,7 @@ class XML
                 }
 
                 if ($sxi->hasChildren()) {
-                    array_push($stdObj->{$sxi->key()}, self::sxiToArray($sxi->current(),
+                    array_push($stdObj->{$sxi->key()}, self::sxiToClass($sxi->current(),
                         self::checkForDuplicates($sxi->current())));
                 } else {
                     if (count($sxi->current()->attributes()) > 0) {
@@ -103,7 +103,7 @@ class XML
                 }
             } else {
                 if ($sxi->hasChildren()) {
-                    $stdObj->{$sxi->key()} = self::sxiToArray($sxi->current(),
+                    $stdObj->{$sxi->key()} = self::sxiToClass($sxi->current(),
                         self::checkForDuplicates($sxi->current()));
                 } else {
                     $content = trim($sxi->current()->__toString());

@@ -393,7 +393,7 @@ class Authorize extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'          => \Genesis\API\Constants\Transcation\Types::AUTHORIZE,
+                'transaction_type'          => \Genesis\API\Constants\Transaction\Types::AUTHORIZE,
                 'transaction_id'            => $this->transaction_id,
                 'usage'                     => $this->usage,
                 'gaming'                    => $this->gaming,

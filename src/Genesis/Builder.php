@@ -40,6 +40,8 @@ class Builder
     /**
      * Initialize the required builder, based on the use's
      * preference (set inside the configuration ini file)
+     *
+     * @param string $interface
      */
     public function __construct($interface = null)
     {

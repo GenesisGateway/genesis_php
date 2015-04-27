@@ -230,8 +230,11 @@ abstract class Request
             $groupsFormatted = array();
 
             foreach ($fields as $group => $groupFields) {
-                $groupsFormatted[] = sprintf('%s (%s)', ucfirst($group),
-                    implode(', ', $groupFields));
+                $groupsFormatted[] = sprintf(
+                    '%s (%s)',
+                    ucfirst($group),
+                    implode(', ', $groupFields)
+                );
 
                 foreach ($groupFields as $field) {
                     if (!empty($this->$field)) {
@@ -241,8 +244,10 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new \Genesis\Exceptions\BlankRequiredField('One of the following group(s) of field(s): ' . implode(' / ',
-                        $groupsFormatted) . ' must be filled in!', true);
+                throw new \Genesis\Exceptions\BlankRequiredField(
+                    'One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!',
+                    true
+                );
             }
         }
 
@@ -254,7 +259,9 @@ abstract class Request
                 if (isset($this->$fieldName) && !empty($this->$fieldName)) {
                     foreach ($fieldDependencies as $field) {
                         if (empty($this->$field)) {
-                            throw new \Genesis\Exceptions\BlankRequiredField($fieldName . ' is depending on field: ' . $field . ' which');
+                            throw new \Genesis\Exceptions\BlankRequiredField(
+                                $fieldName . ' is depending on field: ' . $field . ' which'
+                            );
                         }
                     }
                 }
@@ -281,6 +288,9 @@ abstract class Request
 
     /**
      * Add transaction type
+     *
+     * @param string $name
+     * @param array     $parameters
      */
     public function addTransactionType($name, $parameters = array())
     {

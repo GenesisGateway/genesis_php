@@ -30,7 +30,18 @@ namespace Genesis\API\Request\NonFinancial\Fraud\Retrieval;
  */
 class Transaction extends \Genesis\API\Request
 {
+    /**
+     * Acquirer's Reference Number
+     *
+     * @var string
+     */
     protected $arn;
+
+    /**
+     * Unique ID  of the original (reference) transaction
+     *
+     * @var string
+     */
     protected $original_transaction_unique_id;
 
     /**

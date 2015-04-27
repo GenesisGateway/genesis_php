@@ -183,7 +183,7 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'    => \Genesis\API\Constants\Transcation\Types::PAYBYVOUCHER,
+                'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER,
                 'transaction_id'      => $this->transaction_id,
                 'remote_ip'           => $this->remote_ip,
                 'amount'              => parent::transform('amount', array(

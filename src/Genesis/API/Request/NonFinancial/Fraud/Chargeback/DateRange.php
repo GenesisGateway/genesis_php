@@ -67,8 +67,14 @@ class DateRange extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url',
-            $this->buildRequestURL('gateway', 'chargebacks/by_date', false));
+        parent::setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'chargebacks/by_date',
+                false
+            )
+        );
     }
 
     /**

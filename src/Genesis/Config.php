@@ -241,7 +241,7 @@ final class Config
         if (file_exists($settings_file)) {
             $settings = parse_ini_file($settings_file, true);
 
-            if (isset($settings['Genesis']) && is_array($settings['Genesis']) && sizeof($settings['Genesis']) > 1) {
+            if (isset($settings['Genesis']) && is_array($settings['Genesis']) && count($settings['Genesis']) > 1) {
                 foreach ($settings['Genesis'] as $option => $value) {
                     if (array_key_exists($option, self::$vault)) {
                         self::$vault[$option] = $value;
@@ -249,7 +249,7 @@ final class Config
                 }
             }
 
-            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && sizeof($settings['Interfaces']) > 1
+            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && count($settings['Interfaces']) > 1
             ) {
                 foreach ($settings['Interfaces'] as $option => $value) {
                     if (array_key_exists($option, self::$interfaces)) {

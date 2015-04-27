@@ -454,7 +454,7 @@ class Sale3D extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'          => \Genesis\API\Constants\Transcation\Types::SALE_3D,
+                'transaction_type'          => \Genesis\API\Constants\Transaction\Types::SALE_3D,
                 'transaction_id'            => $this->transaction_id,
                 'usage'                     => $this->usage,
                 'gaming'                    => $this->gaming,

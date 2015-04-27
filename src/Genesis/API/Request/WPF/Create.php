@@ -343,12 +343,19 @@ class Create extends \Genesis\API\Request
     public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
     {
         if (empty($language)) {
-            throw new \Genesis\Exceptions\InvalidArgument('The provided argument is not a valid ISO-639-1 language code!');
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'The provided argument is not a valid ISO-639-1 language code!'
+            );
         }
 
-        parent::setApiConfig('url',
-            parent::buildRequestURL('wpf', sprintf('%s/wpf', substr(strtolower($language), 0, 2)),
-                false));
+        parent::setApiConfig(
+            'url',
+            parent::buildRequestURL(
+                'wpf',
+                sprintf('%s/wpf', substr(strtolower($language), 0, 2)),
+                false
+            )
+        );
     }
 
     /**

@@ -391,7 +391,7 @@ class InitRecurringSale extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'          => \Genesis\API\Constants\Transcation\Types::INIT_RECURRING_SALE,
+                'transaction_type'          => \Genesis\API\Constants\Transaction\Types::INIT_RECURRING_SALE,
                 'transaction_id'            => $this->transaction_id,
                 'usage'                     => $this->usage,
                 'gaming'                    => $this->gaming,

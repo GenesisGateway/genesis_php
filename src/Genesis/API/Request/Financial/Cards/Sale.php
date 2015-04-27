@@ -391,7 +391,7 @@ class Sale extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'          => \Genesis\API\Constants\Transcation\Types::SALE,
+                'transaction_type'          => \Genesis\API\Constants\Transaction\Types::SALE,
                 'transaction_id'            => $this->transaction_id,
                 'usage'                     => $this->usage,
                 'gaming'                    => $this->gaming,
