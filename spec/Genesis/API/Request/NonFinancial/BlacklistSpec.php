@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\NonFinancial\Fraud;
+namespace spec\Genesis\API\Request\NonFinancial;
 
 use Genesis\API as API;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ class BlacklistSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Fraud\Blacklist');
+        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Blacklist');
     }
 
     function it_can_build_structure()

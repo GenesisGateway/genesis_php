@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\NonFinancial\Fraud;
+namespace Genesis\API\Request\NonFinancial;
 
 /**
  * Blacklist Request

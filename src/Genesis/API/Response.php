@@ -63,16 +63,39 @@ class Response
      *
      * @param string $response
      *
+     * @throws \Genesis\Exceptions\APIError
      * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidResponse
      */
     public function parseResponse($response)
     {
         if (empty($response)) {
-            throw new \Genesis\Exceptions\InvalidArgument('Invalid document!');
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'Invalid document!'
+            );
         }
 
+        // Save the raw response
         $this->responseRaw = $response;
-        $this->responseObj = \Genesis\Utils\Common::xmlToObj($response);
+
+        // Get an stdClass from the XML String
+        try {
+            $this->responseObj = \Genesis\Utils\Common::xmlToObj($response);
+        }
+        catch (\Exception $e) {
+            throw new \Genesis\Exceptions\InvalidResponse();
+        }
+
+        if ($this->isSuccessful() === false) {
+            throw new \Genesis\Exceptions\APIError(
+                $this->responseObj->technical_message ?: 'Unknown API Error!'
+            );
+        }
+
+        // Transform Amount from Major to Minor unit
+        $this->transformAmountUnit();
+        // Transform Timestamp from String to DateTime
+        $this->transformTimestamp();
     }
 
     /**
@@ -85,21 +108,22 @@ class Response
      */
     public function isSuccessful()
     {
-        $status = false;
-
         $successfulStatuses = array(
             \Genesis\API\Constants\Transaction\States::APPROVED,
             \Genesis\API\Constants\Transaction\States::PENDING_ASYNC,
             \Genesis\API\Constants\Transaction\States::NEW_STATUS,
         );
 
-        if (isset($this->responseObj->status) && in_array($this->responseObj->status,
-                $successfulStatuses)
-        ) {
-            $status = true;
+        if (isset($this->responseObj->status)) {
+            if (in_array($this->responseObj->status, $successfulStatuses)) {
+                $status = true;
+            }
+            else {
+                $status = false;
+            }
         }
-
-        if (!isset($this->responseObj->status)) {
+        else {
+            // return null if status is inapplicable
             $status = null;
         }
 
@@ -111,23 +135,21 @@ class Response
      *
      * @see Genesis_API_Documentation for more information
      *
-     * @return bool
+     * @return bool | null (if inapplicable)
      */
     public function isPartiallyApproved()
     {
         if (isset($this->responseObj->partial_approval)) {
-            if (\Genesis\Utils\Common::stringToBoolean($this->responseObj->partial_approval)) {
-                return true;
-            }
+            return \Genesis\Utils\Common::stringToBoolean($this->responseObj->partial_approval);
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Try to fetch a description of the received Error Code
      *
-     * @return string | null (if no code/issuer_code is available)
+     * @return string | null (if inapplicable)
      */
     public function getErrorDescription()
     {
@@ -165,14 +187,16 @@ class Response
     /**
      * Get formatted amount (instead of ISO4217, return in float)
      *
-     * @return String | null (if no amount&currency is available)
+     * @return String | null (if amount/currency are unavailable)
      */
-    public function getFormattedAmount()
+    public function transformAmountUnit()
     {
         if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
             if (isset($this->responseObj->amount) && !empty($this->responseObj->amount)) {
-                return \Genesis\Utils\Currency::exponentToAmount($this->responseObj->amount,
-                    $this->responseObj->currency);
+                $this->responseObj->amount = \Genesis\Utils\Currency::exponentToAmount(
+                    $this->responseObj->amount,
+                    $this->responseObj->currency
+                );
             }
         }
 
@@ -184,10 +208,16 @@ class Response
      *
      * @return \DateTime|null (if invalid timestamp)
      */
-    public function getFormattedTimestamp()
+    public function transformTimestamp()
     {
         if (isset($this->responseObj->timestamp) && !empty($this->responseObj->timestamp)) {
-            return new \DateTime($this->responseObj->timestamp);
+            try {
+                $this->responseObj->timestamp = new \DateTime($this->responseObj->timestamp);
+            }
+            catch (\Exception $e) {
+                // Just log the attempt
+                error_log($e->getMessage());
+            }
         }
 
         return null;

@@ -56,7 +56,7 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_be_unsuccessful_on_error()
     {
-        $this->shouldNotThrow()->during(
+        $this->shouldThrow('\Genesis\Exceptions\APIError')->during(
             'parseResponse', array(
                 $this->buildSample(
                     array('error')
@@ -69,7 +69,7 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_be_unsuccessful_on_unknown_status()
     {
-        $this->shouldNotThrow()->during(
+        $this->shouldThrow('\Genesis\Exceptions\APIError')->during(
             'parseResponse', array(
                 $this->buildSample(
                     array('non-existing-status')
@@ -91,19 +91,15 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_maintain_response_integrity()
     {
+        $xml_document = $this->buildSample(array('approved', 999));
+
         $this->shouldNotThrow()->during(
             'parseResponse', array(
-                $this->buildSample(
-                    array('approved', 999)
-                )
+                $xml_document
             )
         );
 
-        $this->getResponseRaw()->shouldBe(
-            $this->buildSample(
-                array('approved', 999)
-            )
-        );
+        $this->getResponseRaw()->shouldBe($xml_document);
     }
 
     function it_should_fail_parsing_on_null_response()
@@ -169,7 +165,7 @@ class ResponseSpec extends ObjectBehavior
             )
         );
 
-        $this->getFormattedAmount()->shouldBe('3.14');
+        $this->getResponseObject()->amount->shouldBe('3.14');
     }
 
     function it_should_get_formatted_timestamp()
@@ -182,37 +178,52 @@ class ResponseSpec extends ObjectBehavior
             )
         );
 
-        $this->getFormattedTimestamp()->shouldHaveType("DateTime");
+        $this->getResponseObject()->timestamp->shouldHaveType("DateTime");
     }
 
-    function it_should_throw_on_invalid_timestamp()
+    function it_should_not_throw_on_invalid_timestamp()
     {
         $this->shouldNotThrow()->during(
             'parseResponse', array(
                 $this->buildSample(
-                    array('approved', 00, 314, 'USD', 'false', 'INVALID_TIMESTAMP')
+                    array('approved', 00, 314, 'USD', 'false', 'ERROR')
                 )
             )
         );
 
-        $this->shouldThrow()->during('getFormattedTimestamp');
+        $this->shouldNotThrow()->during('transformTimestamp');
+
+        $this->getResponseObject()->timestamp->shouldBe('ERROR');
     }
 
     function buildSample($settings = array())
     {
-        list($response, $code, $amount, $currency, $partial_approval, $timestamp) = array_replace(
-            array('', 00, 9000, 'USD', false, '2014-01-01T00:00:00Z'), $settings
+        list($status, $code, $amount, $currency, $partial_approval, $timestamp) = array_replace(
+            array('', 00, 314, 'USD', false, '1970-01-01T00:00:00Z'), $settings
         );
 
-        return '<?xml version="1.0" encoding="UTF-8"?>
-				<response>
-					<status>' . $response . '</status>
-					<code>' . $code . '</code>
-					<amount>' . $amount . '</amount>
-					<currency>' . $currency . '</currency>
-					<partial_approval>' . $partial_approval . '</partial_approval>
-					<timestamp>' . $timestamp . '</timestamp>
-		        </response>';
+        $payment_response = array(
+            'payment_response' => array(
+                'transaction_type'  => 'authorize',
+                'code'              => $code,
+                'status'            => $status,
+                'unique_id'         => md5(time(false)),
+                'transaction_id'    => md5(microtime(true)),
+                'technical_message' => 'TESTMODE: No real money will be transferred!',
+                'message'           => 'TESTMODE: No real money will be transferred!',
+                'mode'              => 'test',
+                'timestamp'         => $timestamp,
+                'amount'            => $amount,
+                'currency'          => $currency,
+                'partial_approval'  => $partial_approval,
+                'sent_to_acquirer'  => ''
+            )
+        );
+
+        $xml = new \Genesis\Builder('xml');
+        $xml->parseStructure($payment_response);
+
+        return $xml->getDocument();
     }
 
     function getMatchers()

@@ -77,7 +77,7 @@ class eZeeWalletSpec extends ObjectBehavior
                 return strcasecmp($subject, base64_decode($arg));
             },
             'contain'       => function ($subject, $arg) {
-                return stripos($subject, $arg);
+                return (stripos($subject, $arg) !== false);
             },
         );
     }

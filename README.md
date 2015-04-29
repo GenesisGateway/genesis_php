@@ -42,12 +42,8 @@ require 'vendor/autoload.php';
 // init/ Work inside the Genesis Workspace
 use \Genesis;
 
-// or, you can list only the classes you need
-use \Genesis\Genesis as Genesis;
-use \Genesis\GenesisConfg as GenesisConf;
-
 // load the pre-configured ini file
-Config::loadSettings('<path-to-your-ini-file>');
+Config::loadSettings('/path/to/config.ini');
 
 // optionally you can set each of the credentials manually
 Config::setToken('<enter_your_token>');
@@ -56,46 +52,58 @@ Config::setPassword('<enter_your_password>');
 Config::setEnvironment('sandbox|production');
 
 // create a new Genesis instance with desired API request
-$genesis = new Genesis('Financial\Authorize');
+$genesis = new \Genesis\Genesis('Financial\Cards\Authorize');
 
 // set request parameters
 $genesis
     ->request()
-        ->setTransactionId('<transaction_id>')
-        ->setUsage('<usage>')
-        ->setRemoteIp('<remote_ip>')
-        ->setReferenceId('<reference_id>')
-        ->setCurrency('<currency>')
-        ->setAmount('<amount>')
+        ->setTransactionId('43671')
+        ->setUsage('40208 concert tickets')
+        ->setRemoteIp('245.253.2.12')
+        ->setAmount('50')
+        ->setCurrency('USD')
         // Customer Details
-        ->setCustomerEmail('<customer_email>')
-        ->setCustomerPhone('<customer_phone>')
+        ->setCustomerEmail('emil@example.com')
+        ->setCustomerPhone('1987987987987')
         // Credit Card Details
-        ->setCardHolder('<card_holder>')
-        ->setCardNumber('<card_number>')
-        ->setExpirationMonth('<expiration_month>')
-        ->setExpirationYear('<expiration_year>')
-        ->setCvv('<cvv>')
+        ->setCardHolder('Emil Example')
+        ->setCardNumber('4200000000000000')
+        ->setExpirationMonth('01')
+        ->setExpirationYear('2020')
+        ->setCvv('123')
         // Billing/Invoice Details
-        ->setBillingFirstName('<billing_first_name>')
-        ->setBillingLastName('<billing_last_name>')
-        ->setBillingAddress1('<billing_address1>'
-        ->setBillingZipCode('<billing_zip_code>')
-        ->setBillingCity('<billing_city>')
-        ->setBillingCountry('<billing_country>');
-            
-// send the request
-$genesis->execute();
+        ->setBillingFirstName('Travis')
+        ->setBillingLastName('Pastrana')
+        ->setBillingAddress1('Muster Str. 12')
+        ->setBillingZipCode('10178')
+        ->setBillingCity('Los Angeles')
+        ->setBillingState('CA')
+        ->setBillingCountry('US');
 
-// check if our request is successful
-if ($genesis->response()->isSuccessful()) {
-    $response_obj  = $genesis->response()->getResponseObject();
-    // process the payment as successful
+try {
+    // send the request
+    $genesis->execute();
+    
+    // Display the transaction Id
+    // This means that the transaction is completed and it is successful
+    echo $genesis->response()->getResponseObject()->unique_id;
 }
-else {
-    $error_message = $genesis->response()->getErrorDescription();
-    // handle payment errors
+catch (\Genesis\Exceptions\APIError $api) {
+    // Handle API errors
+    echo $genesis->response()->getResponseObject()->technical_message;
 }
+catch (\Genesis\Exceptions\InvalidResponse $response) {
+    // Log invalid responses
+    // Invalid document types, names etc.
+    error_log($response->getMessage());
+}
+catch (\Genesis\Exceptions\NetworkError $network) {
+    // Log something that happend during transport
+    // SSL errors, etc.
+    error_log($network->getMessage());
+}
+
+
 ?>
 ````
 
@@ -108,33 +116,42 @@ Request types
 You can use the following request types to initialize the Genesis interface:
 
 ````
-Financial\Authorize
-Financial\Authorize3D
 Financial\Capture
-Financial\Credit
-Financial\Payout
 Financial\Refund
-Financial\Sale
-Financial\Sale3D
 Financial\Void
 
-Financial\Recurring\InitRecurringSale
-Financial\Recurring\InitRecurringSale3D
-Financial\Recurring\RecurringSale
+Financial\Alternatives\CashU
+Financial\Alternatives\PPRO
+Financial\Alternatives\Paysafecard
+Financial\Alternatives\Sofort
+Financial\Alternatives\SofortiDEAL
+Financial\BankTransfers\PayByVoucher
 
-FraudRelated\Chargeback\DateRange
-FraudRelated\Chargeback\Transaction
+Financial\Cards\Authorize
+Financial\Cards\Authorize3D
+Financial\Cards\Credit
+Financial\Cards\Payout
+Financial\Cards\Recurring
+Financial\Cards\Recurring\InitRecurringSale
+Financial\Cards\Recurring\InitRecurringSale3D
+Financial\Cards\Recurring\RecurringSale
+Financial\Cards\Sale
+Financial\Cards\Sale3D
 
-FraudRelated\Retrieval\DateRange
-FraudRelated\Retrieval\Transaction
+Financial\Wallets\eZeeWallet
 
-FraudRelated\Blacklist
-
-NonFinancial\AccountVerification
 NonFinancial\AVS
+NonFinancial\AccountVerification
+NonFinancial\Blacklist
 
-Reconcile\DateRange
-Reconcile\Transaction
+NonFinancial\Fraud\Chargeback\DateRange
+NonFinancial\Fraud\Chargeback\Transaction
+NonFinancial\Fraud\Retrieval\DateRange
+NonFinancial\Fraud\Retrieval\Transaction
+
+NonFinancial\Reconcile\DateRange
+NonFinancial\Reconcile\Transaction
+
 
 WPF\Create
 WPF\Reconcile

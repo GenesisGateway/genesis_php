@@ -8,7 +8,7 @@ use Genesis\API\Request as Request;
 
 class NetworkSpec extends ObjectBehavior
 {
-    function let(Request\NonFinancial\Fraud\Blacklist $apiCtx)
+    function let(Request\NonFinancial\Blacklist $apiCtx)
     {
         $this->beConstructedWith($apiCtx, $apiCtx);
     }

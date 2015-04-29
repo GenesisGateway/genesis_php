@@ -72,7 +72,6 @@ final class Common
     /**
      * Get the current PHP version
      *
-     *
      * @return int
      */
     public static function getPHPVersion()
@@ -204,8 +203,7 @@ final class Common
     public static function isValidXMLName($tag)
     {
         if (!is_array($tag)) {
-            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag,
-                $matches) && reset($matches) == $tag;
+            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
         }
 
         return false;

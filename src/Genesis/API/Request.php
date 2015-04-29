@@ -96,23 +96,11 @@ abstract class Request
     public function __construct()
     {
         $this->initConfiguration();
-        $this->setRequiredFields();
-    }
 
-    /**
-     * Initialize per-request configuration
-     */
-    protected function initConfiguration()
-    {
-
-    }
-
-    /**
-     * Set the *required fields for the request
-     */
-    protected function setRequiredFields()
-    {
-
+        // A request might not always feature 'required' fields
+        if (method_exists($this, 'setRequiredFields')) {
+            $this->setRequiredFields();
+        }
     }
 
     /**
@@ -138,6 +126,7 @@ abstract class Request
             case 'set':
                 if (property_exists($this, $requestedKey)) {
                     $this->$requestedKey = trim(reset($args));
+                    return $this;
                 }
 
                 break;
@@ -181,14 +170,7 @@ abstract class Request
         $this->checkRequirements();
     }
 
-    /**
-     * Create the Tree structure and populate
-     * the fields with the set parameters.
-     */
-    protected function populateStructure()
-    {
 
-    }
 
     /**
      * Remove empty keys/values from the structure
@@ -197,7 +179,11 @@ abstract class Request
      */
     protected function sanitizeStructure()
     {
-        $this->treeStructure->exchangeArray(\Genesis\Utils\Common::emptyValueRecursiveRemoval($this->treeStructure->getArrayCopy()));
+        $this->treeStructure->exchangeArray(
+            \Genesis\Utils\Common::emptyValueRecursiveRemoval(
+                $this->treeStructure->getArrayCopy()
+            )
+        );
     }
 
     /**
@@ -244,7 +230,10 @@ abstract class Request
 
             if (!$emptyFlag) {
                 throw new \Genesis\Exceptions\BlankRequiredField(
-                    'One of the following group(s) of field(s): ' . implode(' / ', $groupsFormatted) . ' must be filled in!',
+                    sprintf(
+                        'One of the following group/s of field/s: %s  must be filled in!',
+                        implode(' / ', $groupsFormatted)
+                    ),
                     true
                 );
             }
@@ -259,7 +248,11 @@ abstract class Request
                     foreach ($fieldDependencies as $field) {
                         if (empty($this->$field)) {
                             throw new \Genesis\Exceptions\BlankRequiredField(
-                                $fieldName . ' is depending on field: ' . $field . ' which'
+                                sprintf(
+                                    '%s is depending on: %s, which is not being set!',
+                                    $fieldName,
+                                    $field
+                                )
                             );
                         }
                     }
@@ -283,25 +276,6 @@ abstract class Request
                 throw new \Genesis\Exceptions\BlankRequiredField(implode($fields));
             }
         }
-    }
-
-    /**
-     * Add transaction type
-     *
-     * @param string $name
-     * @param array     $parameters
-     */
-    public function addTransactionType($name, $parameters = array())
-    {
-
-    }
-
-    /**
-     * Set the language of a WPF form
-     */
-    public function setLanguage()
-    {
-
     }
 
     /**
@@ -389,5 +363,50 @@ abstract class Request
     public function getApiConfig($key)
     {
         return $this->config->offsetGet($key);
+    }
+
+
+    /**
+     * Initialize per-request configuration
+     */
+    protected function initConfiguration()
+    {
+
+    }
+
+    /**
+     * Set the *required fields for the request
+     */
+    protected function setRequiredFields()
+    {
+
+    }
+
+    /**
+     * Create the Tree structure and populate
+     * the fields with the set parameters.
+     */
+    protected function populateStructure()
+    {
+
+    }
+
+    /**
+     * Add transaction type
+     *
+     * @param string $name
+     * @param array     $parameters
+     */
+    public function addTransactionType($name, $parameters = array())
+    {
+
+    }
+
+    /**
+     * Set the language of a WPF form
+     */
+    public function setLanguage()
+    {
+
     }
 }
