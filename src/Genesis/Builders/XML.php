@@ -48,7 +48,7 @@ final class XML implements \Genesis\Interfaces\Builder
         $this->context->openMemory();
         $this->context->startDocument('1.0', 'UTF-8');
         $this->context->setIndent(true);
-        $this->context->setIndentString("\t");
+        $this->context->setIndentString("\x20\x20");
     }
 
     /**
