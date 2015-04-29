@@ -45,11 +45,11 @@ use \Genesis;
 // load the pre-configured ini file
 Config::loadSettings('/path/to/config.ini');
 
-// optionally you can set each of the credentials manually
-Config::setToken('<enter_your_token>');
+// optionally, you can set the credentials manually
 Config::setUsername('<enter_your_username>');
 Config::setPassword('<enter_your_password>');
-Config::setEnvironment('sandbox|production');
+Config::setEnvironment('test|live');
+Config::setToken('<enter_your_token>');
 
 // create a new Genesis instance with desired API request
 $genesis = new \Genesis\Genesis('Financial\Cards\Authorize');
@@ -84,22 +84,21 @@ try {
     // send the request
     $genesis->execute();
     
-    // Display the transaction Id
-    // This means that the transaction is completed and it is successful
+    // transaction is completed and it is successful - display the id
     echo $genesis->response()->getResponseObject()->unique_id;
 }
-catch (\Genesis\Exceptions\APIError $api) {
-    // Handle API errors
+catch (Exceptions\APIError $api) {
+    // handle API errors
     echo $genesis->response()->getResponseObject()->technical_message;
 }
-catch (\Genesis\Exceptions\InvalidResponse $response) {
-    // Log invalid responses
-    // Invalid document types, names etc.
+catch (Exceptions\InvalidResponse $response) {
+    // log invalid responses
+    // invalid document types, names etc.
     error_log($response->getMessage());
 }
-catch (\Genesis\Exceptions\NetworkError $network) {
-    // Log something that happend during transport
-    // SSL errors, etc.
+catch (Exceptions\NetworkError $network) {
+    // log something that happened during transport
+    // ssl errors, etc.
     error_log($network->getMessage());
 }
 
@@ -116,17 +115,22 @@ Request types
 You can use the following request types to initialize the Genesis interface:
 
 ````
+// Generic transaction operations
 Financial\Capture
 Financial\Refund
 Financial\Void
 
+// Transactions with Alternative Payment Methods
 Financial\Alternatives\CashU
 Financial\Alternatives\PPRO
 Financial\Alternatives\Paysafecard
 Financial\Alternatives\Sofort
 Financial\Alternatives\SofortiDEAL
+
+// Transactions with BankTransfers
 Financial\BankTransfers\PayByVoucher
 
+// Transactions with Credit Cards
 Financial\Cards\Authorize
 Financial\Cards\Authorize3D
 Financial\Cards\Credit
@@ -138,21 +142,25 @@ Financial\Cards\Recurring\RecurringSale
 Financial\Cards\Sale
 Financial\Cards\Sale3D
 
+// Transactions with Electronic Wallets
 Financial\Wallets\eZeeWallet
 
+// Generic (Non-Financial) requests
 NonFinancial\AVS
 NonFinancial\AccountVerification
 NonFinancial\Blacklist
 
+// Fraud-related requests
 NonFinancial\Fraud\Chargeback\DateRange
 NonFinancial\Fraud\Chargeback\Transaction
 NonFinancial\Fraud\Retrieval\DateRange
 NonFinancial\Fraud\Retrieval\Transaction
 
+// Reconcile requests
 NonFinancial\Reconcile\DateRange
 NonFinancial\Reconcile\Transaction
 
-
+// Web Payment Form (Checkout) requests
 WPF\Create
 WPF\Reconcile
 ````
