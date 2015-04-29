@@ -95,6 +95,22 @@ class SofortiDEAL extends \Genesis\API\Request
     protected $customer_phone;
 
     /**
+     * The bank id of the bank where the customer resides
+     *
+     * @see Supported Bank Ids
+     *
+     * @var string
+     */
+    protected $customer_bank_id;
+
+    /**
+     * Must contain valid bank account number of customer
+     *
+     * @var string
+     */
+    protected $bank_account_number;
+
+    /**
      *Customer's Billing Address: First name
      *
      * @var string
@@ -319,12 +335,6 @@ class SofortiDEAL extends \Genesis\API\Request
             'customer_email',
             'customer_bank_id',
             'bank_account_number',
-            'billing_first_name',
-            'billing_last_name',
-            'billing_address1',
-            'billing_zip_code',
-            'billing_city',
-            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

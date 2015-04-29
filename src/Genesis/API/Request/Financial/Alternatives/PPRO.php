@@ -378,19 +378,7 @@ class PPRO extends \Genesis\API\Request
             'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_phone',
             'customer_email',
-            'account_number',
-            'bank_code',
-            'bic',
-            'iban',
-            'account_phone',
-            'billing_first_name',
-            'billing_last_name',
-            'billing_address1',
-            'billing_zip_code',
-            'billing_city',
-            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

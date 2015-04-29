@@ -14,13 +14,13 @@ class JSONSpec extends ObjectBehavior
 
     function it_can_generate_content()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')));
+        $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
     }
 
     function it_can_generate_valid_xml()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')));
+        $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
         $this->getOutput()->shouldBeValidJSON();
     }
@@ -28,11 +28,12 @@ class JSONSpec extends ObjectBehavior
     function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
+            'beEmpty'     => function ($subject) {
                 return empty($subject);
             },
-            'beValidJSON' => function($subject) {
+            'beValidJSON' => function ($subject) {
                 json_decode($subject);
+
                 return (json_last_error() == JSON_ERROR_NONE);
             },
         );

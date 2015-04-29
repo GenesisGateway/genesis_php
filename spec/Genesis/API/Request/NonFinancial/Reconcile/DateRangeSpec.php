@@ -21,7 +21,14 @@ class DateRangeSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
+    }
+
+    function it_should_fail_when_missing_required_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setStartDate(null);
+        $this->shouldThrow()->during('getDocument');
     }
 
     function setRequestParameters()
@@ -36,9 +43,9 @@ class DateRangeSpec extends ObjectBehavior
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
         );
     }
 }

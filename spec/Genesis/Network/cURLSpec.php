@@ -19,18 +19,18 @@ class cURLSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $remote_url = Config::getEnvironmentURL('https','gateway', 443);
+        $remote_url = Config::getEnvironmentURL('https', 'gateway', 443);
 
         $options = array(
-            'debug'         => 'false',
-            'type'          => 'GET',
-            'protocol'      => 'https',
-            'url'           => $remote_url,
-            'body'          => '',
-            'timeout'       => Config::getNetworkTimeout(),
-            'ca_bundle'     => Config::getCertificateBundle(),
-            'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
-            'user_agent'    => $faker->userAgent,
+            'debug'      => 'false',
+            'type'       => 'GET',
+            'protocol'   => 'https',
+            'url'        => $remote_url,
+            'body'       => '',
+            'timeout'    => Config::getNetworkTimeout(),
+            'ca_bundle'  => Config::getCertificateBundle(),
+            'user_login' => Config::getUsername() . ':' . Config::getPassword(),
+            'user_agent' => $faker->userAgent,
         );
 
         $this->prepareRequestBody($options);
@@ -45,13 +45,14 @@ class cURLSpec extends ObjectBehavior
     function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
-            'beOlder' => function($subject) {
-                    $diff = time() - strtotime($subject);
-                    return (($diff < 60) ? false : true);
-                },
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
+            'beOlder' => function ($subject) {
+                $diff = time() - strtotime($subject);
+
+                return (($diff < 60) ? false : true);
+            },
         );
     }
 }

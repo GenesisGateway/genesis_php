@@ -20,7 +20,14 @@ class CreditSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringGetDocument();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
+    }
+
+    function it_should_fail_when_missing_required_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(null);
+        $this->shouldThrow()->during('getDocument');
     }
 
     function setRequestParameters()
@@ -40,9 +47,9 @@ class CreditSpec extends ObjectBehavior
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
         );
     }
 }

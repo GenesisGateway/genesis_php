@@ -14,13 +14,13 @@ class XMLSpec extends ObjectBehavior
 
     function it_can_generate_content()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')));
+        $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
     }
 
     function it_can_generate_valid_xml()
     {
-        $this->populateNodes(array('root' => array('node1'=>'value1', 'node2'=>'value2')));
+        $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
         $this->getOutput()->shouldBeValidXML();
     }
@@ -33,10 +33,10 @@ class XMLSpec extends ObjectBehavior
                     '@attributes' => array(
                         'attr1' => 'vall1'
                     ),
-                    'node1'=> array(
+                    'node1'       => array(
                         '@cdata' => 'test'
                     ),
-                    'node2'=>'value2'
+                    'node2'       => 'value2'
                 )
             )
         );
@@ -47,7 +47,9 @@ class XMLSpec extends ObjectBehavior
 
     function it_can_escape_illegal_characters()
     {
-        $this->populateNodes(array('root' => array('amp'=>'http://domain.tld/?arg1=normal&arg2=<&arg3=>'), null));
+        $this->populateNodes(
+            array('root' => array('amp' => 'http://domain.tld/?arg1=normal&arg2=<&arg3=>'), null)
+        );
         $this->getOutput()->shouldNotBeEmpty();
         $this->getOutput()->shouldBeValidXML();
         $this->getOutput()->shouldMatch('/&lt;/');
@@ -58,10 +60,10 @@ class XMLSpec extends ObjectBehavior
     function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
+            'beEmpty' => function ($subject) {
                 return empty($subject);
             },
-            'beValidXML' => function($subject) {
+            'beValidXML' => function ($subject) {
                 return (simplexml_load_string($subject)) ? true : false;
             },
         );

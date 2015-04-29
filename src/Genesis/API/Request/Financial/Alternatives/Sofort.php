@@ -333,12 +333,6 @@ class Sofort extends \Genesis\API\Request
             'customer_phone',
             'customer_bank_id',
             'bank_account_number',
-            'billing_first_name',
-            'billing_last_name',
-            'billing_address1',
-            'billing_zip_code',
-            'billing_city',
-            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

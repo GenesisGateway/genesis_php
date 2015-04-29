@@ -20,7 +20,7 @@ class InitRecurringSaleSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
     }
 
     function setRequestParameters()
@@ -40,9 +40,9 @@ class InitRecurringSaleSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setCardHolder($faker->name);
         $this->setCardNumber('4200000000000000');
-        $this->setCvv(sprintf("%03s", mt_rand(1,999)));
-        $this->setExpirationMonth(mt_rand(01,12));
-        $this->setExpirationYear(mt_rand(2015,2020));
+        $this->setCvv(sprintf("%03s", mt_rand(1, 999)));
+        $this->setExpirationMonth(mt_rand(01, 12));
+        $this->setExpirationYear(mt_rand(2015, 2020));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);
@@ -57,9 +57,9 @@ class InitRecurringSaleSpec extends ObjectBehavior
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
         );
     }
 }

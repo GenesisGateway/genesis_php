@@ -22,20 +22,27 @@ class CreateSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
     }
 
-	public function it_should_set_language_parameter()
-	{
-		$this->setLanguage('cn');
-		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/cn/wpf/');
-	}
+    public function it_should_set_language_parameter()
+    {
+        $this->setLanguage('cn');
+        $this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/cn/wpf/');
+    }
 
-	public function it_should_parse_only_two_letters()
-	{
-		$this->setLanguage('yzabcdef');
-		$this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/yz/wpf/');
-	}
+    public function it_should_parse_only_two_letters()
+    {
+        $this->setLanguage('yzabcdef');
+        $this->getApiConfig('url')->shouldBe('https://staging.wpf.e-comprocessing.net:443/yz/wpf/');
+    }
+
+    function it_should_fail_when_missing_required_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency(null);
+        $this->shouldThrow()->during('getDocument');
+    }
 
     function setRequestParameters()
     {
@@ -67,26 +74,27 @@ class CreateSpec extends ObjectBehavior
         $this->setBillingCountry($faker->countryCode);
         $this->addTransactionType('sale');
         $this->addTransactionType('sale3d');
-        $this->addTransactionType('ezeewallet',
-                                  array(
-                                      'wallet_id'   => 'john@example.com',
-                                      'wallet_pass' => 'password'
-                                  )
+        $this->addTransactionType(
+            'ezeewallet', array(
+                'wallet_id'   => 'john@example.com',
+                'wallet_pass' => 'password'
+            )
         );
-        $this->addTransactionType('paybyvoucher',
-                                  array(
-                                      'source_id' => 'john@example.com',
-                                      'target_id' => 'john@example.com'
-                                  ));
+        $this->addTransactionType(
+            'paybyvoucher', array(
+                'source_id' => 'john@example.com',
+                'target_id' => 'john@example.com'
+            )
+        );
     }
 
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-	            return empty($subject);
+            'beEmpty'       => function ($subject) {
+                return empty($subject);
             },
-            'containString' => function($haystack, $needle) {
+            'containString' => function ($haystack, $needle) {
                 return (stripos($haystack, $needle) !== false);
             }
         );

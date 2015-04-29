@@ -120,7 +120,6 @@ class eZeeWallet extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
-            'remote_ip',
             'amount',
             'currency',
             'return_success_url',
@@ -163,7 +162,7 @@ class eZeeWallet extends \Genesis\API\Request
     }
 
     /**
-     * Apply transformation to fields (where necessary)
+     * Apply transformation: encode in base64
      *
      * @param string $input
      *

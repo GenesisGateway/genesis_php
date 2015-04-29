@@ -15,7 +15,8 @@ class XMLSpec extends ObjectBehavior
 
     function it_should_parse_response()
     {
-        $xml = <<<XML
+        $xml
+            = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <payment_response>
   <transaction_type>authorize</transaction_type>
@@ -44,7 +45,8 @@ XML;
 
     function it_should_parse_urls()
     {
-        $xml = <<<XML
+        $xml
+            = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <payment_response>
   <transaction_type>cashu</transaction_type>
@@ -69,14 +71,15 @@ XML;
 
         $this->getObject()->status->shouldBe('pending_async');
 
-        $this->getObject()
-            ->redirect_url
-            ->shouldBe('https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        $this->getObject()->redirect_url->shouldBe(
+                'https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            );
     }
 
     function it_should_parse_multinodes()
     {
-        $xml = <<<XML
+        $xml
+            = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <wpf_payment>
   <transaction_id>wev238f328nc</transaction_id>

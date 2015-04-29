@@ -19,15 +19,15 @@ class StreamContextSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $remote_url = Config::getEnvironmentURL('https','gateway', 443);
+        $remote_url = Config::getEnvironmentURL('https', 'gateway', 443);
 
         $options = array(
-            'body'          => '',
-            'type'          => 'GET',
-            'url'           => $remote_url,
-            'ca_bundle'     => Config::getCertificateBundle(),
-            'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
-            'user_agent'    => $faker->userAgent,
+            'body'       => '',
+            'type'       => 'GET',
+            'url'        => $remote_url,
+            'ca_bundle'  => Config::getCertificateBundle(),
+            'user_login' => Config::getUsername() . ':' . Config::getPassword(),
+            'user_agent' => $faker->userAgent,
         );
 
         $this->prepareRequestBody($options);
@@ -42,19 +42,20 @@ class StreamContextSpec extends ObjectBehavior
     function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
-                },
-            'beOlder' => function($subject) {
-                    $diff = time() - strtotime($subject);
-                    return (($diff < 60) ? false : true);
-                },
-            'beFalse' => function($subject) {
-                    return (!$subject) ? true : false;
-                },
-            'beTrue' => function($subject) {
-                    return ($subject) ? true : false;
-                },
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
+            'beOlder' => function ($subject) {
+                $diff = time() - strtotime($subject);
+
+                return (($diff < 60) ? false : true);
+            },
+            'beFalse' => function ($subject) {
+                return (!$subject) ? true : false;
+            },
+            'beTrue'  => function ($subject) {
+                return ($subject) ? true : false;
+            },
         );
     }
 }

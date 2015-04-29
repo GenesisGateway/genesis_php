@@ -129,18 +129,17 @@ abstract class Request
         $requestedKey = strtolower(\Genesis\Utils\Common::pascalToSnakeCase(substr($method, 3)));
 
         switch ($methodType) {
-            case 'add':
-                if (isset($this->$requestedKey) && is_array($this->$requestedKey)) {
-                    $groupArray = $this->$requestedKey;
-                } else {
-                    $groupArray = array();
+            case 'get':
+                if (property_exists($this, $requestedKey)) {
+                    return $this->$requestedKey;
                 }
 
-                array_push($groupArray, array($requestedKey => trim(reset($args))));
-                $this->$requestedKey = $groupArray;
                 break;
             case 'set':
-                $this->$requestedKey = trim(reset($args));
+                if (property_exists($this, $requestedKey)) {
+                    $this->$requestedKey = trim(reset($args));
+                }
+
                 break;
         }
 
@@ -331,7 +330,7 @@ abstract class Request
     }
 
     /**
-     * Convert the amount from Minor cur
+     * Apply transformation: Convert to Minor currency unit
      *
      * @param string $amount
      * @param string $currency

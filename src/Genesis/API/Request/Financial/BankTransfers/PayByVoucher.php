@@ -158,7 +158,6 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
-            'remote_ip',
             'amount',
             'currency',
             'product_name',

@@ -20,7 +20,14 @@ class TransactionSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->duringgetDocument();
+        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
+    }
+
+    function it_should_fail_when_missing_required_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setOriginalTransactionUniqueId(null);
+        $this->shouldThrow()->during('getDocument');
     }
 
     function setRequestParameters()
@@ -35,7 +42,7 @@ class TransactionSpec extends ObjectBehavior
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
+            'beEmpty' => function ($subject) {
                 return empty($subject);
             },
         );
