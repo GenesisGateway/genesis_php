@@ -5,10 +5,10 @@ namespace spec\Genesis\Exceptions;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class BlankRequiredFieldSpec extends ObjectBehavior
+class ErrorNetworkSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Exceptions\BlankRequiredField');
+        $this->shouldHaveType('Genesis\Exceptions\ErrorNetwork');
     }
 }

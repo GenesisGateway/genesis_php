@@ -59,26 +59,21 @@ class Response
     }
 
     /**
-     * Parse Genesis response to SimpleXMLElement
+     * Parse Genesis response to stdClass and
+     * apply transformation to known fields
      *
      * @param string $response
      *
-     * @throws \Genesis\Exceptions\APIError
+     * @throws \Genesis\Exceptions\ErrorAPI
      * @throws \Genesis\Exceptions\InvalidArgument
      * @throws \Genesis\Exceptions\InvalidResponse
      */
     public function parseResponse($response)
     {
-        if (empty($response)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'Invalid document!'
-            );
-        }
-
-        // Save the raw response
+        // Save a copy of the incoming response
         $this->responseRaw = $response;
 
-        // Get an stdClass from the XML String
+        // Try to parse the incoming response
         try {
             $this->responseObj = \Genesis\Utils\Common::xmlToObj($response);
         }
@@ -86,8 +81,9 @@ class Response
             throw new \Genesis\Exceptions\InvalidResponse();
         }
 
+        // Check if there is an API error
         if ($this->isSuccessful() === false) {
-            throw new \Genesis\Exceptions\APIError(
+            throw new \Genesis\Exceptions\ErrorAPI(
                 $this->responseObj->technical_message ?: 'Unknown API Error!'
             );
         }
@@ -108,14 +104,14 @@ class Response
      */
     public function isSuccessful()
     {
-        $successfulStatuses = array(
+        $statuses = array(
             \Genesis\API\Constants\Transaction\States::APPROVED,
             \Genesis\API\Constants\Transaction\States::PENDING_ASYNC,
             \Genesis\API\Constants\Transaction\States::NEW_STATUS,
         );
 
         if (isset($this->responseObj->status)) {
-            if (in_array($this->responseObj->status, $successfulStatuses)) {
+            if (in_array($this->responseObj->status, $statuses)) {
                 $status = true;
             }
             else {
@@ -189,7 +185,7 @@ class Response
      *
      * @return String | null (if amount/currency are unavailable)
      */
-    public function transformAmountUnit()
+    private function transformAmountUnit()
     {
         if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
             if (isset($this->responseObj->amount) && !empty($this->responseObj->amount)) {
@@ -208,7 +204,7 @@ class Response
      *
      * @return \DateTime|null (if invalid timestamp)
      */
-    public function transformTimestamp()
+    private function transformTimestamp()
     {
         if (isset($this->responseObj->timestamp) && !empty($this->responseObj->timestamp)) {
             try {

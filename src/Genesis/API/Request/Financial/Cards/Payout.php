@@ -288,7 +288,7 @@ class Payout extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::CREDIT,
+                'transaction_type' => \Genesis\API\Constants\Transaction\Types::PAYOUT,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
                 'amount'           => parent::transform('amount', array(

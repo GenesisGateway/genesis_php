@@ -24,6 +24,9 @@ namespace Genesis;
 
 /**
  * Class Config
+ *
+ * Store/Retrieve configuration key/values across the Genesis library
+ *
  * @package Genesis
  *
  * @method static \Genesis\Config getUsername()  Get the Username, set in configuration
@@ -49,30 +52,30 @@ final class Config
     const PROTOCOL = 'https';
 
     /**
-     * Environment definiton: Staging
+     * Environment definition: TEST
      */
     const ENV_STAG = 'sandbox';
 
     /**
-     * Environment definition: PROD
+     * Environment definition: LIVE
      */
     const ENV_PROD = 'production';
 
     /**
-     * Array storing all the configuration for this instance.
+     * Core configuration settings
      *
      * @var Array
      */
     public static $vault
         = array(
-            'environment' => null,
-            'token'       => null,
             'username'    => null,
             'password'    => null,
+            'environment' => null,
+            'token'       => null,
         );
 
     /**
-     * Array storing interface choice
+     * Interface settings
      *
      * @var array
      */
@@ -128,6 +131,40 @@ final class Config
     }
 
     /**
+     * Get configuration for an interface
+     *
+     * @param $type - type of the interface
+     *
+     * @return mixed - interface name or false if non-existing
+     */
+    final public static function getInterface($type)
+    {
+        if (array_key_exists($type, self::$interfaces)) {
+            return self::$interfaces[$type];
+        }
+
+        return false;
+    }
+
+    /**
+     * Set an interface
+     *
+     * @param string $interface Name of interface (e.g. builder, network)
+     * @param string $value     Value for the new interface (e.g. xml, curl)
+     *
+     * @return bool
+     */
+    final public static function setInterface($interface, $value)
+    {
+        if (array_key_exists($interface, self::$interfaces)) {
+            self::$interfaces[$interface] = $value;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get the CA PEM (needed for cURL)
      *
      * @return string - Path to the Genesis CA Bundle; false otherwise
@@ -135,10 +172,10 @@ final class Config
      */
     final public static function getCertificateBundle()
     {
-        $CABundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
+        $bundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
 
-        if (file_exists($CABundle)) {
-            return $CABundle;
+        if (file_exists($bundle)) {
+            return $bundle;
         }
 
         return false;
@@ -147,9 +184,9 @@ final class Config
     /**
      * Get Basic URL for Genesis Requests
      *
-     * @param $protocol   String - set the request protocol
-     * @param $sub_domain String - preferred sub_domain
-     * @param $port       Integer - port of the server
+     * @param string    $protocol   set the request protocol
+     * @param string    $sub_domain preferred sub_domain
+     * @param int       $port       port of the server
      *
      * @return String
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
@@ -192,22 +229,6 @@ final class Config
     }
 
     /**
-     * Get selected interface option
-     *
-     * @param $type - type of the interface
-     *
-     * @return mixed - interface name or false if non-existing
-     */
-    final public static function getInterfaceSetup($type)
-    {
-        if (array_key_exists($type, self::$interfaces)) {
-            return self::$interfaces[$type];
-        }
-
-        return false;
-    }
-
-    /**
      * Network timeout.
      *
      * @note Hard-code for now
@@ -232,7 +253,7 @@ final class Config
     /**
      * Load settings from an ini File
      *
-     * @param $settings_file String - path to an ini file containing the settings
+     * @param string $settings_file Path to an ini file containing the settings
      *
      * @throws \Genesis\Exceptions\InvalidArgument()
      */
@@ -241,7 +262,7 @@ final class Config
         if (file_exists($settings_file)) {
             $settings = parse_ini_file($settings_file, true);
 
-            if (isset($settings['Genesis']) && is_array($settings['Genesis']) && count($settings['Genesis']) > 1) {
+            if (isset($settings['Genesis']) && is_array($settings['Genesis'])) {
                 foreach ($settings['Genesis'] as $option => $value) {
                     if (array_key_exists($option, self::$vault)) {
                         self::$vault[$option] = $value;
@@ -249,15 +270,15 @@ final class Config
                 }
             }
 
-            if (isset($settings['Interfaces']) && is_array($settings['Interfaces']) && count($settings['Interfaces']) > 1
-            ) {
+            if (isset($settings['Interfaces']) && is_array($settings['Interfaces'])) {
                 foreach ($settings['Interfaces'] as $option => $value) {
                     if (array_key_exists($option, self::$interfaces)) {
                         self::$interfaces[$option] = $value;
                     }
                 }
             }
-        } else {
+        }
+        else {
             throw new \Genesis\Exceptions\InvalidArgument('The provided configuration file is invalid!');
         }
     }

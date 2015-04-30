@@ -189,7 +189,7 @@ abstract class Request
     /**
      * Perform field validation
      *
-     * @throws \Genesis\Exceptions\BlankRequiredField
+     * @throws \Genesis\Exceptions\ErrorParameter
      * @return void
      */
     protected function checkRequirements()
@@ -202,7 +202,9 @@ abstract class Request
 
             foreach ($iterator as $fieldName) {
                 if (empty($this->$fieldName)) {
-                    throw new \Genesis\Exceptions\BlankRequiredField($fieldName);
+                    throw new \Genesis\Exceptions\ErrorParameter(
+                        sprintf('Empty (null) required parameter: %s', $fieldName)
+                    );
                 }
             }
         }
@@ -229,10 +231,10 @@ abstract class Request
             }
 
             if (!$emptyFlag) {
-                throw new \Genesis\Exceptions\BlankRequiredField(
+                throw new \Genesis\Exceptions\ErrorParameter(
                     sprintf(
-                        'One of the following group/s of field/s: %s  must be filled in!',
-                        implode(' / ', $groupsFormatted)
+                        'One of the following group/s of field/s must be filled in: %s%s',
+                        PHP_EOL, implode(PHP_EOL, $groupsFormatted)
                     ),
                     true
                 );
@@ -247,9 +249,9 @@ abstract class Request
                 if (isset($this->$fieldName) && !empty($this->$fieldName)) {
                     foreach ($fieldDependencies as $field) {
                         if (empty($this->$field)) {
-                            throw new \Genesis\Exceptions\BlankRequiredField(
+                            throw new \Genesis\Exceptions\ErrorParameter(
                                 sprintf(
-                                    '%s is depending on: %s, which is not being set!',
+                                    '%s is depending on: %s, which is empty (null)!',
                                     $fieldName,
                                     $field
                                 )
@@ -273,7 +275,7 @@ abstract class Request
             }
 
             if (!$status) {
-                throw new \Genesis\Exceptions\BlankRequiredField(implode($fields));
+                throw new \Genesis\Exceptions\ErrorParameter(implode($fields));
             }
         }
     }
@@ -344,9 +346,9 @@ abstract class Request
      */
     protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
     {
-        $proto = isset($this->config) ? $this->getApiConfig('protocol') : '';
-        $port = isset($this->config) ? $this->getApiConfig('port') : '';
-        $token = ($appendToken) ? \Genesis\Config::getToken() : '';
+        $proto  = isset($this->config) ? $this->getApiConfig('protocol') : '';
+        $port   = isset($this->config) ? $this->getApiConfig('port') : '';
+        $token  = ($appendToken) ? \Genesis\Config::getToken() : '';
 
         $base_url = \Genesis\Config::getEnvironmentURL($proto, $sub_domain, $port);
 

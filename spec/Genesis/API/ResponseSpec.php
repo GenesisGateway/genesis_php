@@ -56,7 +56,7 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_be_unsuccessful_on_error()
     {
-        $this->shouldThrow('\Genesis\Exceptions\APIError')->during(
+        $this->shouldThrow('\Genesis\Exceptions\ErrorAPI')->during(
             'parseResponse', array(
                 $this->buildSample(
                     array('error')
@@ -69,7 +69,7 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_be_unsuccessful_on_unknown_status()
     {
-        $this->shouldThrow('\Genesis\Exceptions\APIError')->during(
+        $this->shouldThrow('\Genesis\Exceptions\ErrorAPI')->during(
             'parseResponse', array(
                 $this->buildSample(
                     array('non-existing-status')
@@ -82,7 +82,13 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_parse_transaction_without_status()
     {
-        $sample = '<?xml version="1.0" encoding="UTF-8"?><response><code>00</code><amount>00</amount></response>';
+        $sample = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+    <code>00</code>
+    <amount>00</amount>
+</response>
+XML;
 
         $this->shouldNotThrow()->during('parseResponse', array($sample));
 
@@ -104,14 +110,14 @@ class ResponseSpec extends ObjectBehavior
 
     function it_should_fail_parsing_on_null_response()
     {
-        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during(
+        $this->shouldThrow('\Genesis\Exceptions\InvalidResponse')->during(
             'parseResponse', array(null)
         );
     }
 
     function it_should_fail_parsing_on_empty_response()
     {
-        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during(
+        $this->shouldThrow('\Genesis\Exceptions\InvalidResponse')->during(
             'parseResponse', array('')
         );
     }
@@ -181,7 +187,7 @@ class ResponseSpec extends ObjectBehavior
         $this->getResponseObject()->timestamp->shouldHaveType("DateTime");
     }
 
-    function it_should_not_throw_on_invalid_timestamp()
+    function it_should_not_change_the_value_if_not_a_timestamp()
     {
         $this->shouldNotThrow()->during(
             'parseResponse', array(
@@ -190,8 +196,6 @@ class ResponseSpec extends ObjectBehavior
                 )
             )
         );
-
-        $this->shouldNotThrow()->during('transformTimestamp');
 
         $this->getResponseObject()->timestamp->shouldBe('ERROR');
     }

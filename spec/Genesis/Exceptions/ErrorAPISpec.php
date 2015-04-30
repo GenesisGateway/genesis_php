@@ -5,10 +5,10 @@ namespace spec\Genesis\Exceptions;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NetworkErrorSpec extends ObjectBehavior
+class ErrorAPISpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Exceptions\NetworkError');
+        $this->shouldHaveType('Genesis\Exceptions\ErrorAPI');
     }
 }

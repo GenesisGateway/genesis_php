@@ -23,17 +23,19 @@
 namespace Genesis\Exceptions;
 
 /**
- * Class MissingComponent
+ * Class ErrorAPI
+ *
+ * Used to indicate an unsuccessful API request
+ *
+ * For example - invalid card, invalid data, insufficient funds etc.
  *
  * @package Genesis\Exceptions
  */
-class MissingComponent extends \Exception
+class ErrorAPI extends \Exception
 {
-    public function __construct($message = '', $code = 0, $previous = null)
+    public function __construct($message = '', $code = false, $previous = null)
     {
-        if (empty($message)) {
-            $message = "Missing component, update and verify your installation!";
-        }
+        $message = sprintf("Gateway response: ", $message);
 
         parent::__construct($message, $code, $previous);
     }

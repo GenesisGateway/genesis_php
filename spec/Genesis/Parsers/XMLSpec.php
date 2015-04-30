@@ -40,7 +40,7 @@ XML;
         $this->getObject()->transaction_type->shouldBe('authorize');
         $this->getObject()->amount->shouldBe('5000');
         $this->getObject()->technical_message->shouldBe('Transaction successful!');
-        $this->getObject()->sent_to_acquirer->shouldBe('true');
+        $this->getObject()->sent_to_acquirer->shouldBe(true);
     }
 
     function it_should_parse_urls()

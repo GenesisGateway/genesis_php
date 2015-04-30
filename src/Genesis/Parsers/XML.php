@@ -97,7 +97,7 @@ class XML
                     if (in_array($sxi->key(), $isMultiNode)) {
                         array_push($stdObj->{$sxi->key()}, $object);
                     } else {
-                        $stdObj->{$sxi->key()} = $object;
+                        $stdObj->{$sxi->key()} = \Genesis\Utils\Common::stringToBoolean($object);
                     }
 
                 }
@@ -116,7 +116,9 @@ class XML
                         }
                     }
 
-                    $stdObj->{$sxi->key()} = isset($object) ? $object : $content;
+                    $stdObj->{$sxi->key()} = \Genesis\Utils\Common::stringToBoolean(
+                        isset($object) ? $object : $content
+                    );
                 }
             }
 

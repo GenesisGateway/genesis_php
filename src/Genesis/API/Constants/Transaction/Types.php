@@ -39,17 +39,17 @@ class Types
     /**
      * 3D-based authorization
      */
-    const AUTHORIZE_3D = 'authorize_3d';
+    const AUTHORIZE_3D = 'authorize3d';
 
     /**
      * A standard sale
      */
-    const SALE = 'sale_3d';
+    const SALE = 'sale';
 
     /**
      * 3D-based sale
      */
-    const SALE_3D = 'sale_3d';
+    const SALE_3D = 'sale3d';
 
     /**
      * Capture settles a transaction which has been authorized before.
@@ -70,6 +70,11 @@ class Types
      * Credits (also known as Credit Fund Transfer a.k.a. CFT)
      */
     const CREDIT = 'credit';
+
+    /**
+     * Payouts transactions
+     */
+    const PAYOUT = 'payout';
 
     /**
      * A standard initial recurring

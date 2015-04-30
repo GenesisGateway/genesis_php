@@ -43,7 +43,7 @@ class Network
      */
     public function __construct($interface = null)
     {
-        $interface = $interface ?: \Genesis\Config::getInterfaceSetup('network');
+        $interface = $interface ?: \Genesis\Config::getInterface('network');
 
         switch ($interface) {
             default:

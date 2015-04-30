@@ -33,14 +33,14 @@ final class Common
     public static function checkRequirements()
     {
         // PHP version requirements
-        if (self::compareVersions('5.3.0', '<')) {
+        if (self::compareVersions('5.3.2', '<')) {
             throw new \Exception('Unsupported PHP version.
-				This projects requires PHP version > 5.3.0.
+				This library requires PHP version > 5.3.2.
 				Please upgrade!');
         }
 
         // cURL requirements
-        if (\Genesis\Config::getInterfaceSetup('network') == 'curl') {
+        if (\Genesis\Config::getInterface('network') == 'curl') {
             if (!function_exists('curl_init')) {
                 throw new \Exception('cURL is selected, but its not installed on your system!
 					You can use "stream_context" alternatively, or install the cURL PHP extension.');
@@ -48,10 +48,9 @@ final class Common
         }
 
         // XMLWriter requirements
-        if (\Genesis\Config::getInterfaceSetup('builder') == 'xmlwriter') {
+        if (\Genesis\Config::getInterface('builder') == 'xmlwriter') {
             if (!class_exists('XMLWriter')) {
-                throw new \Exception('XMLWriter is selected, but its not installed on your system!,
-					You can use "domdocument" alternatively, or re-compile PHP with XML support!');
+                throw new \Exception('XMLWriter is selected, but its not installed on your system!');
             }
         }
     }

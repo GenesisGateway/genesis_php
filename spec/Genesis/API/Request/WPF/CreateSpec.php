@@ -22,7 +22,7 @@ class CreateSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
+        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
     public function it_should_set_language_parameter()

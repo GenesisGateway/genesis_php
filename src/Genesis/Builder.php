@@ -45,7 +45,7 @@ class Builder
      */
     public function __construct($interface = null)
     {
-        $interface = $interface ?: \Genesis\Config::getInterfaceSetup('builder');
+        $interface = $interface ?: \Genesis\Config::getInterface('builder');
 
         switch ($interface) {
             case 'json':

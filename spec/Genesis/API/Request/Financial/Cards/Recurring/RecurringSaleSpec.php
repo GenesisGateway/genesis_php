@@ -20,7 +20,7 @@ class RecurringSaleSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\BlankRequiredField')->during('getDocument');
+        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
     function setRequestParameters()

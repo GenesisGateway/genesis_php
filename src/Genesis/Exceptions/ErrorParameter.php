@@ -23,15 +23,17 @@
 namespace Genesis\Exceptions;
 
 /**
- * Class BlankRequiredField
+ * Class ErrorParameter
+ *
+ * Used to indicate a problem with transaction's parameters
  *
  * @package Genesis\Exceptions
  */
-class BlankRequiredField extends \Exception
+class ErrorParameter extends \Exception
 {
     public function __construct($message = '', $code = false, $previous = null)
     {
-        $message = sprintf("Please check your setup, field(s): %s is/are empty!", $message);
+        $message = sprintf("Please verify the transaction parameters!%s%s", PHP_EOL, $message);
 
         parent::__construct($message, $code, $previous);
     }

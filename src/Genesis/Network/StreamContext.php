@@ -140,13 +140,6 @@ class StreamContext implements \Genesis\Interfaces\Network
             )
         );
 
-        // Warn about unsupported version
-        if (\Genesis\Utils\Common::compareVersions('5.3.2', '<')) {
-            throw new \Genesis\Exceptions\MissingComponent(
-                'Unsupported version, please upgrade your PHP installation or switch to cURL'
-            );
-        }
-
         // Note: Mitigate CRIME/BEAST attacks
         if (\Genesis\Utils\Common::compareVersions('5.4.13', '>=')) {
             $contextOptions['ssl']['disable_compression'] = true;
@@ -240,10 +233,16 @@ class StreamContext implements \Genesis\Interfaces\Network
      * @param $errNo  - error code
      * @param $errStr - error message
      *
-     * @throws \Genesis\Exceptions\NetworkError
+     * @throws \Genesis\Exceptions\ErrorNetwork
      */
     private function processErrors($errNo, $errStr)
     {
-        throw new \Genesis\Exceptions\NetworkError($errStr, $errNo);
+        // When an exception is being thrown, we have to restore
+        // the handler.
+        //
+        // @TODO This is a bit hackish
+        restore_error_handler();
+
+        throw new \Genesis\Exceptions\ErrorNetwork($errStr, $errNo);
     }
 }
