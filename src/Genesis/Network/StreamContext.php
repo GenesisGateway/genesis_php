@@ -103,7 +103,6 @@ class StreamContext implements \Genesis\Interfaces\Network
      * @param array $requestData
      *
      * @return void
-     * @throws \Genesis\Exceptions\MissingComponent
      */
     public function prepareRequestBody($requestData)
     {

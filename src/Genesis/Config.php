@@ -277,9 +277,10 @@ final class Config
                     }
                 }
             }
-        }
-        else {
-            throw new \Genesis\Exceptions\InvalidArgument('The provided configuration file is invalid!');
+        } else {
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'The provided configuration file is invalid!'
+            );
         }
     }
 }

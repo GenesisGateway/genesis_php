@@ -79,8 +79,13 @@ class XML
                 }
 
                 if ($sxi->hasChildren()) {
-                    array_push($stdObj->{$sxi->key()}, self::sxiToClass($sxi->current(),
-                        self::checkForDuplicates($sxi->current())));
+                    array_push(
+                        $stdObj->{$sxi->key()},
+                        self::sxiToClass(
+                            $sxi->current(),
+                            self::checkForDuplicates($sxi->current())
+                        )
+                    );
                 } else {
                     if (count($sxi->current()->attributes()) > 0) {
                         $object = json_decode(json_encode($sxi->current()));
@@ -103,8 +108,12 @@ class XML
                 }
             } else {
                 if ($sxi->hasChildren()) {
-                    $stdObj->{$sxi->key()} = self::sxiToClass($sxi->current(),
-                        self::checkForDuplicates($sxi->current()));
+                    $stdObj->{$sxi->key()} = self::sxiToClass(
+                        $sxi->current(),
+                        self::checkForDuplicates(
+                            $sxi->current()
+                        )
+                    );
                 } else {
                     $content = trim($sxi->current()->__toString());
 

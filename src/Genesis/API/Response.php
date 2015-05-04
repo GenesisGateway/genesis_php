@@ -113,12 +113,10 @@ class Response
         if (isset($this->responseObj->status)) {
             if (in_array($this->responseObj->status, $statuses)) {
                 $status = true;
-            }
-            else {
+            } else {
                 $status = false;
             }
-        }
-        else {
+        } else {
             // return null if status is inapplicable
             $status = null;
         }

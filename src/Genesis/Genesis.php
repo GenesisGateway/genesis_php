@@ -67,8 +67,7 @@ class Genesis
 
         if (class_exists($request)) {
             $this->requestCtx = new $request;
-        }
-        else {
+        } else {
             throw new \Genesis\Exceptions\InvalidMethod(
                 'The selected transaction type is invalid!'
             );
