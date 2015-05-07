@@ -22,7 +22,6 @@ class cURLSpec extends ObjectBehavior
         $remote_url = Config::getEnvironmentURL('https', 'gateway', 443);
 
         $options = array(
-            'debug'      => 'false',
             'type'       => 'GET',
             'protocol'   => 'https',
             'url'        => $remote_url,

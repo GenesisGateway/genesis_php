@@ -119,7 +119,7 @@ class cURL implements \Genesis\Interfaces\Network
         $options = array(
             CURLOPT_ENCODING       => 'gzip',
             CURLOPT_HEADER         => true,
-            CURLOPT_HTTPHEADER     => array('Content-Type: text/xml', 'Expect:'),
+            CURLOPT_HTTPHEADER     => array('Content-Type: text/xml'),
             CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_URL            => $requestData['url'],
             CURLOPT_TIMEOUT        => $requestData['timeout'],
@@ -132,8 +132,6 @@ class cURL implements \Genesis\Interfaces\Network
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
         );
-
-        error_log($requestData['url']);
 
         $post = array(
             CURLOPT_POST       => false,

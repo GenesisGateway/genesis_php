@@ -129,7 +129,7 @@ class StreamContext implements \Genesis\Interfaces\Network
                 // Validate Certificates
                 'verify_peer'       => true,
                 // Abort if the certificate-chain is longer than 5 nodes
-                'verify_depth'      => 5,
+                'verify_depth'      => 10,
                 // SNI causes errors due to improper handling of alerts by OpenSSL in 0.9.8
                 // As many php releases are linked against 0.9.8, its better to disable SNI
                 // in case you can't upgrade.

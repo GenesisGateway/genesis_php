@@ -234,11 +234,7 @@ abstract class Request
                 throw new \Genesis\Exceptions\ErrorParameter(
                     sprintf(
                         'One of the following group/s of field/s must be filled in: %s%s',
-                        PHP_EOL,
-                        implode(
-                            PHP_EOL,
-                            $groupsFormatted
-                        )
+                        PHP_EOL, implode(PHP_EOL, $groupsFormatted)
                     ),
                     true
                 );
