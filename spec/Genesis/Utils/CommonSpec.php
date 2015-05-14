@@ -73,21 +73,6 @@ class CommonSpec extends ObjectBehavior
         $this->emptyValueRecursiveRemoval($array)->shouldHaveASizeOf(1);
     }
 
-    function it_can_parse_xml_to_array_object()
-    {
-        $xml = '<?xml version="1.0" encoding="UTF-8"?><response><arg1>val1</arg1><arg2>val2</arg2></response>';
-
-        $this->shouldNotThrow()->during('xmlToObj', array($xml));
-        $this->xmlToObj($xml)->shouldBeAnInstanceOf('\stdClass');
-        $this->xmlToObj($xml)->arg1->shouldBeLike('val1');
-        $this->xmlToObj($xml)->arg2->shouldBeLike('val2');
-    }
-
-    function it_should_throw_on_invalid_xml()
-    {
-        $this->shouldThrow()->during('xmlToObj', array(''));
-    }
-
     function getMatchers()
     {
         return array(

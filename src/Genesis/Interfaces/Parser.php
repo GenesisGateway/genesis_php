@@ -20,26 +20,28 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Exceptions;
+namespace Genesis\Interfaces;
 
 /**
- * Class ErrorParameter
+ * An interface for every parser abstraction (XML, JSON etc.)
  *
- * Used to indicate a problem with transaction's parameters
- *
- * @package Genesis\Exceptions
+ * @package Genesis\Interfaces
  */
-class ErrorParameter extends \Exception
+interface Parser
 {
     /**
-     * @param string $message
-     * @param bool   $code
-     * @param null   $previous
+     * Get the parsed object
+     *
+     * @return mixed
      */
-    public function __construct($message = '', $code = false, $previous = null)
-    {
-        $message = sprintf("Please verify the transaction parameters! %s %s", PHP_EOL, $message);
+    public function getObject();
 
-        parent::__construct($message, $code, $previous);
-    }
+    /**
+     * Parse the provided document
+     *
+     * @param mixed $document
+     *
+     * @return mixed
+     */
+    public function parseDocument($document);
 }

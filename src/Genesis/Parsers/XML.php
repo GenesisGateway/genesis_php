@@ -22,6 +22,8 @@
  */
 namespace Genesis\Parsers;
 
+use PhpSpec\Exception\Exception;
+
 /**
  * Class XML
  *
@@ -29,7 +31,7 @@ namespace Genesis\Parsers;
  *
  * @package Genesis\Parsers
  */
-class XML
+final class XML implements \Genesis\Interfaces\Parser
 {
     /**
      * Converted XML
@@ -46,13 +48,36 @@ class XML
     private $sxi;
 
     /**
-     * @param string $xml_document XML Document
+     * Get the parsed object
+     *
+     * @return \stdClass
      */
-    public function __construct($xml_document)
+    public function getObject()
     {
-        $this->sxi = new \SimpleXmlIterator($xml_document);
+        return $this->stdClassObj;
+    }
 
-        $this->stdClassObj = self::sxiToClass($this->sxi);
+    /**
+     * Parse a document to an stdClass
+     *
+     * @param string $xml_document XML Document
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     *
+     * @return void
+     */
+    public function parseDocument($xml_document)
+    {
+        try {
+            $this->sxi = new \SimpleXmlIterator($xml_document);
+
+            $this->stdClassObj = self::sxiToClass($this->sxi);
+        }
+        catch (\Exception $e) {
+            throw new \Genesis\Exceptions\InvalidArgument(
+                $e->getMessage()
+            );
+        }
     }
 
     /**
@@ -156,15 +181,5 @@ class XML
         }
 
         return $duplicate_list;
-    }
-
-    /**
-     * Get the parsed object
-     *
-     * @return \stdClass
-     */
-    public function getObject()
-    {
-        return $this->stdClassObj;
     }
 }

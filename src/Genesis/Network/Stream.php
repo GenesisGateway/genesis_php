@@ -28,7 +28,7 @@ namespace Genesis\Network;
  * @package    Genesis
  * @subpackage Network
  */
-class StreamContext implements \Genesis\Interfaces\Network
+class Stream implements \Genesis\Interfaces\Network
 {
     /**
      * Keep per-request data as other methods need it

@@ -8,7 +8,7 @@
 1.1.0
 -----
 
-* Add is3DNotification/isWPFNotification methods to API\Notification
+* Add isAPINotification/isWPFNotification methods to API\Notification
 * Add API\Notification::renderResponse() method
 * Change API\Response::getResponseObject type from SimpleXMLElement to stdClass
 * Internal refactoring
@@ -21,7 +21,7 @@
 * Add flag "API\Response::isPartiallyApproved()" for partially-approved transactions
 * Add helper method API\Response::getFormattedAmount()
 * Add helper method API\Response::getFormattedTimestamp()
-* Add Network\Wrapper\StreamContext configuration based on the PHP version
+* Add Network\Wrapper\Stream configuration based on the PHP version
 * Fix transaction amount conversion between ISO-4217 and Nominal
 * Update PHPDoc comments
 * Update Specs

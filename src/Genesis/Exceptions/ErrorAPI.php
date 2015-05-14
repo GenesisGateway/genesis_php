@@ -35,7 +35,7 @@ class ErrorAPI extends \Exception
 {
     public function __construct($message = '', $code = false, $previous = null)
     {
-        $message = sprintf("Gateway response: ", $message);
+        $message = sprintf("API Error: %s", $message);
 
         parent::__construct($message, $code, $previous);
     }

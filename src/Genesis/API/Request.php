@@ -367,31 +367,21 @@ abstract class Request
         return $this->config->offsetGet($key);
     }
 
-
     /**
      * Initialize per-request configuration
      */
-    protected function initConfiguration()
-    {
-
-    }
+    protected function initConfiguration() { }
 
     /**
      * Set the *required fields for the request
      */
-    protected function setRequiredFields()
-    {
-
-    }
+    protected function setRequiredFields() { }
 
     /**
      * Create the Tree structure and populate
      * the fields with the set parameters.
      */
-    protected function populateStructure()
-    {
-
-    }
+    protected function populateStructure() { }
 
     /**
      * Add transaction type
@@ -399,16 +389,10 @@ abstract class Request
      * @param string $name
      * @param array     $parameters
      */
-    public function addTransactionType($name, $parameters = array())
-    {
-
-    }
+    public function addTransactionType($name, $parameters = array()) { }
 
     /**
      * Set the language of a WPF form
      */
-    public function setLanguage()
-    {
-
-    }
+    public function setLanguage() { }
 }

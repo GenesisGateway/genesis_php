@@ -42,11 +42,6 @@ final class Config
     const VERSION = '1.2.0';
 
     /**
-     * Genesis base domain name
-     */
-    const DOMAIN = 'e-comprocessing.net';
-
-    /**
      * Default Protocol for the HTTP requests
      */
     const PROTOCOL = 'https';
@@ -62,16 +57,27 @@ final class Config
     const ENV_PROD = 'production';
 
     /**
+     * Domain name for E-ComProcessing's Endpoint
+     */
+    const DOMAIN_ECP = 'e-comprocessing.net';
+
+    /**
+     * Domain name for eMerchantPay's Endpoint
+     */
+    const DOMAIN_EMP = 'emerchantpay.net';
+
+    /**
      * Core configuration settings
      *
      * @var Array
      */
     public static $vault
         = array(
-            'username'    => null,
-            'password'    => null,
-            'environment' => null,
-            'token'       => null,
+            'endpoint'      => null,
+            'username'      => null,
+            'password'      => null,
+            'environment'   => null,
+            'token'         => null,
         );
 
     /**
@@ -81,7 +87,7 @@ final class Config
      */
     public static $interfaces
         = array(
-            'builder' => 'xml_writer',
+            'builder' => 'xml',
             'network' => 'curl',
         );
 
@@ -165,7 +171,7 @@ final class Config
     }
 
     /**
-     * Get the CA PEM (needed for cURL)
+     * Get the CA PEM
      *
      * @return string - Path to the Genesis CA Bundle; false otherwise
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
@@ -202,11 +208,11 @@ final class Config
             $sub_domain = self::$sub_domains[$sub_domain][self::ENV_STAG];
         }
 
-        return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::DOMAIN, $port);
+        return sprintf('%s://%s%s:%s', $protocol, $sub_domain, self::getEndpoint(), $port);
     }
 
     /**
-     * Get the current Environment based on the the set variable
+     * Get the current Environment based on the set variable
      *
      * @return mixed
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
@@ -217,15 +223,42 @@ final class Config
             throw new \Genesis\Exceptions\EnvironmentNotSet();
         }
 
-        $alternate_names = array('prod', 'production', 'live');
+        $alternate_names = array(
+            'prod',
+            'production',
+            'live'
+        );
 
         foreach ($alternate_names as $name) {
-            if (strcasecmp(self::$vault['environment'], $name) === 0) {
+            if (strcasecmp(trim(self::$vault['environment']), $name) === 0) {
                 return self::ENV_PROD;
             }
         }
 
         return self::ENV_STAG;
+    }
+
+    /**
+     * Get the current Domain Endpoint based on the set variable
+     *
+     * @return string
+     */
+    final public static function getEndpoint()
+    {
+        $alternate_names = array(
+            'emerchantpay',
+            'emerchantpay.net',
+            'emp',
+            'emp.net'
+        );
+
+        foreach ($alternate_names as $name) {
+            if (strcasecmp(trim(self::$vault['endpoint']), $name) === 0) {
+                return self::DOMAIN_EMP;
+            }
+        }
+
+        return self::DOMAIN_ECP;
     }
 
     /**

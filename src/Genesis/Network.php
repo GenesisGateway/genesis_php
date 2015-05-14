@@ -50,8 +50,8 @@ class Network
             case 'curl':
                 $this->context = new Network\cURL();
                 break;
-            case 'stream_context':
-                $this->context = new Network\StreamContext();
+            case 'stream':
+                $this->context = new Network\Stream();
                 break;
         }
     }

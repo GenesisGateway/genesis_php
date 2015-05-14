@@ -6,11 +6,11 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\Config;
 
-class StreamContextSpec extends ObjectBehavior
+class StreamSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\Network\StreamContext');
+        $this->shouldHaveType('Genesis\Network\Stream');
     }
 
     function it_can_send_remote_connections()

@@ -34,23 +34,45 @@ final class Common
     {
         // PHP version requirements
         if (self::compareVersions('5.3.2', '<')) {
-            throw new \Exception('Unsupported PHP version.
-				This library requires PHP version > 5.3.2.
-				Please upgrade!');
+            throw new \Exception(
+                'Unsupported PHP version, please upgrade!' . PHP_EOL .
+                'This library requires PHP version 5.3.2 or newer.'
+            );
+        }
+
+        // BCMath requirements
+        if (!function_exists('bcmul') || !function_exists('bcdiv')) {
+            throw new \Exception(
+                'BCMath extension is required!' . PHP_EOL .
+                'Please install the extension or rebuild with "--enable-bcmath" option.'
+            );
+        }
+
+        // Hash requirements
+        if (!function_exists('hash')) {
+            throw new \Exception(
+                'Hash extension is required!' . PHP_EOL .
+                'Please install the extension or rebuild with "--enable-hash" option.'
+            );
+        }
+
+        // XMLWriter requirements
+        if (\Genesis\Config::getInterface('builder') == 'xml') {
+            if (!class_exists('XMLWriter')) {
+                throw new \Exception(
+                    'XMLWriter extension is required!' . PHP_EOL .
+                    'Please install the extension or rebuild with "--enable-xmlwriter" option.'
+                );
+            }
         }
 
         // cURL requirements
         if (\Genesis\Config::getInterface('network') == 'curl') {
             if (!function_exists('curl_init')) {
-                throw new \Exception('cURL is selected, but its not installed on your system!
-					You can use "stream_context" alternatively, or install the cURL PHP extension.');
-            }
-        }
-
-        // XMLWriter requirements
-        if (\Genesis\Config::getInterface('builder') == 'xmlwriter') {
-            if (!class_exists('XMLWriter')) {
-                throw new \Exception('XMLWriter is selected, but its not installed on your system!');
+                throw new \Exception(
+                    'cURL interface is selected, but its not installed on your system!' . PHP_EOL .
+                    'Please install the extension or select "stream" as your network interface.'
+                );
             }
         }
     }
@@ -69,7 +91,7 @@ final class Common
     }
 
     /**
-     * Get the current PHP version
+     * Helper to get the current PHP version
      *
      * @return int
      */
@@ -158,20 +180,6 @@ final class Common
     public static function createArrayObject($source_array)
     {
         return new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
-    }
-
-    /**
-     * Get an ArrayObject from an XML string
-     *
-     * @param string $xml_document
-     *
-     * @return \stdClass
-     */
-    public static function xmlToObj($xml_document)
-    {
-        $parser = new \Genesis\Parsers\XML($xml_document);
-
-        return $parser->getObject();
     }
 
     /**

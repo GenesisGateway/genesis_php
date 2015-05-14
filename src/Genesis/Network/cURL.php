@@ -117,14 +117,17 @@ class cURL implements \Genesis\Interfaces\Network
     public function prepareRequestBody($requestData)
     {
         $options = array(
-            CURLOPT_ENCODING       => 'gzip',
-            CURLOPT_HEADER         => true,
-            CURLOPT_HTTPHEADER     => array('Content-Type: text/xml'),
-            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_URL            => $requestData['url'],
             CURLOPT_TIMEOUT        => $requestData['timeout'],
             CURLOPT_USERAGENT      => $requestData['user_agent'],
             CURLOPT_USERPWD        => $requestData['user_login'],
+            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
+            CURLOPT_ENCODING       => 'gzip',
+            CURLOPT_HTTPHEADER     => array(
+                'Content-Type: text/xml',
+                'Expect:'
+            ),
+            CURLOPT_HEADER         => true,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_RETURNTRANSFER => true,
             // SSL/TLS Configuration

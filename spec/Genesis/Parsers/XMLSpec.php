@@ -9,7 +9,6 @@ class XMLSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedWith('<?xml version="1.0" encoding="UTF-8"?>');
         $this->shouldHaveType('Genesis\Parsers\XML');
     }
 
@@ -35,7 +34,7 @@ class XMLSpec extends ObjectBehavior
   <sent_to_acquirer>true</sent_to_acquirer>
 </payment_response>
 XML;
-        $this->beConstructedWith($xml);
+        $this->parseDocument($xml);
 
         $this->getObject()->transaction_type->shouldBe('authorize');
         $this->getObject()->amount->shouldBe('5000');
@@ -67,7 +66,7 @@ XML;
 </payment_response>
 XML;
 
-        $this->beConstructedWith($xml);
+        $this->parseDocument($xml);
 
         $this->getObject()->status->shouldBe('pending_async');
 
@@ -120,7 +119,7 @@ XML;
   </risk_params>
 </wpf_payment>
 XML;
-        $this->beConstructedWith($xml);
+        $this->parseDocument($xml);
 
         $this->getObject()->billing_address->first_name->shouldBe('John');
 

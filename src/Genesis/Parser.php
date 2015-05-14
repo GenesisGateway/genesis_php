@@ -20,26 +20,57 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Exceptions;
+namespace Genesis;
 
 /**
- * Class ErrorParameter
+ * Parser handler
  *
- * Used to indicate a problem with transaction's parameters
- *
- * @package Genesis\Exceptions
+ * @package Genesis
  */
-class ErrorParameter extends \Exception
+class Parser
 {
     /**
-     * @param string $message
-     * @param bool   $code
-     * @param null   $previous
+     * Instance of the selected builder wrapper
+     *
+     * @var object
      */
-    public function __construct($message = '', $code = false, $previous = null)
-    {
-        $message = sprintf("Please verify the transaction parameters! %s %s", PHP_EOL, $message);
+    private $context;
 
-        parent::__construct($message, $code, $previous);
+    /**
+     * Initialize the required builder, based on the use's
+     * preference (set inside the configuration ini file)
+     *
+     * @param string $interface
+     */
+    public function __construct($interface = null)
+    {
+        $interface = $interface ?: \Genesis\Config::getInterface('parser');
+
+        switch ($interface) {
+            default:
+            case 'xml':
+                $this->context = new Parsers\XML();
+                break;
+        }
+    }
+
+    /**
+     * Get the printable Builder Output
+     *
+     * @return string
+     */
+    public function getObject()
+    {
+        return $this->context->getObject();
+    }
+
+    /**
+     * Parse tree-structure into Builder document
+     *
+     * @param mixed $document
+     */
+    public function parseDocument($document)
+    {
+        $this->context->parseDocument($document);
     }
 }

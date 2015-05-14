@@ -75,16 +75,23 @@ class Response
 
         // Try to parse the incoming response
         try {
-            $this->responseObj = \Genesis\Utils\Common::xmlToObj($response);
+            $parser = new \Genesis\Parser('xml');
+            $parser->parseDocument($response);
+
+            $this->responseObj = $parser->getObject();
         }
-        catch (\Exception $e) {
-            throw new \Genesis\Exceptions\InvalidResponse();
+        catch (\Genesis\Exceptions\InvalidArgument $e) {
+            throw new \Genesis\Exceptions\InvalidResponse(
+                $e->getMessage()
+            );
         }
 
         // Check if there is an API error
         if ($this->isSuccessful() === false) {
             throw new \Genesis\Exceptions\ErrorAPI(
-                $this->responseObj->technical_message ?: 'Unknown API Error!'
+                isset($this->responseObj->technical_message)
+                    ? $this->responseObj->technical_message
+                    : 'Unknown API Error!'
             );
         }
 
