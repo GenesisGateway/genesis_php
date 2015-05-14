@@ -149,13 +149,15 @@ use \Genesis;
 try {
     $notification = new API\Notification($_POST);
 
+    // Reconciliation is generally optional, but
+    // its a recommended practice to ensure
+    // that you have the latest information
     $notification->initReconciliation();
     
     // Application Logic
     // ...
-    
-    // Get the transaction status
-    echo $notification->getReconciliationObject()->status;
+    // for example, process the transaction status
+    // $status = $notification->getReconciliationObject()->status;
     
     // Respond to Genesis
     $notification->renderResponse();
