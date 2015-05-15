@@ -74,7 +74,7 @@ class cURL implements \Genesis\Interfaces\Network
      */
     public function getStatus()
     {
-        return curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
+        return (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
     }
 
     /**
@@ -125,6 +125,7 @@ class cURL implements \Genesis\Interfaces\Network
             CURLOPT_ENCODING       => 'gzip',
             CURLOPT_HTTPHEADER     => array(
                 'Content-Type: text/xml',
+                // Workaround to prevent cURL from parsing HTTP 100 as separate request
                 'Expect:'
             ),
             CURLOPT_HEADER         => true,
@@ -175,7 +176,7 @@ class cURL implements \Genesis\Interfaces\Network
         $errNo  = curl_errno($this->curlHandle);
         $errStr = curl_error($this->curlHandle);
 
-        if ($errStr) {
+        if ($errNo > 0) {
             throw new \Genesis\Exceptions\ErrorNetwork($errStr, $errNo);
         }
     }

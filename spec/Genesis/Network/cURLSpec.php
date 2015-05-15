@@ -22,10 +22,9 @@ class cURLSpec extends ObjectBehavior
         $remote_url = Config::getEnvironmentURL('https', 'gateway', 443);
 
         $options = array(
-            'type'       => 'GET',
-            'protocol'   => 'https',
-            'url'        => $remote_url,
             'body'       => '',
+            'type'       => 'GET',
+            'url'        => $remote_url,
             'timeout'    => Config::getNetworkTimeout(),
             'ca_bundle'  => Config::getCertificateBundle(),
             'user_login' => Config::getUsername() . ':' . Config::getPassword(),
@@ -34,11 +33,13 @@ class cURLSpec extends ObjectBehavior
 
         $this->prepareRequestBody($options);
 
-        $this->shouldNotThrow()->duringExecute();
+        $this->shouldNotThrow()->during('execute');
 
         $this->getResponseBody()->shouldNotBeEmpty();
 
         $this->getResponseBody()->shouldNotBeOlder();
+
+        $this->getStatus()->shouldBe(200);
     }
 
     function getMatchers()

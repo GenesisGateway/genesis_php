@@ -25,6 +25,7 @@ class StreamSpec extends ObjectBehavior
             'body'       => '',
             'type'       => 'GET',
             'url'        => $remote_url,
+            'timeout'    => Config::getNetworkTimeout(),
             'ca_bundle'  => Config::getCertificateBundle(),
             'user_login' => Config::getUsername() . ':' . Config::getPassword(),
             'user_agent' => $faker->userAgent,
@@ -32,11 +33,13 @@ class StreamSpec extends ObjectBehavior
 
         $this->prepareRequestBody($options);
 
-        $this->shouldNotThrow()->duringExecute();
+        $this->shouldNotThrow()->during('execute');
 
         $this->getResponseBody()->shouldNotBeEmpty();
 
         $this->getResponseBody()->shouldNotBeOlder();
+
+        $this->getStatus()->shouldBe(200);
     }
 
     function getMatchers()

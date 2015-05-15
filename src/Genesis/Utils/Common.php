@@ -48,11 +48,27 @@ final class Common
             );
         }
 
+        // Filter requirements
+        if (!function_exists('filter_var')) {
+            throw new \Exception(
+                'Filter extensions is required!' . PHP_EOL .
+                'Please install the extension or rebuild with "--enable-filter" option.'
+            );
+        }
+
         // Hash requirements
         if (!function_exists('hash')) {
             throw new \Exception(
                 'Hash extension is required!' . PHP_EOL .
                 'Please install the extension or rebuild with "--enable-hash" option.'
+            );
+        }
+
+        // SimpleXML requirements
+        if (!class_exists('SimpleXMLElement') || !class_exists('SimpleXMLIterator')) {
+            throw new \Exception(
+                'SimpleXML extension is required!' . PHP_EOL .
+                'Please install the extension or rebuild with "--enable-simplexml" option.'
             );
         }
 

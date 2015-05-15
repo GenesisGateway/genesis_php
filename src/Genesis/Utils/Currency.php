@@ -585,8 +585,7 @@ final class Currency
             'MKD' => array(
                 'name'     => 'Denar',
                 'code'     => '807',
-                'country'  => 'MACEDONIA, THE FORMER
-YUGOSLAV REPUBLIC OF',
+                'country'  => 'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF',
                 'exponent' => '2'
             ),
             'MMK' => array(

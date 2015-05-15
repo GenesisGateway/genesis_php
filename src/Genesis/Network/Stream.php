@@ -64,7 +64,7 @@ class Stream implements \Genesis\Interfaces\Network
      */
     public function getStatus()
     {
-        return substr($this->response, 9, 3);
+        return (int)substr($this->response, 9, 3);
     }
 
     /**
@@ -120,6 +120,7 @@ class Stream implements \Genesis\Interfaces\Network
                 'method'  => $requestData['type'],
                 'header'  => implode("\r\n", $headers),
                 'content' => $requestData['body'],
+                'timeout' => $requestData['timeout']
             ),
             'ssl'  => array(
                 // DO NOT allow self-signed certificates
@@ -156,6 +157,43 @@ class Stream implements \Genesis\Interfaces\Network
         $this->streamContext = stream_context_create($contextOptions);
 
         $this->requestData = $requestData;
+    }
+
+    /**
+     * Send the request
+     *
+     * @return void
+     */
+    public function execute()
+    {
+        set_error_handler(array($this, 'processErrors'), E_WARNING);
+
+        $stream = fopen($this->requestData['url'], 'r', false, $this->streamContext);
+
+        $this->responseBody = stream_get_contents($stream);
+
+        $this->responseHeaders = $http_response_header;
+
+        $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
+
+        restore_error_handler();
+    }
+
+    /**
+     * Handle stream-related errors
+     *
+     * @param $errNo  - error code
+     * @param $errStr - error message
+     *
+     * @throws \Genesis\Exceptions\ErrorNetwork
+     */
+    private function processErrors($errNo, $errStr)
+    {
+        // When an exception is being thrown, we have to restore
+        // the handler.
+        restore_error_handler();
+
+        throw new \Genesis\Exceptions\ErrorNetwork($errStr, $errNo);
     }
 
     /**
@@ -204,44 +242,5 @@ class Stream implements \Genesis\Interfaces\Network
             '!PSK',
             '!SSLv2',
         );
-    }
-
-    /**
-     * Send the request
-     *
-     * @return void
-     */
-    public function execute()
-    {
-        set_error_handler(array($this, 'processErrors'), E_WARNING);
-
-        $stream = fopen($this->requestData['url'], 'r', false, $this->streamContext);
-
-        restore_error_handler();
-
-        $this->responseBody = stream_get_contents($stream);
-
-        $this->responseHeaders = $http_response_header;
-
-        $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
-    }
-
-    /**
-     * Handle stream-related errors
-     *
-     * @param $errNo  - error code
-     * @param $errStr - error message
-     *
-     * @throws \Genesis\Exceptions\ErrorNetwork
-     */
-    private function processErrors($errNo, $errStr)
-    {
-        // When an exception is being thrown, we have to restore
-        // the handler.
-        //
-        // @TODO This is a bit hackish
-        restore_error_handler();
-
-        throw new \Genesis\Exceptions\ErrorNetwork($errStr, $errNo);
     }
 }

@@ -9,9 +9,14 @@ Requirements
 * PHP version 5.3.2 or newer
 * PHP Extensions:
     * [BCMath](https://php.net/bcmath)
-    * [CURL](https://php.net/curl) (if you choose to use it)
+    * [CURL](https://php.net/curl) (required, only if you use the curl network interface)
+    * [Filter](https://php.net/filter)
+    * [Hash](https://php.net/hash)
+    * [SimpleXML](https://php.net/simplexml)
     * [XMLWriter](https://php.net/xmlwriter)
 * Composer (optional)
+
+Note: Most of the extension are part of PHP and enabled by default, however some distros are using custom configuration that might have some of them removed/disabled.
 
 Installation
 ------------
