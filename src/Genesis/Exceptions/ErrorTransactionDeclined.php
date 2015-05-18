@@ -23,21 +23,18 @@
 namespace Genesis\Exceptions;
 
 /**
- * Class InvalidResponse
+ * Class ErrorTransactionDeclined
  *
- * Used to indicate an invalid document
- * in the API response.
+ * Used to indicate an unsuccessful API request
+ *
+ * For example - invalid card, invalid data, insufficient funds etc.
  *
  * @package Genesis\Exceptions
  */
-class InvalidResponse extends \Exception
+class ErrorTransactionDeclined extends \Exception
 {
-    public function __construct($message = '', $code = 0, $previous = null)
+    public function __construct($message = 'Transaction has been declined!', $code = false, $previous = null)
     {
-        if (empty($message)) {
-            $message = 'Invalid/Unexpected format in Response from the Server!';
-        }
-
         parent::__construct($message, $code, $previous);
     }
 }

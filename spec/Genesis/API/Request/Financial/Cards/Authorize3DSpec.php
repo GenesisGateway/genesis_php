@@ -26,7 +26,7 @@ class Authorize3DSpec extends ObjectBehavior
     function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setCvv(null);
+        $this->setCardNumber(null);
         $this->shouldThrow()->during('getDocument');
     }
 

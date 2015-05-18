@@ -150,6 +150,30 @@ final class Common
     }
 
     /**
+     * Get PascalCase to action/target array
+     *
+     * @param $input
+     *
+     * @return array
+     */
+    public static function resolveDynamicMethod($input)
+    {
+        $snake_case = explode('_', self::pascalToSnakeCase($input));
+
+        $result = array(
+            current(
+                array_slice($snake_case, 0, 1)
+            ),
+            implode(
+                '_',
+                array_slice($snake_case, 1)
+            )
+        );
+
+        return $result;
+    }
+
+    /**
      * Convert SnakeCase to CamelCase
      *
      * @param string $input

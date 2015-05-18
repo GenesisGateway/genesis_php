@@ -28,25 +28,33 @@ namespace Genesis\API\Constants\Transaction;
  * Transaction states of a Genesis Transaction
  *
  * @package Genesis\API\Constants\Transaction
+ *
+ * @method bool isApproved()
+ * @method bool isDeclined()
+ * @method bool isPending()
+ * @method bool isPendingAsync()
+ * @method bool isError()
+ * @method bool isRefunded()
+ * @method bool isVoided()
  */
 class States
 {
     /**
      * Transaction was approved by the schemes and is successful.
      */
-    const APPROVED = 'approved';
+    const APPROVED              = 'approved';
 
     /**
      * Transaction was declined by the schemes or risk management.
      */
-    const DECLINED = 'declined';
+    const DECLINED              = 'declined';
 
     /**
      * The outcome of the transaction could not be determined, e.g. at a timeout situation.
      *
      * Transaction state will eventually change, so make a reconcile after a certain time frame.
      */
-    const PENDING = 'pending';
+    const PENDING               = 'pending';
 
     /**
      * An asynchronous transaction (3-D secure payment) has been initiated and is waiting for user
@@ -54,22 +62,22 @@ class States
      *
      * Updates of this state will be sent to the notification url specified in request.
      */
-    const PENDING_ASYNC = 'pending_async';
+    const PENDING_ASYNC         = 'pending_async';
 
     /**
      * An error has occurred while negotiating with the schemes.
      */
-    const ERROR = 'error';
+    const ERROR                 = 'error';
 
     /**
      * WPF initial status
      */
-    const NEW_STATUS = 'new';
+    const NEW_STATUS            = 'new';
 
     /**
      * Once an approved transaction is refunded the state changes to refunded.
      */
-    const REFUNDED = 'refunded';
+    const REFUNDED              = 'refunded';
 
     /**
      * Once an approved transaction is chargeback the state changes to change- backed.
@@ -77,22 +85,110 @@ class States
      * Chargeback is the state of rejecting an accepted transaction (with funds transferred)
      * by the cardholder or the issuer
      */
-    const CHARGEBACKED = 'chargebacked';
+    const CHARGEBACKED          = 'chargebacked';
 
     /**
      * Once a chargebacked transaction is charged, the state changes to charge- back reversed.
      *
      * Chargeback has been canceled.
      */
-    const CHARGEBACK_REVERSED = 'chargeback_reversed';
+    const CHARGEBACK_REVERSED   = 'chargeback_reversed';
 
     /**
      * Once a chargeback reversed transaction is chargebacked the state changes to pre arbitrated.
      */
-    const PRE_ARBITRATED = 'pre_arbitrated';
+    const PRE_ARBITRATED        = 'pre_arbitrated';
 
     /**
      * Transaction was authorized, but later the merchant canceled it.
      */
-    const VOIDED = 'voided';
+    const VOIDED                = 'voided';
+
+    /**
+     * Store the state of transaction for comparison
+     *
+     * @var string
+     */
+    private $status;
+
+    /**
+     * Handle "magic" calls
+     *
+     * @param $method
+     * @param $args
+     *
+     * @return $this|bool
+     */
+    public function __call($method, $args)
+    {
+        list($action, $target) = \Genesis\Utils\Common::resolveDynamicMethod($method);
+
+        switch($action)
+        {
+            case 'is':
+                return $this->compare($target);
+                break;
+            default:
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the status if one is being passed
+     *
+     * @param $status
+     */
+    public function __construct($status = null)
+    {
+        if (!is_null($status)) {
+            $this->status = $status;
+        }
+    }
+
+    /**
+     * Check if the status is the same passed as parameter
+     *
+     * @param $subject
+     *
+     * @return bool
+     */
+    public function compare($subject)
+    {
+        if ($this->status == constant('self::' . strtoupper($subject))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check whether this is a valid (known) status
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        $statusList = array(
+            self::APPROVED,
+            self::DECLINED,
+            self::PENDING,
+            self::PENDING_ASYNC,
+            self::ERROR,
+            self::NEW_STATUS,
+            self::REFUNDED,
+            self::CHARGEBACKED,
+            self::CHARGEBACK_REVERSED,
+            self::PRE_ARBITRATED,
+            self::VOIDED
+        );
+
+        if (in_array(strtolower($this->status), $statusList)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

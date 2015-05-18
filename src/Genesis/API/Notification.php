@@ -116,6 +116,8 @@ class Notification
      */
     public function initReconciliation()
     {
+        $request = null;
+
         try {
             if ($this->isAPINotification()) {
                 $type = 'NonFinancial\Reconcile\Transaction';
@@ -130,11 +132,13 @@ class Notification
             $request->request()->setUniqueId($this->unique_id);
 
             $request->execute();
-
-            $this->reconciliationObj = $request->response()->getResponseObject();
+        } catch (\Genesis\Exceptions\ErrorAPI $e) {
+            // Continue
         } catch (\Exception $e) {
             return false;
         }
+
+        $this->reconciliationObj = $request->response()->getResponseObject();
 
         return true;
     }

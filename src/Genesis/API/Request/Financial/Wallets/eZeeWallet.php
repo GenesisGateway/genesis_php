@@ -144,17 +144,23 @@ class eZeeWallet extends \Genesis\API\Request
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,
-                'amount'             => parent::transform('amount', array(
+                'amount'             => parent::transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'           => $this->currency,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
                 'source_wallet_id'   => $this->source_wallet_id,
-                'source_wallet_pwd'  => parent::transform('wallet_password', array(
+                'source_wallet_pwd'  => parent::transform(
+                    'wallet_password',
+                    array(
                         $this->source_wallet_pwd
-                    )),
+                    )
+                ),
             )
         );
 

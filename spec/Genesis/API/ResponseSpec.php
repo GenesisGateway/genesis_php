@@ -67,9 +67,22 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(false);
     }
 
+    function it_should_be_unsuccessful_on_decline()
+    {
+        $this->shouldThrow('\Genesis\Exceptions\ErrorTransactionDeclined')->during(
+            'parseResponse', array(
+                $this->buildSample(
+                    array('declined')
+                )
+            )
+        );
+
+        $this->isSuccessful()->shouldBe(true);
+    }
+
     function it_should_be_unsuccessful_on_unknown_status()
     {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorAPI')->during(
+        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during(
             'parseResponse', array(
                 $this->buildSample(
                     array('non-existing-status')
@@ -77,7 +90,7 @@ class ResponseSpec extends ObjectBehavior
             )
         );
 
-        $this->isSuccessful()->shouldBe(false);
+        $this->isSuccessful()->shouldBe(null);
     }
 
     function it_should_parse_transaction_without_status()

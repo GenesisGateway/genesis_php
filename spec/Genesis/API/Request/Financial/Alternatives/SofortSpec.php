@@ -26,7 +26,7 @@ class SofortSpec extends ObjectBehavior
     function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setBankAccountNumber(null);
+        $this->setAmount(null);
         $this->shouldThrow()->during('getDocument');
     }
 

@@ -38,7 +38,11 @@ class ErrorParameter extends \Exception
      */
     public function __construct($message = '', $code = false, $previous = null)
     {
-        $message = sprintf("Please verify the transaction parameters! %s %s", PHP_EOL, $message);
+        $message = sprintf(
+            "Please verify the transaction parameters! %s %s",
+            PHP_EOL,
+            $message
+        );
 
         parent::__construct($message, $code, $previous);
     }

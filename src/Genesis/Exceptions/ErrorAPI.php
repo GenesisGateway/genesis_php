@@ -35,7 +35,7 @@ class ErrorAPI extends \Exception
 {
     public function __construct($message = '', $code = false, $previous = null)
     {
-        $message = sprintf("API Error: %s", $message);
+        $message = sprintf("API Error: %s", empty($message) ? 'Unknown error' : $message);
 
         parent::__construct($message, $code, $previous);
     }

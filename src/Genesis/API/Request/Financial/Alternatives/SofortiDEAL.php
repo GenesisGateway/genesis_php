@@ -331,7 +331,6 @@ class SofortiDEAL extends \Genesis\API\Request
             'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_phone',
             'customer_email',
             'customer_bank_id',
             'bank_account_number',

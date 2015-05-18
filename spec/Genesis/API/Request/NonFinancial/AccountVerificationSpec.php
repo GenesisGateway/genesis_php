@@ -26,7 +26,7 @@ class AccountVerificationSpec extends ObjectBehavior
     function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setCvv(null);
+        $this->setCardHolder(null);
         $this->shouldThrow()->during('getDocument');
     }
 

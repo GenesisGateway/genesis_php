@@ -65,7 +65,7 @@ class Response
      * @param string $response
      *
      * @throws \Genesis\Exceptions\ErrorAPI
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorTransactionDeclined
      * @throws \Genesis\Exceptions\InvalidResponse
      */
     public function parseResponse($response)
@@ -73,26 +73,37 @@ class Response
         // Save a copy of the incoming response
         $this->responseRaw = $response;
 
-        // Try to parse the incoming response
+        // Parse the incoming response to stdClass
         try {
             $parser = new \Genesis\Parser('xml');
             $parser->parseDocument($response);
 
             $this->responseObj = $parser->getObject();
         }
-        catch (\Genesis\Exceptions\InvalidArgument $e) {
+        catch (\Exception $e) {
             throw new \Genesis\Exceptions\InvalidResponse(
                 $e->getMessage()
             );
         }
 
-        // Check if there is an API error
-        if ($this->isSuccessful() === false) {
-            throw new \Genesis\Exceptions\ErrorAPI(
-                isset($this->responseObj->technical_message)
-                    ? $this->responseObj->technical_message
-                    : 'Unknown API Error!'
-            );
+        if (isset($this->responseObj->status)) {
+            $state = new Constants\Transaction\States($this->responseObj->status);
+
+            if (!$state->isValid()) {
+                throw new \Genesis\Exceptions\InvalidArgument(
+                    'Unknown transaction status'
+                );
+            }
+
+            if ($state->isDeclined()) {
+                throw new \Genesis\Exceptions\ErrorTransactionDeclined();
+            }
+
+            if ($state->isError()) {
+                throw new \Genesis\Exceptions\ErrorAPI(
+                    $this->responseObj->technical_message
+                );
+            }
         }
 
         // Transform Amount from Major to Minor unit
@@ -111,24 +122,22 @@ class Response
      */
     public function isSuccessful()
     {
-        $statuses = array(
-            \Genesis\API\Constants\Transaction\States::APPROVED,
-            \Genesis\API\Constants\Transaction\States::PENDING_ASYNC,
-            \Genesis\API\Constants\Transaction\States::NEW_STATUS,
+        $status = new Constants\Transaction\States(
+            isset($this->responseObj->status) ? $this->responseObj->status : ''
         );
 
-        if (isset($this->responseObj->status)) {
-            if (in_array($this->responseObj->status, $statuses)) {
-                $status = true;
+        if ($status->isValid()) {
+            if ($status->isError()) {
+                $result = false;
             } else {
-                $status = false;
+                $result = true;
             }
         } else {
             // return null if status is inapplicable
-            $status = null;
+            $result = null;
         }
 
-        return $status;
+        return $result;
     }
 
     /**

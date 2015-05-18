@@ -68,16 +68,9 @@ final class XML implements \Genesis\Interfaces\Parser
      */
     public function parseDocument($xml_document)
     {
-        try {
-            $this->sxi = new \SimpleXmlIterator($xml_document);
+        $this->sxi = new \SimpleXmlIterator($xml_document);
 
-            $this->stdClassObj = self::sxiToClass($this->sxi);
-        }
-        catch (\Exception $e) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                $e->getMessage()
-            );
-        }
+        $this->stdClassObj = self::sxiToClass($this->sxi);
     }
 
     /**

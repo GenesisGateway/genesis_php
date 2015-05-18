@@ -316,6 +316,7 @@ class CashU extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'customer_email',
+            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

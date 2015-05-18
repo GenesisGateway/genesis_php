@@ -98,7 +98,6 @@ class Refund extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
-            'remote_ip',
             'reference_id',
             'amount',
             'currency'

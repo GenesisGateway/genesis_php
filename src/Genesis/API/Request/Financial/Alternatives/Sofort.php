@@ -330,9 +330,6 @@ class Sofort extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'customer_email',
-            'customer_phone',
-            'customer_bank_id',
-            'bank_account_number',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

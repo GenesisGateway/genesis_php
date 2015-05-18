@@ -113,19 +113,18 @@ abstract class Request
      */
     public function __call($method, $args)
     {
-        $methodType = substr($method, 0, 3);
-        $requestedKey = strtolower(\Genesis\Utils\Common::pascalToSnakeCase(substr($method, 3)));
+        list($action, $target) = \Genesis\Utils\Common::resolveDynamicMethod($method);
 
-        switch ($methodType) {
+        switch ($action) {
             case 'get':
-                if (property_exists($this, $requestedKey)) {
-                    return $this->$requestedKey;
+                if (property_exists($this, $target)) {
+                    return $this->$target;
                 }
 
                 break;
             case 'set':
-                if (property_exists($this, $requestedKey)) {
-                    $this->$requestedKey = trim(reset($args));
+                if (property_exists($this, $target)) {
+                    $this->$target = trim(reset($args));
                     return $this;
                 }
 

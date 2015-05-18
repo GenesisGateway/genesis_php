@@ -32,7 +32,7 @@ class EnvironmentNotSet extends \Exception
     public function __construct($message = '', $code = 0, $previous = null)
     {
         if (empty($message)) {
-            $message = "No working enviorment has been set, please consult the API and set the enviorment.";
+            $message = "No working enviorment has been set, please choose between test/live environment!";
         }
 
         parent::__construct($message, $code, $previous);
