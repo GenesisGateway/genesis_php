@@ -323,14 +323,16 @@ class Create extends \Genesis\API\Request
      */
     public function addTransactionType($name, $parameters = array())
     {
-        array_push($this->transaction_types, array(
-                'transaction_type' => array(
-                    '@attributes' => array(
-                        'name' => $name
-                    ),
-                    $parameters
-                )
-            ));
+        $structure = array(
+            'transaction_type' => array(
+                '@attributes' => array(
+                    'name' => $name
+                ),
+                $parameters
+            )
+        );
+
+        array_push($this->transaction_types, $structure);
     }
 
     /**
@@ -348,9 +350,9 @@ class Create extends \Genesis\API\Request
             );
         }
 
-        parent::setApiConfig(
+        $this->setApiConfig(
             'url',
-            parent::buildRequestURL(
+            $this->buildRequestURL(
                 'wpf',
                 sprintf('%s/wpf', substr(strtolower($language), 0, 2)),
                 false
@@ -372,7 +374,7 @@ class Create extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
+        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
 
     /**
@@ -407,7 +409,7 @@ class Create extends \Genesis\API\Request
         $treeStructure = array(
             'wpf_payment' => array(
                 'transaction_id'     => $this->transaction_id,
-                'amount'             => parent::transform('amount', array(
+                'amount'             => $this->transform('amount', array(
                         $this->amount,
                         $this->currency,
                     )),

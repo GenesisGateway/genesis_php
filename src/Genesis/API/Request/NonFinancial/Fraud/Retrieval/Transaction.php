@@ -58,7 +58,7 @@ class Transaction extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests', false));
     }
 
     /**

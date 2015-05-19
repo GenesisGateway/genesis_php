@@ -52,7 +52,7 @@ class PayByVoucherSpec extends ObjectBehavior
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
         $this->setCustomerIdNumber($faker->randomNumber());
-        $this->setCustomerBankId(\Genesis\API\Constants\Banks::PAYBYVOUCHER_BOCO);
+        $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
         $this->setBankAccountNumber($faker->randomNumber());
     }
 

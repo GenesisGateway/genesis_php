@@ -247,7 +247,7 @@ class Payout extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -282,7 +282,7 @@ class Payout extends \Genesis\API\Request
                 'transaction_type' => \Genesis\API\Constants\Transaction\Types::PAYOUT,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
-                'amount'           => parent::transform('amount', array(
+                'amount'           => $this->transform('amount', array(
                         $this->amount,
                         $this->currency,
                     )),

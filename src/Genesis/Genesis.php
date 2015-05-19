@@ -32,7 +32,7 @@ class Genesis
     /**
      * Store the Network Request Instance
      *
-     * @var \Genesis\API\Request
+     * @var mixed
      */
     protected $requestCtx;
 
@@ -46,7 +46,7 @@ class Genesis
     /**
      * Store the Network Request Instance
      *
-     * @var \Genesis\Network\
+     * @var \Genesis\Network
      */
     protected $networkCtx;
 
@@ -60,7 +60,7 @@ class Genesis
     public function __construct($request)
     {
         // Verify system requirements
-        \Genesis\Utils\Common::checkRequirements();
+        \Genesis\Utils\Requirements::verify();
 
         // Initialize the request
         $request = sprintf('\Genesis\API\Request\%s', $request);
@@ -83,7 +83,7 @@ class Genesis
     /**
      * Get request instance
      *
-     * @return \Genesis\API\Request
+     * @return mixed
      */
     public function request()
     {
@@ -137,36 +137,36 @@ class Genesis
      * Get description for an error, based
      * on the Error Code
      *
-     * @param $error_code
+     * @param $errorCode
      *
      * @return string
      */
-    public static function getErrorDescription($error_code)
+    public static function getErrorDescription($errorCode)
     {
-        return \Genesis\API\Constants\Errors::getErrorDescription($error_code);
+        return \Genesis\API\Constants\Errors::getErrorDescription($errorCode);
     }
 
     /**
      * Get a country full name by an ISO-4217 code
      *
-     * @param $iso_code - ISO-4217 compliant code of the country
+     * @param $isoCode - ISO-4217 compliant code of the country
      *
      * @return mixed - full name of the country
      */
-    public static function getFullCountryName($iso_code)
+    public static function getFullCountryName($isoCode)
     {
-        return \Genesis\Utils\Country::getCountryName($iso_code);
+        return \Genesis\Utils\Country::getCountryName($isoCode);
     }
 
     /**
      * Get a country ISO-4217 code by its name
      *
-     * @param string $country_name - country name
+     * @param string $countryName - country name
      *
      * @return string
      */
-    public static function getCountryISOCode($country_name)
+    public static function getCountryISOCode($countryName)
     {
-        return \Genesis\Utils\Country::getCountryISO($country_name);
+        return \Genesis\Utils\Country::getCountryISO($countryName);
     }
 }

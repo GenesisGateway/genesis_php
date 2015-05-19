@@ -313,7 +313,7 @@ class AccountVerification extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -346,7 +346,7 @@ class AccountVerification extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'account_verification',
+                'transaction_type' => \Genesis\API\Constants\Transaction\Types::ACCOUNT_VERIFICATION,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
                 'moto'             => $this->moto,

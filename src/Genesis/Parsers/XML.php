@@ -22,8 +22,6 @@
  */
 namespace Genesis\Parsers;
 
-use PhpSpec\Exception\Exception;
-
 /**
  * Class XML
  *

@@ -313,7 +313,7 @@ class AVS extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -346,7 +346,7 @@ class AVS extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type' => 'avs',
+                'transaction_type' => \Genesis\API\Constants\Transaction\Types::AVS,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
                 'moto'             => $this->moto,

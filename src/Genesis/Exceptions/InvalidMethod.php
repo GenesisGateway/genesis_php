@@ -29,6 +29,13 @@ namespace Genesis\Exceptions;
  */
 class InvalidMethod extends \Exception
 {
+    /**
+     * Construct
+     *
+     * @param string $message
+     * @param int $code
+     * @param null $previous
+     */
     public function __construct($message = '', $code = 0, $previous = null)
     {
         if (empty($message)) {

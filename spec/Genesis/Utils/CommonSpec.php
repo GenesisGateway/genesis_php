@@ -15,11 +15,6 @@ class CommonSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\Utils\Common');
     }
 
-    function it_can_pass_system_requirements()
-    {
-        $this->shouldNotThrow()->during('checkRequirements');
-    }
-
     function it_can_convert_pascal_to_snake()
     {
         $tests = array(

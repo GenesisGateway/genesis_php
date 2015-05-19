@@ -51,13 +51,15 @@ class Parser
             case 'xml':
                 $this->context = new Parsers\XML();
                 break;
+            case 'json':
+                break;
         }
     }
 
     /**
      * Get the printable Builder Output
      *
-     * @return string
+     * @return \stdClass
      */
     public function getObject()
     {

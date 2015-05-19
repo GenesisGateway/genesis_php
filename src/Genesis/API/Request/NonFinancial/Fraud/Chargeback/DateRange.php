@@ -67,7 +67,7 @@ class DateRange extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig(
+        $this->setApiConfig(
             'url',
             $this->buildRequestURL(
                 'gateway',

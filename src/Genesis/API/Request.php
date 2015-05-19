@@ -25,7 +25,6 @@ namespace Genesis\API;
 /**
  * Class Request
  *
- * Base of every API request
  *
  * @package    Genesis
  * @subpackage API
@@ -169,8 +168,6 @@ abstract class Request
         $this->checkRequirements();
     }
 
-
-
     /**
      * Remove empty keys/values from the structure
      *
@@ -193,7 +190,22 @@ abstract class Request
      */
     protected function checkRequirements()
     {
-        /* Verify that all required fields are populated */
+        $this->verifyFieldRequirements();
+
+        $this->verifyGroupRequirements();
+
+        $this->verifyConditionalRequirements();
+
+        $this->verifyConditionalFields();
+    }
+
+    /**
+     * Verify that all required fields are populated
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyFieldRequirements()
+    {
         if (isset($this->requiredFields)) {
             $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
 
@@ -207,8 +219,15 @@ abstract class Request
                 }
             }
         }
+    }
 
-        /* Verify that the group fields in the request are populated */
+    /**
+     * Verify that the group fields in the request are populated
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyGroupRequirements()
+    {
         if (isset($this->requiredFieldsGroups)) {
             $fields = $this->requiredFieldsGroups->getArrayCopy();
 
@@ -233,14 +252,25 @@ abstract class Request
                 throw new \Genesis\Exceptions\ErrorParameter(
                     sprintf(
                         'One of the following group/s of field/s must be filled in: %s%s',
-                        PHP_EOL, implode(PHP_EOL, $groupsFormatted)
+                        PHP_EOL,
+                        implode(
+                            PHP_EOL,
+                            $groupsFormatted
+                        )
                     ),
                     true
                 );
             }
         }
+    }
 
-        /* Verify that all fields (who depend on previously populated fields) are populated */
+    /**
+     * Verify that all fields (who depend on previously populated fields) are populated
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyConditionalRequirements()
+    {
         if (isset($this->requiredFieldsConditional)) {
             $fields = $this->requiredFieldsConditional->getArrayCopy();
 
@@ -260,8 +290,15 @@ abstract class Request
                 }
             }
         }
+    }
 
-        /* Verify conditional requirement, where either one of the fields are populated */
+    /**
+     * Verify conditional requirement, where either one of the fields are populated
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyConditionalFields()
+    {
         if (isset($this->requiredFieldsOR)) {
             $fields = $this->requiredFieldsOR->getArrayCopy();
 
@@ -335,26 +372,6 @@ abstract class Request
     }
 
     /**
-     * Build the complete URL for the request
-     *
-     * @param $sub_domain  String    - gateway/wpf etc.
-     * @param $path        String          - path of the current request
-     * @param $appendToken Bool     - should we append the token to the end of the url
-     *
-     * @return string               - complete URL (sub_domain,path,token)
-     */
-    protected function buildRequestURL($sub_domain = 'gateway', $path = '/', $appendToken = true)
-    {
-        $proto  = isset($this->config) ? $this->getApiConfig('protocol') : '';
-        $port   = isset($this->config) ? $this->getApiConfig('port') : '';
-        $token  = ($appendToken) ? \Genesis\Config::getToken() : '';
-
-        $base_url = \Genesis\Config::getEnvironmentURL($proto, $sub_domain, $port);
-
-        return sprintf('%s/%s/%s', $base_url, $path, $token);
-    }
-
-    /**
      * Getter for per-request Config
      *
      * @param $key - setting name
@@ -367,31 +384,47 @@ abstract class Request
     }
 
     /**
+     * Build the complete URL for the request
+     *
+     * @param $subDomain  String   - gateway/wpf etc.
+     * @param $path        String   - path of the current request
+     * @param $appendToken Bool     - should we append the token to the end of the url
+     *
+     * @return string               - complete URL (sub_domain,path,token)
+     */
+    protected function buildRequestURL($subDomain = 'gateway', $path = '/', $appendToken = true)
+    {
+        $proto  = isset($this->config) ? $this->getApiConfig('protocol') : '';
+        $port   = isset($this->config) ? $this->getApiConfig('port') : '';
+        $token  = ($appendToken) ? \Genesis\Config::getToken() : '';
+
+        $baseURL = \Genesis\Config::getEnvironmentURL($proto, $subDomain, $port);
+
+        return sprintf('%s/%s/%s', $baseURL, $path, $token);
+    }
+
+    /**
      * Initialize per-request configuration
      */
-    protected function initConfiguration() { }
+    protected function initConfiguration()
+    {
+
+    }
 
     /**
      * Set the *required fields for the request
      */
-    protected function setRequiredFields() { }
+    protected function setRequiredFields()
+    {
+
+    }
 
     /**
      * Create the Tree structure and populate
      * the fields with the set parameters.
      */
-    protected function populateStructure() { }
+    protected function populateStructure()
+    {
 
-    /**
-     * Add transaction type
-     *
-     * @param string $name
-     * @param array     $parameters
-     */
-    public function addTransactionType($name, $parameters = array()) { }
-
-    /**
-     * Set the language of a WPF form
-     */
-    public function setLanguage() { }
+    }
 }

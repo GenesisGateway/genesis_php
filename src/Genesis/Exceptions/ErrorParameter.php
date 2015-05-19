@@ -32,17 +32,16 @@ namespace Genesis\Exceptions;
 class ErrorParameter extends \Exception
 {
     /**
+     * Construct
+     *
      * @param string $message
      * @param bool   $code
      * @param null   $previous
      */
     public function __construct($message = '', $code = false, $previous = null)
     {
-        $message = sprintf(
-            "Please verify the transaction parameters! %s %s",
-            PHP_EOL,
-            $message
-        );
+        $message = 'Please verify the following transaction parameters:' . PHP_EOL .
+                    $message;
 
         parent::__construct($message, $code, $previous);
     }

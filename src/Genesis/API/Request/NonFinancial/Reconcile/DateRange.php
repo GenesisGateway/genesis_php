@@ -67,7 +67,7 @@ class DateRange extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile/by_date', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile/by_date', true));
     }
 
     /**

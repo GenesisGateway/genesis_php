@@ -146,7 +146,7 @@ class PayByVoucher extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        parent::setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
 
     /**
@@ -185,7 +185,7 @@ class PayByVoucher extends \Genesis\API\Request
                 'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER,
                 'transaction_id'      => $this->transaction_id,
                 'remote_ip'           => $this->remote_ip,
-                'amount'              => parent::transform('amount', array(
+                'amount'              => $this->transform('amount', array(
                         $this->amount,
                         $this->currency,
                     )),

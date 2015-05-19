@@ -48,12 +48,12 @@ class Builder
         $interface = $interface ?: \Genesis\Config::getInterface('builder');
 
         switch ($interface) {
-            case 'json':
-                $this->context = new Builders\JSON();
-                break;
             default:
             case 'xml':
                 $this->context = new Builders\XML();
+                break;
+            case 'json':
+                $this->context = new Builders\JSON();
                 break;
         }
     }

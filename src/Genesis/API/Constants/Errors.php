@@ -142,8 +142,7 @@ final class Errors
             case 350:
                 return 'The input Builder could not be parsed due to invalid code.';
             case 400:
-                return 'A transaction was triggered that is not possible at this time in the workflow, e.g. a refund
-                on a declined transaction.';
+                return 'A transaction was triggered that is not possible at this time in the workflow, e.g. a refund on a declined transaction.';
             case 410:
                 return 'Reference transaction was not found.';
             case 420:

@@ -32,10 +32,17 @@ namespace Genesis\Exceptions;
  */
 class InvalidResponse extends \Exception
 {
+    /**
+     * Construct
+     *
+     * @param string $message
+     * @param int $code
+     * @param null $previous
+     */
     public function __construct($message = '', $code = 0, $previous = null)
     {
         if (empty($message)) {
-            $message = 'Invalid/Unexpected format in Response from the Server!';
+            $message = 'Invalid/Unexpected format!';
         }
 
         parent::__construct($message, $code, $previous);

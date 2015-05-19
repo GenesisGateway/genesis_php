@@ -30,69 +30,6 @@ namespace Genesis\Utils;
  */
 final class Common
 {
-    public static function checkRequirements()
-    {
-        // PHP version requirements
-        if (self::compareVersions('5.3.2', '<')) {
-            throw new \Exception(
-                'Unsupported PHP version, please upgrade!' . PHP_EOL .
-                'This library requires PHP version 5.3.2 or newer.'
-            );
-        }
-
-        // BCMath requirements
-        if (!function_exists('bcmul') || !function_exists('bcdiv')) {
-            throw new \Exception(
-                'BCMath extension is required!' . PHP_EOL .
-                'Please install the extension or rebuild with "--enable-bcmath" option.'
-            );
-        }
-
-        // Filter requirements
-        if (!function_exists('filter_var')) {
-            throw new \Exception(
-                'Filter extensions is required!' . PHP_EOL .
-                'Please install the extension or rebuild with "--enable-filter" option.'
-            );
-        }
-
-        // Hash requirements
-        if (!function_exists('hash')) {
-            throw new \Exception(
-                'Hash extension is required!' . PHP_EOL .
-                'Please install the extension or rebuild with "--enable-hash" option.'
-            );
-        }
-
-        // SimpleXML requirements
-        if (!class_exists('SimpleXMLElement') || !class_exists('SimpleXMLIterator')) {
-            throw new \Exception(
-                'SimpleXML extension is required!' . PHP_EOL .
-                'Please install the extension or rebuild with "--enable-simplexml" option.'
-            );
-        }
-
-        // XMLWriter requirements
-        if (\Genesis\Config::getInterface('builder') == 'xml') {
-            if (!class_exists('XMLWriter')) {
-                throw new \Exception(
-                    'XMLWriter extension is required!' . PHP_EOL .
-                    'Please install the extension or rebuild with "--enable-xmlwriter" option.'
-                );
-            }
-        }
-
-        // cURL requirements
-        if (\Genesis\Config::getInterface('network') == 'curl') {
-            if (!function_exists('curl_init')) {
-                throw new \Exception(
-                    'cURL interface is selected, but its not installed on your system!' . PHP_EOL .
-                    'Please install the extension or select "stream" as your network interface.'
-                );
-            }
-        }
-    }
-
     /**
      * Helper for version_compare()
      *
@@ -122,10 +59,10 @@ final class Common
              *
              * format: major minor release
              */
-            define('PHP_VERSION_ID', ($major * 10000 + $minor * 100 + $release));
+            define('PHP_VERSION_ID', (($major * 10000) + ($minor * 100) + $release));
         }
 
-        return PHP_VERSION_ID;
+        return (int)PHP_VERSION_ID;
     }
 
     /**
@@ -140,13 +77,11 @@ final class Common
     {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
 
-        $ret = reset($matches);
-
-        foreach ($ret as &$match) {
-            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        foreach ($matches[0] as &$match) {
+            $match = ($match == strtoupper($match)) ? strtolower($match) : lcfirst($match);
         }
 
-        return implode('_', $ret);
+        return implode('_', $matches[0]);
     }
 
     /**
@@ -158,15 +93,15 @@ final class Common
      */
     public static function resolveDynamicMethod($input)
     {
-        $snake_case = explode('_', self::pascalToSnakeCase($input));
+        $snakeCase = explode('_', self::pascalToSnakeCase($input));
 
         $result = array(
             current(
-                array_slice($snake_case, 0, 1)
+                array_slice($snakeCase, 0, 1)
             ),
             implode(
                 '_',
-                array_slice($snake_case, 1)
+                array_slice($snakeCase, 1)
             )
         );
 
@@ -182,8 +117,8 @@ final class Common
      */
     public static function snakeCaseToCamelCase($input)
     {
-        return preg_replace_callback('/(?:^|_)(.?)/', function ($v) {
-            return strtoupper($v[1]);
+        return preg_replace_callback('/(?:^|_)(.?)/', function($value) {
+            return strtoupper($value[1]);
         }, $input);
     }
 
@@ -213,13 +148,13 @@ final class Common
     /**
      * Create ArrayObject ($target) from passed Array ($source_array)
      *
-     * @param $source_array - input array
+     * @param $srcArray - input array
      *
      * @return \ArrayObject
      */
-    public static function createArrayObject($source_array)
+    public static function createArrayObject($srcArray)
     {
-        return new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
+        return new \ArrayObject($srcArray, \ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -243,7 +178,7 @@ final class Common
     /**
      * Check if the passed argument is a valid XML tag name
      *
-     * @param $tag
+     * @param string $tag
      *
      * @return bool
      */
@@ -280,9 +215,9 @@ final class Common
     /**
      * Convert Boolean to String
      *
-     * @param $bool
+     * @param bool $bool
      *
-     * @return mixed
+     * @return string
      */
     public static function booleanToString($bool)
     {

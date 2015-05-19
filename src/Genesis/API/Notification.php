@@ -54,14 +54,14 @@ class Notification
     /**
      * Flag, if this notification is for an API transaction
      *
-     * @var \bool
+     * @var bool
      */
     private $isAPINotification;
 
     /**
      * Flag, if this notification is for a WPF transaction
      *
-     * @var \boolean
+     * @var bool
      */
     private $isWPFNotification;
 
@@ -132,8 +132,6 @@ class Notification
             $request->request()->setUniqueId($this->unique_id);
 
             $request->execute();
-        } catch (\Genesis\Exceptions\ErrorAPI $e) {
-            // Continue
         } catch (\Exception $e) {
             return false;
         }
@@ -157,22 +155,20 @@ class Notification
             );
         }
 
-        $message_signature = trim($this->notificationObj->signature);
-        $customer_password = trim(\Genesis\Config::getPassword());
+        $messageSig  = trim($this->notificationObj->signature);
+        $customerPwd = trim(\Genesis\Config::getPassword());
 
-        switch (strlen($message_signature)) {
+        switch (strlen($messageSig)) {
             default:
             case 40:
-                $hash_type = 'sha1';
+                $hashType = 'sha1';
                 break;
             case 128:
-                $hash_type = 'sha512';
+                $hashType = 'sha512';
                 break;
         }
 
-        $calc_signature = hash($hash_type, $this->unique_id . $customer_password);
-
-        if ($message_signature === $calc_signature) {
+        if ($messageSig === hash($hashType, $this->unique_id . $customerPwd)) {
             return true;
         }
 
@@ -244,20 +240,14 @@ class Notification
     /**
      * Render the Gateway response
      *
-     * @param bool $terminate Exit after render (default: false)
-     *
      * @return void
      */
-    public function renderResponse($terminate = false)
+    public function renderResponse()
     {
         if (!headers_sent()) {
             header('Content-type: application/xml', true);
         }
 
         echo $this->generateResponse();
-
-        if ($terminate) {
-            exit(0);
-        }
     }
 }

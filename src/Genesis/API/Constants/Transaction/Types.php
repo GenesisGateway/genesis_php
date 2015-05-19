@@ -32,22 +32,22 @@ namespace Genesis\API\Constants\Transaction;
 class Types
 {
     /**
-     * A standard authorization
+     * A standard Authorization
      */
     const AUTHORIZE = 'authorize';
 
     /**
-     * 3D-based authorization
+     * 3D-Secure Authorization
      */
     const AUTHORIZE_3D = 'authorize3d';
 
     /**
-     * A standard sale
+     * A standard Sale
      */
     const SALE = 'sale';
 
     /**
-     * 3D-based sale
+     * 3D-Secure Sale
      */
     const SALE_3D = 'sale3d';
 
@@ -87,8 +87,7 @@ class Types
     const INIT_RECURRING_SALE_3D = 'init_recurring_sale3d';
 
     /**
-     * A RecurringSale transaction is a "repeated" transaction which follows
-     * and references an initial transaction
+     * A RecurringSale transaction is a "repeated" transaction which follows and references an initial transaction
      */
     const RECURRING_SALE = 'recurring_sale';
 
@@ -118,8 +117,7 @@ class Types
     const PAYSAFECARD = 'paysafecard';
 
     /**
-     * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and
-     * GiroPay
+     * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and GiroPay
      */
     const PPRO = 'ppro';
 
@@ -127,4 +125,14 @@ class Types
      * Bank transfer, popular in China
      */
     const PAYBYVOUCHER = 'paybyvoucher';
+
+    /**
+     * Account Verification
+     */
+    const ACCOUNT_VERIFICATION = 'account_verification';
+
+    /**
+     * Address Verification
+     */
+    const AVS = 'avs';
 }

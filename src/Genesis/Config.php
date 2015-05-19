@@ -118,7 +118,7 @@ final class Config
      *
      * @return mixed
      */
-    final public static function __callStatic($method, $args)
+    public static function __callStatic($method, $args)
     {
         $ConfigKey = strtolower(substr($method, 3));
 
@@ -143,7 +143,7 @@ final class Config
      *
      * @return mixed - interface name or false if non-existing
      */
-    final public static function getInterface($type)
+    public static function getInterface($type)
     {
         if (array_key_exists($type, self::$interfaces)) {
             return self::$interfaces[$type];
@@ -160,7 +160,7 @@ final class Config
      *
      * @return bool
      */
-    final public static function setInterface($interface, $value)
+    public static function setInterface($interface, $value)
     {
         if (array_key_exists($interface, self::$interfaces)) {
             self::$interfaces[$interface] = $value;
@@ -176,7 +176,7 @@ final class Config
      * @return string - Path to the Genesis CA Bundle; false otherwise
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
-    final public static function getCertificateBundle()
+    public static function getCertificateBundle()
     {
         $bundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
 
@@ -197,7 +197,7 @@ final class Config
      * @return String
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
-    final public static function getEnvironmentURL(
+    public static function getEnvironmentURL(
         $protocol = self::PROTOCOL,
         $sub_domain = 'gateway',
         $port = 443
@@ -217,7 +217,7 @@ final class Config
      * @return mixed
      * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
-    final public static function getEnvironment()
+    public static function getEnvironment()
     {
         if (!array_key_exists('environment', self::$vault)) {
             throw new \Genesis\Exceptions\EnvironmentNotSet();
@@ -243,7 +243,7 @@ final class Config
      *
      * @return string
      */
-    final public static function getEndpoint()
+    public static function getEndpoint()
     {
         $alternate_names = array(
             'emerchantpay',
@@ -268,7 +268,7 @@ final class Config
      *
      * @return int
      */
-    final public static function getNetworkTimeout()
+    public static function getNetworkTimeout()
     {
         return 60;
     }
@@ -278,7 +278,7 @@ final class Config
      *
      * @return string
      */
-    final public static function getVersion()
+    public static function getVersion()
     {
         return self::VERSION;
     }
@@ -290,7 +290,7 @@ final class Config
      *
      * @throws \Genesis\Exceptions\InvalidArgument()
      */
-    final public static function loadSettings($settings_file)
+    public static function loadSettings($settings_file)
     {
         if (file_exists($settings_file)) {
             $settings = parse_ini_file($settings_file, true);

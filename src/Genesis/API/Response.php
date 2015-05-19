@@ -53,7 +53,7 @@ class Response
      */
     public function __construct($networkContext = null)
     {
-        if (is_a($networkContext, '\Genesis\Network')) {
+        if (!is_null($networkContext) && is_a($networkContext, '\Genesis\Network')) {
             $this->parseResponse($networkContext->getResponseBody());
         }
     }
@@ -65,7 +65,7 @@ class Response
      * @param string $response
      *
      * @throws \Genesis\Exceptions\ErrorAPI
-     * @throws \Genesis\Exceptions\ErrorTransactionDeclined
+     * @throws \Genesis\Exceptions\InvalidArgument
      * @throws \Genesis\Exceptions\InvalidResponse
      */
     public function parseResponse($response)
@@ -79,10 +79,10 @@ class Response
             $parser->parseDocument($response);
 
             $this->responseObj = $parser->getObject();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new \Genesis\Exceptions\InvalidResponse(
-                $e->getMessage()
+                $e->getMessage(),
+                $e->getCode()
             );
         }
 
@@ -91,17 +91,15 @@ class Response
 
             if (!$state->isValid()) {
                 throw new \Genesis\Exceptions\InvalidArgument(
-                    'Unknown transaction status'
+                    'Unknown transaction status',
+                    $this->responseObj->code
                 );
-            }
-
-            if ($state->isDeclined()) {
-                throw new \Genesis\Exceptions\ErrorTransactionDeclined();
             }
 
             if ($state->isError()) {
                 throw new \Genesis\Exceptions\ErrorAPI(
-                    $this->responseObj->technical_message
+                    $this->responseObj->technical_message,
+                    $this->responseObj->code
                 );
             }
         }
@@ -223,8 +221,7 @@ class Response
         if (isset($this->responseObj->timestamp) && !empty($this->responseObj->timestamp)) {
             try {
                 $this->responseObj->timestamp = new \DateTime($this->responseObj->timestamp);
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // Just log the attempt
                 error_log($e->getMessage());
             }

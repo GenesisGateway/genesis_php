@@ -34,120 +34,120 @@ class Banks
     /**
      * Industrial and Commercial Bank of China
      */
-    const PAYBYVOUCHER_ICBC = 'Industrial and Commercial Bank of China';
+    const ICBC = 'Industrial and Commercial Bank of China';
 
     /**
      * China Merchants Bank
      */
-    const PAYBYVOUCHER_CMBCHINA = 'China Merchants Bank';
+    const CMBCHINA = 'China Merchants Bank';
 
     /**
      * Agricultural Bank of China
      */
-    const PAYBYVOUCHER_ABC = 'Agricultural Bank of China';
+    const ABC = 'Agricultural Bank of China';
 
     /**
      * China Construction Bank
      */
-    const PAYBYVOUCHER_CCB = 'China Construction Bank';
+    const CCB = 'China Construction Bank';
 
     /**
      * Bank of Beijing
      */
-    const PAYBYVOUCHER_BCCB = 'Bank of Beijing';
+    const BCCB = 'Bank of Beijing';
 
     /**
      * Bank of Communications
      */
-    const PAYBYVOUCHER_BOCO = 'Bank of Communications';
+    const BOCO = 'Bank of Communications';
 
     /**
      * Industrial Bank
      */
-    const PAYBYVOUCHER_CIB = 'Industrial Bank';
+    const CIB = 'Industrial Bank';
 
     /**
      * Bank of Nanjing
      */
-    const PAYBYVOUCHER_NJCB = 'Bank of Nanjing';
+    const NJCB = 'Bank of Nanjing';
 
     /**
      * China Minsheng Banking Corp Ltd
      */
-    const PAYBYVOUCHER_CMBC = 'China Minsheng Banking Corp Ltd';
+    const CMBC = 'China Minsheng Banking Corp Ltd';
 
     /**
      * China Everbright Bank
      */
-    const PAYBYVOUCHER_CEB = 'China Everbright Bank';
+    const CEB = 'China Everbright Bank';
 
     /**
      * Bank of China
      */
-    const PAYBYVOUCHER_BOC = 'Bank of China';
+    const BOC = 'Bank of China';
 
     /**
      * Ping An Bank
      */
-    const PAYBYVOUCHER_PINGANBANK = 'Ping An Bank';
+    const PINGANBANK = 'Ping An Bank';
 
     /**
      * Bank of East Asia
      */
-    const PAYBYVOUCHER_HKBEA = 'Bank of East Asia';
+    const HKBEA = 'Bank of East Asia';
 
     /**
      * Bank of Ningbo
      */
-    const PAYBYVOUCHER_NBCB = 'Bank of Ningbo';
+    const NBCB = 'Bank of Ningbo';
 
     /**
      * China Citic Bank
      */
-    const PAYBYVOUCHER_ECITIC = 'China Citic Bank';
+    const ECITIC = 'China Citic Bank';
 
     /**
      * Shenzhen Development Bank
      */
-    const PAYBYVOUCHER_SDB = 'Shenzhen Development Bank';
+    const SDB = 'Shenzhen Development Bank';
 
     /**
      * Guangdong Development Bank
      */
-    const PAYBYVOUCHER_GDB = 'Guangdong Development Bank';
+    const GDB = 'Guangdong Development Bank';
 
     /**
      * Bank of Shanghai
      */
-    const PAYBYVOUCHER_SHB = 'Bank of Shanghai';
+    const SHB = 'Bank of Shanghai';
 
     /**
      * Shanghai Pudong Development Bank
      */
-    const PAYBYVOUCHER_SPDB = 'Shanghai Pudong Development Bank';
+    const SPDB = 'Shanghai Pudong Development Bank';
 
     /**
      * China Post
      */
-    const PAYBYVOUCHER_POST = 'China Post';
+    const POST = 'China Post';
 
     /**
      * BEIJING RURAL COMMERCIAL BANK
      */
-    const PAYBYVOUCHER_BJRCB = 'BEIJING RURAL COMMERCIAL BANK';
+    const BJRCB = 'BEIJING RURAL COMMERCIAL BANK';
 
     /**
      * Hua Xia Bank Co Ltd'
      */
-    const PAYBYVOUCHER_HXB = 'Hua Xia Bank Co Ltd';
+    const HXB = 'Hua Xia Bank Co Ltd';
 
     /**
      * Bank of Hangzhou
      */
-    const PAYBYVOUCHER_HZBANK = 'Bank of Hangzhou';
+    const HZBANK = 'Bank of Hangzhou';
 
     /**
      * Shanghai Rural Commercial Bank
      */
-    const PAYBYVOUCHER_SRCB = 'Shanghai Rural Commercial Bank';
+    const SRCB = 'Shanghai Rural Commercial Bank';
 }

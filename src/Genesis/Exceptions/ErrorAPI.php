@@ -33,9 +33,20 @@ namespace Genesis\Exceptions;
  */
 class ErrorAPI extends \Exception
 {
-    public function __construct($message = '', $code = false, $previous = null)
+    /**
+     * Construct
+     *
+     * @param string $message
+     * @param int $code
+     * @param null $previous
+     */
+    public function __construct($message = '', $code = 0, $previous = null)
     {
-        $message = sprintf("API Error: %s", empty($message) ? 'Unknown error' : $message);
+        $error          = empty($message) ? 'Unknown error' : $message;
+        $description    = \Genesis\API\Constants\Errors::getErrorDescription($code);
+
+        $message = 'Message: ' . $error . PHP_EOL .
+                   'Details: ' . $description;
 
         parent::__construct($message, $code, $previous);
     }

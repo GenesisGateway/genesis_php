@@ -67,19 +67,6 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(false);
     }
 
-    function it_should_be_unsuccessful_on_decline()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorTransactionDeclined')->during(
-            'parseResponse', array(
-                $this->buildSample(
-                    array('declined')
-                )
-            )
-        );
-
-        $this->isSuccessful()->shouldBe(true);
-    }
-
     function it_should_be_unsuccessful_on_unknown_status()
     {
         $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during(
@@ -224,7 +211,7 @@ XML;
                 'transaction_type'  => 'authorize',
                 'code'              => $code,
                 'status'            => $status,
-                'unique_id'         => md5(time(false)),
+                'unique_id'         => md5(time()),
                 'transaction_id'    => md5(microtime(true)),
                 'technical_message' => 'TESTMODE: No real money will be transferred!',
                 'message'           => 'TESTMODE: No real money will be transferred!',
