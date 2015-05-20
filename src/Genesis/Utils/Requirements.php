@@ -36,29 +36,28 @@ final class Requirements
      */
     public static function verify()
     {
-        // PHP version requirements
+        // PHP interpreter version
         self::checkSystemVersion();
 
-        // BCMath requirements
+        // BCMath
         self::isFunctionExists('bcmul', self::getErrorMessage('bcmath'));
         self::isFunctionExists('bcdiv', self::getErrorMessage('bcmath'));
 
-        // Filter requirements
+        // Filter
         self::isFunctionExists('filter_var', self::getErrorMessage('filter'));
 
-        // Hash requirements
+        // Hash
         self::isFunctionExists('hash', self::getErrorMessage('hash'));
 
-        // SimpleXML requirements
-        self::isClassExists('SimpleXMLElement', self::getErrorMessage('simplexml'));
-        self::isClassExists('SimpleXMLIterator', self::getErrorMessage('simplexml'));
+        // XMLReader
+        self::isClassExists('XMLReader', self::getErrorMessage('xmlreader'));
 
-        // XMLWriter requirements
+        // XMLWriter
         if (\Genesis\Config::getInterface('builder') == 'xml') {
             self::isClassExists('XMLWriter', self::getErrorMessage('xmlwriter'));
         }
 
-        // cURL requirements
+        // cURL
         if (\Genesis\Config::getInterface('network') == 'curl') {
             self::isFunctionExists('curl_init', self::getErrorMessage('curl'));
         }
@@ -136,8 +135,8 @@ final class Requirements
                            'Please install the extension or rebuild with "--enable-filter" option.',
             'hash'      => 'Hash extension is required!' . PHP_EOL .
                            'Please install the extension or rebuild with "--enable-hash" option.',
-            'simplexml' => 'SimpleXML extension is required!' . PHP_EOL .
-                           'Please install the extension or rebuild with "--enable-simplexml" option.',
+            'xmlreader' => 'XMLReader extension is required!' . PHP_EOL .
+                           'Please install the extension or rebuild with "--enable-xmlreader" option.',
             'xmlwriter' => 'XMLWriter extension is required!' . PHP_EOL .
                            'Please install the extension or rebuild with "--enable-xmlwriter" option.',
             'curl'      => 'cURL interface is selected, but its not installed on your system!' . PHP_EOL .

@@ -76,6 +76,7 @@ class Response
         // Parse the incoming response to stdClass
         try {
             $parser = new \Genesis\Parser('xml');
+            $parser->skipRootNode();
             $parser->parseDocument($response);
 
             $this->responseObj = $parser->getObject();

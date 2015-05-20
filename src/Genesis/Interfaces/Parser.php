@@ -44,4 +44,13 @@ interface Parser
      * @return mixed
      */
     public function parseDocument($document);
+
+    /**
+     * Set a flag, indicating, if the root
+     * node of a document should be skipped
+     * during parsing
+     *
+     * @return bool
+     */
+    public function skipRootNode();
 }

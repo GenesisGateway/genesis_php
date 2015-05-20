@@ -39,11 +39,19 @@ final class XML implements \Genesis\Interfaces\Parser
     private $stdClassObj;
 
     /**
-     * SimpleXmlIterator instance
+     * Should we skip the RootNode?
      *
-     * @var \SimpleXmlIterator
+     * @var bool
      */
-    private $sxi;
+    private $skipRootNode;
+
+    /**
+     * Set default variables
+     */
+    public function __construct()
+    {
+        $this->skipRootNode = false;
+    }
 
     /**
      * Get the parsed object
@@ -56,121 +64,120 @@ final class XML implements \Genesis\Interfaces\Parser
     }
 
     /**
+     * Set skipRootNode to true
+     *
+     * @return bool
+     */
+    public function skipRootNode()
+    {
+        return $this->skipRootNode = true;
+    }
+
+    /**
      * Parse a document to an stdClass
      *
-     * @param string $xml_document XML Document
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @param string $xmlDocument XML Document
      *
      * @return void
      */
-    public function parseDocument($xml_document)
+    public function parseDocument($xmlDocument)
     {
-        $this->sxi = new \SimpleXmlIterator($xml_document);
+        $reader = new \XMLReader();
+        $reader->open('data:text/plain;base64,' . base64_encode($xmlDocument));
 
-        $this->stdClassObj = self::sxiToClass($this->sxi);
+        if ($this->skipRootNode) {
+            $reader->read();
+        }
+
+        $this->stdClassObj = self::readerLoop($reader);
     }
 
     /**
-     * Iterate over the elements and return object
-     * representing the tree structure
+     * Read through the entire document
      *
-     * @param \SimpleXMLIterator $sxi
-     * @param array              $isMultiNode
-     *
-     * @return \stdClass|mixed
+     * @param \XMLReader $reader
+     * @return mixed
      */
-    public static function sxiToClass($sxi, $isMultiNode = array())
+    public function readerLoop($reader)
     {
-        $stdObj = new \stdClass();
+        $tree = new \stdClass();
 
-        if ($sxi->attributes()->count() > 0) {
-            $stdObj = json_decode(json_encode($sxi->attributes()));
-        }
+        while ($reader->read()) {
+            switch ($reader->nodeType) {
+                case \XMLReader::END_ELEMENT:
+                    return $tree;
+                case \XMLReader::ELEMENT:
 
-        for ($sxi->rewind(); $sxi->valid(); $sxi->next()) {
-            if (!empty($isMultiNode)) {
-                if (!isset($stdObj->{$sxi->key()})) {
-                    $stdObj->{$sxi->key()} = array();
-                }
+                    $this->processElement($reader, $tree);
 
-                if ($sxi->hasChildren()) {
-                    array_push(
-                        $stdObj->{$sxi->key()},
-                        self::sxiToClass(
-                            $sxi->current(),
-                            self::checkForDuplicates($sxi->current())
-                        )
-                    );
-                } else {
-                    if (count($sxi->current()->attributes()) > 0) {
-                        $object = json_decode(json_encode($sxi->current()));
-
-                        $content = trim($sxi->current()->__toString());
-
-                        if (!empty($content)) {
-                            $object->content = $content;
-                        }
-                    } else {
-                        $object = $sxi->current()->__toString();
+                    if ($reader->hasAttributes) {
+                        $this->processAttributes($reader, $tree);
                     }
-
-                    if (in_array($sxi->key(), $isMultiNode)) {
-                        array_push($stdObj->{$sxi->key()}, $object);
-                    } else {
-                        $stdObj->{$sxi->key()} = \Genesis\Utils\Common::stringToBoolean($object);
-                    }
-
-                }
-            } else {
-                if ($sxi->hasChildren()) {
-                    $stdObj->{$sxi->key()} = self::sxiToClass(
-                        $sxi->current(),
-                        self::checkForDuplicates(
-                            $sxi->current()
-                        )
-                    );
-                } else {
-                    $content = trim($sxi->current()->__toString());
-
-                    if (count($sxi->current()->attributes()) > 0) {
-                        $object = json_decode(json_encode($sxi->current()->attributes()));
-
-                        if (!empty($content)) {
-                            $object->content = $content;
-                        }
-                    }
-
-                    $stdObj->{$sxi->key()} = \Genesis\Utils\Common::stringToBoolean(
-                        isset($object) ? $object : $content
-                    );
-                }
+                    break;
+                case \XMLReader::TEXT:
+                case \XMLReader::CDATA:
+                    $tree = \Genesis\Utils\Common::stringToBoolean(trim($reader->readString()));
+                    break;
             }
-
         }
 
-        return $stdObj;
+        return $tree;
     }
 
     /**
-     * Check if there are nodes with duplicate names
+     * Process XMLReader element
      *
-     * @param \SimpleXMLIterator $sxi
-     *
-     * @return array
+     * @param $reader
+     * @param $tree
      */
-    public static function checkForDuplicates($sxi)
+    public function processElement(&$reader, &$tree)
     {
-        $counter = $duplicate_list = array();
+        $name = $reader->name;
 
-        for ($sxi->rewind(); $sxi->valid(); $sxi->next()) {
-            if (array_key_exists($sxi->key(), $counter)) {
-                $duplicate_list[$sxi->key()] = $sxi->key();
+        if (isset($tree->$name)) {
+            if (is_a($tree->$name, 'stdClass')) {
+                $currentEl = $tree->$name;
+
+                $tree->$name = new \ArrayObject();
+
+                $tree->$name->append($currentEl);
             }
 
-            isset($counter[$sxi->key()]) ? $counter[$sxi->key()]++ : $counter[$sxi->key()] = 0;
+            if (is_a($tree->$name, 'ArrayObject')) {
+                $tree->$name->append(($reader->isEmptyElement) ? '' : $this->readerLoop($reader));
+            }
+        } else {
+            $tree->$name = ($reader->isEmptyElement) ? '' : $this->readerLoop($reader);
+        }
+    }
+
+    /**
+     * Process element attributes
+     *
+     * @param \XMLReader $reader
+     * @param \stdClass $tree
+     */
+    public function processAttributes(&$reader, &$tree)
+    {
+        $name = $reader->name;
+
+        $node = new \stdClass();
+
+        $node->attr = new \stdClass();
+
+        while ($reader->moveToNextAttribute()) {
+            $node->attr->$name = $reader->value;
         }
 
-        return $duplicate_list;
+        if (isset($tree->$name) && is_a($tree->$name, 'ArrayObject')) {
+            $lastKey = $tree->$name->count() - 1;
+
+            $node->value = $tree->$name->offsetGet($lastKey);
+            $tree->$name->offsetSet($lastKey, $node);
+        } else {
+            $node->value = isset($tree->$name) ? $tree->$name : '';
+
+            $tree->$name = $node;
+        }
     }
 }

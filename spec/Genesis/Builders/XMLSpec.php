@@ -64,7 +64,16 @@ class XMLSpec extends ObjectBehavior
                 return empty($subject);
             },
             'beValidXML' => function ($subject) {
-                return (simplexml_load_string($subject)) ? true : false;
+                $prevFlag = libxml_use_internal_errors(true);
+
+                $doc = new \DOMDocument();
+                $doc->loadXML($subject);
+
+                $errors = libxml_get_errors();
+
+                libxml_use_internal_errors($prevFlag);
+
+                return empty($errors);
             },
         );
     }

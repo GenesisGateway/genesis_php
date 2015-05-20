@@ -34,6 +34,8 @@ class XMLSpec extends ObjectBehavior
   <sent_to_acquirer>true</sent_to_acquirer>
 </payment_response>
 XML;
+        $this->skipRootNode();
+
         $this->parseDocument($xml);
 
         $this->getObject()->transaction_type->shouldBe('authorize');
@@ -66,13 +68,15 @@ XML;
 </payment_response>
 XML;
 
+        $this->skipRootNode();
+
         $this->parseDocument($xml);
 
         $this->getObject()->status->shouldBe('pending_async');
 
         $this->getObject()->redirect_url->shouldBe(
-                'https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-            );
+            'https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        );
     }
 
     function it_should_parse_multinodes()
@@ -119,12 +123,14 @@ XML;
   </risk_params>
 </wpf_payment>
 XML;
+        $this->skipRootNode();
+
         $this->parseDocument($xml);
 
         $this->getObject()->billing_address->first_name->shouldBe('John');
 
-        $this->getObject()->transaction_types->transaction_type->shouldBeArray();
+        $this->getObject()->transaction_types->transaction_type->shouldHaveType('\ArrayObject');
 
-        $this->getObject()->transaction_types->transaction_type->shouldHaveCount(5);
+        $this->getObject()->transaction_types->transaction_type->count()->shouldBe(5);
     }
 }

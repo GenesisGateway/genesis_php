@@ -1,5 +1,5 @@
 {
-  "name": "Genesis PHP Client",
+  "name": "e-comprocessing/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
   "version": "1.2.0",
   "require": {
@@ -9,6 +9,7 @@
     "ext-filter": "*",
     "ext-hash": "*",
     "ext-simplexml": "*",
+    "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
     "fzaninotto/faker": "1.*@stable",
     "phpspec/phpspec": "2.*@stable"

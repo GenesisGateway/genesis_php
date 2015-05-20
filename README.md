@@ -12,7 +12,7 @@ Requirements
     * [CURL](https://php.net/curl) (required, only if you use the curl network interface)
     * [Filter](https://php.net/filter)
     * [Hash](https://php.net/hash)
-    * [SimpleXML](https://php.net/simplexml)
+    * [XMLReader](https://php.net/xmlreader)
     * [XMLWriter](https://php.net/xmlwriter)
 * Composer (optional)
 
