@@ -25,6 +25,7 @@ namespace Genesis\API;
 /**
  * Class Request
  *
+ * Base of every API request
  *
  * @package    Genesis
  * @subpackage API
@@ -167,6 +168,7 @@ abstract class Request
         // Step 3
         $this->checkRequirements();
     }
+
 
     /**
      * Remove empty keys/values from the structure
@@ -372,18 +374,6 @@ abstract class Request
     }
 
     /**
-     * Getter for per-request Config
-     *
-     * @param $key - setting name
-     *
-     * @return mixed - contents of the specified setting
-     */
-    public function getApiConfig($key)
-    {
-        return $this->config->offsetGet($key);
-    }
-
-    /**
      * Build the complete URL for the request
      *
      * @param $subDomain  String   - gateway/wpf etc.
@@ -394,13 +384,27 @@ abstract class Request
      */
     protected function buildRequestURL($subDomain = 'gateway', $path = '/', $appendToken = true)
     {
-        $proto  = isset($this->config) ? $this->getApiConfig('protocol') : '';
-        $port   = isset($this->config) ? $this->getApiConfig('port') : '';
         $token  = ($appendToken) ? \Genesis\Config::getToken() : '';
 
-        $baseURL = \Genesis\Config::getEnvironmentURL($proto, $subDomain, $port);
+        $baseURL = \Genesis\Config::getEnvironmentURL(
+            $this->getApiConfig('protocol'),
+            $subDomain,
+            $this->getApiConfig('port')
+        );
 
         return sprintf('%s/%s/%s', $baseURL, $path, $token);
+    }
+
+    /**
+     * Getter for per-request Config
+     *
+     * @param $key - setting name
+     *
+     * @return mixed - contents of the specified setting
+     */
+    public function getApiConfig($key)
+    {
+        return $this->config->offsetGet($key);
     }
 
     /**

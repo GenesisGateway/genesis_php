@@ -36,14 +36,14 @@ final class XML implements \Genesis\Interfaces\Parser
      *
      * @var \stdClass
      */
-    private $stdClassObj;
+    public $stdClassObj;
 
     /**
      * Should we skip the RootNode?
      *
      * @var bool
      */
-    private $skipRootNode;
+    public $skipRootNode;
 
     /**
      * Set default variables
@@ -116,7 +116,9 @@ final class XML implements \Genesis\Interfaces\Parser
                     break;
                 case \XMLReader::TEXT:
                 case \XMLReader::CDATA:
-                    $tree = \Genesis\Utils\Common::stringToBoolean(trim($reader->readString()));
+                    $tree = \Genesis\Utils\Common::stringToBoolean(
+                        trim($reader->expand()->textContent)
+                    );
                     break;
             }
         }

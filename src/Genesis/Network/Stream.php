@@ -136,7 +136,7 @@ class Stream implements \Genesis\Interfaces\Network
                 // in case you can't upgrade.
                 'SNI_enabled'       => true,
                 // You can tweak the accepted Cipher list (if needed)
-                'ciphers'           => implode(':', $this->getCiphers())
+                'ciphers'           => implode(':', self::getCiphers())
             )
         );
 
@@ -187,7 +187,7 @@ class Stream implements \Genesis\Interfaces\Network
      *
      * @throws \Genesis\Exceptions\ErrorNetwork
      */
-    private function processErrors($errNo, $errStr)
+    public static function processErrors($errNo, $errStr)
     {
         // When an exception is being thrown, we have to restore
         // the handler.
@@ -201,7 +201,7 @@ class Stream implements \Genesis\Interfaces\Network
      *
      * @return array
      */
-    private function getCiphers()
+    public static function getCiphers()
     {
         return array(
             'ECDHE-RSA-AES128-GCM-SHA256',

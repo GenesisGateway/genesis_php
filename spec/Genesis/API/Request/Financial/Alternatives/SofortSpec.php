@@ -40,18 +40,18 @@ class SofortSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
-        $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('USD');
-        $this->setAmount(mt_rand(100, 100000));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerBankId(21);
-        $this->setBankAccountNumber('0000');
+        $this->setCustomerBankId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);

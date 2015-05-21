@@ -52,13 +52,13 @@ class eZeeWalletSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
-        $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
         $this->setCurrency('USD');
-        $this->setAmount(mt_rand(100, 100000));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setSourceWalletId($faker->uuid);
         $this->setSourceWalletPwd($faker->streetName);

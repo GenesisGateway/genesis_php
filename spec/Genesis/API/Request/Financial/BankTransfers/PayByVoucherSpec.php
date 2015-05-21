@@ -40,20 +40,20 @@ class PayByVoucherSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
-        $this->setTransactionId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setRemoteIp($faker->ipv4);
         $this->setCurrency('USD');
-        $this->setAmount(mt_rand(100, 100000));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setProductName('Paul Blart Mall Cop');
         $this->setProductCategory('movie');
         $this->setCardHolder('李');
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerIdNumber($faker->randomNumber());
+        $this->setCustomerIdNumber($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
-        $this->setBankAccountNumber($faker->randomNumber());
+        $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
     }
 
     public function getMatchers()

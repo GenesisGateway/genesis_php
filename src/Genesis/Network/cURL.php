@@ -171,7 +171,7 @@ class cURL implements \Genesis\Interfaces\Network
      * @return string
      * @throws \Genesis\Exceptions\ErrorNetwork
      */
-    private function checkForErrors()
+    public function checkForErrors()
     {
         $errNo  = curl_errno($this->curlHandle);
         $errStr = curl_error($this->curlHandle);

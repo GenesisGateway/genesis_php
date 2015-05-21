@@ -36,12 +36,12 @@
 1.0.2
 -----
 
-* Add support for internationalization (currently only in WPF)
+* Add support for i18n localization
 * Add flag "isPartiallyApproved()", to API\Response, for partially-approved transactions
 * Add helper method API\Response::getFormattedAmount()
 * Add helper method API\Response::getFormattedTimestamp()
 * Add Network\Wrapper\Stream configuration based on the PHP version
-* Fix transaction amount conversion between ISO-4217 and Nominal
+* Fix Nominal transaction amount conversion
 * Update PHPDoc comments
 * Update Specs
 

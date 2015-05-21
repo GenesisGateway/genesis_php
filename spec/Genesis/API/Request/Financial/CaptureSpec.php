@@ -36,12 +36,12 @@ class CaptureSpec extends ObjectBehavior
 
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
-        $this->setTransactionId(mt_rand(0, PHP_INT_MAX));
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency('USD');
-        $this->setAmount(mt_rand(100, 100000));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setReferenceId(mt_rand(0, PHP_INT_MAX));
+        $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
     }
 
     public function getMatchers()

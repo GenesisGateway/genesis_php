@@ -36,7 +36,7 @@ final class XML implements \Genesis\Interfaces\Builder
      *
      * @var \XMLWriter
      */
-    private $context;
+    public $context;
 
     /**
      * Set and instantiate new UTF-8 XML document
@@ -87,6 +87,16 @@ final class XML implements \Genesis\Interfaces\Builder
     }
 
     /**
+     * Get Builder output
+     *
+     * @return string XML Document
+     */
+    public function getOutput()
+    {
+        return $this->context->outputMemory(false);
+    }
+
+    /**
      * Recursive iteration over array
      *
      * @param string $name name of the current leave
@@ -94,7 +104,7 @@ final class XML implements \Genesis\Interfaces\Builder
      *
      * @return void
      */
-    private function iterateArray($name, $data)
+    public function iterateArray($name, $data)
     {
         if (\Genesis\Utils\Common::isValidXMLName($name)) {
             $this->context->startElement($name);
@@ -108,46 +118,21 @@ final class XML implements \Genesis\Interfaces\Builder
             // Note: XMLWriter discards Attribute writes if they are written
             // after an Element, so make sure the attributes are at the top
             if ($key === '@attributes') {
-                if (is_array($value)) {
-                    foreach ($value as $attribute_name => $attribute_value) {
-                        $this->context->writeAttribute($attribute_name, $attribute_value);
-                    }
-                }
-
+                $this->writeAttribute($value);
                 continue;
             }
 
             if ($key === '@cdata') {
-                if (is_array($value)) {
-                    foreach ($value as $attribute_name => $attribute_value) {
-                        $this->context->writeCData($attribute_value);
-                    }
-                } else {
-                    $this->context->writeCData($value);
-                }
-
+                $this->writeCData($value);
                 continue;
             }
 
             if ($key === '@value') {
-                if (is_array($value)) {
-                    foreach ($value as $attribute_name => $attribute_value) {
-                        $this->context->text($attribute_value);
-                    }
-                } else {
-                    $this->context->text($value);
-                }
-
+                $this->writeText($value);
                 continue;
             }
 
-            if (is_array($value)) {
-                $this->iterateArray($key, $value);
-            } else {
-                $value = \Genesis\Utils\Common::booleanToString($value);
-
-                $this->context->writeElement($key, $value);
-            }
+            $this->writeElement($key, $value);
         }
 
         if (\Genesis\Utils\Common::isValidXMLName($name)) {
@@ -156,12 +141,65 @@ final class XML implements \Genesis\Interfaces\Builder
     }
 
     /**
-     * Get Builder output
+     * Write Element's Attribute
      *
-     * @return string XML Document
+     * @param $value
      */
-    public function getOutput()
+    public function writeAttribute($value)
     {
-        return $this->context->outputMemory(false);
+        if (is_array($value)) {
+            foreach ($value as $attrName => $attrValue) {
+                $this->context->writeAttribute($attrName, $attrValue);
+            }
+        }
+    }
+
+    /**
+     * Write Element's CData
+     *
+     * @param $value
+     */
+    public function writeCData($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as $attrValue) {
+                $this->context->writeCData($attrValue);
+            }
+        } else {
+            $this->context->writeCData($value);
+        }
+    }
+
+    /**
+     * Write Element's Text
+     *
+     * @param $value
+     */
+    public function writeText($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as $attrValue) {
+                $this->context->text($attrValue);
+            }
+        } else {
+            $this->context->text($value);
+        }
+    }
+
+    /**
+     * Write XML Element
+     *
+     * @param $key
+     * @param $value
+     */
+    public function writeElement($key, $value)
+    {
+        if (is_array($value)) {
+            $this->iterateArray($key, $value);
+        } else {
+            $value = \Genesis\Utils\Common::booleanToString($value);
+
+            $this->context->writeElement($key, $value);
+        }
     }
 }
