@@ -65,9 +65,29 @@ class States
     const PENDING_ASYNC = 'pending_async';
 
     /**
+     * Transaction is in-progress
+     */
+    const IN_PROGRESS = 'in_progress';
+
+    /**
+     * Once an approved transaction is refunded the state changes to refunded.
+     */
+    const REFUNDED = 'refunded';
+
+    /**
+     * Transaction was authorized, but later the merchant canceled it.
+     */
+    const VOIDED = 'voided';
+
+    /**
      * An error has occurred while negotiating with the schemes.
      */
     const ERROR = 'error';
+
+    /**
+     * Transaction failed, but it was not declined
+     */
+    const UNSUCCESSFUL = 'unsuccessful';
 
     /**
      * WPF initial status
@@ -75,9 +95,14 @@ class States
     const NEW_STATUS = 'new';
 
     /**
-     * Once an approved transaction is refunded the state changes to refunded.
+     * WPF in-progress status
      */
-    const REFUNDED = 'refunded';
+    const USER = 'user';
+
+    /**
+     * WPF timeout has occurred
+     */
+    const TIMEOUT = 'timeout';
 
     /**
      * Once an approved transaction is chargeback the state changes to change- backed.
@@ -98,11 +123,6 @@ class States
      * Once a chargeback reversed transaction is chargebacked the state changes to pre arbitrated.
      */
     const PRE_ARBITRATED = 'pre_arbitrated';
-
-    /**
-     * Transaction was authorized, but later the merchant canceled it.
-     */
-    const VOIDED = 'voided';
 
     /**
      * Store the state of transaction for comparison
@@ -177,13 +197,17 @@ class States
             self::DECLINED,
             self::PENDING,
             self::PENDING_ASYNC,
-            self::ERROR,
-            self::NEW_STATUS,
             self::REFUNDED,
+            self::VOIDED,
+            self::ERROR,
+            self::UNSUCCESSFUL,
+            self::IN_PROGRESS,
+            self::NEW_STATUS,
+            self::USER,
+            self::TIMEOUT,
             self::CHARGEBACKED,
             self::CHARGEBACK_REVERSED,
             self::PRE_ARBITRATED,
-            self::VOIDED
         );
 
         if (in_array(strtolower($this->status), $statusList)) {

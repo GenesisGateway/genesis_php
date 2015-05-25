@@ -93,14 +93,14 @@ class Response
             if (!$state->isValid()) {
                 throw new \Genesis\Exceptions\InvalidArgument(
                     'Unknown transaction status',
-                    $this->responseObj->code
+                    isset($this->responseObj->code) ? $this->responseObj->code : 0
                 );
             }
 
             if ($state->isError()) {
                 throw new \Genesis\Exceptions\ErrorAPI(
                     $this->responseObj->technical_message,
-                    $this->responseObj->code
+                    isset($this->responseObj->code) ? $this->responseObj->code : 0
                 );
             }
         }

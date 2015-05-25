@@ -112,33 +112,25 @@ class Notification
      * Reconcile with the Payment Gateway to get the latest
      * status on the transaction
      *
-     * @return bool
+     * @throws \Genesis\Exceptions\InvalidResponse
      */
     public function initReconciliation()
     {
-        $request = null;
-
-        try {
-            if ($this->isAPINotification()) {
-                $type = 'NonFinancial\Reconcile\Transaction';
-            } elseif ($this->isWPFNotification()) {
-                $type = 'WPF\Reconcile';
-            } else {
-                $type = '';
-            }
-
-            $request = new \Genesis\Genesis($type);
-
-            $request->request()->setUniqueId($this->unique_id);
-
-            $request->execute();
-        } catch (\Exception $e) {
-            return false;
+        if ($this->isAPINotification()) {
+            $type = 'NonFinancial\Reconcile\Transaction';
+        } elseif ($this->isWPFNotification()) {
+            $type = 'WPF\Reconcile';
+        } else {
+            $type = '';
         }
 
-        $this->reconciliationObj = $request->response()->getResponseObject();
+        $request = new \Genesis\Genesis($type);
 
-        return true;
+        $request->request()->setUniqueId($this->unique_id);
+
+        $request->execute();
+
+        $this->reconciliationObj = $request->response()->getResponseObject();
     }
 
     /**
