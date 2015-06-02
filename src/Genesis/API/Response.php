@@ -73,7 +73,7 @@ class Response
         // Save a copy of the incoming response
         $this->responseRaw = $response;
 
-        // Parse the incoming response to stdClass
+        // Parse the incoming response to an Object
         try {
             $parser = new \Genesis\Parser('xml');
             $parser->skipRootNode();
@@ -87,6 +87,7 @@ class Response
             );
         }
 
+        // Check the response status
         if (isset($this->responseObj->status)) {
             $state = new Constants\Transaction\States($this->responseObj->status);
 
@@ -105,10 +106,8 @@ class Response
             }
         }
 
-        // Transform Amount from Major to Minor unit
-        $this->transformAmountUnit();
-        // Transform Timestamp from String to DateTime
-        $this->transformTimestamp();
+        // Apply per-field transformations
+        $this->transform(array($this->responseObj));
     }
 
     /**
@@ -194,40 +193,86 @@ class Response
     }
 
     /**
+     * Iterate and transform object
+     *
+     * @param mixed $obj
+     */
+    public static function transform($obj)
+    {
+        if (is_array($obj) || is_object($obj)) {
+            foreach ($obj as &$object) {
+                if (isset($object->status)) {
+                    self::transformObject($object);
+                }
+
+                self::transform($object);
+            }
+        }
+    }
+
+    /**
+     * Apply filters to an entry object
+     *
+     * @param \stdClass|\ArrayObject $entry
+     *
+     * @return mixed
+     */
+    public static function transformObject(&$entry)
+    {
+        $filters = array(
+            'transformFilterAmount',
+            'transformFilterTimestamp'
+        );
+
+        foreach ($filters as $filter) {
+            if (method_exists(__CLASS__, $filter)) {
+                $result = call_user_func(array(__CLASS__, $filter), $entry);
+
+                if ($result) {
+                    $entry = $result;
+                }
+            }
+        }
+    }
+
+    /**
      * Get formatted amount (instead of ISO4217, return in float)
+     *
+     * @param \stdClass|\ArrayObject $transaction
      *
      * @return String | null (if amount/currency are unavailable)
      */
-    private function transformAmountUnit()
+    public static function transformFilterAmount($transaction)
     {
-        if (isset($this->responseObj->currency) && !empty($this->responseObj->currency)) {
-            if (isset($this->responseObj->amount) && !empty($this->responseObj->amount)) {
-                $this->responseObj->amount = \Genesis\Utils\Currency::exponentToAmount(
-                    $this->responseObj->amount,
-                    $this->responseObj->currency
-                );
-            }
+        // Process a single transaction
+        if (isset($transaction->currency) && isset($transaction->amount)) {
+            $transaction->amount = \Genesis\Utils\Currency::exponentToAmount(
+                $transaction->amount,
+                $transaction->currency
+            );
         }
 
-        return null;
+        return $transaction;
     }
 
     /**
      * Get DateTime object from the timestamp inside the response
      *
+     * @param \stdClass|\ArrayObject $transaction
+     *
      * @return \DateTime|null (if invalid timestamp)
      */
-    private function transformTimestamp()
+    public static function transformFilterTimestamp($transaction)
     {
-        if (isset($this->responseObj->timestamp) && !empty($this->responseObj->timestamp)) {
+        if (isset($transaction->timestamp)) {
             try {
-                $this->responseObj->timestamp = new \DateTime($this->responseObj->timestamp);
+                $transaction->timestamp = new \DateTime($transaction->timestamp);
             } catch (\Exception $e) {
                 // Just log the attempt
                 error_log($e->getMessage());
             }
         }
 
-        return null;
+        return $transaction;
     }
 }

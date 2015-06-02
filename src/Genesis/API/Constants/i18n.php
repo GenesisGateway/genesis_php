@@ -82,6 +82,11 @@ class i18n
     const PT = 'Portuguese';
 
     /**
+     * Polish locale and language
+     */
+    const PL = 'Polish';
+
+    /**
      * Russian locale and language
      */
     const RU = 'Russian';
