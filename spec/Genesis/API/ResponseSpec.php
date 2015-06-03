@@ -189,6 +189,11 @@ XML;
 
     function it_should_not_change_the_value_if_not_a_timestamp()
     {
+        // Prevent console SPAM due to error_log
+        $log = ini_get('error_log');
+
+        ini_set('error_log','/dev/null');
+
         $this->shouldNotThrow()->during(
             'parseResponse', array(
                 $this->buildSample(
@@ -198,6 +203,8 @@ XML;
         );
 
         $this->getResponseObject()->timestamp->shouldBe('ERROR');
+
+        ini_set('error_log', $log);
     }
 
     function buildSample($settings = array())
@@ -237,5 +244,10 @@ XML;
                 return empty($subject);
             },
         );
+    }
+
+    function errorHandler()
+    {
+
     }
 }

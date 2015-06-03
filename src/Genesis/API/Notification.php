@@ -128,7 +128,11 @@ class Notification
 
         $request->request()->setUniqueId($this->unique_id);
 
-        $request->execute();
+        try {
+            $request->execute();
+        } catch (\Genesis\Exceptions\ErrorAPI $api) {
+            // This is reconciliation, don't throw on ErrorAPI
+        }
 
         $this->reconciliationObj = $request->response()->getResponseObject();
     }
