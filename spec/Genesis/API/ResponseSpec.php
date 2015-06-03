@@ -245,9 +245,4 @@ XML;
             },
         );
     }
-
-    function errorHandler()
-    {
-
-    }
 }

@@ -126,9 +126,9 @@ class Notification
 
         $request = new \Genesis\Genesis($type);
 
-        $request->request()->setUniqueId($this->unique_id);
-
         try {
+            $request->request()->setUniqueId($this->unique_id);
+
             $request->execute();
         } catch (\Genesis\Exceptions\ErrorAPI $api) {
             // This is reconciliation, don't throw on ErrorAPI
