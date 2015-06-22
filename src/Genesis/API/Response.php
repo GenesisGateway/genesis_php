@@ -45,6 +45,13 @@ class Response
     public $responseRaw;
 
     /**
+     * Genesis Request Context
+     *
+     * @var \Genesis\API\Request
+     */
+    protected $requestCtx;
+
+    /**
      * Initialize with NetworkContext (if available)
      *
      * @param \Genesis\Network|null $networkContext
@@ -70,10 +77,8 @@ class Response
      */
     public function parseResponse($response)
     {
-        // Save a copy of the incoming response
         $this->responseRaw = $response;
 
-        // Parse the incoming response to an Object
         try {
             $parser = new \Genesis\Parser('xml');
             $parser->skipRootNode();
@@ -87,7 +92,6 @@ class Response
             );
         }
 
-        // Check the response status
         if (isset($this->responseObj->status)) {
             $state = new Constants\Transaction\States($this->responseObj->status);
 
@@ -98,9 +102,9 @@ class Response
                 );
             }
 
-            if ($state->isError()) {
+            if ($state->isError() && !$this->suppressReconciliationException()) {
                 throw new \Genesis\Exceptions\ErrorAPI(
-                    $this->responseObj->technical_message,
+                    $this->responseObj->message,
                     isset($this->responseObj->code) ? $this->responseObj->code : 0
                 );
             }
@@ -155,6 +159,31 @@ class Response
     }
 
     /**
+     * Suppress Reconciliation responses as their statuses
+     * reflect their transactions
+     *
+     * @return bool
+     */
+    public function suppressReconciliationException()
+    {
+        $instances = array(
+            new \Genesis\API\Request\NonFinancial\Reconcile\DateRange(),
+            new \Genesis\API\Request\NonFinancial\Reconcile\Transaction(),
+            new \Genesis\API\Request\WPF\Reconcile()
+        );
+
+        if (isset($this->requestCtx) && isset($this->responseObj->unique_id)) {
+            foreach ($instances as $instance) {
+                if ($this->requestCtx instanceof $instance) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Try to fetch a description of the received Error Code
      *
      * @return string | null (if inapplicable)
@@ -190,6 +219,16 @@ class Response
     public function getResponseObject()
     {
         return $this->responseObj;
+    }
+
+    /**
+     * Set Genesis Request context
+     *
+     * @param $requestCtx
+     */
+    public function setRequestCtx($requestCtx)
+    {
+        $this->requestCtx = $requestCtx;
     }
 
     /**

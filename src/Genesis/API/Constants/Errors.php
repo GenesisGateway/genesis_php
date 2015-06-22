@@ -97,6 +97,18 @@ final class Errors
     const REMOTE_CONNECTION_ERROR    = 960;
 
     /**
+     * Get Genesis Error Code
+     *
+     * @param $error - error_msg to retrieve error code
+     *
+     * @return mixed
+     */
+    public static function getErrorCode($error)
+    {
+        return constant('\Genesis\API\Constants\Errors::' . $error);
+    }
+
+    /**
      * Get detailed description of the provided error code
      *
      * @param int $errorCode

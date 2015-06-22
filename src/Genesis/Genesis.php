@@ -115,58 +115,14 @@ class Genesis
         // Send the request
         $this->networkCtx->sendRequest();
 
+        // Set the request context
+        $this->responseCtx->setRequestCtx(
+            $this->requestCtx
+        );
+
         // Parse the response
         $this->responseCtx->parseResponse(
             $this->networkCtx->getResponseBody()
         );
-    }
-
-    /**
-     * Get Genesis Error Code
-     *
-     * @param $error - error_msg to retrieve error code
-     *
-     * @return mixed
-     */
-    public static function getErrorCode($error)
-    {
-        return constant('\Genesis\API\Constants\Errors::' . $error);
-    }
-
-    /**
-     * Get description for an error, based
-     * on the Error Code
-     *
-     * @param $errorCode
-     *
-     * @return string
-     */
-    public static function getErrorDescription($errorCode)
-    {
-        return \Genesis\API\Constants\Errors::getErrorDescription($errorCode);
-    }
-
-    /**
-     * Get a country full name by an ISO-4217 code
-     *
-     * @param $isoCode - ISO-4217 compliant code of the country
-     *
-     * @return mixed - full name of the country
-     */
-    public static function getFullCountryName($isoCode)
-    {
-        return \Genesis\Utils\Country::getCountryName($isoCode);
-    }
-
-    /**
-     * Get a country ISO-4217 code by its name
-     *
-     * @param string $countryName - country name
-     *
-     * @return string
-     */
-    public static function getCountryISOCode($countryName)
-    {
-        return \Genesis\Utils\Country::getCountryISO($countryName);
     }
 }
