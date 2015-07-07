@@ -89,6 +89,17 @@ class Notification
      */
     public function parseNotification($notification = array(), $authenticate = true)
     {
+        $notificationWalk = array();
+
+        array_walk($notification, function ($val, $key) use (&$notificationWalk) {
+            $key = trim(rawurldecode($key));
+            $val = trim(rawurldecode($val));
+
+            $notificationWalk[$key] = $val;
+        });
+
+        $notification = $notificationWalk;
+
         $this->notificationObj = \Genesis\Utils\Common::createArrayObject($notification);
 
         if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {

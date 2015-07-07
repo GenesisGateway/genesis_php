@@ -153,10 +153,38 @@ class NotificationSpec extends ObjectBehavior
         $this->getNotificationObject()->shouldNotBeEmpty();
     }
 
+    function it_should_parse_and_clean_api_notification()
+    {
+        $invalid_data = array(
+            ' sig%33'   => ' ' . $this->sample['api']['signature'] . '%33',
+            'sig%55 '   => '%75' . $this->sample['api']['signature'] . ' ',
+            ' $alpha '  => ' '
+        );
+
+        $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['api'], $invalid_data)));
+        $this->getNotificationObject()->sig3->shouldBe($this->sample['api']['signature'] . '3');
+        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['api']['signature']);
+        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
+    }
+
     function it_should_parse_wpf_notification()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
         $this->getNotificationObject()->shouldNotBeEmpty();
+    }
+
+    function it_should_parse_and_clean_wpf_notification()
+    {
+        $invalid_data = array(
+            ' sig%33'   => ' ' . $this->sample['wpf']['signature'] . '%33',
+            'sig%55 '   => '%75' . $this->sample['wpf']['signature'] . ' ',
+            ' $alpha '  => ' '
+        );
+
+        $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['wpf'], $invalid_data)));
+        $this->getNotificationObject()->sig3->shouldBe($this->sample['wpf']['signature'] . '3');
+        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['wpf']['signature']);
+        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
     }
 
     function it_can_render_api_response_correctly()
