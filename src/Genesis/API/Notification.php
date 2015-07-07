@@ -45,93 +45,38 @@ class Notification
     private $notificationObj;
 
     /**
-     * Flag whether or not this notification is for a 3D transaction
+     * Store the reconciled response
      *
-     * @var \bool
+     * @var \stdClass
      */
-    private $is3DNotification;
+    private $reconciliationObj;
 
     /**
-     * Flag whether or not this notification is for a WPC transaction
+     * Flag, if this notification is for an API transaction
      *
-     * @var \boolean
+     * @var bool
+     */
+    private $isAPINotification;
+
+    /**
+     * Flag, if this notification is for a WPF transaction
+     *
+     * @var bool
      */
     private $isWPFNotification;
 
     /**
-     * Is this a 3D notification?
+     * Initialize the object with notification data
      *
-     * @return bool
+     * @param $data
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
      */
-    public function is3DNotification()
+    public function __construct($data = null)
     {
-        return (bool)$this->is3DNotification;
-    }
-
-    /**
-     * Is this WPF Notification
-     *
-     * @return bool
-     */
-    public function isWPFNotification()
-    {
-        return (bool)$this->isWPFNotification;
-    }
-
-    /**
-     * Generate Builder response (Echo) required for acknowledging
-     * Genesis's Notification
-     *
-     * @return string
-     */
-    public function getEchoResponse()
-    {
-        $structure = array(
-            'notification_echo' => array(
-                'unique_id' => $this->unique_id,
-            )
-        );
-
-        $builder = new \Genesis\Builders\Builder();
-        $builder->parseStructure($structure);
-
-        return $builder->getDocument();
-    }
-
-    /**
-     * Render the Gateway response
-     *
-     * @param bool $terminate Exit after render (default: false)
-     *
-     * @return void
-     */
-    public function renderResponse($terminate = false)
-    {
-        $structure = array(
-            'notification_echo' => array(
-                'unique_id' => $this->unique_id,
-            )
-        );
-
-        $builder = new \Genesis\Builders\Builder();
-        $builder->parseStructure($structure);
-
-        header('Content-type: application/xml');
-        echo $builder->getDocument();
-
-        if ($terminate) {
-            exit(0);
+        if (!is_null($data)) {
+            $this->parseNotification($data, true);
         }
-    }
-
-    /**
-     * Return the already parsed, notification Object
-     *
-     * @return \ArrayObject
-     */
-    public function getParsedNotification()
-    {
-        return $this->notificationObj;
     }
 
     /**
@@ -144,10 +89,21 @@ class Notification
      */
     public function parseNotification($notification = array(), $authenticate = true)
     {
+        $notificationWalk = array();
+
+        array_walk($notification, function ($val, $key) use (&$notificationWalk) {
+            $key = trim(rawurldecode($key));
+            $val = trim(rawurldecode($val));
+
+            $notificationWalk[$key] = $val;
+        });
+
+        $notification = $notificationWalk;
+
         $this->notificationObj = \Genesis\Utils\Common::createArrayObject($notification);
 
         if (isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id)) {
-            $this->is3DNotification = true;
+            $this->isAPINotification = true;
 
             $this->unique_id = (string)$this->notificationObj->unique_id;
         }
@@ -164,6 +120,35 @@ class Notification
     }
 
     /**
+     * Reconcile with the Payment Gateway to get the latest
+     * status on the transaction
+     *
+     * @throws \Genesis\Exceptions\InvalidResponse
+     */
+    public function initReconciliation()
+    {
+        if ($this->isAPINotification()) {
+            $type = 'NonFinancial\Reconcile\Transaction';
+        } elseif ($this->isWPFNotification()) {
+            $type = 'WPF\Reconcile';
+        } else {
+            $type = '';
+        }
+
+        $request = new \Genesis\Genesis($type);
+
+        try {
+            $request->request()->setUniqueId($this->unique_id);
+
+            $request->execute();
+        } catch (\Genesis\Exceptions\ErrorAPI $api) {
+            // This is reconciliation, don't throw on ErrorAPI
+        }
+
+        $this->reconciliationObj = $request->response()->getResponseObject();
+    }
+
+    /**
      * Verify the signature on the parsed Notification
      *
      * @return bool
@@ -172,28 +157,104 @@ class Notification
     public function isAuthentic()
     {
         if (!isset($this->unique_id) || !isset($this->notificationObj->signature)) {
-            throw new \Genesis\Exceptions\InvalidArgument('Missing field(s), required for validation!');
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'Missing field(s), required for validation!'
+            );
         }
 
-        $message_signature = (string)$this->notificationObj->signature;
-        $customer_password = (string)\Genesis\GenesisConfig::getPassword();
+        $messageSig  = trim($this->notificationObj->signature);
+        $customerPwd = trim(\Genesis\Config::getPassword());
 
-        switch (strlen($message_signature)) {
+        switch (strlen($messageSig)) {
             default:
             case 40:
-                $hash_type = 'sha1';
+                $hashType = 'sha1';
                 break;
             case 128:
-                $hash_type = 'sha512';
+                $hashType = 'sha512';
                 break;
         }
 
-        $calc_signature = hash($hash_type, $this->unique_id . $customer_password);
-
-        if ($message_signature === $calc_signature) {
+        if ($messageSig === hash($hashType, $this->unique_id . $customerPwd)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Is this a 3D notification?
+     *
+     * @return bool
+     */
+    public function isAPINotification()
+    {
+        return (bool)$this->isAPINotification;
+    }
+
+    /**
+     * Is this WPF Notification
+     *
+     * @return bool
+     */
+    public function isWPFNotification()
+    {
+        return (bool)$this->isWPFNotification;
+    }
+
+    /**
+     * Return the already parsed, notification Object
+     *
+     * @return \ArrayObject
+     */
+    public function getNotificationObject()
+    {
+        return $this->notificationObj;
+    }
+
+    /**
+     * Return the reconciled object
+     *
+     * @return \stdClass
+     */
+    public function getReconciliationObject()
+    {
+        return $this->reconciliationObj;
+    }
+
+    /**
+     * Generate Builder response (Echo) required for acknowledging
+     * Genesis's Notification
+     *
+     * @return string
+     */
+    public function generateResponse()
+    {
+        $type = $this->isWPFNotification() ? 'wpf_unique_id' : 'unique_id';
+
+        $structure = array(
+            'notification_echo' => array(
+                $type => $this->unique_id,
+            )
+        );
+
+        $builder = new \Genesis\Builder('xml');
+        $builder->parseStructure($structure);
+
+        return $builder->getDocument();
+    }
+
+    /**
+     * Render the Gateway response
+     *
+     * @return void
+     */
+    public function renderResponse()
+    {
+        if (!headers_sent()) {
+            header('Content-type: application/xml', true);
+        }
+
+        echo $this->generateResponse();
     }
 }

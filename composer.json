@@ -1,23 +1,35 @@
 {
-    "name": "Genesis PHP Client",
-    "description": "PHP Client for Genesis Payment Processing Gateway",
-    "keywords": ["genesis", "payment_gateway", "transaction", "client_integration"],
-    "version": "1.0.0",
-    "support": {
-        "email": "tech-support@e-comprocessing.com"
-    },
-    "require": {
-        "php": ">=5.3.0",
-        "ext-curl": "*",
-        "ext-openssl": "*",
-        "ext-xmlwriter": "*",
-        "fzaninotto/faker": "1.*@stable",
-        "phpspec/phpspec": "2.*@stable"
-    },
-    "autoload": {
-        "psr-0": {
-            "Genesis": "src/"
-        }
-    },
-    "license": "MIT"
+  "name": "e-comprocessing/genesis_php",
+  "description": "PHP Client for Genesis Payment Processing Gateway",
+  "version": "1.2.0",
+  "require": {
+    "php": ">=5.3.2",
+    "ext-bcmath": "*",
+    "ext-curl": "*",
+    "ext-filter": "*",
+    "ext-hash": "*",
+    "ext-simplexml": "*",
+    "ext-xmlreader": "*",
+    "ext-xmlwriter": "*",
+    "fzaninotto/faker": "1.*@stable",
+    "phpspec/phpspec": "2.*@stable"
+  },
+  "autoload": {
+    "psr-0": {
+        "Genesis": "src/"
+    }
+  },
+  "keywords": [
+    "genesis",
+    "payments",
+    "payment_gateway",
+    "e-commerce",
+    "credit_card",
+    "visa",
+    "mastercard"
+  ],
+  "support": {
+    "email": "tech-support@e-comprocessing.com"
+  },
+  "license": "MIT"
 }

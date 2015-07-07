@@ -1,3 +1,3 @@
 <?php
 
-\Genesis\GenesisConfig::setEnvironment('sandbox');
+\Genesis\Config::setEnvironment('sandbox');

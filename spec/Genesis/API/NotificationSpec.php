@@ -2,99 +2,221 @@
 
 namespace spec\Genesis\API;
 
-use Genesis\GenesisConfig;
+use Genesis\Config;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class NotificationSpec extends ObjectBehavior
 {
-    private $data = array(
-        'unique_id' => 'notification_spec',
-        'signature' => '',
-        'status'    => 'approved',
+    private $sample = array(
+        'api'   => array(
+            'unique_id'     => '',
+            'signature'     => '',
+            'status'        => 'approved',
+        ),
+        'wpf'   => array(
+            'wpf_unique_id' => '',
+            'signature'     => '',
+            'status'        => 'approved',
+        )
     );
+
+    function __construct()
+    {
+        for($i=0; $i < mt_rand(32,48); $i++) {
+            $this->sample['api']['unique_id'] .= chr(mt_rand(97,122));
+        }
+
+        $this->sample['api']['signature'] = hash(
+            'sha1', $this->sample['api']['unique_id'] . \Genesis\Config::getPassword()
+        );
+
+        for($i=0; $i < mt_rand(32,48); $i++) {
+            $this->sample['wpf']['wpf_unique_id'] .= chr(mt_rand(97,122));
+        }
+
+        $this->sample['wpf']['signature'] = hash(
+            'sha1', $this->sample['wpf']['wpf_unique_id'] . \Genesis\Config::getPassword()
+        );
+    }
 
     function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Notification');
     }
 
-    function it_can_verify_standard_notification()
+    function it_can_verify_api_notification()
     {
-        $this->data['signature'] = hash('sha1', $this->data['unique_id'] . \Genesis\GenesisConfig::getPassword());
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
 
-        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->isAPINotification()->shouldBe(true);
+        $this->isWPFNotification()->shouldBe(false);
+
         $this->isAuthentic()->shouldBe(true);
     }
 
     function it_can_verify_wpf_notification()
     {
-        $this->data['wpf_unique_id'] = $this->data['unique_id'];
-        $this->data['signature']    = hash('sha512', $this->data['unique_id'] . \Genesis\GenesisConfig::getPassword());
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
 
-        $this->shouldNotThrow()->duringParseNotification($this->data);
+        $this->isAPINotification()->shouldBe(false);
+        $this->isWPFNotification()->shouldBe(true);
+
         $this->isAuthentic()->shouldBe(true);
     }
 
-    function it_should_fail_auth_verification()
+    function it_should_fail_api_auth_verification()
     {
-        $this->data['signature'] = hash('sha1', $this->data['unique_id'] . \Genesis\GenesisConfig::getPassword() . 'FAIL');
+        $sample = $this->sample['api'];
+        $sample['signature'] = 'THIS-HASH-IS-INVALID';
 
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->shouldThrow()->during('parseNotification', array($sample));
+
+        $this->isAPINotification()->shouldBe(true);
+        $this->isWPFNotification()->shouldBe(false);
+
         $this->isAuthentic()->shouldBe(false);
     }
 
     function it_should_fail_wpf_auth_verification()
     {
-        $this->data['wpf_unique_id'] = $this->data['unique_id'];
-        $this->data['signature'] = hash('sha512', $this->data['unique_id'] . \Genesis\GenesisConfig::getPassword() . 'FAIL');
+        $sample = $this->sample['wpf'];
+        $sample['signature'] = 'THIS-HASH-IS-INVALID';
 
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->shouldThrow()->during('parseNotification', array($sample));
+
+        $this->isAPINotification()->shouldBe(false);
+        $this->isWPFNotification()->shouldBe(true);
+
         $this->isAuthentic()->shouldBe(false);
     }
 
-    function it_can_generate_xml_response()
+    function it_can_generate_api_xml_response()
     {
-        $this->shouldThrow()->duringParseNotification($this->data);
-        $this->getEchoResponse()->shouldNotBeEmpty();
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+        $this->generateResponse()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_without_status()
+    function it_can_generate_wpf_xml_response()
     {
-        unset($this->data['status']);
-
-        $this->shouldThrow()->duringParseNotification($this->data);
-        $this->isAuthentic()->shouldBe(false);
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+        $this->generateResponse()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_without_id()
+    function it_can_render_api_response()
     {
-        unset($this->data['unique_id']);
-
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+        $this->generateResponse()->shouldContain('unique_id');
     }
 
-    function it_should_fail_without_signature()
+    function it_can_render_wpf_response()
     {
-        unset($this->data['signature']);
-
-        $this->shouldThrow()->duringParseNotification($this->data);
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+        $this->generateResponse()->shouldContain('wpf_unique_id');
     }
 
-    function it_should_parse_notification()
+    function it_should_fail_without_api_id()
     {
-        $this->data['wpf_unique_id']    = $this->data['unique_id'];
-        $this->data['signature']        = hash('sha512', $this->data['unique_id'] . GenesisConfig::getPassword());
+        $api = $this->sample['api'];
+        unset($api['unique_id']);
 
-        $this->shouldNotThrow()->duringParseNotification($this->data);
-        $this->getParsedNotification()->shouldNotBeEmpty();
+        $this->shouldThrow()->during('parseNotification', array($api));
+    }
+
+    function it_should_fail_without_wpf_id()
+    {
+        $wpf = $this->sample['wpf'];
+        unset($wpf['wpf_unique_id']);
+
+        $this->shouldThrow()->during('parseNotification', array($wpf));
+    }
+
+    function it_should_fail_without_api_signature()
+    {
+        $api = $this->sample['api'];
+        unset($api['signature']);
+
+        $this->shouldThrow()->during('parseNotification', array($api));
+    }
+
+    function it_should_fail_without_wpf_signature()
+    {
+        $wpf = $this->sample['wpf'];
+        unset($wpf['signature']);
+
+        $this->shouldThrow()->during('parseNotification', array($wpf));
+    }
+
+    function it_should_parse_api_notification()
+    {
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+        $this->getNotificationObject()->shouldNotBeEmpty();
+    }
+
+    function it_should_parse_and_clean_api_notification()
+    {
+        $invalid_data = array(
+            ' sig%33'   => ' ' . $this->sample['api']['signature'] . '%33',
+            'sig%55 '   => '%75' . $this->sample['api']['signature'] . ' ',
+            ' $alpha '  => ' '
+        );
+
+        $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['api'], $invalid_data)));
+        $this->getNotificationObject()->sig3->shouldBe($this->sample['api']['signature'] . '3');
+        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['api']['signature']);
+        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
+    }
+
+    function it_should_parse_wpf_notification()
+    {
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+        $this->getNotificationObject()->shouldNotBeEmpty();
+    }
+
+    function it_should_parse_and_clean_wpf_notification()
+    {
+        $invalid_data = array(
+            ' sig%33'   => ' ' . $this->sample['wpf']['signature'] . '%33',
+            'sig%55 '   => '%75' . $this->sample['wpf']['signature'] . ' ',
+            ' $alpha '  => ' '
+        );
+
+        $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['wpf'], $invalid_data)));
+        $this->getNotificationObject()->sig3->shouldBe($this->sample['wpf']['signature'] . '3');
+        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['wpf']['signature']);
+        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
+    }
+
+    function it_can_render_api_response_correctly()
+    {
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+
+        ob_start();
+
+        $this->shouldNotThrow()->during('renderResponse');
+
+        $this->generateResponse()->shouldBe(ob_get_clean());
+    }
+
+    function it_can_render_wpf_response_correctly()
+    {
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+
+        ob_start();
+
+        $this->shouldNotThrow()->during('renderResponse');
+
+        $this->generateResponse()->shouldBe(ob_get_clean());
     }
 
     function getMatchers()
     {
         return array(
-            'beEmpty' => function($subject) {
-                    return empty($subject);
+            'beEmpty' => function ($subject) {
+                return empty($subject);
+            },
+            'contain' => function ($subject, $arg) {
+                return (stripos($subject, $arg) !== false);
             },
         );
     }

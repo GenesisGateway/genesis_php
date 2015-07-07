@@ -30,38 +30,6 @@ namespace Genesis\Utils;
  */
 final class Common
 {
-    public static function checkRequirements()
-    {
-        // PHP version requirements
-        if (self::compareVersions('5.3.0', '<')) {
-            throw new \Exception(
-                'Unsupported PHP version.
-				This projects requires PHP version > 5.3.0.
-				Please upgrade!'
-            );
-        }
-
-        // cURL requirements
-        if (\Genesis\GenesisConfig::getInterfaceSetup('network') == 'curl') {
-            if (!function_exists('curl_init')) {
-                throw new \Exception(
-                    'cURL is selected, but its not installed on your system!
-					You can use "stream_context" alternatively, or install the cURL PHP extension.'
-                );
-            }
-        }
-
-        // XMLWriter requirements
-        if (\Genesis\GenesisConfig::getInterfaceSetup('builder') == 'xmlwriter') {
-            if (!class_exists('XMLWriter')) {
-                throw new \Exception(
-                    'XMLWriter is selected, but its not installed on your system!,
-					You can use "domdocument" alternatively, or re-compile PHP with XML support!'
-                );
-            }
-        }
-    }
-
     /**
      * Helper for version_compare()
      *
@@ -76,7 +44,7 @@ final class Common
     }
 
     /**
-     * Get the current PHP version
+     * Helper to get the current PHP version
      *
      * @return int
      */
@@ -86,10 +54,15 @@ final class Common
         if (!defined('PHP_VERSION_ID')) {
             list($major, $minor, $release) = explode('.', PHP_VERSION);
 
-            define('PHP_VERSION_ID', ($major * 10000 + $minor * 100 + $release));
+            /**
+             * Define PHP_VERSION_ID if its not present (unsupported version)
+             *
+             * format: major minor release
+             */
+            define('PHP_VERSION_ID', (($major * 10000) + ($minor * 100) + $release));
         }
 
-        return PHP_VERSION_ID;
+        return (int)PHP_VERSION_ID;
     }
 
     /**
@@ -104,13 +77,49 @@ final class Common
     {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
 
-        $ret = reset($matches);
-
-        foreach ($ret as &$match) {
-            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        foreach ($matches[0] as &$match) {
+            $match = ($match == strtoupper($match)) ? strtolower($match) : lcfirst($match);
         }
 
-        return implode('_', $ret);
+        return implode('_', $matches[0]);
+    }
+
+    /**
+     * Get PascalCase to action/target array
+     *
+     * @param $input
+     *
+     * @return array
+     */
+    public static function resolveDynamicMethod($input)
+    {
+        $snakeCase = explode('_', self::pascalToSnakeCase($input));
+
+        $result = array(
+            current(
+                array_slice($snakeCase, 0, 1)
+            ),
+            implode(
+                '_',
+                array_slice($snakeCase, 1)
+            )
+        );
+
+        return $result;
+    }
+
+    /**
+     * Convert SnakeCase to CamelCase
+     *
+     * @param string $input
+     *
+     * @return string
+     */
+    public static function snakeCaseToCamelCase($input)
+    {
+        return preg_replace_callback('/(?:^|_)(.?)/', function($value) {
+            return strtoupper($value[1]);
+        }, $input);
     }
 
     /**
@@ -137,58 +146,89 @@ final class Common
     }
 
     /**
-     * Get an ArrayObject from an XML string
+     * Create ArrayObject ($target) from passed Array ($source_array)
      *
-     * @param string $xml_document
+     * @param $srcArray - input array
      *
      * @return \ArrayObject
      */
-    public static function parseXMLtoArrayObject($xml_document = null)
+    public static function createArrayObject($srcArray)
     {
-        $simple_xml = @simplexml_load_string($xml_document);
+        return new \ArrayObject($srcArray, \ArrayObject::ARRAY_AS_PROPS);
+    }
 
-        if (is_object($simple_xml)) {
-            return
-                self::createArrayObject(
-                    self::simpleXMLtoArray($simple_xml)
-                );
+    /**
+     * Check if the passed argument is:
+     * - Array
+     * - Its not empty
+     *
+     * @param array $arr incoming array
+     *
+     * @return bool
+     */
+    public static function isValidArray($arr)
+    {
+        if (!is_array($arr) || empty($arr) || count($arr) < 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if the passed argument is a valid XML tag name
+     *
+     * @param string $tag
+     *
+     * @return bool
+     */
+    public static function isValidXMLName($tag)
+    {
+        if (!is_array($tag)) {
+            return preg_match('/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i', $tag, $matches) && reset($matches) == $tag;
         }
 
         return false;
     }
 
     /**
-     * Create ArrayObject ($target) from passed Array ($source_array)
+     * Evaluate a boolean expression from String
+     * or return the string itself
      *
-     * @param $source_array - input array
+     * @param $string
      *
-     * @return \ArrayObject
+     * @return bool | string
      */
-    public static function createArrayObject($source_array)
+    public static function stringToBoolean($string)
     {
-        return new \ArrayObject($source_array, \ArrayObject::ARRAY_AS_PROPS);
+        $flag = filter_var($string, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+        if ($flag) {
+            return true;
+        } elseif (is_null($flag)) {
+            return $string;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Traverse the SimpleXML document recursively
-     * and cast everything as string
+     * Convert Boolean to String
      *
-     * @param \SimpleXMLElement|array $simple_xml_object
+     * @param bool $bool
      *
-     * @return array
+     * @return string
      */
-    public static function simpleXMLtoArray($simple_xml_object)
+    public static function booleanToString($bool)
     {
-        $output = array();
-
-        foreach ($simple_xml_object->children() as $node) {
-            if (is_array($node)) {
-                $output[$node->getName()] = self::simpleXMLtoArray($node);
+        if (is_bool($bool)) {
+            if ($bool) {
+                return 'true';
             } else {
-                $output[$node->getName()] = (string)$node;
+                return 'false';
             }
         }
 
-        return $output;
+        return $bool;
     }
 }
