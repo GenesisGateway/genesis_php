@@ -398,10 +398,13 @@ class PPRO extends \Genesis\API\Request
                 'payment_type'       => $this->payment_type,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,
-                'amount'             => $this->transform('amount', array(
+                'amount'             => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'           => $this->currency,
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,

@@ -117,9 +117,13 @@ final class Common
      */
     public static function snakeCaseToCamelCase($input)
     {
-        return preg_replace_callback('/(?:^|_)(.?)/', function($value) {
-            return strtoupper($value[1]);
-        }, $input);
+        return preg_replace_callback(
+            '/(?:^|_)(.?)/',
+            function ($value) {
+                return strtoupper($value[1]);
+            },
+            $input
+        );
     }
 
     /**
@@ -230,5 +234,20 @@ final class Common
         }
 
         return $bool;
+    }
+
+    /**
+     * Check if a string is base64 Encoded
+     *
+     * @param string $input Data to verify if its valid base64
+     * @return bool
+     */
+    public static function isBase64Encoded($input)
+    {
+        if ($input && @base64_encode(@base64_decode($input, true)) === $input) {
+            return true;
+        }
+
+        return false;
     }
 }

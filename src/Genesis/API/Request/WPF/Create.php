@@ -319,7 +319,10 @@ class Create extends \Genesis\API\Request
      * Add transaction type to the list of available types
      *
      * @param string $name
+     *
      * @param array  $parameters
+     *
+     * @return $this
      */
     public function addTransactionType($name, $parameters = array())
     {
@@ -333,6 +336,8 @@ class Create extends \Genesis\API\Request
         );
 
         array_push($this->transaction_types, $structure);
+
+        return $this;
     }
 
     /**
@@ -340,11 +345,16 @@ class Create extends \Genesis\API\Request
      *
      * @param string $language iso code of the language
      *
+     * @return $this
+     *
      * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
     {
-        if (empty($language)) {
+        // Strip the input down to two letters
+        $language = substr(strtolower($language), 0, 2);
+
+        if (!\Genesis\API\Constants\i18n::isValidLanguageCode($language)) {
             throw new \Genesis\Exceptions\InvalidArgument(
                 'The provided argument is not a valid ISO-639-1 language code!'
             );
@@ -354,10 +364,12 @@ class Create extends \Genesis\API\Request
             'url',
             $this->buildRequestURL(
                 'wpf',
-                sprintf('%s/wpf', substr(strtolower($language), 0, 2)),
+                sprintf('%s/wpf', $language),
                 false
             )
         );
+
+        return $this;
     }
 
     /**
@@ -409,10 +421,13 @@ class Create extends \Genesis\API\Request
         $treeStructure = array(
             'wpf_payment' => array(
                 'transaction_id'     => $this->transaction_id,
-                'amount'             => $this->transform('amount', array(
+                'amount'             => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'           => $this->currency,
                 'usage'              => $this->usage,
                 'description'        => $this->description,

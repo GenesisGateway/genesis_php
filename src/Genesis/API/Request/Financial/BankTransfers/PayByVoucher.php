@@ -185,10 +185,13 @@ class PayByVoucher extends \Genesis\API\Request
                 'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER,
                 'transaction_id'      => $this->transaction_id,
                 'remote_ip'           => $this->remote_ip,
-                'amount'              => $this->transform('amount', array(
+                'amount'              => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'            => $this->currency,
                 'product_name'        => $this->product_name,
                 'product_category'    => $this->product_category,

@@ -106,8 +106,8 @@ final class XML implements \Genesis\Interfaces\Parser
             switch ($reader->nodeType) {
                 case \XMLReader::END_ELEMENT:
                     return $tree;
+                    break;
                 case \XMLReader::ELEMENT:
-
                     $this->processElement($reader, $tree);
 
                     if ($reader->hasAttributes) {

@@ -282,10 +282,13 @@ class Payout extends \Genesis\API\Request
                 'transaction_type' => \Genesis\API\Constants\Transaction\Types::PAYOUT,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
-                'amount'           => $this->transform('amount', array(
+                'amount'           => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'         => $this->currency,
                 'remote_ip'        => $this->remote_ip,
                 'card_holder'      => $this->card_holder,

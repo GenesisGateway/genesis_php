@@ -42,6 +42,18 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->getDocument()->shouldContain(base64_encode($password));
     }
 
+    function it_should_pass_the_password_correctly_if_previously_encoded()
+    {
+        $faker = \Faker\Factory::create();
+
+        $password = base64_encode($faker->streetName);
+
+        $this->setRequestParameters();
+        $this->setSourceWalletPwd($password);
+        $this->getSourceWalletPwd()->shouldBeLike($password);
+        $this->getDocument()->shouldContain($password);
+    }
+
     function setRequestParameters()
     {
         $faker = \Faker\Factory::create();

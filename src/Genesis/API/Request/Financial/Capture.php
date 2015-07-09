@@ -120,10 +120,13 @@ class Capture extends \Genesis\API\Request
                 'usage'            => $this->usage,
                 'remote_ip'        => $this->remote_ip,
                 'reference_id'     => $this->reference_id,
-                'amount'           => $this->transform('amount', array(
+                'amount'           => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'         => $this->currency
             )
         );

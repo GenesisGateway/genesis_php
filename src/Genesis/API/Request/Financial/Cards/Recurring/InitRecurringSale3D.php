@@ -454,10 +454,13 @@ class InitRecurringSale3D extends \Genesis\API\Request
                 'notification_url'          => $this->notification_url,
                 'return_success_url'        => $this->return_success_url,
                 'return_failure_url'        => $this->return_failure_url,
-                'amount'                    => $this->transform('amount', array(
+                'amount'                    => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'                  => $this->currency,
                 'card_holder'               => $this->card_holder,
                 'card_number'               => $this->card_number,

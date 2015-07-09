@@ -29,7 +29,9 @@ namespace Genesis\Network;
  * @package    Genesis
  * @subpackage Network
  */
+// @codingStandardsIgnoreStart
 class cURL implements \Genesis\Interfaces\Network
+// @codingStandardsIgnoreEnd
 {
     /**
      * Storing cURL Handle

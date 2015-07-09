@@ -388,10 +388,13 @@ class Sale extends \Genesis\API\Request
                 'gaming'                    => $this->gaming,
                 'moto'                      => $this->moto,
                 'remote_ip'                 => $this->remote_ip,
-                'amount'                    => $this->transform('amount', array(
+                'amount'                    => $this->transform(
+                    'amount',
+                    array(
                         $this->amount,
                         $this->currency,
-                    )),
+                    )
+                ),
                 'currency'                  => $this->currency,
                 'card_holder'               => $this->card_holder,
                 'card_number'               => $this->card_number,

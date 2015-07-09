@@ -27,14 +27,20 @@ class CreateSpec extends ObjectBehavior
 
     public function it_should_set_language_parameter()
     {
-        $this->setLanguage('cn');
-        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/cn/wpf/');
+        $this->setLanguage('en');
+        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/en/wpf/');
+
+        $this->setLanguage('zh');
+        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf/');
     }
 
     public function it_should_parse_only_two_letters()
     {
-        $this->setLanguage('yzabcdef');
-        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/yz/wpf/');
+        $this->setLanguage('en_US');
+        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/en/wpf/');
+
+        $this->setLanguage('zh_ZH');
+        $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf/');
     }
 
     function it_should_fail_when_missing_required_parameters()

@@ -29,7 +29,9 @@ namespace Genesis\API\Request\Financial\Wallets;
  *
  * @package Genesis\API\Request\Financial\Wallets
  */
+// @codingStandardsIgnoreStart
 class eZeeWallet extends \Genesis\API\Request
+// @codingStandardsIgnoreEnd
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -168,7 +170,10 @@ class eZeeWallet extends \Genesis\API\Request
     }
 
     /**
-     * Apply transformation: encode in base64
+     * Apply transformation:
+     *
+     * Encode a string in base64 or return
+     * the input if already in base64
      *
      * @param string $input
      *
@@ -176,10 +181,10 @@ class eZeeWallet extends \Genesis\API\Request
      */
     protected function transformWalletPassword($input = '')
     {
-        if (!empty($input)) {
+        if (!\Genesis\Utils\Common::isBase64Encoded($input)) {
             return base64_encode($input);
         }
 
-        return false;
+        return $input;
     }
 }
