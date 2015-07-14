@@ -30,71 +30,298 @@ namespace Genesis\API\Constants;
  */
 final class Errors
 {
-    const SUCCESS = 000;
-    const ERROR   = 001;
+    /**
+     * Successfully completed request
+     */
+    const SUCCESS                           = 000;
 
-    const SYSTEM_ERROR         = 100;
-    const MAINTENANCE_ERROR    = 101;
-    const AUTHENTICATION_ERROR = 110;
-    const CONFIGURATION_ERROR  = 120;
+    /**
+     * Undefined error
+     */
+    const ERROR                             = 001;
 
-    const COMMUNICATION_ERROR = 200;
-    const CONNECTION_ERROR    = 210;
-    const ACCOUNT_ERROR       = 220;
-    const TIMEOUT_ERROR       = 230;
-    const RESPONSE_ERROR      = 240;
-    const PARSING_ERROR       = 250;
+    /**
+     * A general system error occurred
+     */
+    const SYSTEM_ERROR                      = 100;
 
-    const INPUT_DATA_ERROR               = 300;
-    const INVALID_TRANSACTION_TYPE_ERROR = 310;
-    const INPUT_DATA_MISSING_ERROR       = 320;
-    const INPUT_DATA_FORMAT_ERROR        = 330;
-    const INPUT_DATA_INVALID_ERROR       = 340;
-    const INVALID_XML_ERROR              = 350;
-    const INVALID_CONTENT_TYPE_ERROR     = 360;
+    /**
+     * System is undergoing maintenance, request could not be handled
+     */
+    const MAINTENANCE_ERROR                 = 101;
 
-    const WORKFLOW_ERROR              = 400;
-    const REFERENCE_NOT_FOUND_ERROR   = 410;
-    const REFERENCE_WORKFLOW_ERROR    = 420;
-    const REFERENCE_INVALIDATED_ERROR = 430;
-    const REFERENCE_MISMATCH_ERROR    = 440;
-    const DOUBLE_TRANSACTION_ERROR    = 450;
-    const TRANSACTION_NOT_FOUND_ERROR = 460;
+    /**
+     * Login failed. Check your API credentials.
+     */
+    const AUTHENTICATION_ERROR              = 110;
 
-    const PROCESSING_ERROR          = 500;
-    const INVALID_CARD_ERROR        = 510;
-    const EXPIRED_CARD_ERROR        = 520;
-    const TRANSACTION_PENDING_ERROR = 530;
-    const CREDIT_EXCEEDED_ERROR     = 540;
+    /**
+     * Config error occurred, e.g. terminal not configured properly.
+     *
+     * Check terminal settings
+     */
+    const CONFIGURATION_ERROR               = 120;
 
+    /**
+     * Communication with issuer failed, please contact support.
+     */
+    const COMMUNICATION_ERROR               = 200;
+
+    /**
+     * Connection to issuer could not be established, please contact support
+     */
+    const CONNECTION_ERROR                  = 210;
+
+    /**
+     * Issuer account data invalid, please contact support
+     */
+    const ACCOUNT_ERROR                     = 220;
+
+    /**
+     * Issuer does not respond within given time-frame - please reconcile
+     */
+    const TIMEOUT_ERROR                     = 230;
+
+    /**
+     * Issuer returned invalid response - please reconcile and contact support
+     */
+    const RESPONSE_ERROR                    = 240;
+
+    /**
+     * Issuer response could not be parsed - please reconcile and contact support
+     */
+    const PARSING_ERROR                     = 250;
+
+    /**
+     * Invalid were data sent to the API.
+     */
+    const INPUT_DATA_ERROR                  = 300;
+
+    /**
+     * Invalid transaction type was passed to API
+     */
+    const INVALID_TRANSACTION_TYPE_ERROR    = 310;
+
+    /**
+     * Required argument is missing
+     */
+    const INPUT_DATA_MISSING_ERROR          = 320;
+
+    /**
+     * Argument passed in invalid format
+     */
+    const INPUT_DATA_FORMAT_ERROR           = 330;
+
+    /**
+     * Argument passed in valid format but makes no sense (e.g. incorrect country code or currency)
+     */
+    const INPUT_DATA_INVALID_ERROR          = 340;
+
+    /**
+     * The input Builder could not be parsed due to invalid code
+     */
+    const INVALID_XML_ERROR                 = 350;
+
+    /**
+     * Invalid value for HTTP header - Content-Type
+     */
+    const INVALID_CONTENT_TYPE_ERROR        = 360;
+
+    /**
+     * A transaction was triggered that is not possible at this time in the workflow,
+     * e.g. a refund on a declined transaction.
+     */
+    const WORKFLOW_ERROR                    = 400;
+
+    /**
+     * Reference transaction was not found.
+     */
+    const REFERENCE_NOT_FOUND_ERROR         = 410;
+
+    /**
+     * Wrong Workflow specified
+     */
+    const REFERENCE_WORKFLOW_ERROR          = 420;
+
+    /**
+     * Reference transaction already invalidated
+     */
+    const REFERENCE_INVALIDATED_ERROR       = 430;
+
+    /**
+     * Data mismatch with reference, e.g. amount exceeds reference
+     */
+    const REFERENCE_MISMATCH_ERROR          = 440;
+
+    /**
+     * Transaction doublet was detected, transaction was blocked
+     */
+    const DOUBLE_TRANSACTION_ERROR          = 450;
+
+    /**
+     * The referenced transaction could not be found
+     */
+    const TRANSACTION_NOT_FOUND_ERROR       = 460;
+
+    /**
+     * Transaction declined by issuer
+     */
+    const PROCESSING_ERROR                  = 500;
+
+    /**
+     * Transaction declined, Credit card number is invalid
+     */
+    const INVALID_CARD_ERROR                = 510;
+
+    /**
+     * Transaction declined, expiration date not in the future or date invalid
+     */
+    const EXPIRED_CARD_ERROR                = 520;
+
+    /**
+     * Transaction pending
+     */
+    const TRANSACTION_PENDING_ERROR         = 530;
+
+    /**
+     * Amount exceeds credit card limit
+     */
+    const CREDIT_EXCEEDED_ERROR             = 540;
+
+    /**
+     * Transaction declined by risk management
+     */
     const RISK_ERROR                       = 600;
+
+    /**
+     * Card bin does not match billing country
+     */
     const BIN_COUNTRY_CHECK_ERROR          = 609;
+
+    /**
+     * Card is blacklisted
+     */
     const CARD_BLACKLIST_ERROR             = 610;
+
+    /**
+     * BIN blacklisted
+     */
     const BIN_BLACKLIST_ERROR              = 611;
+
+    /**
+     * Country blacklisted
+     */
     const COUNTRY_BLACKLIST_ERROR          = 612;
+
+    /**
+     * IP address blacklisted
+     */
     const IP_BLACKLIST_ERROR               = 613;
+
+    /**
+     * Value from the Transaction Request or Risk Parameters is blacklisted
+     */
     const BLACKLIST_ERROR                  = 614;
+
+    /**
+     * PAN Whitelist Filter blocked the transaction
+     */
     const CARD_WHITELIST_ERROR             = 615;
+
+    /**
+     * Card limit exceeded configured limits
+     */
     const CARD_LIMIT_EXCEEDED_ERROR        = 620;
+
+    /**
+     * Terminal limits exceeded.
+     */
     const TERMINAL_LIMIT_EXCEEDED_ERROR    = 621;
+
+    /**
+     * MID limits exceeded
+     */
     const CONTRACT_LIMIT_EXCEEDED_ERROR    = 622;
+
+    /**
+     * Velocity by unknown card exceeded
+     */
     const CARD_VELOCITY_EXCEEDED_ERROR     = 623;
+
+    /**
+     * Ticket size by unknown card exceeded
+     */
     const CARD_TICKET_SIZE_EXCEEDED_ERROR  = 624;
+
+    /**
+     * User limit exceeded configured limits
+     */
     const USER_LIMIT_EXCEEDED_ERROR        = 625;
+
+    /**
+     * Found user transaction declined by issuer
+     */
     const MULTIPLE_FAILURE_DETECTION_ERROR = 626;
+
+    /**
+     * CrossSelling Error!
+     */
     const CS_DETECTION_ERROR               = 627;
+
+    /**
+     * Amount/count by recurring subscription exceeded
+     */
     const RECURRING_LIMIT_EXCEEDED_ERROR   = 628;
+
+    /**
+     * Address Verification failed
+     */
     const AVS_ERROR                        = 690;
+
+    /**
+     * MaxMind High Risk Error
+     */
     const MAX_MIND_RISK_ERROR              = 691;
+
+    /**
+     * ThreatMetrix High Risk Error
+     */
     const THREAT_METRIX_RISK_ERROR         = 692;
 
-    const REMOTE_ERROR               = 900;
-    const REMOTE_SYSTEM_ERROR        = 910;
-    const REMOTE_CONFIGURATION_ERROR = 920;
-    const REMOTE_DATA_ERROR          = 930;
-    const REMOTE_WORKFLOW_ERROR      = 940;
-    const REMOTE_TIMEOUT_ERROR       = 950;
-    const REMOTE_CONNECTION_ERROR    = 960;
+    /**
+     * Some error occurred on the issuer side
+     */
+    const REMOTE_ERROR                      = 900;
+
+    /**
+     * Some error occurred on the issuer side
+     */
+    const REMOTE_SYSTEM_ERROR               = 910;
+
+    /**
+     * Issuer configuration error
+     */
+    const REMOTE_CONFIGURATION_ERROR        = 920;
+
+    /**
+     * Some passed data caused an error on the issuer
+     */
+    const REMOTE_DATA_ERROR                 = 930;
+
+    /**
+     * Remote workflow error
+     */
+    const REMOTE_WORKFLOW_ERROR             = 940;
+
+    /**
+     * Issuer has time-out with clearing network
+     */
+    const REMOTE_TIMEOUT_ERROR              = 950;
+
+    /**
+     * Issuer could not reach clearing network
+     */
+    const REMOTE_CONNECTION_ERROR           = 960;
 
     /**
      * Get Genesis Error Code
