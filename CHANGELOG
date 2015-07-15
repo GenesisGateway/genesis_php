@@ -1,12 +1,61 @@
-1.0.1
+1.2.0
+-----
 
-* Add type-casting to Genesis\Utils\Currency
+* Add support for Genesis Gateway v3.9
+* Add support for 'eMerchantPay' endpoint
+* New transaction types:
+    - CashU
+    - eZeeWallet
+    - PayByVoucher
+    - PaySafeCard
+    - PPRO
+    - SOFORT
+    - iDEAL (SOFORT)
+* Internal refactoring:
+    - API requests namespace changes
+    - API\Response will now throw Exceptions automatically, when transaction failed or there are network / parsing errors
+    - API\Notification now accepts incoming data from the constructor and has the ability to reconcile with Genesis
+    - Rename 'stream_context' interface to 'stream'
+    - Builder interface now accepts only language names, i.e. 'xml', 'json'
+    - Timestamp field in the response object is now an instance of DateTime object, whenever DateTime parsing is possible
+    - Deprecate methods getFormattedAmount() and getFormattedTimestamp() from API\Response as they are applied automatically
+* System Requirements are now being verified at runtime
+* Update the CA Bundle
+
+1.1.0
+-----
+
+* Add new methods to API\Notification:
+    - isAPINotification()
+    - isWPFNotification()
+    - renderResponse()
+* Change API\Response::getResponseObject type from SimpleXMLElement to stdClass
+* Internal refactoring
+* Update comments/headers
+
+1.0.2
+-----
+
+* Add support for i18n localization
+* Add flag "isPartiallyApproved()", to API\Response, for partially-approved transactions
+* Add helper method API\Response::getFormattedAmount()
+* Add helper method API\Response::getFormattedTimestamp()
+* Add Network\Wrapper\Stream configuration based on the PHP version
+* Fix Nominal transaction amount conversion
+* Update PHPDoc comments
+* Update Specs
+
+1.0.1
+-----
+
 * Move the ISO-4217 currency handling to the post-processing
-* Fix Genesis\API\Response\isSuccessful() returning wrong status on some transaction types
+* Fix API\Response::isSuccessful() returning wrong status on some transaction types
+* Fix Utils\Currency types
 * Update PHPDoc Comments
 * Update README
 * Update Specs
 
 1.0.0
+-----
 
-* Initial PHP client integration library, using Genesis API 3.2
+* Initial version

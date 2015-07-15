@@ -11,25 +11,36 @@ class GenesisSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedWith('FraudRelated\Blacklist');
+        $this->beConstructedWith('NonFinancial\Blacklist');
         $this->shouldHaveType('Genesis\Genesis');
     }
 
     function it_can_load_request()
     {
-        $this->beConstructedWith('FraudRelated\Blacklist');
-        $this->request()->shouldHaveType('\Genesis\API\Request\FraudRelated\Blacklist');
+        $this->beConstructedWith('NonFinancial\Blacklist');
+
+        $this->request()->shouldHaveType('\Genesis\API\Request\NonFinancial\Blacklist');
     }
 
-    function it_can_resolve_errors()
+    function it_can_set_request_property()
     {
-        $this->beConstructedWith('FraudRelated\Blacklist');
-        $this->getErrorDescription('420')->shouldBe('Wrong Workflow specified.');
+        $this->beConstructedWith('NonFinancial\Blacklist');
+
+        $this->request()->shouldHaveType('\Genesis\API\Request\NonFinancial\Blacklist');
+
+        $this->request()->setCardNumber('420000');
+
+        $this->request()->getCardNumber()->shouldBe('420000');
     }
 
-    function it_can_resolve_error_codes()
+    function it_can_send_request()
     {
-        $this->beConstructedWith('FraudRelated\Blacklist');
-        $this->getErrorCode('REMOTE_ERROR')->shouldBe(900);
+        $this->beConstructedWith('NonFinancial\Blacklist');
+
+        $this->request()->setCardNumber('4200000000000000');
+
+        $this->shouldThrow('\Genesis\Exceptions\ErrorNetwork')->during('execute');
+
+        $this->response()->getResponseObject()->shouldBe(null);
     }
 }
