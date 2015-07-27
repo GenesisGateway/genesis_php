@@ -20,18 +20,16 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\Alternatives;
+namespace Genesis\API\Request\Financial\Wallets;
 
 /**
- * Class SofortiDEAL
+ * Class Neteller
  *
- * Alternative payment method
+ * Electronic Wallet
  *
- * @package Genesis\API\Request\Financial\Alternatives
- *
- * @deprecated - iDEAL through SOFORT is going to be removed within the next major release
+ * @package Genesis\API\Request\Financial\Wallets
  */
-class SofortiDEAL extends \Genesis\API\Request
+class Neteller extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -97,20 +95,18 @@ class SofortiDEAL extends \Genesis\API\Request
     protected $customer_phone;
 
     /**
-     * The bank id of the bank where the customer resides
-     *
-     * @see Supported Bank Ids
+     * Neteller Account Id
      *
      * @var string
      */
-    protected $customer_bank_id;
+    protected $customer_account;
 
     /**
-     * Must contain valid bank account number of customer
+     * Neteller Account Password
      *
      * @var string
      */
-    protected $bank_account_number;
+    protected $account_password;
 
     /**
      *Customer's Billing Address: First name
@@ -310,11 +306,11 @@ class SofortiDEAL extends \Genesis\API\Request
     protected function initConfiguration()
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            ));
+                                                                     'protocol' => 'https',
+                                                                     'port'     => 443,
+                                                                     'type'     => 'POST',
+                                                                     'format'   => 'xml',
+                                                                 ));
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -334,8 +330,8 @@ class SofortiDEAL extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'customer_email',
-            'customer_bank_id',
-            'bank_account_number',
+            'customer_account',
+            'account_password',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -350,7 +346,7 @@ class SofortiDEAL extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::SOFORT_IDEAL,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::NETELLER,
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,
@@ -366,6 +362,8 @@ class SofortiDEAL extends \Genesis\API\Request
                 'currency'           => $this->currency,
                 'customer_email'     => $this->customer_email,
                 'customer_phone'     => $this->customer_phone,
+                'customer_account'   => $this->customer_account,
+                'account_password'   => $this->account_password,
                 'billing_address'    => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,

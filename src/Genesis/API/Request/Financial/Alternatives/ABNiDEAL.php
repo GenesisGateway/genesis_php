@@ -23,15 +23,13 @@
 namespace Genesis\API\Request\Financial\Alternatives;
 
 /**
- * Class SofortiDEAL
+ * Class ABNiDEAL
  *
- * Alternative payment method
+ * Alternative payment method for The Netherlands
  *
  * @package Genesis\API\Request\Financial\Alternatives
- *
- * @deprecated - iDEAL through SOFORT is going to be removed within the next major release
  */
-class SofortiDEAL extends \Genesis\API\Request
+class ABNiDEAL extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -99,18 +97,11 @@ class SofortiDEAL extends \Genesis\API\Request
     /**
      * The bank id of the bank where the customer resides
      *
-     * @see Supported Bank Ids
+     * @see Documentation for ABN iDEAL API
      *
      * @var string
      */
     protected $customer_bank_id;
-
-    /**
-     * Must contain valid bank account number of customer
-     *
-     * @var string
-     */
-    protected $bank_account_number;
 
     /**
      *Customer's Billing Address: First name
@@ -310,11 +301,11 @@ class SofortiDEAL extends \Genesis\API\Request
     protected function initConfiguration()
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            ));
+                                                                     'protocol' => 'https',
+                                                                     'port'     => 443,
+                                                                     'type'     => 'POST',
+                                                                     'format'   => 'xml',
+                                                                 ));
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
     }
@@ -335,7 +326,7 @@ class SofortiDEAL extends \Genesis\API\Request
             'return_failure_url',
             'customer_email',
             'customer_bank_id',
-            'bank_account_number',
+            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -350,7 +341,7 @@ class SofortiDEAL extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::SOFORT_IDEAL,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::ABNIDEAL,
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,
@@ -366,6 +357,7 @@ class SofortiDEAL extends \Genesis\API\Request
                 'currency'           => $this->currency,
                 'customer_email'     => $this->customer_email,
                 'customer_phone'     => $this->customer_phone,
+                'customer_bank_id'   => $this->customer_bank_id,
                 'billing_address'    => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,

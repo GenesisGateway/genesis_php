@@ -32,6 +32,17 @@ namespace Genesis\API\Constants\Transaction;
 class Types
 {
     /**
+     * Address Verification
+     */
+    const AVS = 'avs';
+
+    /**
+     * Account Verification
+     */
+    const ACCOUNT_VERIFICATION = 'account_verification';
+
+
+    /**
      * A standard Authorization
      */
     const AUTHORIZE = 'authorize';
@@ -97,14 +108,24 @@ class Types
     const EZEEWALLET = 'ezeewallet';
 
     /**
+     * Bank transfer, popular in China
+     */
+    const PAYBYVOUCHER = 'paybyvoucher';
+
+    /**
      * Bank transfer payment, popular in Germany
      */
     const SOFORT = 'sofort';
 
     /**
-     * Bank transfer, popular in Netherlands
+     * Bank transfer, popular in Netherlands (via SOFORT)
      */
     const SOFORT_IDEAL = 'sofort_ideal';
+
+    /**
+     * Bank transfer, popular in Netherlands (via ABN)
+     */
+    const ABNIDEAL = 'abn_ideal';
 
     /**
      * Voucher-based payment
@@ -117,22 +138,47 @@ class Types
     const PAYSAFECARD = 'paysafecard';
 
     /**
+     * Neteller
+     */
+    const NETELLER = 'neteller';
+
+    /**
      * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and GiroPay
      */
     const PPRO = 'ppro';
 
     /**
-     * Bank transfer, popular in China
+     * EPS (via PPRO)
      */
-    const PAYBYVOUCHER = 'paybyvoucher';
+    const EPS = 'ppro';
 
     /**
-     * Account Verification
+     * TeleIngreso (via PPRO)
      */
-    const ACCOUNT_VERIFICATION = 'account_verification';
+    const TELEINGRESO = 'ppro';
 
     /**
-     * Address Verification
+     * GiroPay (via PPRO)
      */
-    const AVS = 'avs';
+    const GIRO_PAY = 'ppro';
+
+    /**
+     * SafetyPay (via PPRO)
+     */
+    const SAFETY_PAY = 'ppro';
+
+    /**
+     * TrustPay (via PPRO)
+     */
+    const TRUST_PAY = 'ppro';
+
+    /**
+     * Przelewy24 (via PPRO)
+     */
+    const PRZELEWY24 = 'ppro';
+
+    /**
+     * Qiwi (via PPRO)
+     */
+    const QIWI = 'ppro';
 }

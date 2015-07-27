@@ -143,10 +143,14 @@ abstract class Request
     {
         $this->processRequestParameters();
 
-        $this->builderContext = new \Genesis\Builder();
-        $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
+        if ($this->treeStructure instanceof \ArrayObject) {
+            $this->builderContext = new \Genesis\Builder();
+            $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
-        return $this->builderContext->getDocument();
+            return $this->builderContext->getDocument();
+        }
+
+        return null;
     }
 
     /**
@@ -177,11 +181,13 @@ abstract class Request
      */
     protected function sanitizeStructure()
     {
-        $this->treeStructure->exchangeArray(
-            \Genesis\Utils\Common::emptyValueRecursiveRemoval(
-                $this->treeStructure->getArrayCopy()
-            )
-        );
+        if ($this->treeStructure instanceof \ArrayObject) {
+            $this->treeStructure->exchangeArray(
+                \Genesis\Utils\Common::emptyValueRecursiveRemoval(
+                    $this->treeStructure->getArrayCopy()
+                )
+            );
+        }
     }
 
     /**

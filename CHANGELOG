@@ -1,3 +1,13 @@
+1.3.0
+-----
+
+* Add support for Genesis Gateway v4.0
+* Add support for iDEAL ABN Bank retrieval
+* Add deprecation notice for payment method "SOFORT iDEAL"
+* New transaction types:
+    - iDEAL (via ABN)
+    - Neteller
+
 1.2.0
 -----
 
@@ -10,7 +20,7 @@
     - PaySafeCard
     - PPRO
     - SOFORT
-    - iDEAL (SOFORT)
+    - iDEAL (via SOFORT)
 * Internal refactoring:
     - API requests namespace changes
     - API\Response will now throw Exceptions automatically, when transaction failed or there are network / parsing errors

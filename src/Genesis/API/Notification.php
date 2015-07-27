@@ -145,7 +145,7 @@ class Notification
             // This is reconciliation, don't throw on ErrorAPI
         }
 
-        $this->reconciliationObj = $request->response()->getResponseObject();
+        return $this->reconciliationObj = $request->response()->getResponseObject();
     }
 
     /**
