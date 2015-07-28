@@ -86,7 +86,7 @@ class Credit extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
 
     /**

@@ -22,4 +22,9 @@ class AbniDealBanksSpec extends ObjectBehavior
         $this->Build();
         $this->getDocument()->shouldBeNull();
     }
+
+    function it_should_build_correct_url()
+    {
+        $this->getApiConfig('url')->shouldBe('https://staging.gate.e-comprocessing.net:443/retrieve_abn_ideal_banks');
+    }
 }

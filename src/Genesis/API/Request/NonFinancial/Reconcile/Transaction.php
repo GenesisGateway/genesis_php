@@ -51,7 +51,7 @@ class Transaction extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile', true));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile', \Genesis\Config::getToken()));
     }
 
     /**

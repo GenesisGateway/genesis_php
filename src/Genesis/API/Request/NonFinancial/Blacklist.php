@@ -58,7 +58,7 @@ class Blacklist extends \Genesis\API\Request
                 'format'   => 'xml',
             ));
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', \Genesis\Config::getToken()));
     }
 
     /**

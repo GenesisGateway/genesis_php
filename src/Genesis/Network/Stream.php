@@ -147,11 +147,11 @@ class Stream implements \Genesis\Interfaces\Network
 
         // Note: PHP does NOT support SAN certs on PHP version < 5.6
         if (\Genesis\Utils\Common::compareVersions('5.6.0', '<')) {
-            $contextOptions['ssl']['CN_match'] = $url['host'];
-            $contextOptions['ssl']['SNI_server_name'] = $url['host'];
+            $contextOptions['ssl']['CN_match']          = $url['host'];
+            $contextOptions['ssl']['SNI_server_name']   = $url['host'];
         } else {
-            $contextOptions['ssl']['peer_name'] = $url['host'];
-            $contextOptions['ssl']['verify_peer_name'] = true;
+            $contextOptions['ssl']['peer_name']         = $url['host'];
+            $contextOptions['ssl']['verify_peer_name']  = true;
         }
 
         $this->streamContext = stream_context_create($contextOptions);

@@ -382,23 +382,27 @@ abstract class Request
     /**
      * Build the complete URL for the request
      *
-     * @param $subDomain  String   - gateway/wpf etc.
-     * @param $path        String   - path of the current request
-     * @param $appendToken Bool     - should we append the token to the end of the url
+     * @param $sub      String   - gateway/wpf etc.
+     * @param $path     String   - path of the current request
+     * @param $token    String   - should we append the token to the end of the url
      *
-     * @return string               - complete URL (sub_domain,path,token)
+     * @return string            - complete URL
      */
-    protected function buildRequestURL($subDomain = 'gateway', $path = '/', $appendToken = true)
+    protected function buildRequestURL($sub = 'gateway', $path = '', $token = '')
     {
-        $token  = ($appendToken) ? \Genesis\Config::getToken() : '';
+        $protocol = ($this->getApiConfig('protocol')) ? $this->getApiConfig('protocol') : 'https';
 
-        $baseURL = \Genesis\Config::getEnvironmentURL(
-            $this->getApiConfig('protocol'),
-            $subDomain,
-            $this->getApiConfig('port')
+        $sub      = \Genesis\Config::getSubDomain($sub);
+
+        $domain   = \Genesis\Config::getEndpoint();
+
+        $port     = ($this->getApiConfig('port')) ? $this->getApiConfig('port') : 443;
+
+        $path     = ($token) ? sprintf('%s/%s/', $path. $token) : $path;
+
+        return sprintf(
+            '%s://%s%s:%s/%s', $protocol, $sub, $domain, $port, $path
         );
-
-        return sprintf('%s/%s/%s', $baseURL, $path, $token);
     }
 
     /**

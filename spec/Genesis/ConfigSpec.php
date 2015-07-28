@@ -28,18 +28,6 @@ class ConfigSpec extends ObjectBehavior
         \Genesis\Config::$vault['environment'] = $default;
     }
 
-    function it_should_have_default_environment_url()
-    {
-        $this::getEnvironmentURL()
-             ->shouldBe('https://staging.gate.e-comprocessing.net:443');
-    }
-
-    function it_should_build_environment_url()
-    {
-        $this::getEnvironmentURL('https','wpf')
-             ->shouldBe('https://staging.wpf.e-comprocessing.net:443');
-    }
-
     function it_should_have_default_endpoint()
     {
         $this::getEndpoint()->shouldBe('e-comprocessing.net');
@@ -64,21 +52,6 @@ class ConfigSpec extends ObjectBehavior
         \Genesis\Config::$vault['endpoint'] = 'e-comprocessing';
 
         $this::getEndpoint()->shouldBe('e-comprocessing.net');
-
-        \Genesis\Config::$vault['endpoint'] = $default;
-    }
-
-    function it_should_build_endpoint_environment_url()
-    {
-        $default = \Genesis\Config::$vault['endpoint'];
-
-        \Genesis\Config::$vault['endpoint'] = 'emerchantpay';
-
-        $this::getEnvironmentURL()
-             ->shouldBe('https://staging.gate.emerchantpay.net:443');
-
-        $this::getEnvironmentURL('https','wpf')
-             ->shouldBe('https://staging.wpf.emerchantpay.net:443');
 
         \Genesis\Config::$vault['endpoint'] = $default;
     }

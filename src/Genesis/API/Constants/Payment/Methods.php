@@ -20,31 +20,72 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\NonFinancial\Retrieve;
+namespace Genesis\API\Constants\Payment;
 
 /**
- * Class AbniDealBanks
+ * Class Methods
  *
- * Retrieve the available Banks for iDEAL payment via ABN
+ * Payment methods for Genesis Transactions
  *
- * @package Genesis\API\Request\NonFinancial\Retrieve
+ * @package Genesis\API\Constants\Transaction
  */
-class AbniDealBanks extends \Genesis\API\Request
+class Methods
 {
     /**
-     * Set the per-request configuration
+     * Elektronisches Lastschriftverfahren
      *
-     * @return void
+     * PPRO transaction
+     *
+     * @
      */
-    protected function initConfiguration()
-    {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                                                                     'protocol' => 'https',
-                                                                     'port'     => 443,
-                                                                     'type'     => 'GET',
-                                                                     'format'   => 'plain',
-                                                                 ));
+    const ELV = 'elv';
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieve_abn_ideal_banks', false));
-    }
+    /**
+     * e-payment standard
+     *
+     * PPRO transaction
+     */
+    const EPS = 'eps';
+
+    /**
+     * GiroPay
+     *
+     * PPRO transaction
+     */
+    const GIRO_PAY = 'giropay';
+
+    /**
+     * Przelewy24
+     *
+     * PPRO transaction
+     */
+    const PRZELEWY24 = 'przelewy24';
+
+    /**
+     * QIWI
+     *
+     * PPRO transaction
+     */
+    const QIWI = 'qiwi';
+
+    /**
+     * SafetyPay
+     *
+     * PPRO transaction
+     */
+    const SAFETY_PAY = 'safetypay';
+
+    /**
+     * Teleingreso
+     *
+     * PPRO transaction
+     */
+    const TELEINGRESO = 'teleingreso';
+
+    /**
+     * TrustPay
+     *
+     * PPRO transaction
+     */
+    const TRUST_PAY = 'trustpay';
 }

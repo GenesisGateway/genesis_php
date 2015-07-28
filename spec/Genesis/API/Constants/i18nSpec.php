@@ -12,6 +12,17 @@ class i18nSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Constants\i18n');
     }
 
+    function it_should_have_support_for_all_checkout_language()
+    {
+        $languages = array(
+            'en', 'it', 'es', 'fr', 'fr', 'de', 'ja', 'zh', 'ar', 'pt', 'tr', 'ru', 'hi', 'bg'
+        );
+
+        foreach ($languages as $iso_code) {
+            $this::isValidLanguageCode($iso_code)->shouldBe(true);
+        }
+    }
+
     function it_should_validate_supported_languages()
     {
         $this::isValidLanguageCode('en')->shouldBe(true);

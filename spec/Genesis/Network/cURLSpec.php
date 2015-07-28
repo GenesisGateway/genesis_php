@@ -32,7 +32,7 @@ class cURLSpec extends ObjectBehavior
             Config::setEndpoint($endpoint);
 
             $this->send_remote_connection(
-                Config::getEnvironmentURL('https', 'gateway')
+                sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
 
@@ -56,7 +56,7 @@ class cURLSpec extends ObjectBehavior
             Config::setEndpoint($endpoint);
 
             $this->send_remote_connection(
-                Config::getEnvironmentURL('https', 'wpf')
+                sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
 
@@ -80,7 +80,7 @@ class cURLSpec extends ObjectBehavior
             Config::setEndpoint($endpoint);
 
             $this->send_remote_connection(
-                Config::getEnvironmentURL('https', 'gateway')
+                sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
 
@@ -104,7 +104,7 @@ class cURLSpec extends ObjectBehavior
             Config::setEndpoint($endpoint);
 
             $this->send_remote_connection(
-                Config::getEnvironmentURL('https', 'wpf')
+                sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
 

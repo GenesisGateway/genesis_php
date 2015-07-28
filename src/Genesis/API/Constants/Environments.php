@@ -20,31 +20,26 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\NonFinancial\Retrieve;
+namespace Genesis\API\Constants;
 
 /**
- * Class AbniDealBanks
+ * Class Environments
  *
- * Retrieve the available Banks for iDEAL payment via ABN
+ * List of server environments
  *
- * @package Genesis\API\Request\NonFinancial\Retrieve
+ * @package Genesis\API\Constants
  */
-class AbniDealBanks extends \Genesis\API\Request
+class Environments
 {
     /**
-     * Set the per-request configuration
-     *
-     * @return void
+     * Live (Production) environment
      */
-    protected function initConfiguration()
-    {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                                                                     'protocol' => 'https',
-                                                                     'port'     => 443,
-                                                                     'type'     => 'GET',
-                                                                     'format'   => 'plain',
-                                                                 ));
+    const PRODUCTION    = 'production';
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieve_abn_ideal_banks', false));
-    }
+    /**
+     * Test (Staging) environment
+     *
+     * @note NO MONEY ARE BEING TRANSFERRED
+     */
+    const STAGING       = 'sandbox';
 }

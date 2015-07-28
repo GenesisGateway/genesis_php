@@ -151,12 +151,13 @@ You can choose your endpoint the following way:
 
 ```php
 \Genesis\Config::setEndpoint('e-comprocessing');
+\Genesis\Config::setEndpoint('emerchantpay');
 ```
 
 Request types
 -------------
 
-You can use the following request types to initialize the Genesis interface:
+You can use the following request types to initialize the Genesis client:
 
 ```text
 // Generic transaction operations
@@ -165,11 +166,11 @@ Financial\Refund
 Financial\Void
 
 // Transactions with Alternative Payment Methods
+Financial\Alternatives\ABNiDEAL
 Financial\Alternatives\CashU
-Financial\Alternatives\PPRO
 Financial\Alternatives\Paysafecard
+Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
-Financial\Alternatives\SofortiDEAL
 
 // Transactions with BankTransfers
 Financial\BankTransfers\PayByVoucher
@@ -188,6 +189,7 @@ Financial\Cards\Sale3D
 
 // Transactions with Electronic Wallets
 Financial\Wallets\eZeeWallet
+Financial\Wallets\Neteller
 
 // Generic (Non-Financial) requests
 NonFinancial\AVS
@@ -203,6 +205,9 @@ NonFinancial\Fraud\Retrieval\Transaction
 // Reconcile requests
 NonFinancial\Reconcile\DateRange
 NonFinancial\Reconcile\Transaction
+
+// Get ABN iDEAL supported banks
+NonFinancial\Retrieve\AbniDealBanks
 
 // Web Payment Form (Checkout) requests
 WPF\Create

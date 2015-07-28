@@ -103,26 +103,6 @@ class Types
     const RECURRING_SALE = 'recurring_sale';
 
     /**
-     * Wallet-based payment
-     */
-    const EZEEWALLET = 'ezeewallet';
-
-    /**
-     * Bank transfer, popular in China
-     */
-    const PAYBYVOUCHER = 'paybyvoucher';
-
-    /**
-     * Bank transfer payment, popular in Germany
-     */
-    const SOFORT = 'sofort';
-
-    /**
-     * Bank transfer, popular in Netherlands (via SOFORT)
-     */
-    const SOFORT_IDEAL = 'sofort_ideal';
-
-    /**
      * Bank transfer, popular in Netherlands (via ABN)
      */
     const ABNIDEAL = 'abn_ideal';
@@ -133,9 +113,9 @@ class Types
     const CASHU = 'cashu';
 
     /**
-     * Voucher-based payment
+     * Wallet-based payment
      */
-    const PAYSAFECARD = 'paysafecard';
+    const EZEEWALLET = 'ezeewallet';
 
     /**
      * Neteller
@@ -143,42 +123,27 @@ class Types
     const NETELLER = 'neteller';
 
     /**
+     * Bank transfer, popular in China
+     */
+    const PAYBYVOUCHER = 'paybyvoucher';
+
+    /**
+     * Voucher-based payment
+     */
+    const PAYSAFECARD = 'paysafecard';
+
+    /**
      * Supports payments via EPS, TeleIngreso, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and GiroPay
      */
     const PPRO = 'ppro';
 
     /**
-     * EPS (via PPRO)
+     * Bank transfer payment, popular in Germany
      */
-    const EPS = 'ppro';
+    const SOFORT = 'sofort';
 
     /**
-     * TeleIngreso (via PPRO)
+     * Bank transfer, popular in Netherlands (via SOFORT)
      */
-    const TELEINGRESO = 'ppro';
-
-    /**
-     * GiroPay (via PPRO)
-     */
-    const GIRO_PAY = 'ppro';
-
-    /**
-     * SafetyPay (via PPRO)
-     */
-    const SAFETY_PAY = 'ppro';
-
-    /**
-     * TrustPay (via PPRO)
-     */
-    const TRUST_PAY = 'ppro';
-
-    /**
-     * Przelewy24 (via PPRO)
-     */
-    const PRZELEWY24 = 'ppro';
-
-    /**
-     * Qiwi (via PPRO)
-     */
-    const QIWI = 'ppro';
+    const SOFORT_IDEAL = 'sofort_ideal';
 }
