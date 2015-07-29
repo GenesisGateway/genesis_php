@@ -398,7 +398,7 @@ abstract class Request
 
         $port     = ($this->getApiConfig('port')) ? $this->getApiConfig('port') : 443;
 
-        $path     = ($token) ? sprintf('%s/%s/', $path. $token) : $path;
+        $path     = ($token) ? sprintf('%s/%s/', $path, $token) : $path;
 
         return sprintf(
             '%s://%s%s:%s/%s', $protocol, $sub, $domain, $port, $path

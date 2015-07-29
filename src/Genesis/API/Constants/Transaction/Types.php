@@ -41,7 +41,6 @@ class Types
      */
     const ACCOUNT_VERIFICATION = 'account_verification';
 
-
     /**
      * A standard Authorization
      */

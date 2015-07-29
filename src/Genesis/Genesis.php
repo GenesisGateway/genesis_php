@@ -100,11 +100,13 @@ class Genesis
         return $this->responseCtx;
     }
 
-    /*
-      * Send the request
-      *
-      * @return void
-      */
+    /**
+     * Send the request
+     *
+     * @throws Exceptions\ErrorAPI
+     * @throws Exceptions\InvalidArgument
+     * @throws Exceptions\InvalidResponse
+     */
     public function execute()
     {
         // Build the previously set data
