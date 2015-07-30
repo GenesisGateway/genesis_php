@@ -1,7 +1,6 @@
-[![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/travis/GenesisGateway/genesis_php.svg?style=flat-square)](https://travis-ci.org/GenesisGateway/genesis_php)
-[![Total Downloads](https://img.shields.io/packagist/dt/GenesisGateway/genesis_php.svg?style=flat-square)](https://packagist.org/packages/GenesisGateway/genesis_php)
-
+[![Build Status](https://img.shields.io/travis/GenesisGateway/genesis_php.svg?style=flat)](https://travis-ci.org/GenesisGateway/genesis_php)
+[![Software License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)
+[![Total Downloads](https://img.shields.io/packagist/dt/GenesisGateway/genesis_php.svg?style=flat)](https://packagist.org/packages/GenesisGateway/genesis_php)
 
 Overview
 ===========
