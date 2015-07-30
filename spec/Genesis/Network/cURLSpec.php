@@ -8,9 +8,6 @@ use Genesis\Config;
 
 class cURLSpec extends ObjectBehavior
 {
-    protected $endpoint;
-    protected $environment;
-
     function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Network\cURL');
@@ -18,15 +15,14 @@ class cURLSpec extends ObjectBehavior
 
     function it_can_connect_to_staging_gateway()
     {
-        $this->saveEndpoint();
-        $this->saveEnvironment();
-
         $endpoints = array(
-            'emerchantpay',
-            'ecomprocessing'
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
-        Config::setEnvironment('sandbox');
+        Config::setEnvironment(
+            \Genesis\API\Constants\Environments::STAGING
+        );
 
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
@@ -35,22 +31,18 @@ class cURLSpec extends ObjectBehavior
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
-
-        $this->restoreEndpoint();
-        $this->restoreEnvironment();
     }
 
     function it_can_connect_to_staging_wpf()
     {
-        $this->saveEndpoint();
-        $this->saveEnvironment();
-
         $endpoints = array(
-            'emerchantpay',
-            'ecomprocessing'
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
-        Config::setEnvironment('sandbox');
+        Config::setEnvironment(
+            \Genesis\API\Constants\Environments::STAGING
+        );
 
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
@@ -59,22 +51,18 @@ class cURLSpec extends ObjectBehavior
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
-
-        $this->restoreEndpoint();
-        $this->restoreEnvironment();
     }
 
     function it_can_connect_to_production_gateway()
     {
-        $this->saveEndpoint();
-        $this->saveEnvironment();
-
         $endpoints = array(
-            'emerchantpay',
-            'ecomprocessing'
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
-        Config::setEnvironment('live');
+        Config::setEnvironment(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
 
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
@@ -83,22 +71,18 @@ class cURLSpec extends ObjectBehavior
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
-
-        $this->restoreEndpoint();
-        $this->restoreEnvironment();
     }
 
     function it_can_connect_to_production_wpf()
     {
-        $this->saveEndpoint();
-        $this->saveEnvironment();
-
         $endpoints = array(
-            'emerchantpay',
-            'ecomprocessing'
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
-        Config::setEnvironment('live');
+        Config::setEnvironment(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
 
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
@@ -107,9 +91,6 @@ class cURLSpec extends ObjectBehavior
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
-
-        $this->restoreEndpoint();
-        $this->restoreEnvironment();
     }
 
     function send_remote_connection($remote_url)
@@ -140,30 +121,6 @@ class cURLSpec extends ObjectBehavior
         }
 
         $this->getStatus()->shouldBe(200);
-    }
-
-    function saveEndpoint()
-    {
-        $this->endpoint = Config::getEndpoint();
-    }
-
-    function restoreEndpoint()
-    {
-        Config::setEndpoint(
-            $this->endpoint
-        );
-    }
-
-    function saveEnvironment()
-    {
-        $this->environment = Config::getEndpoint();
-    }
-
-    function restoreEnvironment()
-    {
-        Config::setEnvironment(
-            $this->environment
-        );
     }
 
     function getMatchers()

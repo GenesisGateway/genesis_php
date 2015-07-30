@@ -33,6 +33,9 @@ namespace Genesis;
  * @method static \Genesis\Config getPassword()  Get the Password, set in the configuration
  * @method static \Genesis\Config getToken()     Get the Terminal Token, set in configuration
  *
+ * @method static \Genesis\Config setUsername()  Set the Username
+ * @method static \Genesis\Config setPassword()  Set the Password
+ * @method static \Genesis\Config setToken()     Set the Terminal
  */
 final class Config
 {
@@ -51,8 +54,8 @@ final class Config
             'endpoint'      => null,
             'username'      => null,
             'password'      => null,
-            'environment'   => null,
             'token'         => null,
+            'environment'   => \Genesis\API\Constants\Environments::STAGING,
         );
 
     /**
@@ -95,20 +98,40 @@ final class Config
      */
     public static function __callStatic($method, $args)
     {
-        $configKey = strtolower(substr($method, 3));
+        $keySetting = strtolower(substr($method, 3));
 
         switch (substr($method, 0, 3)) {
             case 'get':
-                if (isset(self::$vault[$configKey])) {
-                    return self::$vault[$configKey];
+                if (isset(self::$vault[$keySetting])) {
+                    return self::$vault[$keySetting];
                 }
                 break;
             case 'set':
-                self::$vault[$configKey] = trim(reset($args));
+                self::$vault[$keySetting] = trim(reset($args));
                 break;
         }
 
         return null;
+    }
+
+    /**
+     * Get the CA PEM
+     *
+     * @return string - Path to the Genesis CA Bundle; false otherwise
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public static function getCertificateBundle()
+    {
+        $bundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
+
+        if (!file_exists($bundle)) {
+            throw new \Genesis\Exceptions\InvalidArgument(
+                'CA Bundle file is missing or inaccessible'
+            );
+        }
+
+        return $bundle;
     }
 
     /**
@@ -147,74 +170,102 @@ final class Config
     }
 
     /**
-     * Get the CA PEM
-     *
-     * @return string - Path to the Genesis CA Bundle; false otherwise
-     * @throws \Genesis\Exceptions\EnvironmentNotSet()
-     */
-    public static function getCertificateBundle()
-    {
-        $bundle = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'ca-bundle.pem';
-
-        if (file_exists($bundle)) {
-            return $bundle;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the current Environment based on the set variable
+     * Get the current Genesis Environment
      *
      * @return mixed
-     * @throws \Genesis\Exceptions\EnvironmentNotSet()
      */
     public static function getEnvironment()
     {
-        if (!array_key_exists('environment', self::$vault)) {
-            throw new \Genesis\Exceptions\EnvironmentNotSet();
-        }
-
-        $environment = strtolower(trim(self::$vault['environment']));
-
-        $aliases = array(
-            'prod',
-            'production',
-            'live'
-        );
-
-        foreach ($aliases as $name) {
-            if (strcasecmp($environment, $name) === 0) {
-                return \Genesis\API\Constants\Environments::PRODUCTION;
-            }
-        }
-
-        return \Genesis\API\Constants\Environments::STAGING;
+        return self::$vault['environment'];
     }
 
     /**
-     * Get the current Domain Endpoint based on the set variable
+     * Set Environment
      *
-     * @return string
+     * @param   string  $environmentArg
+     * @return  string
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
      */
-    public static function getEndpoint()
+    public static function setEnvironment($environmentArg)
     {
-        $endpoint = strtolower(trim(self::$vault['endpoint']));
+        $environmentArg = strtolower(trim($environmentArg));
 
         $aliases = array(
-            'emerchantpay',
-            'emerchantpay.net',
-            'emp',
-            'emp.net'
+            \Genesis\API\Constants\Environments::STAGING    => array(
+                'test',
+                'testing',
+                'staging',
+                \Genesis\API\Constants\Environments::STAGING
+            ),
+            \Genesis\API\Constants\Environments::PRODUCTION => array(
+                'live',
+                'prod',
+                'production',
+                \Genesis\API\Constants\Environments::PRODUCTION
+            ),
         );
 
-        foreach ($aliases as $name) {
-            if (strcasecmp($endpoint, $name) === 0) {
-                return \Genesis\API\Constants\Endpoints::EMERCHANTPAY;
+        foreach ($aliases as $environment => $endpointAlias) {
+            foreach ($endpointAlias as $alias) {
+                if (stripos($environmentArg, $alias) !== false) {
+                    return self::$vault['environment'] = $environment;
+                }
             }
         }
 
-        return \Genesis\API\Constants\Endpoints::ECOMPROCESSING;
+        throw new \Genesis\Exceptions\InvalidArgument(
+            'Invalid Environment'
+        );
+    }
+
+    /**
+     * Get the current Genesis Endpoint
+     *
+     * @return mixed
+     */
+    public static function getEndpoint()
+    {
+        return self::$vault['endpoint'];
+    }
+
+    /**
+     * Set Genesis Endpoint
+     *
+     * @param   string  $endpointArg
+     * @return  string
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public static function setEndpoint($endpointArg)
+    {
+        $endpointArg = strtolower(trim($endpointArg));
+
+        $aliases = array(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY      => array(
+                'emp',
+                'emerchantpay',
+                \Genesis\API\Constants\Endpoints::EMERCHANTPAY,
+            ),
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING    => array(
+                'ecp',
+                'ecomprocessing',
+                'e-comprocessing',
+                \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+            ),
+        );
+
+        foreach ($aliases as $endpoint => $endpointAlias) {
+            foreach ($endpointAlias as $alias) {
+                if (stripos($endpointArg, $alias) !== false) {
+                    return self::$vault['endpoint'] = $endpoint;
+                }
+            }
+        }
+
+        throw new \Genesis\Exceptions\InvalidArgument(
+            'Invalid Endpoint'
+        );
     }
 
     /**
@@ -269,7 +320,7 @@ final class Config
     {
         if (!file_exists($iniFile)) {
             throw new \Genesis\Exceptions\InvalidArgument(
-                'The provided configuration file is invalid!'
+                'The provided configuration file is invalid or inaccessible!'
             );
         }
 

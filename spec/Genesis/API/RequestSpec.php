@@ -47,18 +47,22 @@ class RequestSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('420000');
     }
 
-    function it_should_have_default_environment_url()
+    function it_should_have_default_environment_url_for_ecp_endpoint()
     {
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
+
         $this->getApiConfig('url')->shouldBe('https://staging.gate.e-comprocessing.net:443/blacklists');
     }
 
-    function it_should_build_endpoint_environment_url()
+    function it_should_have_default_environment_url_for_emp_endpoint()
     {
-        $default = \Genesis\Config::$vault['endpoint'];
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
 
-        \Genesis\Config::setEndpoint('emerchantpay');
-
-        \Genesis\Config::setEndpoint($default);
+        $this->getApiConfig('url')->shouldBe('https://staging.gate.emerchantpay.net:443/blacklists');
     }
 
     public function getMatchers()

@@ -1,7 +1,7 @@
 Overview
 ===========
 
-Client Library for communication with Genesis Payment Processing Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, in order to get an overview of Genesis's Payment Gateway API and functionality.
+Client Library for processing payments through Genesis Payment Processing Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, in order to get an overview of Genesis's Payment Gateway API and functionality.
 
 Requirements
 ------------
@@ -16,14 +16,15 @@ Requirements
     * [XMLWriter](https://php.net/xmlwriter)
 * Composer (optional)
 
-Note: Most of the extension are part of PHP and enabled by default, however some distros are using custom configuration that might have some of them removed/disabled.
+Note: Most of the extension are part of PHP and enabled by default, however some distributions are using custom configuration that might have some of them removed/disabled.
 
 Installation
 ------------
 
-* clone this repo / download the archive
+* clone / [download](https://github.com/GenesisGateway/genesis_php/archive/master.zip) this repo
+
 ```bash
-git clone http://github.com/E-ComProcessing/genesis_php genesis_php && cd genesis_php
+git clone http://github.com/GenesisGateway/genesis_php genesis_php && cd genesis_php
 ```
 
 Make a transaction
@@ -40,9 +41,9 @@ use \Genesis;
 Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
+Config::setEndpoint('<set_your_endpoint>');
 Config::setUsername('<enter_your_username>');
 Config::setPassword('<enter_your_password>');
-Config::setEnvironment('test|live');
 Config::setToken('<enter_your_token>');
 
 // Create a new Genesis instance with desired API request
@@ -145,12 +146,15 @@ Endpoints
 
 The current versions supports two separate endpoints: ```eMerchantPay``` and ```E-ComProcessing```
 
-By default, the selected endpoint is: ```E-ComProcessing```
+For example:
 
-You can choose your endpoint the following way:
-
+- You can set the Endpoint to ```E-ComProcessing```, thus all the requests will go to ```E-ComProcessing```s Genesis instance:
 ```php
 \Genesis\Config::setEndpoint('e-comprocessing');
+```
+
+- You can set the Endpoint to ```eMerchantPay```, thus all the requests will go to ```eMerchantPay```s Genesis instance:
+```php
 \Genesis\Config::setEndpoint('emerchantpay');
 ```
 
@@ -237,11 +241,4 @@ php composer.phar install
 vendor/bin/phpspec run
 ```
 
-API Examples
-------------
-
-You can explore Genesis's API, test parameters or get examples for different transaction types with: [Genesis Client Integration]
-
-
 [Composer]: https://getcomposer.org/
-[Genesis Client Integration]: https://github.com/E-ComProcessing/genesis_api_examples

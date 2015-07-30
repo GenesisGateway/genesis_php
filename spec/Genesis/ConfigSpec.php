@@ -14,46 +14,171 @@ class ConfigSpec extends ObjectBehavior
 
     function it_should_have_default_environment_sandbox()
     {
-        $this::getEnvironment()->shouldBe('sandbox');
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::STAGING
+        );
     }
 
     function it_should_set_environment()
     {
-        $default = \Genesis\Config::$vault['environment'];
+        $this::setEnvironment(
+            \Genesis\API\Constants\Environments::STAGING
+        );
 
-        \Genesis\Config::$vault['environment'] = 'production';
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::STAGING
+        );
 
-        $this::getEnvironment()->shouldBe('production');
+        $this::setEnvironment(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
 
-        \Genesis\Config::$vault['environment'] = $default;
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
     }
 
-    function it_should_have_default_endpoint()
+    function it_should_set_environment_via_aliases()
     {
-        $this::getEndpoint()->shouldBe('e-comprocessing.net');
+        $this::setEnvironment('live');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
+
+        $this::setEnvironment('prod');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
+
+        $this::setEnvironment('production');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::PRODUCTION
+        );
+
+        $this::setEnvironment('test');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::STAGING
+        );
+
+        $this::setEnvironment('testing');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::STAGING
+        );
+
+        $this::setEnvironment('staging');
+
+        $this::getEnvironment()->shouldBe(
+            \Genesis\API\Constants\Environments::STAGING
+        );
+    }
+
+    function it_should_not_set_environment_on_invalid_argument()
+    {
+        $default = $this::getEnvironment();
+
+        $this::shouldThrow()->during('setEnvironment', array('example.com'));
+
+        $this::getEnvironment()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEnvironment', array(null));
+
+        $this::getEnvironment()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEnvironment', array(' '));
+
+        $this::getEnvironment()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEnvironment', array("\x00"));
+
+        $this::getEnvironment()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEnvironment', array(mt_rand(0, 100)));
+
+        $this::getEnvironment()->shouldBe($default);
     }
 
     function it_should_set_endpoint()
     {
-        $default = \Genesis\Config::$vault['endpoint'];
+        $this::setEndpoint(\Genesis\API\Constants\Endpoints::ECOMPROCESSING);
 
-        \Genesis\Config::$vault['endpoint'] = 'emp';
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
 
-        $this::getEndpoint()->shouldBe('emerchantpay.net');
+        $this::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
 
-        \Genesis\Config::$vault['endpoint'] = 'emerchantpay';
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+    }
 
-        $this::getEndpoint()->shouldBe('emerchantpay.net');
+    function it_should_set_endpoint_via_aliases()
+    {
+        $this::setEndpoint('ecp');
 
-        \Genesis\Config::$vault['endpoint'] = 'ecp';
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
 
-        $this::getEndpoint()->shouldBe('e-comprocessing.net');
+        $this::setEndpoint('e-comprocessing');
 
-        \Genesis\Config::$vault['endpoint'] = 'e-comprocessing';
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
 
-        $this::getEndpoint()->shouldBe('e-comprocessing.net');
+        $this::setEndpoint('www.e-comprocessing.com');
 
-        \Genesis\Config::$vault['endpoint'] = $default;
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
+
+        $this::setEndpoint('emp');
+
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+
+        $this::setEndpoint('emerchantpay');
+
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+
+        $this::setEndpoint('www.emerchantpay.com');
+
+        $this::getEndpoint()->shouldBe(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+    }
+
+    function it_should_not_set_endpoint_on_invalid_argument()
+    {
+        $default = $this::getEndpoint();
+
+        $this::shouldThrow()->during('setEndpoint', array('example.com'));
+
+        $this::getEndpoint()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEndpoint', array(null));
+
+        $this::getEndpoint()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEndpoint', array(' '));
+
+        $this::getEndpoint()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEndpoint', array("\x00"));
+
+        $this::getEndpoint()->shouldBe($default);
+
+        $this::shouldThrow()->during('setEndpoint', array(mt_rand(0, 100)));
+
+        $this::getEndpoint()->shouldBe($default);
     }
 
     function it_should_have_default_interface()

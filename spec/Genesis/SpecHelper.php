@@ -1,3 +1,3 @@
 <?php
 
-\Genesis\Config::setEnvironment('sandbox');
+// Pre-Spec setup

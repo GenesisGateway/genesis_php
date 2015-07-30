@@ -57,7 +57,7 @@ XML;
   <technical_message>Transaction successful!</technical_message>
   <message>Transaction successful!</message>
   <redirect_url>
-      https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      https://staging.gate.x.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   </redirect_url>
   <mode>live</mode>
   <timestamp>2015-02-16T17:56:53Z</timestamp>
@@ -75,7 +75,7 @@ XML;
         $this->getObject()->status->shouldBe('pending_async');
 
         $this->getObject()->redirect_url->shouldBe(
-            'https://staging.gate.e-comprocessing.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            'https://staging.gate.x.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
         );
     }
 

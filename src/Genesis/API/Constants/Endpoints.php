@@ -32,16 +32,16 @@ namespace Genesis\API\Constants;
 class Endpoints
 {
     /**
-     * E-ComProcessing
+     * Domain for E-ComProcessing's Genesis instance
      *
-     * @see http://e-comprocessing.net
+     * @link http://www.e-comprocessing.com/
      */
     const ECOMPROCESSING    = 'e-comprocessing.net';
 
     /**
-     * eMerchantPay Ltd
+     * Domain for eMerchantPay's Genesis instance
      *
-     * @see https://www.emerchantpay.com
+     * @link https://www.emerchantpay.com
      */
     const EMERCHANTPAY      = 'emerchantpay.net';
 }

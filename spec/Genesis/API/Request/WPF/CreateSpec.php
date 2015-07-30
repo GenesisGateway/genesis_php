@@ -25,8 +25,12 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    public function it_should_set_language_parameter()
+    function it_should_set_language_parameter_ecp_endpoint()
     {
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
+
         $this->setLanguage('en');
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/en/wpf');
 
@@ -34,13 +38,43 @@ class CreateSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf');
     }
 
-    public function it_should_parse_only_two_letters()
+    function it_should_set_language_parameter_emp_endpoint()
     {
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+
+        $this->setLanguage('en');
+        $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/en/wpf');
+
+        $this->setLanguage('zh');
+        $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/zh/wpf');
+    }
+
+    function it_should_parse_only_two_letters_ecp_endpoint()
+    {
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+        );
+
         $this->setLanguage('en_US');
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/en/wpf');
 
         $this->setLanguage('zh_ZH');
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf');
+    }
+
+    function it_should_parse_only_two_letters_emp_endpoint()
+    {
+        \Genesis\Config::setEndpoint(
+            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+        );
+
+        $this->setLanguage('en_US');
+        $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/en/wpf');
+
+        $this->setLanguage('zh_ZH');
+        $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/zh/wpf');
     }
 
     function it_should_fail_when_missing_required_parameters()
