@@ -1,0 +1,3 @@
+<?php
+
+// Pre-Spec setup
