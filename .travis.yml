@@ -1,15 +1,24 @@
 language: php
 
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - php5-cli
+      - php5-curl
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 matrix:
   include:
     - php: 5.3
-    - php: 5.4
-    - php: 5.5
-    - php: 5.6
+      env: IGNORE_PHPENV='yes'
     - php: hhvm
-    - php: 7.0
   allow_failures:
-    - php: 7.0
+    - php: hhvm
   fast_finish: true
 
 before_install:
@@ -20,4 +29,5 @@ install:
   - composer update
 
 script:
-   - vendor/bin/phpspec run --format=pretty
+  - if [ "$IGNORE_PHPENV" == "yes" ]; then /usr/bin/php5 vendor/bin/phpspec run --format=pretty; fi;
+  - if [ "$IGNORE_PHPENV" != "yes" ]; then php vendor/bin/phpspec run --format=pretty; fi;

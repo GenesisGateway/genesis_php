@@ -132,6 +132,7 @@ class cURL implements \Genesis\Interfaces\Network
             ),
             CURLOPT_HEADER         => true,
             CURLOPT_FAILONERROR    => true,
+            CURLOPT_FRESH_CONNECT  => true,
             CURLOPT_RETURNTRANSFER => true,
             // SSL/TLS Configuration
             CURLOPT_CAINFO         => $requestData['ca_bundle'],
@@ -139,12 +140,12 @@ class cURL implements \Genesis\Interfaces\Network
             CURLOPT_SSL_VERIFYHOST => 2,
         );
 
-        $post = array(
-            CURLOPT_POST       => false,
-            CURLOPT_POSTFIELDS => $requestData['body']
-        );
-
         if ('POST' == strtoupper($requestData['type'])) {
+            $post = array(
+                CURLOPT_POST       => true,
+                CURLOPT_POSTFIELDS => $requestData['body']
+            );
+
             $options = $options + $post;
         }
 

@@ -1,5 +1,13 @@
-Overview
+Genesis PHP
 ===========
+
+[![Build Status](https://img.shields.io/travis/GenesisGateway/genesis_php.svg?style=flat)](https://travis-ci.org/GenesisGateway/genesis_php)
+[![Latest Stable Version](https://poser.pugx.org/genesisgateway/genesis_php/v/stable)](https://packagist.org/packages/genesisgateway/genesis_php)
+[![Total Downloads](https://img.shields.io/packagist/dt/GenesisGateway/genesis_php.svg?style=flat)](https://packagist.org/packages/GenesisGateway/genesis_php)
+[![Software License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)
+
+Overview
+--------
 
 Client Library for processing payments through Genesis Payment Processing Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, in order to get an overview of Genesis's Payment Gateway API and functionality.
 
@@ -23,11 +31,11 @@ Installation
 
 * clone / [download](https://github.com/GenesisGateway/genesis_php/archive/master.zip) this repo
 
-```bash
+```sh
 git clone http://github.com/GenesisGateway/genesis_php genesis_php && cd genesis_php
 ```
 
-Make a transaction
+Getting Started
 ------------------
 
 ```php
@@ -144,7 +152,7 @@ catch (\Exception $e) {
 Endpoints
 ---------
 
-The current versions supports two separate endpoints: ```eMerchantPay``` and ```E-ComProcessing```
+The current versions supports two separate endpoints: ```E-ComProcessing``` and ```eMerchantPay```
 
 For example:
 
@@ -224,21 +232,21 @@ More information about each one of the request types can be found in the Genesis
 Running Specs
 --------------
 
-The following steps are optional, however its required to run specs at least once, to ensure that everything is working as intended
+The following step are optional, however its recommended to run specs at least once, in order to ensure that everything is working as intended on your setup
 
 * install [Composer] (if you don't have it already)
-```bash
+```sh
 curl -sS https://getcomposer.org/installer | php
 ```
 
 * fetch all required packages
-```bash
+```sh
 php composer.phar install
 ```
 
 * run phpspec
-```bash
-vendor/bin/phpspec run
+```sh
+php vendor/bin/phpspec run
 ```
 
 [Composer]: https://getcomposer.org/
