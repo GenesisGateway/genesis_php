@@ -152,7 +152,7 @@ catch (\Exception $e) {
 Endpoints
 ---------
 
-The current versions supports two separate endpoints: ```eMerchantPay``` and ```E-ComProcessing```
+The current versions supports two separate endpoints: ```E-ComProcessing``` and ```eMerchantPay```
 
 For example:
 
@@ -246,7 +246,7 @@ php composer.phar install
 
 * run phpspec
 ```sh
-vendor/bin/phpspec run
+php vendor/bin/phpspec run
 ```
 
 [Composer]: https://getcomposer.org/
