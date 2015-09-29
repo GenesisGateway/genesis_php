@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\BankTransfers;
+namespace spec\Genesis\API\Request\Financial\Vouchers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PayByVoucherSpec extends ObjectBehavior
+class YeePaySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\BankTransfers\PayByVoucher');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\YeePay');
     }
 
     function it_can_build_stucture()

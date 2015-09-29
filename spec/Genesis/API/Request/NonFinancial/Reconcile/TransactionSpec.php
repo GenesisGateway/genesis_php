@@ -7,16 +7,39 @@ use Prophecy\Argument;
 
 class TransactionSpec extends ObjectBehavior
 {
+    protected $faker;
+
+    function __construct()
+    {
+        $this->faker = \Faker\Factory::create();
+
+        $this->faker->addProvider(new \Faker\Provider\Uuid($this->faker));
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Reconcile\Transaction');
     }
 
-    function it_can_build_stucture()
+    function it_should_validate_with_arn()
     {
-        $this->setRequestParameters();
-        $this->Build();
+        $this->setArn($this->faker->uuid);
         $this->getDocument()->shouldNotBeEmpty();
+        $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
+    }
+
+    function it_should_validate_with_transaction_id()
+    {
+        $this->setTransactionId($this->faker->uuid);
+        $this->getDocument()->shouldNotBeEmpty();
+        $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
+    }
+
+    function it_should_validate_with_unique_id()
+    {
+        $this->setUniqueId($this->faker->uuid);
+        $this->getDocument()->shouldNotBeEmpty();
+        $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
     function it_should_fail_when_no_parameters()
@@ -26,14 +49,11 @@ class TransactionSpec extends ObjectBehavior
 
     function it_should_fail_when_missing_required_parameters()
     {
-        $this->setRequestParameters();
+        $this->setArn(null);
+        $this->setTransactionId(null);
         $this->setUniqueId(null);
-        $this->shouldThrow()->during('getDocument');
-    }
 
-    function setRequestParameters()
-    {
-        $this->setUniqueId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
+        $this->shouldThrow()->during('getDocument');
     }
 
     public function getMatchers()

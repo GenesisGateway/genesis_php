@@ -20,57 +20,29 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial;
+namespace Genesis\API\Request\NonFinancial\Fraud\Reports;
 
 /**
- * Capture Request
+ * Fraud (SAFE/TC40) Report by arn/original_transaction_unique_id
  *
  * @package    Genesis
  * @subpackage Request
  */
-class Capture extends \Genesis\API\Request
+class Transaction extends \Genesis\API\Request
 {
     /**
-     * Unique transaction id defined by mer-chant
+     * Acquirer's Reference Number
      *
      * @var string
      */
-    protected $transaction_id;
+    protected $arn;
 
     /**
-     * Description of the transaction for later use
+     * Unique ID  of the original (reference) transaction
      *
      * @var string
      */
-    protected $usage;
-
-    /**
-     * IPv4 address of customer
-     *
-     * @var string
-     */
-    protected $remote_ip;
-
-    /**
-     * Amount of transaction in minor currency unit
-     *
-     * @var int
-     */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
-     *
-     * @var string
-     */
-    protected $currency;
-
-    /**
-     * Unique id of the existing (target) transaction
-     *
-     * @var string
-     */
-    protected $reference_id;
+    protected $original_transaction_unique_id;
 
     /**
      * Set the per-request configuration
@@ -88,7 +60,7 @@ class Capture extends \Genesis\API\Request
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'fraud_reports', false));
     }
 
     /**
@@ -98,14 +70,12 @@ class Capture extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency'
+        $requiredFieldsOR = array(
+            'arn',
+            'original_transaction_unique_id'
         );
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFieldsOR = \Genesis\Utils\Common::createArrayObject($requiredFieldsOR);
     }
 
     /**
@@ -116,20 +86,9 @@ class Capture extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = array(
-            'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::CAPTURE,
-                'transaction_id'   => $this->transaction_id,
-                'usage'            => $this->usage,
-                'remote_ip'        => $this->remote_ip,
-                'reference_id'     => $this->reference_id,
-                'amount'           => $this->transform(
-                    'amount',
-                    array(
-                        $this->amount,
-                        $this->currency,
-                    )
-                ),
-                'currency'         => $this->currency
+            'fraud_report_request' => array(
+                'arn'                            => $this->arn,
+                'original_transaction_unique_id' => $this->original_transaction_unique_id,
             )
         );
 

@@ -20,16 +20,16 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\BankTransfers;
+namespace Genesis\API\Request\Financial\Vouchers;
 
 /**
- * Class PayByVoucher
+ * Class YeePay
  *
- * Bank transfer
+ * PayByVoucher oBeP transaction via YeePay
  *
- * @package Genesis\API\Request\Financial\BankTransfers
+ * @package Genesis\API\Request\Financial\Vouchers
  */
-class PayByVoucher extends \Genesis\API\Request
+class YeePay extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -139,12 +139,14 @@ class PayByVoucher extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            ));
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                 'protocol' => 'https',
+                 'port'     => 443,
+                 'type'     => 'POST',
+                 'format'   => 'xml',
+            )
+        );
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
@@ -182,7 +184,7 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER,
+                'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_YEEPAY,
                 'transaction_id'      => $this->transaction_id,
                 'remote_ip'           => $this->remote_ip,
                 'amount'              => $this->transform(

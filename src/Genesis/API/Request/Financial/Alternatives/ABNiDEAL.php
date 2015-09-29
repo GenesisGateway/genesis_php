@@ -300,12 +300,14 @@ class ABNiDEAL extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                                                                     'protocol' => 'https',
-                                                                     'port'     => 443,
-                                                                     'type'     => 'POST',
-                                                                     'format'   => 'xml',
-                                                                 ));
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => 'xml',
+            )
+        );
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }

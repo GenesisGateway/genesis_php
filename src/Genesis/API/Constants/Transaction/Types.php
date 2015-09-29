@@ -122,9 +122,24 @@ class Types
     const NETELLER = 'neteller';
 
     /**
-     * Bank transfer, popular in China
+     * POLi is Australia's most popular online real time debit payment system.
      */
-    const PAYBYVOUCHER = 'paybyvoucher';
+    const POLI = 'poli';
+
+    /**
+     * WebMoney is a global settlement system and environment for online business activities.
+     */
+    const WEBMONEY = 'webmoney';
+
+    /**
+     * PayByVouchers via YeePay
+     */
+    const PAYBYVOUCHER_YEEPAY = 'paybyvouchers_yeepay';
+
+    /**
+     * PayByVouchers via Credit/Debit Cards
+     */
+    const PAYBYVOUCHER_SALE = 'paybyvouchers_sale';
 
     /**
      * Voucher-based payment

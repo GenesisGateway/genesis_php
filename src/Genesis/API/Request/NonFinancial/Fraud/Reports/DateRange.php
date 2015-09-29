@@ -20,57 +20,39 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial;
+namespace Genesis\API\Request\NonFinancial\Fraud\Reports;
 
 /**
- * Capture Request
+ * Fraud (SAFE/TC40) reports by Date Range
  *
  * @package    Genesis
  * @subpackage Request
  */
-class Capture extends \Genesis\API\Request
+
+class DateRange extends \Genesis\API\Request
 {
     /**
-     * Unique transaction id defined by mer-chant
+     * start of the requested date range
      *
-     * @var string
+     * @var string (yyyy-mm-dd)
      */
-    protected $transaction_id;
+    protected $start_date;
 
     /**
-     * Description of the transaction for later use
+     * end of the requested date range
      *
-     * @var string
+     * @var string (yyyy-mm-dd)
      */
-    protected $usage;
+    protected $end_date;
 
     /**
-     * IPv4 address of customer
+     * the page within the paginated result
      *
-     * @var string
-     */
-    protected $remote_ip;
-
-    /**
-     * Amount of transaction in minor currency unit
+     * default: 1
      *
      * @var int
      */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
-     *
-     * @var string
-     */
-    protected $currency;
-
-    /**
-     * Unique id of the existing (target) transaction
-     *
-     * @var string
-     */
-    protected $reference_id;
+    protected $page;
 
     /**
      * Set the per-request configuration
@@ -88,7 +70,14 @@ class Capture extends \Genesis\API\Request
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'fraud_reports/by_date',
+                false
+            )
+        );
     }
 
     /**
@@ -99,10 +88,7 @@ class Capture extends \Genesis\API\Request
     protected function setRequiredFields()
     {
         $requiredFields = array(
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency'
+            'start_date',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -116,20 +102,10 @@ class Capture extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = array(
-            'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::CAPTURE,
-                'transaction_id'   => $this->transaction_id,
-                'usage'            => $this->usage,
-                'remote_ip'        => $this->remote_ip,
-                'reference_id'     => $this->reference_id,
-                'amount'           => $this->transform(
-                    'amount',
-                    array(
-                        $this->amount,
-                        $this->currency,
-                    )
-                ),
-                'currency'         => $this->currency
+            'fraud_report_request' => array(
+                'start_date' => $this->start_date,
+                'end_date'   => $this->end_date,
+                'page'       => $this->page,
             )
         );
 
