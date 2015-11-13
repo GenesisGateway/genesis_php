@@ -225,22 +225,16 @@ class Stream implements \Genesis\Interfaces\Network
             'DHE-RSA-AES256-SHA256',
             'DHE-DSS-AES256-SHA',
             'DHE-RSA-AES256-SHA',
-            'AES128-GCM-SHA256',
-            'AES256-GCM-SHA384',
-            'ECDHE-RSA-RC4-SHA',
-            'ECDHE-ECDSA-RC4-SHA',
-            'AES128',
-            'AES256',
-            'RC4-SHA',
-            'HIGH',
             '!aNULL',
             '!eNULL',
             '!EXPORT',
             '!DES',
             '!3DES',
             '!MD5',
+            '!RC4',
             '!PSK',
             '!SSLv2',
+            '!SSLv3'
         );
     }
 }

@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\Wallets;
+namespace Genesis\API\Request\Financial\Alternatives;
 
 /**
  * Class POLi

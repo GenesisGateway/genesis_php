@@ -132,7 +132,7 @@ class Types
     const WEBMONEY = 'webmoney';
 
     /**
-     * PayByVouchers via YeePay
+     * PayByVouchers via oBeP
      */
     const PAYBYVOUCHER_YEEPAY = 'paybyvouchers_yeepay';
 
@@ -155,9 +155,4 @@ class Types
      * Bank transfer payment, popular in Germany
      */
     const SOFORT = 'sofort';
-
-    /**
-     * Bank transfer, popular in Netherlands (via SOFORT)
-     */
-    const SOFORT_IDEAL = 'sofort_ideal';
 }

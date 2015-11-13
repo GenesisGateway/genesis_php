@@ -23,13 +23,13 @@
 namespace Genesis\API\Request\Financial\Vouchers;
 
 /**
- * Class YeePay
+ * Class oBeP
  *
  * PayByVoucher oBeP transaction via YeePay
  *
  * @package Genesis\API\Request\Financial\Vouchers
  */
-class YeePay extends \Genesis\API\Request
+class oBeP extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -94,18 +94,18 @@ class YeePay extends \Genesis\API\Request
     protected $customer_email;
 
     /**
+     * Full of customer in Chinese
+     *
+     * @var string
+     */
+    protected $customer_name;
+
+    /**
      * Phone number of the customer
      *
      * @var string
      */
     protected $customer_phone;
-
-    /**
-     * Full name of customer in Chinese
-     *
-     * @var string
-     */
-    protected $card_holder;
 
     /**
      * Customer ID number.
@@ -164,7 +164,7 @@ class YeePay extends \Genesis\API\Request
             'currency',
             'product_name',
             'product_category',
-            'card_holder',
+            'customer_name',
             'customer_email',
             'customer_phone',
             'customer_id_number',
@@ -197,7 +197,7 @@ class YeePay extends \Genesis\API\Request
                 'currency'            => $this->currency,
                 'product_name'        => $this->product_name,
                 'product_category'    => $this->product_category,
-                'card_holder'         => $this->card_holder,
+                'customer_name'       => $this->customer_name,
                 'customer_email'      => $this->customer_email,
                 'customer_phone'      => $this->customer_phone,
                 'customer_id_number'  => $this->customer_id_number,

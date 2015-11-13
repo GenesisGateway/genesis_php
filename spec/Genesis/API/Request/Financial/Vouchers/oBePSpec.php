@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\Vouchers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class SofortiDEALSpec extends ObjectBehavior
+class oBePSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\SofortiDEAL');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\oBeP');
     }
 
     function it_can_build_stucture()
@@ -26,7 +26,7 @@ class SofortiDEALSpec extends ObjectBehavior
     function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setCustomerBankId(null);
+        $this->setCustomerName(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -42,23 +42,18 @@ class SofortiDEALSpec extends ObjectBehavior
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+
+        $this->setProductName('Paul Blart Mall Cop');
+        $this->setProductCategory('movie');
+        $this->setCustomerName('李');
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerBankId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCustomerIdNumber($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
         $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
     }
 
     public function getMatchers()
