@@ -20,14 +20,14 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\Vouchers;
+namespace Genesis\API\Request\Financial\PayByVouchers;
 
 /**
  * Class oBeP
  *
  * PayByVoucher oBeP transaction via YeePay
  *
- * @package Genesis\API\Request\Financial\Vouchers
+ * @package Genesis\API\Request\Financial\PayByVouchers
  */
 class oBeP extends \Genesis\API\Request
 {

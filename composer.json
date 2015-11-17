@@ -23,7 +23,7 @@
     "3d-secure",
     "neteller",
     "ezeewallet",
-    "paybyvoucher",
+    "paybyvouchers",
     "sofort",
     "paysafecard",
     "ppro",
@@ -36,7 +36,12 @@
     "qiwi",
     "safetypay",
     "teleingreso",
-    "trustpay"
+    "trustpay",
+    "webmoney",
+    "poli",
+    "tc40",
+    "fraud",
+    "chargeback"
   ],
   "require": {
     "php": ">=5.3.2",

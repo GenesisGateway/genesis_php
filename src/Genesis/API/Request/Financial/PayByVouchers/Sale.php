@@ -20,16 +20,16 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\Vouchers;
+namespace Genesis\API\Request\Financial\PayByVouchers;
 
 /**
- * Class Cards
+ * Class Sale
  *
- * PayByVoucher purchase via Debit/Credit Cards
+ * PayByVoucher purchase via Debit/Credit Sale
  *
- * @package Genesis\API\Request\Financial\Vouchers
+ * @package Genesis\API\Request\Financial\PayByVouchers
  */
-class Cards extends \Genesis\API\Request
+class Sale extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by merchant

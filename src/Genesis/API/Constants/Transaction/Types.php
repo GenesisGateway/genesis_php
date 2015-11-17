@@ -134,12 +134,12 @@ class Types
     /**
      * PayByVouchers via oBeP
      */
-    const PAYBYVOUCHER_YEEPAY = 'paybyvouchers_yeepay';
+    const PAYBYVOUCHER_YEEPAY = 'paybyvoucher_yeepay';
 
     /**
      * PayByVouchers via Credit/Debit Cards
      */
-    const PAYBYVOUCHER_SALE = 'paybyvouchers_sale';
+    const PAYBYVOUCHER_SALE = 'paybyvoucher_sale';
 
     /**
      * Voucher-based payment

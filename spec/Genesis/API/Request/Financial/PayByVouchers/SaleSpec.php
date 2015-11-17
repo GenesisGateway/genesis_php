@@ -1,17 +1,16 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Vouchers;
+namespace spec\Genesis\API\Request\Financial\PayByVouchers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class oBePSpec extends ObjectBehavior
+class SaleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\oBeP');
+        $this->shouldHaveType('Genesis\API\Request\Financial\PayByVouchers\Sale');
     }
-
     function it_can_build_stucture()
     {
         $this->setRequestParameters();
@@ -26,7 +25,7 @@ class oBePSpec extends ObjectBehavior
     function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setCustomerName(null);
+        $this->setCardHolder(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -46,14 +45,24 @@ class oBePSpec extends ObjectBehavior
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setProductName('Paul Blart Mall Cop');
-        $this->setProductCategory('movie');
-        $this->setCustomerName('李');
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCurrency('USD');
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
+        $this->setCardHolder($faker->name);
+        $this->setCardNumber("4200000000000000");
+        $this->setCvv(sprintf("%03s", $faker->numberBetween(1, 999)));
+        $this->setExpirationMonth($faker->numberBetween(01, 12));
+        $this->setExpirationYear($faker->numberBetween(date('Y'), date('Y') + 5));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerIdNumber($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
-        $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingAddress1($faker->streetAddress);
+        $this->setBillingZipCode($faker->postcode);
+        $this->setBillingCity($faker->city);
+        $this->setBillingCountry($faker->countryCode);
     }
 
     public function getMatchers()
