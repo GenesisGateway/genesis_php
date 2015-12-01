@@ -421,16 +421,13 @@ class Sale3D extends \Genesis\API\Request
             'notification_url'   => array('return_success_url', 'return_failure_url'),
             'return_success_url' => array('notification_url', 'return_failure_url'),
             'return_failure_url' => array('notification_url', 'return_success_url'),
-            'mpi_cavv'           => array('mpi_eci', 'mpi_xid'),
-            'mpi_eci'            => array('mpi_cavv', 'mpi_xid'),
-            'mpi_xid'            => array('mpi_cavv', 'mpi_eci'),
         );
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldsGroups = array(
             'synchronous'  => array('notification_url', 'return_success_url', 'return_failure_url'),
-            'asynchronous' => array('mpi_cavv', 'mpi_eci', 'mpi_xid'),
+            'asynchronous' => array('mpi_eci'),
         );
 
         $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);

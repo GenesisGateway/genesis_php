@@ -23,13 +23,27 @@
 namespace Genesis\API\Request\NonFinancial\Reconcile;
 
 /**
- * Reconcile request by transaction id
+ * Reconcile request by arn, transaction_id or unique_id
  *
  * @package    Genesis
  * @subpackage Request
  */
 class Transaction extends \Genesis\API\Request
 {
+    /**
+     * Acquirer's Reference Number
+     *
+     * @var string
+     */
+    protected $arn;
+
+    /**
+     * Transaction id of an existing transaction
+     *
+     * @var string
+     */
+    protected $transaction_id;
+
     /**
      * Unique id of an existing transaction
      *
@@ -44,12 +58,14 @@ class Transaction extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
                 'format'   => 'xml',
-            ));
+            )
+        );
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile', \Genesis\Config::getToken()));
     }
@@ -61,11 +77,11 @@ class Transaction extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'unique_id',
+        $requiredFieldsGroups = array(
+            'id'  => array('arn', 'transaction_id', 'unique_id'),
         );
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
     }
 
     /**
@@ -77,7 +93,9 @@ class Transaction extends \Genesis\API\Request
     {
         $treeStructure = array(
             'reconcile' => array(
-                'unique_id' => $this->unique_id,
+                'arn'               => $this->arn,
+                'transaction_id'    => $this->transaction_id,
+                'unique_id'         => $this->unique_id,
             )
         );
 

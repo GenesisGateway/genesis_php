@@ -20,21 +20,19 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\Alternatives;
+namespace Genesis\API\Request\Financial\Wallets;
 
 /**
- * Class SofortiDEAL
+ * Class WebMoney
  *
- * Alternative payment method
+ * Electronic Wallet
  *
- * @package Genesis\API\Request\Financial\Alternatives
- *
- * @deprecated - iDEAL through SOFORT is going to be removed within the next major release
+ * @package Genesis\API\Request\Financial\Wallets
  */
-class SofortiDEAL extends \Genesis\API\Request
+class WebMoney extends \Genesis\API\Request
 {
     /**
-     * Unique transaction id defined by mer-chant
+     * Unique transaction id defined by merchant
      *
      * @var string
      */
@@ -83,6 +81,13 @@ class SofortiDEAL extends \Genesis\API\Request
     protected $currency;
 
     /**
+     * Flag for payout transaction
+     *
+     * @var bool
+     */
+    protected $is_payout;
+
+    /**
      * Email address of the Customer
      *
      * @var string
@@ -95,22 +100,6 @@ class SofortiDEAL extends \Genesis\API\Request
      * @var string
      */
     protected $customer_phone;
-
-    /**
-     * The bank id of the bank where the customer resides
-     *
-     * @see Supported Bank Ids
-     *
-     * @var string
-     */
-    protected $customer_bank_id;
-
-    /**
-     * Must contain valid bank account number of customer
-     *
-     * @var string
-     */
-    protected $bank_account_number;
 
     /**
      *Customer's Billing Address: First name
@@ -310,11 +299,11 @@ class SofortiDEAL extends \Genesis\API\Request
     protected function initConfiguration()
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            ));
+                                                                     'protocol' => 'https',
+                                                                     'port'     => 443,
+                                                                     'type'     => 'POST',
+                                                                     'format'   => 'xml',
+                                                                 ));
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
@@ -334,8 +323,6 @@ class SofortiDEAL extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'customer_email',
-            'customer_bank_id',
-            'bank_account_number',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -350,7 +337,7 @@ class SofortiDEAL extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::SOFORT_IDEAL,
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::WEBMONEY,
                 'transaction_id'     => $this->transaction_id,
                 'usage'              => $this->usage,
                 'remote_ip'          => $this->remote_ip,
@@ -364,6 +351,7 @@ class SofortiDEAL extends \Genesis\API\Request
                     )
                 ),
                 'currency'           => $this->currency,
+                'is_payout'          => $this->is_payout,
                 'customer_email'     => $this->customer_email,
                 'customer_phone'     => $this->customer_phone,
                 'billing_address'    => array(
