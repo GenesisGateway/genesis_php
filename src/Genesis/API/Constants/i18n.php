@@ -74,9 +74,19 @@ class i18n
     const JA = 'Japanese';
 
     /**
+     * Icelandic locale and language
+     */
+    const IS = 'Icelandic';
+
+    /**
      * Italian locale and language settings
      */
     const IT = 'Italian';
+
+    /**
+     * Dutch locale and language
+     */
+    const NL = 'Dutch';
 
     /**
      * Portuguese locale and language

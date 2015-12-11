@@ -20,73 +20,37 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\WPF;
+namespace Genesis\API\Request\Financial\Alternatives;
 
 /**
- * Web-Payment-Form Request
+ * Class POLi
  *
- * @package    Genesis
- * @subpackage Request
+ * Electronic Wallet
+ *
+ * @package Genesis\API\Request\Financial\Wallets
  */
-class Create extends \Genesis\API\Request
+class POLi extends \Genesis\API\Request
 {
     /**
-     * unique transaction id defined by merchant
+     * Unique transaction id defined by mer-chant
      *
      * @var string
      */
     protected $transaction_id;
 
     /**
-     * Amount of transaction in minor currency unit
-     *
-     * @var int
-     */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
-     *
-     * @var string
-     */
-    protected $currency;
-
-    /**
-     * Statement, as it appears in the customer’s bank statement
+     * Description of the transaction for later use
      *
      * @var string
      */
     protected $usage;
 
     /**
-     * a text describing the reason of the payment
-     *
-     * e.g. "you’re buying concert tickets"
+     * IPv4 address of customer
      *
      * @var string
      */
-    protected $description;
-
-    /**
-     * Email address of the Customer
-     *
-     * @var string
-     */
-    protected $customer_email;
-
-    /**
-     * Phone number of the customer
-     *
-     * @var string
-     */
-    protected $customer_phone;
-
-    /**
-     * URL endpoint for Genesis Notifications
-     *
-     * @var string
-     */
-    protected $notification_url;
+    protected $remote_ip;
 
     /**
      * URL where customer is sent to after successful payment
@@ -103,11 +67,32 @@ class Create extends \Genesis\API\Request
     protected $return_failure_url;
 
     /**
-     * URL where the customer is sent to after they cancel the payment
+     * Amount of transaction in minor currency unit
+     *
+     * @var int
+     */
+    protected $amount;
+
+    /**
+     * Currency code in ISO-4217
      *
      * @var string
      */
-    protected $return_cancel_url;
+    protected $currency;
+
+    /**
+     * Email address of the Customer
+     *
+     * @var string
+     */
+    protected $customer_email;
+
+    /**
+     * Phone number of the customer
+     *
+     * @var string
+     */
+    protected $customer_phone;
 
     /**
      *Customer's Billing Address: First name
@@ -229,13 +214,6 @@ class Create extends \Genesis\API\Request
     protected $shipping_country;
 
     /**
-     * The transaction types that the merchant is willing to accept payments for
-     *
-     * @var array
-     */
-    protected $transaction_types = array();
-
-    /**
      * Social Security number or equivalent value for non US customers.
      *
      * @var string
@@ -307,79 +285,20 @@ class Create extends \Genesis\API\Request
     protected $risk_serial_number;
 
     /**
-     * Add transaction type to the list of available types
-     *
-     * @param string $name
-     *
-     * @param array  $parameters
-     *
-     * @return $this
-     */
-    public function addTransactionType($name, $parameters = array())
-    {
-        $structure = array(
-            'transaction_type' => array(
-                '@attributes' => array(
-                    'name' => $name
-                ),
-                $parameters
-            )
-        );
-
-        array_push($this->transaction_types, $structure);
-
-        return $this;
-    }
-
-    /**
-     * Add ISO 639-1 language code to the URL
-     *
-     * @param string $language iso code of the language
-     *
-     * @return $this
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
-    {
-        // Strip the input down to two letters
-        $language = substr(strtolower($language), 0, 2);
-
-        if (!\Genesis\API\Constants\i18n::isValidLanguageCode($language)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'The provided argument is not a valid ISO-639-1 language code!'
-            );
-        }
-
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'wpf',
-                sprintf('%s/wpf', $language),
-                false
-            )
-        );
-
-        return $this;
-    }
-
-    /**
      * Set the per-request configuration
      *
      * @return void
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            )
-        );
+        $this->config = \Genesis\Utils\Common::createArrayObject(array(
+                                                                     'protocol' => 'https',
+                                                                     'port'     => 443,
+                                                                     'type'     => 'POST',
+                                                                     'format'   => 'xml',
+                                                                 ));
 
-        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
 
     /**
@@ -391,14 +310,12 @@ class Create extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
+            'remote_ip',
             'amount',
             'currency',
-            'description',
-            'notification_url',
             'return_success_url',
             'return_failure_url',
-            'return_cancel_url',
-            'transaction_types',
+            'customer_email',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -412,8 +329,13 @@ class Create extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = array(
-            'wpf_payment' => array(
+            'payment_transaction' => array(
+                'transaction_type'   => \Genesis\API\Constants\Transaction\Types::POLI,
                 'transaction_id'     => $this->transaction_id,
+                'usage'              => $this->usage,
+                'remote_ip'          => $this->remote_ip,
+                'return_success_url' => $this->return_success_url,
+                'return_failure_url' => $this->return_failure_url,
                 'amount'             => $this->transform(
                     'amount',
                     array(
@@ -422,14 +344,8 @@ class Create extends \Genesis\API\Request
                     )
                 ),
                 'currency'           => $this->currency,
-                'usage'              => $this->usage,
-                'description'        => $this->description,
                 'customer_email'     => $this->customer_email,
                 'customer_phone'     => $this->customer_phone,
-                'notification_url'   => $this->notification_url,
-                'return_success_url' => $this->return_success_url,
-                'return_failure_url' => $this->return_failure_url,
-                'return_cancel_url'  => $this->return_cancel_url,
                 'billing_address'    => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
@@ -450,7 +366,6 @@ class Create extends \Genesis\API\Request
                     'state'      => $this->shipping_state,
                     'country'    => $this->shipping_country,
                 ),
-                'transaction_types'  => $this->transaction_types,
                 'risk_params'        => array(
                     'ssn'           => $this->risk_ssn,
                     'mac_address'   => $this->risk_mac_address,

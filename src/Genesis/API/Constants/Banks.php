@@ -34,120 +34,120 @@ class Banks
     /**
      * Industrial and Commercial Bank of China
      */
-    const ICBC = 'Industrial and Commercial Bank of China';
+    const ICBC = 'ICBC';
 
     /**
      * China Merchants Bank
      */
-    const CMBCHINA = 'China Merchants Bank';
+    const CMBCHINA = 'CMBCHINA';
 
     /**
      * Agricultural Bank of China
      */
-    const ABC = 'Agricultural Bank of China';
+    const ABC = 'ABC';
 
     /**
      * China Construction Bank
      */
-    const CCB = 'China Construction Bank';
+    const CCB = 'CCB';
 
     /**
      * Bank of Beijing
      */
-    const BCCB = 'Bank of Beijing';
+    const BCCB = 'BCCB';
 
     /**
      * Bank of Communications
      */
-    const BOCO = 'Bank of Communications';
+    const BOCO = 'BOCO';
 
     /**
      * Industrial Bank
      */
-    const CIB = 'Industrial Bank';
+    const CIB = 'CIB';
 
     /**
      * Bank of Nanjing
      */
-    const NJCB = 'Bank of Nanjing';
+    const NJCB = 'NJCB';
 
     /**
      * China Minsheng Banking Corp Ltd
      */
-    const CMBC = 'China Minsheng Banking Corp Ltd';
+    const CMBC = 'CMBC';
 
     /**
      * China Everbright Bank
      */
-    const CEB = 'China Everbright Bank';
+    const CEB = 'CEB';
 
     /**
      * Bank of China
      */
-    const BOC = 'Bank of China';
+    const BOC = 'BOC';
 
     /**
      * Ping An Bank
      */
-    const PINGANBANK = 'Ping An Bank';
+    const PINGANBANK = 'PINGANBANK';
 
     /**
      * Bank of East Asia
      */
-    const HKBEA = 'Bank of East Asia';
+    const HKBEA = 'HKBEA';
 
     /**
      * Bank of Ningbo
      */
-    const NBCB = 'Bank of Ningbo';
+    const NBCB = 'NBCB';
 
     /**
      * China Citic Bank
      */
-    const ECITIC = 'China Citic Bank';
+    const ECITIC = 'ECITIC';
 
     /**
      * Shenzhen Development Bank
      */
-    const SDB = 'Shenzhen Development Bank';
+    const SDB = 'SDB';
 
     /**
      * Guangdong Development Bank
      */
-    const GDB = 'Guangdong Development Bank';
+    const GDB = 'GDB';
 
     /**
      * Bank of Shanghai
      */
-    const SHB = 'Bank of Shanghai';
+    const SHB = 'SHB';
 
     /**
      * Shanghai Pudong Development Bank
      */
-    const SPDB = 'Shanghai Pudong Development Bank';
+    const SPDB = 'SPDB';
 
     /**
      * China Post
      */
-    const POST = 'China Post';
+    const POST = 'POST';
 
     /**
      * BEIJING RURAL COMMERCIAL BANK
      */
-    const BJRCB = 'BEIJING RURAL COMMERCIAL BANK';
+    const BJRCB = 'BJRCB';
 
     /**
      * Hua Xia Bank Co Ltd'
      */
-    const HXB = 'Hua Xia Bank Co Ltd';
+    const HXB = 'HXB';
 
     /**
      * Bank of Hangzhou
      */
-    const HZBANK = 'Bank of Hangzhou';
+    const HZBANK = 'HZBANK';
 
     /**
      * Shanghai Rural Commercial Bank
      */
-    const SRCB = 'Shanghai Rural Commercial Bank';
+    const SRCB = 'SRCB';
 }

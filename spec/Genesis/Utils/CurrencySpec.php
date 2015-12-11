@@ -51,4 +51,14 @@ class CurrencySpec extends ObjectBehavior
     {
         $this->amountToExponent(314.34, 'NON')->shouldBe('314.34');
     }
+
+    function it_should_successfully_parse_three_exponent_currency()
+    {
+        $this->amountToExponent(199.995, 'KWD')->shouldBe('199995');
+    }
+
+    function it_should_successfully_process_three_exponent_currency()
+    {
+        $this->exponentToAmount(199995, 'KWD')->shouldBe('199.995');
+    }
 }

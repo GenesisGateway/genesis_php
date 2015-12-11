@@ -177,40 +177,48 @@ Financial\Capture
 Financial\Refund
 Financial\Void
 
-// Transactions with Alternative Payment Methods
+// Alternative Payment Methods transactions
 Financial\Alternatives\ABNiDEAL
 Financial\Alternatives\CashU
 Financial\Alternatives\Paysafecard
+Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
 
-// Transactions with BankTransfers
-Financial\BankTransfers\PayByVoucher
+// PayByVouchers transactions
+Financial\PayByVouchers\oBeP
+Financial\PayByVouchers\Sale
 
-// Transactions with Credit Cards
+// Credit Cards transactions
 Financial\Cards\Authorize
 Financial\Cards\Authorize3D
 Financial\Cards\Credit
 Financial\Cards\Payout
-Financial\Cards\Recurring
+Financial\Cards\Sale
+Financial\Cards\Sale3D
 Financial\Cards\Recurring\InitRecurringSale
 Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
-Financial\Cards\Sale
-Financial\Cards\Sale3D
 
-// Transactions with Electronic Wallets
+// Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
 Financial\Wallets\Neteller
+Financial\Wallets\WebMoney
 
 // Generic (Non-Financial) requests
 NonFinancial\AVS
 NonFinancial\AccountVerification
 NonFinancial\Blacklist
 
-// Fraud-related requests
+// Chargeback information request
 NonFinancial\Fraud\Chargeback\DateRange
 NonFinancial\Fraud\Chargeback\Transaction
+
+// SAFE/TC40 Report
+NonFinancial\Fraud\Reports\DateRange
+NonFinancial\Fraud\Reports\Transaction
+
+// Retrieval request
 NonFinancial\Fraud\Retrieval\DateRange
 NonFinancial\Fraud\Retrieval\Transaction
 
