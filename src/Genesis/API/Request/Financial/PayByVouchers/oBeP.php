@@ -20,16 +20,16 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\BankTransfers;
+namespace Genesis\API\Request\Financial\PayByVouchers;
 
 /**
- * Class PayByVoucher
+ * Class oBeP
  *
- * Bank transfer
+ * PayByVoucher oBeP transaction via YeePay
  *
- * @package Genesis\API\Request\Financial\BankTransfers
+ * @package Genesis\API\Request\Financial\PayByVouchers
  */
-class PayByVoucher extends \Genesis\API\Request
+class oBeP extends \Genesis\API\Request
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -94,18 +94,18 @@ class PayByVoucher extends \Genesis\API\Request
     protected $customer_email;
 
     /**
+     * Full of customer in Chinese
+     *
+     * @var string
+     */
+    protected $customer_name;
+
+    /**
      * Phone number of the customer
      *
      * @var string
      */
     protected $customer_phone;
-
-    /**
-     * Full name of customer in Chinese
-     *
-     * @var string
-     */
-    protected $card_holder;
 
     /**
      * Customer ID number.
@@ -139,12 +139,14 @@ class PayByVoucher extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            ));
+        $this->config = \Genesis\Utils\Common::createArrayObject(
+            array(
+                 'protocol' => 'https',
+                 'port'     => 443,
+                 'type'     => 'POST',
+                 'format'   => 'xml',
+            )
+        );
 
         $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
@@ -162,7 +164,7 @@ class PayByVoucher extends \Genesis\API\Request
             'currency',
             'product_name',
             'product_category',
-            'card_holder',
+            'customer_name',
             'customer_email',
             'customer_phone',
             'customer_id_number',
@@ -182,7 +184,7 @@ class PayByVoucher extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER,
+                'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_YEEPAY,
                 'transaction_id'      => $this->transaction_id,
                 'remote_ip'           => $this->remote_ip,
                 'amount'              => $this->transform(
@@ -195,7 +197,7 @@ class PayByVoucher extends \Genesis\API\Request
                 'currency'            => $this->currency,
                 'product_name'        => $this->product_name,
                 'product_category'    => $this->product_category,
-                'card_holder'         => $this->card_holder,
+                'customer_name'       => $this->customer_name,
                 'customer_email'      => $this->customer_email,
                 'customer_phone'      => $this->customer_phone,
                 'customer_id_number'  => $this->customer_id_number,

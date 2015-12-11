@@ -139,7 +139,7 @@ class States
     public function __construct($status = null)
     {
         if (!is_null($status)) {
-            $this->status = $status;
+            $this->status = trim($status);
         }
     }
 

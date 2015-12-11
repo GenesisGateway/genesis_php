@@ -5,11 +5,11 @@ namespace spec\Genesis\API\Request\Financial\Alternatives;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class SofortiDEALSpec extends ObjectBehavior
+class POLiSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\SofortiDEAL');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\POLi');
     }
 
     function it_can_build_stucture()
@@ -20,13 +20,6 @@ class SofortiDEALSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCustomerBankId(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -42,30 +35,26 @@ class SofortiDEALSpec extends ObjectBehavior
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
+
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+
         $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerBankId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
     }
 
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function ($subject) {
+            'beEmpty'       => function ($subject) {
                 return empty($subject);
+            },
+            'contain'       => function ($subject, $arg) {
+                return (stripos($subject, $arg) !== false);
             },
         );
     }

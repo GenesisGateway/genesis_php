@@ -1,3 +1,11 @@
+1.4.0
+-----
+* Add support for Genesis Gateway v4.9
+* Add support for POLi, WebMoney, Vouchers (w/ Cards), Vouchers (via oBeP) payment methods
+* Add support for iDEAL via PPRO
+* Add support for FraudReports
+* Remove payment method BankTransfers\PayByVoucher
+
 1.3.1
 -----
 * Minor changes - README and Travis configuration tweaks

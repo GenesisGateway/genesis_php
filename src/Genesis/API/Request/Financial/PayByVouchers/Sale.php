@@ -20,27 +20,42 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\WPF;
+namespace Genesis\API\Request\Financial\PayByVouchers;
 
 /**
- * Web-Payment-Form Request
+ * Class Sale
  *
- * @package    Genesis
- * @subpackage Request
+ * PayByVoucher purchase via Debit/Credit Sale
+ *
+ * @package Genesis\API\Request\Financial\PayByVouchers
  */
-class Create extends \Genesis\API\Request
+class Sale extends \Genesis\API\Request
 {
     /**
-     * unique transaction id defined by merchant
+     * Unique transaction id defined by merchant
      *
      * @var string
      */
     protected $transaction_id;
 
     /**
+     * Description of the transaction for later use
+     *
+     * @var string
+     */
+    protected $usage;
+
+    /**
+     * IPv4 address of customer
+     *
+     * @var string
+     */
+    protected $remote_ip;
+
+    /**
      * Amount of transaction in minor currency unit
      *
-     * @var int
+     * @var int|float|double
      */
     protected $amount;
 
@@ -52,20 +67,39 @@ class Create extends \Genesis\API\Request
     protected $currency;
 
     /**
-     * Statement, as it appears in the customer’s bank statement
+     * Full name of customer as printed on credit card (first name and last name at least)
      *
      * @var string
      */
-    protected $usage;
+    protected $card_holder;
 
     /**
-     * a text describing the reason of the payment
+     * Complete CC number of customer
      *
-     * e.g. "you’re buying concert tickets"
-     *
-     * @var string
+     * @var int
      */
-    protected $description;
+    protected $card_number;
+
+    /**
+     * CVV of CC, requirement is based on terminal configuration
+     *
+     * @var int
+     */
+    protected $cvv;
+
+    /**
+     * Expiration month as printed on credit card
+     *
+     * @var string (mm)
+     */
+    protected $expiration_month;
+
+    /**
+     * Expiration year as printed on credit card
+     *
+     * @var string (yyyy)
+     */
+    protected $expiration_year;
 
     /**
      * Email address of the Customer
@@ -80,34 +114,6 @@ class Create extends \Genesis\API\Request
      * @var string
      */
     protected $customer_phone;
-
-    /**
-     * URL endpoint for Genesis Notifications
-     *
-     * @var string
-     */
-    protected $notification_url;
-
-    /**
-     * URL where customer is sent to after successful payment
-     *
-     * @var string
-     */
-    protected $return_success_url;
-
-    /**
-     * URL where customer is sent to after un-successful payment
-     *
-     * @var string
-     */
-    protected $return_failure_url;
-
-    /**
-     * URL where the customer is sent to after they cancel the payment
-     *
-     * @var string
-     */
-    protected $return_cancel_url;
 
     /**
      *Customer's Billing Address: First name
@@ -229,13 +235,6 @@ class Create extends \Genesis\API\Request
     protected $shipping_country;
 
     /**
-     * The transaction types that the merchant is willing to accept payments for
-     *
-     * @var array
-     */
-    protected $transaction_types = array();
-
-    /**
      * Social Security number or equivalent value for non US customers.
      *
      * @var string
@@ -307,61 +306,18 @@ class Create extends \Genesis\API\Request
     protected $risk_serial_number;
 
     /**
-     * Add transaction type to the list of available types
+     * Allows to dynamically override the charge descriptor
      *
-     * @param string $name
-     *
-     * @param array  $parameters
-     *
-     * @return $this
+     * @var string
      */
-    public function addTransactionType($name, $parameters = array())
-    {
-        $structure = array(
-            'transaction_type' => array(
-                '@attributes' => array(
-                    'name' => $name
-                ),
-                $parameters
-            )
-        );
-
-        array_push($this->transaction_types, $structure);
-
-        return $this;
-    }
+    protected $dynamic_merchant_name;
 
     /**
-     * Add ISO 639-1 language code to the URL
+     * Allows to dynamically override the mer- chant phone number
      *
-     * @param string $language iso code of the language
-     *
-     * @return $this
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @var string
      */
-    public function setLanguage($language = \Genesis\API\Constants\i18n::EN)
-    {
-        // Strip the input down to two letters
-        $language = substr(strtolower($language), 0, 2);
-
-        if (!\Genesis\API\Constants\i18n::isValidLanguageCode($language)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
-                'The provided argument is not a valid ISO-639-1 language code!'
-            );
-        }
-
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'wpf',
-                sprintf('%s/wpf', $language),
-                false
-            )
-        );
-
-        return $this;
-    }
+    protected $dynamic_merchant_city;
 
     /**
      * Set the per-request configuration
@@ -379,7 +335,7 @@ class Create extends \Genesis\API\Request
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
+        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
     }
 
     /**
@@ -393,12 +349,10 @@ class Create extends \Genesis\API\Request
             'transaction_id',
             'amount',
             'currency',
-            'description',
-            'notification_url',
-            'return_success_url',
-            'return_failure_url',
-            'return_cancel_url',
-            'transaction_types',
+            'card_holder',
+            'card_number',
+            'expiration_month',
+            'expiration_year',
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -412,25 +366,27 @@ class Create extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = array(
-            'wpf_payment' => array(
-                'transaction_id'     => $this->transaction_id,
-                'amount'             => $this->transform(
+            'payment_transaction' => array(
+                'transaction_type'          => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_SALE,
+                'transaction_id'            => $this->transaction_id,
+                'usage'                     => $this->usage,
+                'remote_ip'                 => $this->remote_ip,
+                'amount'                    => $this->transform(
                     'amount',
                     array(
                         $this->amount,
                         $this->currency,
                     )
                 ),
-                'currency'           => $this->currency,
-                'usage'              => $this->usage,
-                'description'        => $this->description,
-                'customer_email'     => $this->customer_email,
-                'customer_phone'     => $this->customer_phone,
-                'notification_url'   => $this->notification_url,
-                'return_success_url' => $this->return_success_url,
-                'return_failure_url' => $this->return_failure_url,
-                'return_cancel_url'  => $this->return_cancel_url,
-                'billing_address'    => array(
+                'currency'                  => $this->currency,
+                'card_holder'               => $this->card_holder,
+                'card_number'               => $this->card_number,
+                'cvv'                       => $this->cvv,
+                'expiration_month'          => $this->expiration_month,
+                'expiration_year'           => $this->expiration_year,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'billing_address'           => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
                     'address1'   => $this->billing_address1,
@@ -440,7 +396,7 @@ class Create extends \Genesis\API\Request
                     'state'      => $this->billing_state,
                     'country'    => $this->billing_country,
                 ),
-                'shipping_address'   => array(
+                'shipping_address'          => array(
                     'first_name' => $this->shipping_first_name,
                     'last_name'  => $this->shipping_last_name,
                     'address1'   => $this->shipping_address1,
@@ -450,8 +406,7 @@ class Create extends \Genesis\API\Request
                     'state'      => $this->shipping_state,
                     'country'    => $this->shipping_country,
                 ),
-                'transaction_types'  => $this->transaction_types,
-                'risk_params'        => array(
+                'risk_params'               => array(
                     'ssn'           => $this->risk_ssn,
                     'mac_address'   => $this->risk_mac_address,
                     'session_id'    => $this->risk_session_id,
@@ -462,6 +417,10 @@ class Create extends \Genesis\API\Request
                     'remote_ip'     => $this->risk_remote_ip,
                     'serial_number' => $this->risk_serial_number,
                 ),
+                'dynamic_descriptor_params' => array(
+                    'merchant_name' => $this->dynamic_merchant_name,
+                    'merchant_city' => $this->dynamic_merchant_city,
+                )
             )
         );
 

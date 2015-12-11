@@ -32,15 +32,6 @@ namespace Genesis\API\Constants\Payment;
 class Methods
 {
     /**
-     * Elektronisches Lastschriftverfahren
-     *
-     * PPRO transaction
-     *
-     * @
-     */
-    const ELV = 'elv';
-
-    /**
      * e-payment standard
      *
      * PPRO transaction
@@ -53,6 +44,13 @@ class Methods
      * PPRO transaction
      */
     const GIRO_PAY = 'giropay';
+
+    /**
+     * iDEAL
+     *
+     * PPRO transaction
+     */
+    const IDEAL = 'ideal';
 
     /**
      * Przelewy24

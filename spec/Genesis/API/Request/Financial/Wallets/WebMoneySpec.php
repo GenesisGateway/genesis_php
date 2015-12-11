@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\BankTransfers;
+namespace spec\Genesis\API\Request\Financial\Wallets;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PayByVoucherSpec extends ObjectBehavior
+class WebMoneySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\BankTransfers\PayByVoucher');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\WebMoney');
     }
 
     function it_can_build_stucture()
@@ -20,13 +20,6 @@ class PayByVoucherSpec extends ObjectBehavior
 
     function it_should_fail_when_no_parameters()
     {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCardHolder(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -42,25 +35,26 @@ class PayByVoucherSpec extends ObjectBehavior
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
+        $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
+
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setProductName('Paul Blart Mall Cop');
-        $this->setProductCategory('movie');
-        $this->setCardHolder('李');
         $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
-        $this->setCustomerIdNumber($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
-        $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
+
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
     }
 
     public function getMatchers()
     {
         return array(
-            'beEmpty' => function ($subject) {
+            'beEmpty'       => function ($subject) {
                 return empty($subject);
+            },
+            'contain'       => function ($subject, $arg) {
+                return (stripos($subject, $arg) !== false);
             },
         );
     }
