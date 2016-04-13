@@ -155,4 +155,65 @@ class Types
      * Bank transfer payment, popular in Germany
      */
     const SOFORT = 'sofort';
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @return bool
+     */
+    public static function isValidTransactionType($type)
+    {
+        $transactionTypesList = array(
+            self::AVS,
+            self::ACCOUNT_VERIFICATION,
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::SALE,
+            self::SALE_3D,
+            self::CAPTURE,
+            self::REFUND,
+            self::VOID,
+            self::CREDIT,
+            self::PAYOUT,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::RECURRING_SALE,
+            self::ABNIDEAL,
+            self::CASHU,
+            self::EZEEWALLET,
+            self::NETELLER,
+            self::POLI,
+            self::WEBMONEY,
+            self::PAYBYVOUCHER_YEEPAY,
+            self::PAYBYVOUCHER_SALE,
+            self::PAYSAFECARD,
+            self::PPRO,
+            self::SOFORT
+        );
+
+        if (in_array($type, $transactionTypesList)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @return bool
+     */
+    public static function isPayByVoucher($type)
+    {
+        $transactionTypesList = array(
+            self::PAYBYVOUCHER_YEEPAY,
+            self::PAYBYVOUCHER_SALE,
+        );
+
+        if (in_array($type, $transactionTypesList)) {
+            return true;
+        }
+
+        return false;
+    }
 }
