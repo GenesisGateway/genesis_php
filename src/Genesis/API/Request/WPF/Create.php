@@ -317,6 +317,8 @@ class Create extends \Genesis\API\Request
      */
     public function addTransactionType($name, $parameters = array())
     {
+        $this->verifyTransactionType($name, $parameters);
+
         $structure = array(
             'transaction_type' => array(
                 '@attributes' => array(
@@ -329,6 +331,68 @@ class Create extends \Genesis\API\Request
         array_push($this->transaction_types, $structure);
 
         return $this;
+    }
+
+    /**
+     * Verify that transaction type parameters are populated correctly
+     *
+     * @param string $transactionType
+     * @param array $parameters
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyTransactionType($transactionType, $parameters = array())
+    {
+        if (!\Genesis\API\Constants\Transaction\Types::isValidTransactionType($transactionType)) {
+            throw new \Genesis\Exceptions\ErrorParameter(
+                sprintf(
+                    'Transaction type (%s) is not valid',
+                    $transactionType
+                )
+            );
+        }
+
+        if (\Genesis\API\Constants\Transaction\Types::isPayByVoucher($transactionType)) {
+            $transactionParamsValidators = array(
+                'card_type'   => array(
+                    'class' => '\PayByVouchers\CardTypes',
+                    'static_method' => 'isValidCardType'
+                ),
+                'redeem_type' => array(
+                    'class' => '\PayByVouchers\RedeemTypes',
+                    'static_method' => 'isValidRedeemType'
+                )
+            );
+        }
+
+        if (isset($transactionParamsValidators)) {
+            foreach ($transactionParamsValidators as $requiredParamName => $validator) {
+                if (!array_key_exists($requiredParamName, $parameters)) {
+                    throw new \Genesis\Exceptions\ErrorParameter(
+                        sprintf(
+                            'Empty (null) required parameter: %s for transaction type %s',
+                            $requiredParamName,
+                            $transactionType
+                        )
+                    );
+                }
+
+                $validatorClassName = "\\Genesis\\API\\Constants\\Transaction\\Parameters" . $validator['class'];
+                $validatorClassMethod = $validator['static_method'];
+
+                if (class_exists($validatorClassName)) {
+                    if (!$validatorClassName::$validatorClassMethod($parameters[$requiredParamName])) {
+                        throw new \Genesis\Exceptions\ErrorParameter(
+                            sprintf(
+                                'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
+                                $parameters[$requiredParamName],
+                                $requiredParamName,
+                                $transactionType
+                            )
+                        );
+                    }
+                }
+            }
+        }
     }
 
     /**
