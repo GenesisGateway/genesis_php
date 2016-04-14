@@ -155,4 +155,104 @@ class Types
      * Bank transfer payment, popular in Germany
      */
     const SOFORT = 'sofort';
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @return bool
+     */
+    public static function isValidTransactionType($type)
+    {
+        $transactionTypesList = array(
+            self::AVS,
+            self::ACCOUNT_VERIFICATION,
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::SALE,
+            self::SALE_3D,
+            self::CAPTURE,
+            self::REFUND,
+            self::VOID,
+            self::CREDIT,
+            self::PAYOUT,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::RECURRING_SALE,
+            self::ABNIDEAL,
+            self::CASHU,
+            self::EZEEWALLET,
+            self::NETELLER,
+            self::POLI,
+            self::WEBMONEY,
+            self::PAYBYVOUCHER_YEEPAY,
+            self::PAYBYVOUCHER_SALE,
+            self::PAYSAFECARD,
+            self::PPRO,
+            self::SOFORT
+        );
+
+        if (in_array($type, $transactionTypesList)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @return bool
+     */
+    public static function isPayByVoucher($type)
+    {
+        $transactionTypesList = array(
+            self::PAYBYVOUCHER_YEEPAY,
+            self::PAYBYVOUCHER_SALE,
+        );
+
+        if (in_array($type, $transactionTypesList)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get custom required parameters with values per transaction
+     * @param string $type
+     * @return array|bool
+     */
+    public static function getCustomRequiredParameters($type)
+    {
+        switch ($type) {
+            case self::PPRO:
+                return array(
+                    'payment_method' =>
+                        \Genesis\API\Constants\Payment\Methods::getMethods()
+                );
+                break;
+
+            case self::PAYBYVOUCHER_SALE:
+            case self::PAYBYVOUCHER_YEEPAY:
+                $customParameters = array(
+                    'card_type'   =>
+                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes::getCardTypes(),
+                    'redeem_type' =>
+                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes::getRedeemTypes()
+                );
+
+                if ($type == self::PAYBYVOUCHER_YEEPAY) {
+                    $customParameters = array_merge($customParameters, array(
+                        'product_name'     => null,
+                        'product_category' => null
+                    ));
+                }
+
+                return $customParameters;
+                break;
+
+            default:
+                return false;
+        }
+    }
 }

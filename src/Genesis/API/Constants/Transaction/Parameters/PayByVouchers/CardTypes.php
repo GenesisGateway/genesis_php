@@ -20,88 +20,52 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Payment;
+namespace Genesis\API\Constants\Transaction\Parameters\PayByVouchers;
 
 /**
- * Class Methods
+ * Class CardTypes
  *
- * Payment methods for Genesis Transactions
+ * CardTypes of PayByVouchers Genesis Transaction
  *
- * @package Genesis\API\Constants\Transaction
+ * @package Genesis\API\Constants\Transaction\Parameters\PayByVouchers
+ *
  */
-class Methods
+class CardTypes
 {
     /**
-     * e-payment standard
-     *
-     * PPRO transaction
+     * The type of the issued card will be virtual
      */
-    const EPS = 'eps';
+    const VIRTUAL = 'virtual';
 
     /**
-     * GiroPay
-     *
-     * PPRO transaction
+     * The type of the issued card will be physical
      */
-    const GIRO_PAY = 'giropay';
+    const PHYSICAL = 'physical';
 
     /**
-     * iDEAL
+     * Check if a card type is supported
      *
-     * PPRO transaction
+     * @param $cardType
+     * @return string
      */
-    const IDEAL = 'ideal';
+    public static function isValidCardType($cardType)
+    {
+        if (@constant('self::' . strtoupper($cardType))) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * QIWI
-     *
-     * PPRO transaction
-     */
-    const QIWI = 'qiwi';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Teleingreso
-     *
-     * PPRO transaction
-     */
-    const TELEINGRESO = 'teleingreso';
-
-    /**
-     * TrustPay
-     *
-     * PPRO transaction
-     */
-    const TRUST_PAY = 'trustpay';
-
-    /**
-     * Returns all available payment methods
+     * Returns all available Card Types
      * @return array
      */
-    public static function getMethods()
+    public static function getCardTypes()
     {
         return array(
-            self::EPS,
-            self::GIRO_PAY,
-            self::IDEAL,
-            self::PRZELEWY24,
-            self::QIWI,
-            self::SAFETY_PAY,
-            self::TELEINGRESO,
-            self::TRUST_PAY
+            self::VIRTUAL,
+            self::PHYSICAL
         );
     }
 }
