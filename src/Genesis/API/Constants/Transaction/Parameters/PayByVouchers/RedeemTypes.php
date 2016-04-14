@@ -20,88 +20,53 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Payment;
+namespace Genesis\API\Constants\Transaction\Parameters\PayByVouchers;
 
 /**
- * Class Methods
+ * Class RedeemTypes
  *
- * Payment methods for Genesis Transactions
+ * RedeemTypes of PayByVouchers Genesis Transaction
  *
- * @package Genesis\API\Constants\Transaction
+ * @package Genesis\API\Constants\Transaction\Parameters\PayByVouchers
+ *
  */
-class Methods
+class RedeemTypes
 {
     /**
-     * e-payment standard
-     *
-     * PPRO transaction
+     * The amount value is stored in the voucher and can be used later on at any merchant outlet
+     * supporting the voucher card brand
      */
-    const EPS = 'eps';
+    const STORED = 'stored';
 
     /**
-     * GiroPay
-     *
-     * PPRO transaction
+     * The voucher is issued, the amount value is transferred into it, and then immediately redeemed to the merchant
      */
-    const GIRO_PAY = 'giropay';
+    const INSTANT = 'instant';
 
     /**
-     * iDEAL
+     * Check if a redeem type is supported
      *
-     * PPRO transaction
+     * @param $redeemType
+     * @return string
      */
-    const IDEAL = 'ideal';
+    public static function isValidRedeemType($redeemType)
+    {
+        if (@constant('self::' . strtoupper($redeemType))) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * QIWI
-     *
-     * PPRO transaction
-     */
-    const QIWI = 'qiwi';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Teleingreso
-     *
-     * PPRO transaction
-     */
-    const TELEINGRESO = 'teleingreso';
-
-    /**
-     * TrustPay
-     *
-     * PPRO transaction
-     */
-    const TRUST_PAY = 'trustpay';
-
-    /**
-     * Returns all available payment methods
+     * Returns all available Redeem Types
      * @return array
      */
-    public static function getMethods()
+    public static function getRedeemTypes()
     {
         return array(
-            self::EPS,
-            self::GIRO_PAY,
-            self::IDEAL,
-            self::PRZELEWY24,
-            self::QIWI,
-            self::SAFETY_PAY,
-            self::TELEINGRESO,
-            self::TRUST_PAY
+            self::STORED,
+            self::INSTANT
         );
     }
 }

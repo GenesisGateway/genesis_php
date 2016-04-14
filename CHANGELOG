@@ -1,3 +1,10 @@
+1.4.1
+-----
+* Updated APIs for PBV Sale and PBV Yeepay 
+    - New transaction param CardType
+    - New transaction param RedeemType
+* Added validations for WPF transactions and PBV transaction parameters
+
 1.4.0
 -----
 * Add support for Genesis Gateway v4.9
