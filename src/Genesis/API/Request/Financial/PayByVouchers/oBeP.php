@@ -39,6 +39,20 @@ class oBeP extends \Genesis\API\Request
     protected $transaction_id;
 
     /**
+     * Card type for the voucher - can be ’virtual’ or ’physical’ only
+     *
+     * @var string
+     */
+    protected $card_type;
+
+    /**
+     * Redeem type for the voucher - can be ’stored’ or ’instant’ only
+     *
+     * @var string
+     */
+    protected $redeem_type;
+
+    /**
      * IPv4 address of customer
      *
      * @var string
@@ -160,6 +174,8 @@ class oBeP extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
+            'card_type',
+            'redeem_type',
             'amount',
             'currency',
             'product_name',
@@ -186,6 +202,8 @@ class oBeP extends \Genesis\API\Request
             'payment_transaction' => array(
                 'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_YEEPAY,
                 'transaction_id'      => $this->transaction_id,
+                'card_type'           => $this->card_type,
+                'redeem_type'         => $this->redeem_type,
                 'remote_ip'           => $this->remote_ip,
                 'amount'              => $this->transform(
                     'amount',
