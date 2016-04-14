@@ -86,4 +86,22 @@ class Methods
      * PPRO transaction
      */
     const TRUST_PAY = 'trustpay';
+
+    /**
+     * Returns all available payment methods
+     * @return array
+     */
+    public static function getMethods()
+    {
+        return array(
+            self::EPS,
+            self::GIRO_PAY,
+            self::IDEAL,
+            self::PRZELEWY24,
+            self::QIWI,
+            self::SAFETY_PAY,
+            self::TELEINGRESO,
+            self::TRUST_PAY
+        );
+    }
 }

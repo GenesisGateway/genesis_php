@@ -216,4 +216,43 @@ class Types
 
         return false;
     }
+
+    /**
+     * Get custom required parameters with values per transaction
+     * @param string $type
+     * @return array|bool
+     */
+    public static function getCustomRequiredParameters($type)
+    {
+        switch ($type) {
+            case self::PPRO:
+                return array(
+                    'payment_method' =>
+                        \Genesis\API\Constants\Payment\Methods::getMethods()
+                );
+                break;
+
+            case self::PAYBYVOUCHER_SALE:
+            case self::PAYBYVOUCHER_YEEPAY:
+                $customParameters = array(
+                    'card_type'   =>
+                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes::getCardTypes(),
+                    'redeem_type' =>
+                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes::getRedeemTypes()
+                );
+
+                if ($type == self::PAYBYVOUCHER_YEEPAY) {
+                    $customParameters = array_merge($customParameters, array(
+                        'product_name'     => null,
+                        'product_category' => null
+                    ));
+                }
+
+                return $customParameters;
+                break;
+
+            default:
+                return false;
+        }
+    }
 }

@@ -351,41 +351,29 @@ class Create extends \Genesis\API\Request
             );
         }
 
-        if (\Genesis\API\Constants\Transaction\Types::isPayByVoucher($transactionType)) {
-            $transactionParamsValidators = array(
-                'card_type'   => array(
-                    'class' => '\PayByVouchers\CardTypes',
-                    'static_method' => 'isValidCardType'
-                ),
-                'redeem_type' => array(
-                    'class' => '\PayByVouchers\RedeemTypes',
-                    'static_method' => 'isValidRedeemType'
-                )
-            );
-        }
+        $transactionCustomRequiredParams = \Genesis\API\Constants\Transaction\Types::getCustomRequiredParameters(
+            $transactionType
+        );
 
-        if (isset($transactionParamsValidators)) {
-            foreach ($transactionParamsValidators as $requiredParamName => $validator) {
-                if (!array_key_exists($requiredParamName, $parameters)) {
+        if (is_array($transactionCustomRequiredParams)) {
+            foreach ($transactionCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
+                if (!array_key_exists($customRequiredParam, $parameters)) {
                     throw new \Genesis\Exceptions\ErrorParameter(
                         sprintf(
                             'Empty (null) required parameter: %s for transaction type %s',
-                            $requiredParamName,
+                            $customRequiredParam,
                             $transactionType
                         )
                     );
                 }
 
-                $validatorClassName = "\\Genesis\\API\\Constants\\Transaction\\Parameters" . $validator['class'];
-                $validatorClassMethod = $validator['static_method'];
-
-                if (class_exists($validatorClassName)) {
-                    if (!$validatorClassName::$validatorClassMethod($parameters[$requiredParamName])) {
+                if (!empty($customRequiredParamValues) && is_array($customRequiredParamValues)) {
+                    if (!in_array($parameters[$customRequiredParam], $customRequiredParamValues)) {
                         throw new \Genesis\Exceptions\ErrorParameter(
                             sprintf(
                                 'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
-                                $parameters[$requiredParamName],
-                                $requiredParamName,
+                                $parameters[$customRequiredParam],
+                                $customRequiredParam,
                                 $transactionType
                             )
                         );
