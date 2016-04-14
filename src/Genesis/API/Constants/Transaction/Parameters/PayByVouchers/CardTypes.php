@@ -56,4 +56,16 @@ class CardTypes
 
         return false;
     }
+
+    /**
+     * Returns all available Card Types
+     * @return array
+     */
+    public static function getCardTypes()
+    {
+        return array(
+            self::VIRTUAL,
+            self::PHYSICAL
+        );
+    }
 }

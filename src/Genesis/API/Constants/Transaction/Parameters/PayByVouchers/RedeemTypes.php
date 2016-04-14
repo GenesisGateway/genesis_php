@@ -57,4 +57,16 @@ class RedeemTypes
 
         return false;
     }
+
+    /**
+     * Returns all available Redeem Types
+     * @return array
+     */
+    public static function getRedeemTypes()
+    {
+        return array(
+            self::STORED,
+            self::INSTANT
+        );
+    }
 }
