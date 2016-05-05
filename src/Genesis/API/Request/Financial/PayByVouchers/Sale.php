@@ -39,6 +39,20 @@ class Sale extends \Genesis\API\Request
     protected $transaction_id;
 
     /**
+     * Card type for the voucher - can be ’virtual’ or ’physical’ only
+     *
+     * @var string
+     */
+    protected $card_type;
+
+    /**
+     * Redeem type for the voucher - can be ’stored’ or ’instant’ only
+     *
+     * @var string
+     */
+    protected $redeem_type;
+
+    /**
      * Description of the transaction for later use
      *
      * @var string
@@ -347,6 +361,8 @@ class Sale extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
+            'card_type',
+            'redeem_type',
             'amount',
             'currency',
             'card_holder',
@@ -369,6 +385,8 @@ class Sale extends \Genesis\API\Request
             'payment_transaction' => array(
                 'transaction_type'          => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_SALE,
                 'transaction_id'            => $this->transaction_id,
+                'card_type'                 => $this->card_type,
+                'redeem_type'               => $this->redeem_type,
                 'usage'                     => $this->usage,
                 'remote_ip'                 => $this->remote_ip,
                 'amount'                    => $this->transform(
