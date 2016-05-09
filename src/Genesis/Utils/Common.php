@@ -250,4 +250,24 @@ final class Common
 
         return false;
     }
+
+    /**
+     * Check if an array has array items
+     * @param array $arr
+     * @return bool
+     */
+    public static function arrayContainsArrayItems($arr)
+    {
+        if (!self::isValidArray($arr)) {
+            return false;
+        }
+
+        foreach ($arr as $item) {
+            if (self::isValidArray($item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
