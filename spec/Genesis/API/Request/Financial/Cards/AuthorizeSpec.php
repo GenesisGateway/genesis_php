@@ -52,6 +52,7 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setExpirationYear($faker->numberBetween(date('Y'), date('Y') + 5));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
+        $this->setCustomerBirthDate($faker->date("d-m-Y"));
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
