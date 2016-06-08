@@ -355,28 +355,47 @@ class Create extends \Genesis\API\Request
             $transactionType
         );
 
-        if (is_array($transactionCustomRequiredParams)) {
+        if (\Genesis\Utils\Common::isValidArray($transactionCustomRequiredParams)) {
             foreach ($transactionCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
                 if (!array_key_exists($customRequiredParam, $parameters)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
-                        sprintf(
-                            'Empty (null) required parameter: %s for transaction type %s',
-                            $customRequiredParam,
-                            $transactionType
-                        )
-                    );
+                    foreach ($parameters as $parameter) {
+                        if (!\Genesis\Utils\Common::isValidArray($parameter) ||
+                            !array_key_exists($customRequiredParam, $parameter)) {
+                            throw new \Genesis\Exceptions\ErrorParameter(
+                                sprintf(
+                                    'Empty (null) required parameter: %s for transaction type %s',
+                                    $customRequiredParam,
+                                    $transactionType
+                                )
+                            );
+                        }
+                    }
                 }
 
-                if (!empty($customRequiredParamValues) && is_array($customRequiredParamValues)) {
-                    if (!in_array($parameters[$customRequiredParam], $customRequiredParamValues)) {
-                        throw new \Genesis\Exceptions\ErrorParameter(
+                if (!empty($customRequiredParamValues) && \Genesis\Utils\Common::isValidArray($customRequiredParamValues)) {
+                    if (!\Genesis\Utils\Common::arrayContainsArrayItems($parameters)) {
+                        if (!in_array($parameters[$customRequiredParam], $customRequiredParamValues)) {
                             sprintf(
                                 'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
                                 $parameters[$customRequiredParam],
                                 $customRequiredParam,
                                 $transactionType
-                            )
-                        );
+                            );
+                        }
+                    }
+                    else {
+                        foreach ($parameters as $parameter) {
+                            if (!in_array($parameter[$customRequiredParam], $customRequiredParamValues)) {
+                                throw new \Genesis\Exceptions\ErrorParameter(
+                                    sprintf(
+                                        'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
+                                        $parameter[$customRequiredParam],
+                                        $customRequiredParam,
+                                        $transactionType
+                                    )
+                                );
+                            }
+                        }
                     }
                 }
             }
