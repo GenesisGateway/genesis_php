@@ -50,6 +50,8 @@ class SaleSpec extends ObjectBehavior
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
+        $this->setCardType('virtual');
+        $this->setRedeemType('instant');
         $this->setCardHolder($faker->name);
         $this->setCardNumber("4200000000000000");
         $this->setCvv(sprintf("%03s", $faker->numberBetween(1, 999)));
