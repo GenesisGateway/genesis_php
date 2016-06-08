@@ -1,3 +1,21 @@
+1.4.3
+-----
+* Added Support for BirthDate API Param in the following Processing APIs
+    - Authorize
+    - Authorize3D
+    - AccountVerification
+    - AVS
+    - InitRecurringSale
+    - InitRecurringSale3D
+    - PayByVouchers Sale
+    - Payout
+    - Sale
+    - Sale3D
+* Update Specs
+    - WPF Create
+    - PBV Sale
+    - PBV Yeepay
+    
 1.4.2
 -----
 * Updated validations for WPF APM custom parameters
