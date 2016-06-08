@@ -46,6 +46,9 @@ class oBePSpec extends ObjectBehavior
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
+        $this->setCardType('virtual');
+        $this->setRedeemType('instant');
+
         $this->setProductName('Paul Blart Mall Cop');
         $this->setProductCategory('movie');
         $this->setCustomerName('李');

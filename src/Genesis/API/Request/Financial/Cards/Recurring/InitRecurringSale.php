@@ -133,6 +133,13 @@ class InitRecurringSale extends \Genesis\API\Request
     protected $customer_phone;
 
     /**
+     * Birth date of the customer
+     *
+     * @var string
+     */
+    protected $birth_date;
+
+    /**
      *Customer's Billing Address: First name
      *
      * @var string
@@ -405,6 +412,7 @@ class InitRecurringSale extends \Genesis\API\Request
                 'expiration_year'           => $this->expiration_year,
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
+                'birth_date'                => $this->birth_date,
                 'billing_address'           => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
