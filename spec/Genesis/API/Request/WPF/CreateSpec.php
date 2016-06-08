@@ -121,9 +121,9 @@ class CreateSpec extends ObjectBehavior
             )
         );
         $this->addTransactionType(
-            'paybyvoucher', array(
-                'source_id' => 'john@example.com',
-                'target_id' => 'john@example.com'
+            'paybyvoucher_sale', array(
+                'card_type' => 'virtual',
+                'redeem_type' => 'instant'
             )
         );
     }
