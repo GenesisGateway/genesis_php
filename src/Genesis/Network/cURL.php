@@ -22,13 +22,13 @@
  */
 namespace Genesis\Network;
 
-/**
- * cURL Network Interface
- * Note: requires php curl extension
- *
- * @package    Genesis
- * @subpackage Network
- */
+    /**
+     * cURL Network Interface
+     * Note: requires php curl extension
+     *
+     * @package    Genesis
+     * @subpackage Network
+     */
 // @codingStandardsIgnoreStart
 class cURL implements \Genesis\Interfaces\Network
 // @codingStandardsIgnoreEnd
@@ -130,7 +130,7 @@ class cURL implements \Genesis\Interfaces\Network
                 // Workaround to prevent cURL from parsing HTTP 100 as separate request
                 'Expect:'
             ),
-            CURLOPT_HEADER         => true,
+            CURLOPT_HEADER         => false,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_FRESH_CONNECT  => true,
             CURLOPT_RETURNTRANSFER => true,
@@ -162,10 +162,9 @@ class cURL implements \Genesis\Interfaces\Network
     public function execute()
     {
         $this->response = curl_exec($this->curlHandle);
-
         $this->checkForErrors();
-
-        list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
+        $this->responseHeaders = '';
+        $this->responseBody = $this->response;
     }
 
     /**
