@@ -16,7 +16,6 @@ class cURLSpec extends ObjectBehavior
     function it_can_connect_to_staging_gateway()
     {
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
@@ -36,7 +35,6 @@ class cURLSpec extends ObjectBehavior
     function it_can_connect_to_staging_wpf()
     {
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
 
