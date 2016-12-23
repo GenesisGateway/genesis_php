@@ -1,6 +1,6 @@
 language: php
 
-sudo: false
+sudo: true
 
 addons:
   apt:
@@ -34,6 +34,8 @@ before_install:
 install:
   - export COMPOSER_ROOT_VERSION=dev-master
   - composer update
+  - sudo apt-get remove libcurl4-gnutls-dev
+  - sudo apt-get install libcurl4-openssl-dev
 
 script:
   - if [ "$IGNORE_PHPENV" == "yes" ]; then /usr/bin/php5 vendor/bin/phpspec run --format=pretty; fi;
