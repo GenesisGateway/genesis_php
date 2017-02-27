@@ -65,13 +65,18 @@ class Genesis
         // Initialize the request
         $request = sprintf('\Genesis\API\Request\%s', $request);
 
-        if (class_exists($request)) {
-            $this->requestCtx = new $request;
-        } else {
+        if (!class_exists($request)) {
             throw new \Genesis\Exceptions\InvalidMethod(
                 'The selected transaction type is invalid!'
             );
         }
+
+        if (\Genesis\Utils\Common::isClassAbstract($request)) {
+            throw new \Genesis\Exceptions\InvalidMethod(
+                'The selected transaction type is invalid, because it is abstract!'
+            );
+        }
+        $this->requestCtx = new $request;
 
         // Initialize the Network
         $this->networkCtx = new \Genesis\Network();

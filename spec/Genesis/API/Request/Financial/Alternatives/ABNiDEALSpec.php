@@ -7,37 +7,37 @@ use Prophecy\Argument;
 
 class ABNiDEALSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\ABNiDEAL');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_email_parameters()
+    public function it_should_fail_when_missing_email_parameters()
     {
         $this->setRequestParameters();
         $this->setCustomerEmail(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_bank_id_parameters()
+    public function it_should_fail_when_missing_bank_id_parameters()
     {
         $this->setRequestParameters();
         $this->setCustomerBankId(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 

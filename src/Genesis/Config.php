@@ -29,25 +29,25 @@ namespace Genesis;
  *
  * @package Genesis
  *
- * @method static \Genesis\Config getUsername()  Get the Username, set in configuration
- * @method static \Genesis\Config getPassword()  Get the Password, set in the configuration
- * @method static \Genesis\Config getToken()     Get the Terminal Token, set in configuration
+ * @method static string getUsername()  Get the Username, set in configuration
+ * @method static string getPassword()  Get the Password, set in the configuration
+ * @method static string getToken()     Get the Terminal Token, set in configuration
  *
- * @method static \Genesis\Config setUsername()  Set the Username
- * @method static \Genesis\Config setPassword()  Set the Password
- * @method static \Genesis\Config setToken()     Set the Terminal
+ * @method static \Genesis\Config setUsername($value)  Set the Username
+ * @method static \Genesis\Config setPassword($value)  Set the Password
+ * @method static \Genesis\Config setToken($value)     Set the Terminal
  */
 final class Config
 {
     /**
      * Library Version
      */
-    const VERSION = '1.4.3';
+    const VERSION = '1.5.0';
 
     /**
      * Core configuration settings
      *
-     * @var Array
+     * @var array
      */
     public static $vault
         = array(
@@ -74,7 +74,7 @@ final class Config
      * This should map all available requests/sub-domains
      * for each configuration type (develop,sandbox,production)
      *
-     * @var Array
+     * @var array
      */
     public static $domains
         = array(

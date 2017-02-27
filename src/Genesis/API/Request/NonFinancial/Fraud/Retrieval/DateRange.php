@@ -66,7 +66,7 @@ class DateRange extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -105,7 +105,7 @@ class DateRange extends \Genesis\API\Request
             'retrieval_request_request' => array(
                 'start_date' => $this->start_date,
                 'end_date'   => $this->end_date,
-                'page'       => $this->page,
+                'page'       => $this->page
             )
         );
 

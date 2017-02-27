@@ -65,11 +65,18 @@ class DateRange extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile/by_date', \Genesis\Config::getToken()));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'reconcile/by_date',
+                \Genesis\Config::getToken()
+            )
+        );
     }
 
     /**
@@ -97,7 +104,7 @@ class DateRange extends \Genesis\API\Request
             'reconcile' => array(
                 'start_date' => $this->start_date,
                 'end_date'   => $this->end_date,
-                'page'       => $this->page,
+                'page'       => $this->page
             )
         );
 

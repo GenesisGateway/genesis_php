@@ -10,15 +10,16 @@ use \Genesis\Network as Network;
 
 class ResponseSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Response');
     }
 
-    function it_should_be_successful_on_approved_status()
+    public function it_should_be_successful_on_approved_status()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved')
                 )
@@ -28,10 +29,11 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(true);
     }
 
-    function it_should_be_successful_on_new_status()
+    public function it_should_be_successful_on_new_status()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('new')
                 )
@@ -41,10 +43,11 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(true);
     }
 
-    function it_should_be_successful_on_pending_async_status()
+    public function it_should_be_successful_on_pending_async_status()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('pending_async')
                 )
@@ -54,10 +57,11 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(true);
     }
 
-    function it_should_be_unsuccessful_on_error()
+    public function it_should_be_unsuccessful_on_error()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorAPI')->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('error')
                 )
@@ -67,10 +71,11 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(false);
     }
 
-    function it_should_be_unsuccessful_on_unknown_status()
+    public function it_should_be_unsuccessful_on_unknown_status()
     {
         $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('non-existing-status')
                 )
@@ -80,7 +85,7 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(null);
     }
 
-    function it_should_parse_transaction_without_status()
+    public function it_should_parse_transaction_without_status()
     {
         $sample = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -95,12 +100,13 @@ XML;
         $this->isSuccessful()->shouldBe(null);
     }
 
-    function it_should_maintain_response_integrity()
+    public function it_should_maintain_response_integrity()
     {
         $xml_document = $this->buildSample(array('approved', 999));
 
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $xml_document
             )
         );
@@ -108,24 +114,27 @@ XML;
         $this->getResponseRaw()->shouldBe($xml_document);
     }
 
-    function it_should_fail_parsing_on_null_response()
+    public function it_should_fail_parsing_on_null_response()
     {
         $this->shouldThrow('\Genesis\Exceptions\InvalidResponse')->during(
-            'parseResponse', array(null)
+            'parseResponse',
+            array(null)
         );
     }
 
-    function it_should_fail_parsing_on_empty_response()
+    public function it_should_fail_parsing_on_empty_response()
     {
         $this->shouldThrow('\Genesis\Exceptions\InvalidResponse')->during(
-            'parseResponse', array('')
+            'parseResponse',
+            array('')
         );
     }
 
-    function it_should_return_correct_error_message()
+    public function it_should_return_correct_error_message()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 420)
                 )
@@ -135,10 +144,11 @@ XML;
         $this->getErrorDescription()->shouldBe('Wrong Workflow specified.');
     }
 
-    function it_should_successfully_parse_partial_approval()
+    public function it_should_successfully_parse_partial_approval()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 00, 90, 'USD', 'true')
                 )
@@ -148,10 +158,11 @@ XML;
         $this->isPartiallyApproved()->shouldBe(true);
     }
 
-    function it_should_fail_parsing_partial_approval()
+    public function it_should_fail_parsing_partial_approval()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 00, 90, 'USD', 'false')
                 )
@@ -161,10 +172,11 @@ XML;
         $this->isPartiallyApproved()->shouldBe(false);
     }
 
-    function it_should_get_formatted_amount()
+    public function it_should_get_formatted_amount()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 00, 314, 'USD')
                 )
@@ -174,10 +186,11 @@ XML;
         $this->getResponseObject()->amount->shouldBe('3.14');
     }
 
-    function it_should_get_formatted_timestamp()
+    public function it_should_get_formatted_timestamp()
     {
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 00, 314, 'USD', 'false')
                 )
@@ -187,15 +200,16 @@ XML;
         $this->getResponseObject()->timestamp->shouldHaveType("DateTime");
     }
 
-    function it_should_not_change_the_value_if_not_a_timestamp()
+    public function it_should_not_change_the_value_if_not_a_timestamp()
     {
         // Prevent console SPAM due to error_log
         $log = ini_get('error_log');
 
-        ini_set('error_log','/dev/null');
+        ini_set('error_log', '/dev/null');
 
         $this->shouldNotThrow()->during(
-            'parseResponse', array(
+            'parseResponse',
+            array(
                 $this->buildSample(
                     array('approved', 00, 314, 'USD', 'false', 'ERROR')
                 )
@@ -207,10 +221,18 @@ XML;
         ini_set('error_log', $log);
     }
 
-    function buildSample($settings = array())
+    protected function buildSample($settings = array())
     {
         list($status, $code, $amount, $currency, $partial_approval, $timestamp) = array_replace(
-            array('', 00, 314, 'USD', false, '1970-01-01T00:00:00Z'), $settings
+            array(
+                '',
+                00,
+                314,
+                'USD',
+                false,
+                '1970-01-01T00:00:00Z'
+            ),
+            $settings
         );
 
         $payment_response = array(
@@ -237,7 +259,7 @@ XML;
         return $xml->getDocument();
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty' => function ($subject) {

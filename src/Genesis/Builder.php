@@ -73,7 +73,7 @@ class Builder
      *
      * @param array $structure
      */
-    public function parseStructure(Array $structure)
+    public function parseStructure(array $structure)
     {
         $this->context->populateNodes($structure);
     }

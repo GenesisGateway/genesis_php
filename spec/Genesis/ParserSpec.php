@@ -7,12 +7,12 @@ use Prophecy\Argument;
 
 class ParserSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Parser');
     }
 
-    function it_can_parse_content()
+    public function it_can_parse_content()
     {
         $xml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -49,7 +49,7 @@ XML;
         $this->getObject()->payment_response->sent_to_acquirer->shouldBe(true);
     }
 
-    function it_should_throw_on_invalid_document()
+    public function it_should_throw_on_invalid_document()
     {
         $xml = <<<XML
 <?xml>
@@ -61,7 +61,7 @@ XML;
         $this->shouldThrow()->during('parseDocument', array($xml));
     }
 
-    function it_should_throw_on_null()
+    public function it_should_throw_on_null()
     {
         $this->shouldThrow()->during('parseDocument', array(null));
     }

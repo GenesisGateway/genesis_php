@@ -318,7 +318,7 @@ class AccountVerification extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -340,7 +340,7 @@ class AccountVerification extends \Genesis\API\Request
             'expiration_year',
             'billing_address1',
             'billing_zip_code',
-            'billing_city',
+            'billing_city'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -376,7 +376,7 @@ class AccountVerification extends \Genesis\API\Request
                     'zip_code'   => $this->billing_zip_code,
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
-                    'country'    => $this->billing_country,
+                    'country'    => $this->billing_country
                 ),
                 'shipping_address' => array(
                     'first_name' => $this->shipping_first_name,
@@ -386,7 +386,7 @@ class AccountVerification extends \Genesis\API\Request
                     'zip_code'   => $this->shipping_zip_code,
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country,
+                    'country'    => $this->shipping_country
                 ),
                 'risk_params'      => array(
                     'ssn'           => $this->risk_ssn,
@@ -397,7 +397,7 @@ class AccountVerification extends \Genesis\API\Request
                     'email'         => $this->risk_email,
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number,
+                    'serial_number' => $this->risk_serial_number
                 )
             )
         );

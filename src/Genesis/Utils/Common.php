@@ -211,9 +211,9 @@ final class Common
             return true;
         } elseif (is_null($flag)) {
             return $string;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -228,9 +228,9 @@ final class Common
         if (is_bool($bool)) {
             if ($bool) {
                 return 'true';
-            } else {
-                return 'false';
             }
+
+            return 'false';
         }
 
         return $bool;
@@ -269,5 +269,23 @@ final class Common
         }
 
         return false;
+    }
+
+    /**
+     * Determines if the given class is Instantiable or not
+     * Helps to prevent from creating an instance of an abstract class
+     *
+     * @param string $className
+     * @return bool
+     */
+    public static function isClassAbstract($className)
+    {
+        if (!class_exists($className)) {
+            return false;
+        }
+
+        $reflectionClass = new \ReflectionClass($className);
+
+        return $reflectionClass->isAbstract();
     }
 }

@@ -65,7 +65,7 @@ class DateRange extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 

@@ -7,19 +7,19 @@ use Prophecy\Argument;
 
 class ConfigSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Config');
     }
 
-    function it_should_have_default_environment_sandbox()
+    public function it_should_have_default_environment_sandbox()
     {
         $this::getEnvironment()->shouldBe(
             \Genesis\API\Constants\Environments::STAGING
         );
     }
 
-    function it_should_set_environment()
+    public function it_should_set_environment()
     {
         $this::setEnvironment(
             \Genesis\API\Constants\Environments::STAGING
@@ -38,7 +38,7 @@ class ConfigSpec extends ObjectBehavior
         );
     }
 
-    function it_should_set_environment_via_aliases()
+    public function it_should_set_environment_via_aliases()
     {
         $this::setEnvironment('live');
 
@@ -77,7 +77,7 @@ class ConfigSpec extends ObjectBehavior
         );
     }
 
-    function it_should_not_set_environment_on_invalid_argument()
+    public function it_should_not_set_environment_on_invalid_argument()
     {
         $default = $this::getEnvironment();
 
@@ -102,7 +102,7 @@ class ConfigSpec extends ObjectBehavior
         $this::getEnvironment()->shouldBe($default);
     }
 
-    function it_should_set_endpoint()
+    public function it_should_set_endpoint()
     {
         $this::setEndpoint(\Genesis\API\Constants\Endpoints::ECOMPROCESSING);
 
@@ -117,7 +117,7 @@ class ConfigSpec extends ObjectBehavior
         );
     }
 
-    function it_should_set_endpoint_via_aliases()
+    public function it_should_set_endpoint_via_aliases()
     {
         $this::setEndpoint('ecp');
 
@@ -156,7 +156,7 @@ class ConfigSpec extends ObjectBehavior
         );
     }
 
-    function it_should_not_set_endpoint_on_invalid_argument()
+    public function it_should_not_set_endpoint_on_invalid_argument()
     {
         $default = $this::getEndpoint();
 
@@ -181,14 +181,14 @@ class ConfigSpec extends ObjectBehavior
         $this::getEndpoint()->shouldBe($default);
     }
 
-    function it_should_have_default_interface()
+    public function it_should_have_default_interface()
     {
         $this::getInterface('builder')->shouldBe('xml');
 
         $this::getInterface('network')->shouldBe('curl');
     }
 
-    function it_should_set_interface()
+    public function it_should_set_interface()
     {
         $this::setInterface('builder', 'json');
 
@@ -203,7 +203,7 @@ class ConfigSpec extends ObjectBehavior
         $this::setInterface('network', 'curl');
     }
 
-    function it_should_have_valid_ca()
+    public function it_should_have_valid_ca()
     {
         $this::getCertificateBundle()->shouldExist();
 
@@ -212,7 +212,7 @@ class ConfigSpec extends ObjectBehavior
         $this::getCertificateBundle()->shouldNotBeEmpty();
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty'       => function ($subject) {

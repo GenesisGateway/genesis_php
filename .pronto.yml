@@ -1,0 +1,9 @@
+all:
+  exclude:
+    - 'vendor/**/*'
+github:
+  slug: ENV['GITHUB_SLUG']
+  access_token: ENV['GITHUB_ACCESS_TOKEN']
+  api_endpoint: ENV['GITHUB_API_ENDPOINT']
+  web_endpoint: ENV['GITHUB_WEB_ENDPOINT']
+verbose: false

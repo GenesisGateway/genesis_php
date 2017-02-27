@@ -7,31 +7,42 @@ use Prophecy\Argument;
 
 class WebMoneySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\WebMoney');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    public function it_should_fail_when_payout_transaction_without_cust_account_id()
     {
-        $faker = \Faker\Factory::create();
+        $this->setRequestParameters();
+        $this->setIsPayout(true);
+        $this->shouldThrow()->during('getDocument');
+    }
 
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+    public function it_should_build_payout_structure()
+    {
+        $faker = $this->getFaker();
+
+        $this->setRequestParameters();
+        $this->setIsPayout(true);
+        $this->setCustomerAccountId($faker->userName);
+        $this->getDocument()->shouldNotBeEmpty();
+    }
+
+    protected function setRequestParameters()
+    {
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -45,6 +56,19 @@ class WebMoneySpec extends ObjectBehavior
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+    }
+
+    protected function getFaker()
+    {
+        $faker = \Faker\Factory::create();
+
+        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
+        $faker->addProvider(new \Faker\Provider\Payment($faker));
+        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
+        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
+        $faker->addProvider(new \Faker\Provider\Internet($faker));
+
+        return $faker;
     }
 
     public function getMatchers()

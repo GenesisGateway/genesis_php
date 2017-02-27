@@ -318,7 +318,7 @@ class AVS extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -340,7 +340,7 @@ class AVS extends \Genesis\API\Request
             'expiration_year',
             'billing_address1',
             'billing_zip_code',
-            'billing_city',
+            'billing_city'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

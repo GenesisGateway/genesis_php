@@ -29,7 +29,9 @@ namespace Genesis\API\Request\Financial\PayByVouchers;
  *
  * @package Genesis\API\Request\Financial\PayByVouchers
  */
+// @codingStandardsIgnoreStart
 class oBeP extends \Genesis\API\Request
+// @codingStandardsIgnoreEnd
 {
     /**
      * Unique transaction id defined by mer-chant
@@ -158,7 +160,7 @@ class oBeP extends \Genesis\API\Request
                  'protocol' => 'https',
                  'port'     => 443,
                  'type'     => 'POST',
-                 'format'   => 'xml',
+                 'format'   => 'xml'
             )
         );
 
@@ -209,7 +211,7 @@ class oBeP extends \Genesis\API\Request
                     'amount',
                     array(
                         $this->amount,
-                        $this->currency,
+                        $this->currency
                     )
                 ),
                 'currency'            => $this->currency,
@@ -220,7 +222,7 @@ class oBeP extends \Genesis\API\Request
                 'customer_phone'      => $this->customer_phone,
                 'customer_id_number'  => $this->customer_id_number,
                 'customer_bank_id'    => $this->customer_bank_id,
-                'bank_account_number' => $this->bank_account_number,
+                'bank_account_number' => $this->bank_account_number
             )
         );
 

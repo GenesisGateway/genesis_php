@@ -7,31 +7,31 @@ use Prophecy\Argument;
 
 class Sale3DSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Sale3D');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->Build();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
         $this->setCardNumber(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 
