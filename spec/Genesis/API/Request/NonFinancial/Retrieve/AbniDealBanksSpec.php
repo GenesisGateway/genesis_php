@@ -7,23 +7,23 @@ use Prophecy\Argument;
 
 class AbniDealBanksSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\NonFinancial\Retrieve\AbniDealBanks');
     }
 
-    function it_should_build_without_parameters()
+    public function it_should_build_without_parameters()
     {
         $this->shouldNotThrow()->during('getDocument');
     }
 
-    function it_should_build_empty_body()
+    public function it_should_build_empty_body()
     {
         $this->Build();
         $this->getDocument()->shouldBeNull();
     }
 
-    function it_should_build_correct_url_for_ecp_endpoint()
+    public function it_should_build_correct_url_for_ecp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING
@@ -32,7 +32,7 @@ class AbniDealBanksSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldBe('https://staging.gate.e-comprocessing.net:443/retrieve_abn_ideal_banks');
     }
 
-    function it_should_build_correct_url_for_emp_endpoint()
+    public function it_should_build_correct_url_for_emp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY

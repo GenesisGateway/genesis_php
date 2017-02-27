@@ -28,67 +28,15 @@ namespace Genesis\API\Request\Financial\Cards\Recurring;
  * @package    Genesis
  * @subpackage Request
  */
-class RecurringSale extends \Genesis\API\Request
+class RecurringSale extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
 {
     /**
-     * Unique transaction id defined by merchant
-     *
-     * @var string
+     * Returns the Request transaction type
+     * @return string
      */
-    protected $transaction_id;
-
-    /**
-     * Description of the transaction for later use
-     *
-     * @var string
-     */
-    protected $usage;
-
-    /**
-     * IPv4 address of customer
-     *
-     * @var string
-     */
-    protected $remote_ip;
-
-    /**
-     * Amount of transaction in minor currency unit
-     *
-     * @var int|float|double
-     */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
-     *
-     * @var string
-     */
-    protected $currency;
-
-    /**
-     * Unique id of the existing (target) transaction
-     *
-     * @var string
-     */
-    protected $reference_id;
-
-    /**
-     * Set the per-request configuration
-     *
-     * @return void
-     */
-    protected function initConfiguration()
+    protected function getTransactionType()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            )
-        );
-
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        return \Genesis\API\Constants\Transaction\Types::RECURRING_SALE;
     }
 
     /**
@@ -106,33 +54,5 @@ class RecurringSale extends \Genesis\API\Request
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
-
-    /**
-     * Create the request's Tree structure
-     *
-     * @return void
-     */
-    protected function populateStructure()
-    {
-        $treeStructure = array(
-            'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::RECURRING_SALE,
-                'transaction_id'   => $this->transaction_id,
-                'usage'            => $this->usage,
-                'remote_ip'        => $this->remote_ip,
-                'reference_id'     => $this->reference_id,
-                'amount'           => $this->transform(
-                    'amount',
-                    array(
-                        $this->amount,
-                        $this->currency,
-                    )
-                ),
-                'currency'         => $this->currency
-            )
-        );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

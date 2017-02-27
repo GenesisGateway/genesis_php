@@ -43,10 +43,17 @@ class AbniDealBanks extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'GET',
-                'format'   => 'plain',
+                'format'   => 'plain'
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieve_abn_ideal_banks', false));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'retrieve_abn_ideal_banks',
+                false
+            )
+        );
     }
 }

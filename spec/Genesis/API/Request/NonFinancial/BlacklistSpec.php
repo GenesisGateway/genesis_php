@@ -8,23 +8,23 @@ use Prophecy\Argument;
 
 class BlacklistSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\NonFinancial\Blacklist');
     }
 
-    function it_can_build_structure()
+    public function it_can_build_structure()
     {
         $this->setCardNumber('4200000000000000');
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setCardNumber(null);
         $this->shouldThrow()->during('getDocument');

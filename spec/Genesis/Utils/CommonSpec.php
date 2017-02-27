@@ -10,12 +10,12 @@ use Prophecy\Argument;
  */
 class CommonSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Utils\Common');
     }
 
-    function it_can_convert_pascal_to_snake()
+    public function it_can_convert_pascal_to_snake()
     {
         $tests = array(
             'mode'             => 'mode',
@@ -46,7 +46,7 @@ class CommonSpec extends ObjectBehavior
         }
     }
 
-    function it_can_resolve_dynamic_methods()
+    public function it_can_resolve_dynamic_methods()
     {
         $tests = array(
             'setMode'                   => array('set', 'mode'),
@@ -77,7 +77,7 @@ class CommonSpec extends ObjectBehavior
         }
     }
 
-    function it_can_create_array_object()
+    public function it_can_create_array_object()
     {
         $this::createArrayObject(array('key_example' => 'value_example'))->shouldBeAnInstanceOf(
             '\ArrayObject'
@@ -88,7 +88,7 @@ class CommonSpec extends ObjectBehavior
         );
     }
 
-    function it_can_sanitize_null_array()
+    public function it_can_sanitize_null_array()
     {
         $array = array('test', 'data', null, 'version');
 
@@ -99,7 +99,7 @@ class CommonSpec extends ObjectBehavior
         $this::emptyValueRecursiveRemoval($array)->shouldHaveASizeOf(1);
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'haveASizeOf' => function ($subject, $value) {

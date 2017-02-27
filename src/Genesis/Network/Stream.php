@@ -103,6 +103,8 @@ class Stream implements \Genesis\Interfaces\Network
      * @param array $requestData
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function prepareRequestBody($requestData)
     {

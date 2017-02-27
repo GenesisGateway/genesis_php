@@ -56,11 +56,18 @@ class Transaction extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'fraud_reports', false));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'fraud_reports',
+                false
+            )
+        );
     }
 
     /**

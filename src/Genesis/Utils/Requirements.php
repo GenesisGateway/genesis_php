@@ -145,8 +145,8 @@ final class Requirements
 
         if (array_key_exists($name, $messages)) {
             return $messages[$name];
-        } else {
-            return '[' . $name . '] Missing project dependency!';
         }
+
+        return '[' . $name . '] Missing project dependency!';
     }
 }

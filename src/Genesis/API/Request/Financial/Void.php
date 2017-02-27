@@ -28,29 +28,8 @@ namespace Genesis\API\Request\Financial;
  * @package    Genesis
  * @subpackage Request
  */
-class Void extends \Genesis\API\Request
+class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
 {
-    /**
-     * Unique transaction id defined by merchant
-     *
-     * @var string
-     */
-    protected $transaction_id;
-
-    /**
-     * Description of the transaction for later use
-     *
-     * @var string
-     */
-    protected $usage;
-
-    /**
-     * IPv4 address of customer
-     *
-     * @var string
-     */
-    protected $remote_ip;
-
     /**
      * Unique id of the existing (target) transaction
      *
@@ -59,22 +38,12 @@ class Void extends \Genesis\API\Request
     protected $reference_id;
 
     /**
-     * Set the per-request configuration
-     *
-     * @return void
+     * Returns the Request transaction type
+     * @return string
      */
-    protected function initConfiguration()
+    protected function getTransactionType()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml',
-            )
-        );
-
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        return \Genesis\API\Constants\Transaction\Types::VOID;
     }
 
     /**
@@ -86,29 +55,25 @@ class Void extends \Genesis\API\Request
     {
         $requiredFields = array(
             'transaction_id',
-            'reference_id',
+            'reference_id'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 
     /**
-     * Create the request's Tree structure
-     *
-     * @return void
+     * Return additional request attributes
+     * @return array
      */
-    protected function populateStructure()
+    protected function getRequestTreeStructure()
     {
-        $treeStructure = array(
-            'payment_transaction' => array(
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::VOID,
-                'transaction_id'   => $this->transaction_id,
-                'usage'            => $this->usage,
-                'remote_ip'        => $this->remote_ip,
-                'reference_id'     => $this->reference_id,
+        $treeStructure = parent::getRequestTreeStructure();
+
+        return array_merge(
+            $treeStructure,
+            array(
+                'reference_id' => $this->reference_id
             )
         );
-
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
 }

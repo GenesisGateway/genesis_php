@@ -8,12 +8,12 @@ use Genesis\Config;
 
 class StreamSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Network\Stream');
     }
 
-    function it_can_connect_to_staging_gateway_environment()
+    public function it_can_connect_to_staging_gateway_environment()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -27,13 +27,13 @@ class StreamSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_staging_wpf_environment()
+    public function it_can_connect_to_staging_wpf_environment()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -47,13 +47,13 @@ class StreamSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_production_gateway_environment()
+    public function it_can_connect_to_production_gateway_environment()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -67,13 +67,13 @@ class StreamSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_production_wpf_environment()
+    public function it_can_connect_to_production_wpf_environment()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -87,13 +87,13 @@ class StreamSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
     }
 
-    function send_remote_connection($remote_url)
+    protected function sendRemoteConnection($remote_url)
     {
         $faker = \Faker\Factory::create();
 
@@ -122,7 +122,7 @@ class StreamSpec extends ObjectBehavior
         $this->getStatus()->shouldBe(200);
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty' => function ($subject) {

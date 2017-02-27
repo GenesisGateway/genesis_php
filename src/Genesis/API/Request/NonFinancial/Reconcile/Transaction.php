@@ -63,11 +63,18 @@ class Transaction extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'reconcile', \Genesis\Config::getToken()));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'reconcile',
+                \Genesis\Config::getToken()
+            )
+        );
     }
 
     /**
@@ -95,7 +102,7 @@ class Transaction extends \Genesis\API\Request
             'reconcile' => array(
                 'arn'               => $this->arn,
                 'transaction_id'    => $this->transaction_id,
-                'unique_id'         => $this->unique_id,
+                'unique_id'         => $this->unique_id
             )
         );
 

@@ -65,7 +65,7 @@ final class XML implements \Genesis\Interfaces\Builder
      * Insert tree-structured array as nodes in XMLWriter
      * and end the current Document.
      *
-     * @param $data Array - tree-structured array
+     * @param array $data - tree-structured array
      *
      * @throws \Genesis\Exceptions\InvalidArgument
      *
@@ -158,6 +158,8 @@ final class XML implements \Genesis\Interfaces\Builder
      * Write Element's CData
      *
      * @param $value
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function writeCData($value)
     {
@@ -174,6 +176,8 @@ final class XML implements \Genesis\Interfaces\Builder
      * Write Element's Text
      *
      * @param $value
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function writeText($value)
     {
@@ -191,6 +195,8 @@ final class XML implements \Genesis\Interfaces\Builder
      *
      * @param $key
      * @param $value
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function writeElement($key, $value)
     {

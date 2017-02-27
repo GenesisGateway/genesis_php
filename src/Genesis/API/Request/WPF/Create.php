@@ -27,6 +27,50 @@ namespace Genesis\API\Request\WPF;
  *
  * @package    Genesis
  * @subpackage Request
+ *
+ * @method $this setTransactionId($value) Set a Unique Transaction id
+ * @method $this setUsage($value) Set the description of the transaction for later use
+ * @method $this setAmount($value) Set the amount of transaction in minor currency unit
+ * @method $this setCurrency($value) Set the currency code in ISO-4217
+ * @method $this setDescription($value) Set a text describing the reason of the payment
+ * @method $this setCustomerEmail($value) Set Email address of the Customer
+ * @method $this setCustomerPhone($value) Set Phone number of the Customer
+
+ * @method $this setNotificationUrl($value) Set the URL endpoint for Genesis Notifications
+ * @method $this setReturnSuccessUrl($value) Set the URL where customer is sent to after successful payment
+ * @method $this setReturnFailureUrl($value) Set the URL where customer is sent to after un-successful payment
+ * @method $this setReturnCancelUrl($value) Set the  URL where the customer is sent to after they cancel the payment
+
+ * @method $this setBillingFirstName($value) Set Customer's Billing Address: First name
+ * @method $this setBillingLastName($value) Set Customer's Billing Address: First name
+ * @method $this setBillingAddress1($value) Set Customer's Billing Address: Part 1
+ * @method $this setBillingAddress2($value) Set Customer's Billing Address: Part 2
+ * @method $this setBillingZipCode($value) Set Customer's Billing Address: ZIP
+ * @method $this setBillingCity($value) Set Customer's Billing Address: City
+ * @method $this setBillingState($value) Set Customer's Billing Address: State
+ * @method $this setBillingCountry($value) Set Customer's Billing Address: Country
+
+ * @method $this setShippingFirstName($value) Set Customer's Shipping Address: First name
+ * @method $this setShippingLastName($value) Set Customer's Shipping Address: First name
+ * @method $this setShippingAddress1($value) Set Customer's Shipping Address: Part 1
+ * @method $this setShippingAddress2($value) Set Customer's Shipping Address: Part 2
+ * @method $this setShippingZipCode($value) Set Customer's Shipping Address: ZIP
+ * @method $this setShippingCity($value) Set Customer's Shipping Address: City
+ * @method $this setShippingState($value) Set Customer's Shipping Address: State
+ * @method $this setShippingCountry($value) Set Customer's Shipping Address: Country
+
+ * @method $this setRiskSsn($value) Set the Social Security number or equivalent value for non US customers.
+ * @method $this setRiskMacAddress($value) Set the Customer's MAC address
+ * @method $this setRiskSessionId($value) Set the Customer's Session Id
+ * @method $this setRiskUserId($value) Set the Customer's User Id
+ * @method $this setRiskUserLevel($value) Set the Customer's User Level
+ * @method $this setRiskEmail($value) Set the Customer's Email address
+ * @method $this setRiskPhone($value) Set the Customer's Phone number
+ * @method $this setRiskRemoteIp($value) Set the Customer's IP address
+ * @method $this setRiskSerialNumber($value) Set the Customer's Serial Number
+ *
+ * @method $this setDynamicMerchantName($value) Dynamically override the charge descriptor
+ * @method $this setDynamicMerchantCity($value) Dynamically override the merchant phone number
  */
 class Create extends \Genesis\API\Request
 {
@@ -307,6 +351,20 @@ class Create extends \Genesis\API\Request
     protected $risk_serial_number;
 
     /**
+     * Allows to dynamically override the charge descriptor
+     *
+     * @var string
+     */
+    protected $dynamic_merchant_name;
+
+    /**
+     * Allows to dynamically override the mer- chant phone number
+     *
+     * @var string
+     */
+    protected $dynamic_merchant_city;
+
+    /**
      * Add transaction type to the list of available types
      *
      * @param string $name
@@ -339,6 +397,8 @@ class Create extends \Genesis\API\Request
      * @param string $transactionType
      * @param array $parameters
      * @throws \Genesis\Exceptions\ErrorParameter
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function verifyTransactionType($transactionType, $parameters = array())
     {
@@ -351,12 +411,12 @@ class Create extends \Genesis\API\Request
             );
         }
 
-        $transactionCustomRequiredParams = \Genesis\API\Constants\Transaction\Types::getCustomRequiredParameters(
+        $txnCustomRequiredParams = \Genesis\API\Constants\Transaction\Types::getCustomRequiredParameters(
             $transactionType
         );
 
-        if (\Genesis\Utils\Common::isValidArray($transactionCustomRequiredParams)) {
-            foreach ($transactionCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
+        if (\Genesis\Utils\Common::isValidArray($txnCustomRequiredParams)) {
+            foreach ($txnCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
                 if (!array_key_exists($customRequiredParam, $parameters)) {
                     foreach ($parameters as $parameter) {
                         if (!\Genesis\Utils\Common::isValidArray($parameter) ||
@@ -372,7 +432,7 @@ class Create extends \Genesis\API\Request
                     }
                 }
 
-                if (!empty($customRequiredParamValues) && \Genesis\Utils\Common::isValidArray($customRequiredParamValues)) {
+                if (\Genesis\Utils\Common::isValidArray($customRequiredParamValues)) {
                     if (!\Genesis\Utils\Common::arrayContainsArrayItems($parameters)) {
                         if (!in_array($parameters[$customRequiredParam], $customRequiredParamValues)) {
                             sprintf(
@@ -382,19 +442,20 @@ class Create extends \Genesis\API\Request
                                 $transactionType
                             );
                         }
+
+                        continue;
                     }
-                    else {
-                        foreach ($parameters as $parameter) {
-                            if (!in_array($parameter[$customRequiredParam], $customRequiredParamValues)) {
-                                throw new \Genesis\Exceptions\ErrorParameter(
-                                    sprintf(
-                                        'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
-                                        $parameter[$customRequiredParam],
-                                        $customRequiredParam,
-                                        $transactionType
-                                    )
-                                );
-                            }
+
+                    foreach ($parameters as $parameter) {
+                        if (!in_array($parameter[$customRequiredParam], $customRequiredParamValues)) {
+                            throw new \Genesis\Exceptions\ErrorParameter(
+                                sprintf(
+                                    'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
+                                    $parameter[$customRequiredParam],
+                                    $customRequiredParam,
+                                    $transactionType
+                                )
+                            );
                         }
                     }
                 }
@@ -446,7 +507,7 @@ class Create extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -469,7 +530,7 @@ class Create extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'return_cancel_url',
-            'transaction_types',
+            'transaction_types'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -509,7 +570,7 @@ class Create extends \Genesis\API\Request
                     'zip_code'   => $this->billing_zip_code,
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
-                    'country'    => $this->billing_country,
+                    'country'    => $this->billing_country
                 ),
                 'shipping_address'   => array(
                     'first_name' => $this->shipping_first_name,
@@ -519,7 +580,7 @@ class Create extends \Genesis\API\Request
                     'zip_code'   => $this->shipping_zip_code,
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country,
+                    'country'    => $this->shipping_country
                 ),
                 'transaction_types'  => $this->transaction_types,
                 'risk_params'        => array(
@@ -531,8 +592,12 @@ class Create extends \Genesis\API\Request
                     'email'         => $this->risk_email,
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number,
+                    'serial_number' => $this->risk_serial_number
                 ),
+                'dynamic_descriptor_params' => array(
+                    'merchant_name' => $this->dynamic_merchant_name,
+                    'merchant_city' => $this->dynamic_merchant_city
+                )
             )
         );
 

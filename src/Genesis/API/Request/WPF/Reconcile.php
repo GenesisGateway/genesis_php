@@ -49,7 +49,7 @@ class Reconcile extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -79,7 +79,7 @@ class Reconcile extends \Genesis\API\Request
     {
         $treeStructure = array(
             'wpf_reconcile' => array(
-                'unique_id' => $this->unique_id,
+                'unique_id' => $this->unique_id
             )
         );
 

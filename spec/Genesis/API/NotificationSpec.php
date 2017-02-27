@@ -21,31 +21,33 @@ class NotificationSpec extends ObjectBehavior
         )
     );
 
-    function __construct()
+    public function __construct()
     {
-        for($i=0; $i < mt_rand(32,48); $i++) {
-            $this->sample['api']['unique_id'] .= chr(mt_rand(97,122));
+        for ($i=0; $i < mt_rand(32, 48); $i++) {
+            $this->sample['api']['unique_id'] .= chr(mt_rand(97, 122));
         }
 
         $this->sample['api']['signature'] = hash(
-            'sha1', $this->sample['api']['unique_id'] . \Genesis\Config::getPassword()
+            'sha1',
+            $this->sample['api']['unique_id'] . \Genesis\Config::getPassword()
         );
 
-        for($i=0; $i < mt_rand(32,48); $i++) {
-            $this->sample['wpf']['wpf_unique_id'] .= chr(mt_rand(97,122));
+        for ($i=0; $i < mt_rand(32, 48); $i++) {
+            $this->sample['wpf']['wpf_unique_id'] .= chr(mt_rand(97, 122));
         }
 
         $this->sample['wpf']['signature'] = hash(
-            'sha1', $this->sample['wpf']['wpf_unique_id'] . \Genesis\Config::getPassword()
+            'sha1',
+            $this->sample['wpf']['wpf_unique_id'] . \Genesis\Config::getPassword()
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Notification');
     }
 
-    function it_can_verify_api_notification()
+    public function it_can_verify_api_notification()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
 
@@ -55,7 +57,7 @@ class NotificationSpec extends ObjectBehavior
         $this->isAuthentic()->shouldBe(true);
     }
 
-    function it_can_verify_wpf_notification()
+    public function it_can_verify_wpf_notification()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
 
@@ -65,7 +67,7 @@ class NotificationSpec extends ObjectBehavior
         $this->isAuthentic()->shouldBe(true);
     }
 
-    function it_should_fail_api_auth_verification()
+    public function it_should_fail_api_auth_verification()
     {
         $sample = $this->sample['api'];
         $sample['signature'] = 'THIS-HASH-IS-INVALID';
@@ -78,7 +80,7 @@ class NotificationSpec extends ObjectBehavior
         $this->isAuthentic()->shouldBe(false);
     }
 
-    function it_should_fail_wpf_auth_verification()
+    public function it_should_fail_wpf_auth_verification()
     {
         $sample = $this->sample['wpf'];
         $sample['signature'] = 'THIS-HASH-IS-INVALID';
@@ -91,31 +93,31 @@ class NotificationSpec extends ObjectBehavior
         $this->isAuthentic()->shouldBe(false);
     }
 
-    function it_can_generate_api_xml_response()
+    public function it_can_generate_api_xml_response()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
         $this->generateResponse()->shouldNotBeEmpty();
     }
 
-    function it_can_generate_wpf_xml_response()
+    public function it_can_generate_wpf_xml_response()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
         $this->generateResponse()->shouldNotBeEmpty();
     }
 
-    function it_can_render_api_response()
+    public function it_can_render_api_response()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
         $this->generateResponse()->shouldContain('unique_id');
     }
 
-    function it_can_render_wpf_response()
+    public function it_can_render_wpf_response()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
         $this->generateResponse()->shouldContain('wpf_unique_id');
     }
 
-    function it_should_fail_without_api_id()
+    public function it_should_fail_without_api_id()
     {
         $api = $this->sample['api'];
         unset($api['unique_id']);
@@ -123,7 +125,7 @@ class NotificationSpec extends ObjectBehavior
         $this->shouldThrow()->during('parseNotification', array($api));
     }
 
-    function it_should_fail_without_wpf_id()
+    public function it_should_fail_without_wpf_id()
     {
         $wpf = $this->sample['wpf'];
         unset($wpf['wpf_unique_id']);
@@ -131,7 +133,7 @@ class NotificationSpec extends ObjectBehavior
         $this->shouldThrow()->during('parseNotification', array($wpf));
     }
 
-    function it_should_fail_without_api_signature()
+    public function it_should_fail_without_api_signature()
     {
         $api = $this->sample['api'];
         unset($api['signature']);
@@ -139,7 +141,7 @@ class NotificationSpec extends ObjectBehavior
         $this->shouldThrow()->during('parseNotification', array($api));
     }
 
-    function it_should_fail_without_wpf_signature()
+    public function it_should_fail_without_wpf_signature()
     {
         $wpf = $this->sample['wpf'];
         unset($wpf['signature']);
@@ -147,13 +149,13 @@ class NotificationSpec extends ObjectBehavior
         $this->shouldThrow()->during('parseNotification', array($wpf));
     }
 
-    function it_should_parse_api_notification()
+    public function it_should_parse_api_notification()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
         $this->getNotificationObject()->shouldNotBeEmpty();
     }
 
-    function it_should_parse_and_clean_api_notification()
+    public function it_should_parse_and_clean_api_notification()
     {
         $invalid_data = array(
             ' sig%33'   => ' ' . $this->sample['api']['signature'] . '%33',
@@ -167,13 +169,13 @@ class NotificationSpec extends ObjectBehavior
         $this->getNotificationObject()->{'$alpha'}->shouldBe('');
     }
 
-    function it_should_parse_wpf_notification()
+    public function it_should_parse_wpf_notification()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
         $this->getNotificationObject()->shouldNotBeEmpty();
     }
 
-    function it_should_parse_and_clean_wpf_notification()
+    public function it_should_parse_and_clean_wpf_notification()
     {
         $invalid_data = array(
             ' sig%33'   => ' ' . $this->sample['wpf']['signature'] . '%33',
@@ -187,7 +189,7 @@ class NotificationSpec extends ObjectBehavior
         $this->getNotificationObject()->{'$alpha'}->shouldBe('');
     }
 
-    function it_can_render_api_response_correctly()
+    public function it_can_render_api_response_correctly()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
 
@@ -198,7 +200,7 @@ class NotificationSpec extends ObjectBehavior
         $this->generateResponse()->shouldBe(ob_get_clean());
     }
 
-    function it_can_render_wpf_response_correctly()
+    public function it_can_render_wpf_response_correctly()
     {
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
 
@@ -209,7 +211,7 @@ class NotificationSpec extends ObjectBehavior
         $this->generateResponse()->shouldBe(ob_get_clean());
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty' => function ($subject) {

@@ -8,24 +8,24 @@ use \Genesis\API as API;
 
 class CreateSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\WPF\Create');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
         $this->getDocument()->shouldContainString('transaction_types');
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_set_language_parameter_ecp_endpoint()
+    public function it_should_set_language_parameter_ecp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING
@@ -38,7 +38,7 @@ class CreateSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf');
     }
 
-    function it_should_set_language_parameter_emp_endpoint()
+    public function it_should_set_language_parameter_emp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -51,7 +51,7 @@ class CreateSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/zh/wpf');
     }
 
-    function it_should_parse_only_two_letters_ecp_endpoint()
+    public function it_should_parse_only_two_letters_ecp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING
@@ -64,7 +64,7 @@ class CreateSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldContainString('wpf.e-comprocessing.net:443/zh/wpf');
     }
 
-    function it_should_parse_only_two_letters_emp_endpoint()
+    public function it_should_parse_only_two_letters_emp_endpoint()
     {
         \Genesis\Config::setEndpoint(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -77,14 +77,14 @@ class CreateSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldContainString('wpf.emerchantpay.net:443/zh/wpf');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
         $this->setCurrency(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 
@@ -115,13 +115,15 @@ class CreateSpec extends ObjectBehavior
         $this->addTransactionType('sale');
         $this->addTransactionType('sale3d');
         $this->addTransactionType(
-            'ezeewallet', array(
+            'ezeewallet',
+            array(
                 'wallet_id'   => 'john@example.com',
                 'wallet_pass' => 'password'
             )
         );
         $this->addTransactionType(
-            'paybyvoucher_sale', array(
+            'paybyvoucher_sale',
+            array(
                 'card_type' => 'virtual',
                 'redeem_type' => 'instant'
             )

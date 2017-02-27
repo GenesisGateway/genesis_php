@@ -180,6 +180,8 @@ Financial\Void
 // Alternative Payment Methods transactions
 Financial\Alternatives\ABNiDEAL
 Financial\Alternatives\CashU
+Financial\Alternatives\INPay
+Financial\Alternatives\P24
 Financial\Alternatives\Paysafecard
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
@@ -199,6 +201,12 @@ Financial\Cards\Sale3D
 Financial\Cards\Recurring\InitRecurringSale
 Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
+
+//Sepa Direct Debit transactions
+Financial\SDD\Sale
+Financial\SDD\Refund
+Financial\SDD\Recurring\InitRecurringSale
+Financial\SDD\Recurring\RecurringSale
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet

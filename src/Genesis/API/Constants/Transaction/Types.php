@@ -157,8 +157,43 @@ class Types
     const SOFORT = 'sofort';
 
     /**
+     * Global payment system, that makes instant cross-border payments more secure, regulated by Danish and Swiss FSA
+     */
+    const INPAY = 'inpay';
+
+    /**
+     * P24 is an online banking payment, popular in Poland
+     */
+    const P24 = 'p24';
+
+    /**
+     * Sepa Direct Debit Payment, popular in Germany.
+     * Single Euro Payments Area (SEPA) allows consumers to make cashless Euro payments to
+     * any beneficiary located anywhere in the Euro area using only a single bank account
+     */
+    const SDD_SALE = 'sdd_sale';
+
+    /**
+     * Sepa Direct Debit Refund Transaction.
+     * Refunds allow to return already billed amounts to customers.
+     */
+    const SDD_REFUND = 'sdd_refund';
+
+    /**
+     * Sepa Direct Debit initial recurring
+     */
+    const SDD_INIT_RECURRING_SALE = 'sdd_init_recurring_sale';
+
+    /**
+     * Sepa Direct Debit RecurringSale transaction is a "repeated" transaction,
+     * which follows and references an SDD initial transaction
+     */
+    const SDD_RECURRING_SALE = 'sdd_recurring_sale';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
+     * @param string $type
      * @return bool
      */
     public static function isValidTransactionType($type)
@@ -188,7 +223,13 @@ class Types
             self::PAYBYVOUCHER_SALE,
             self::PAYSAFECARD,
             self::PPRO,
-            self::SOFORT
+            self::SOFORT,
+            self::INPAY,
+            self::P24,
+            self::SDD_SALE,
+            self::SDD_REFUND,
+            self::SDD_INIT_RECURRING_SALE,
+            self::SDD_RECURRING_SALE
         );
 
         if (in_array($type, $transactionTypesList)) {
@@ -201,6 +242,7 @@ class Types
     /**
      * Check whether this is a valid (known) transaction type
      *
+     * @param string $type
      * @return bool
      */
     public static function isPayByVoucher($type)

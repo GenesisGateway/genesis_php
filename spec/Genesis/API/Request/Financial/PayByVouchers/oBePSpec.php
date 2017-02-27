@@ -5,32 +5,34 @@ namespace spec\Genesis\API\Request\Financial\PayByVouchers;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+// @codingStandardsIgnoreStart
 class oBePSpec extends ObjectBehavior
+// @codingStandardsIgnoreEnd
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\PayByVouchers\oBeP');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
         $this->setCustomerName(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 

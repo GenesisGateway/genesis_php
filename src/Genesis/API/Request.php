@@ -29,6 +29,8 @@ namespace Genesis\API;
  *
  * @package    Genesis
  * @subpackage API
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class Request
 {
@@ -276,6 +278,8 @@ abstract class Request
      * Verify that all fields (who depend on previously populated fields) are populated
      *
      * @throws \Genesis\Exceptions\ErrorParameter
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function verifyConditionalRequirements()
     {
@@ -284,13 +288,28 @@ abstract class Request
 
             foreach ($fields as $fieldName => $fieldDependencies) {
                 if (isset($this->$fieldName) && !empty($this->$fieldName)) {
-                    foreach ($fieldDependencies as $field) {
-                        if (empty($this->$field)) {
+                    foreach ($fieldDependencies as $fieldValue => $fieldDependency) {
+                        if (is_array($fieldDependency)) {
+                            if ($this->$fieldName == $fieldValue) {
+                                foreach ($fieldDependency as $field) {
+                                    if (empty($this->$field)) {
+                                        throw new \Genesis\Exceptions\ErrorParameter(
+                                            sprintf(
+                                                '%s with value %s is depending on: %s, which is empty (null)!',
+                                                $fieldName,
+                                                $this->$fieldName,
+                                                $field
+                                            )
+                                        );
+                                    }
+                                }
+                            }
+                        } elseif (empty($this->$fieldDependency)) {
                             throw new \Genesis\Exceptions\ErrorParameter(
                                 sprintf(
                                     '%s is depending on: %s, which is empty (null)!',
                                     $fieldName,
-                                    $field
+                                    $fieldDependency
                                 )
                             );
                         }
@@ -401,7 +420,12 @@ abstract class Request
         $path     = ($token) ? sprintf('%s/%s/', $path, $token) : $path;
 
         return sprintf(
-            '%s://%s%s:%s/%s', $protocol, $sub, $domain, $port, $path
+            '%s://%s%s:%s/%s',
+            $protocol,
+            $sub,
+            $domain,
+            $port,
+            $path
         );
     }
 
@@ -422,7 +446,6 @@ abstract class Request
      */
     protected function initConfiguration()
     {
-
     }
 
     /**
@@ -430,7 +453,6 @@ abstract class Request
      */
     protected function setRequiredFields()
     {
-
     }
 
     /**
@@ -439,6 +461,5 @@ abstract class Request
      */
     protected function populateStructure()
     {
-
     }
 }

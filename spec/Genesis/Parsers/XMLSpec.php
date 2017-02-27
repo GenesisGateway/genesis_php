@@ -7,12 +7,12 @@ use Prophecy\Argument;
 
 class XMLSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Parsers\XML');
     }
 
-    function it_should_parse_response()
+    public function it_should_parse_response()
     {
         $xml
             = <<<XML
@@ -44,7 +44,7 @@ XML;
         $this->getObject()->sent_to_acquirer->shouldBe(true);
     }
 
-    function it_should_parse_urls()
+    public function it_should_parse_urls()
     {
         $xml
             = <<<XML
@@ -79,7 +79,7 @@ XML;
         );
     }
 
-    function it_should_parse_multinodes()
+    public function it_should_parse_multinodes()
     {
         $xml
             = <<<XML

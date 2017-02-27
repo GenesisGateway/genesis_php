@@ -7,37 +7,37 @@ use Prophecy\Argument;
 
 class NetellerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\Neteller');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_customer_account_parameters()
+    public function it_should_fail_when_missing_customer_account_parameters()
     {
         $this->setRequestParameters();
         $this->setCustomerAccount(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_account_password_parameters()
+    public function it_should_fail_when_missing_account_password_parameters()
     {
         $this->setRequestParameters();
         $this->setAccountPassword(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 

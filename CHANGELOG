@@ -1,3 +1,16 @@
+1.5.0
+-----
+* Added Support Genesis v6.2
+    - Added API for INPay
+    - Added API for P24
+    - Added API for SDD
+    - Added WPF Dynamic Descriptor Params
+* Added missing fields to transaction types
+    - customer_account_id to WebMoney
+    - notification_url to APMs
+* Added Specs for new transaction types
+* Describe available methods for all Request classes
+
 1.4.3
 -----
 * Added Support for BirthDate API Param in the following Processing APIs
