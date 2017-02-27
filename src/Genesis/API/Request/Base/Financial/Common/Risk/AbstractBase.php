@@ -132,7 +132,7 @@ abstract class AbstractBase extends \Genesis\API\Request\Base\Financial\Common\A
                     'email'         => $this->risk_email,
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number,
+                    'serial_number' => $this->risk_serial_number
                 ),
             )
         );

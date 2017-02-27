@@ -507,7 +507,7 @@ class Create extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -530,7 +530,7 @@ class Create extends \Genesis\API\Request
             'return_success_url',
             'return_failure_url',
             'return_cancel_url',
-            'transaction_types',
+            'transaction_types'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -570,7 +570,7 @@ class Create extends \Genesis\API\Request
                     'zip_code'   => $this->billing_zip_code,
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
-                    'country'    => $this->billing_country,
+                    'country'    => $this->billing_country
                 ),
                 'shipping_address'   => array(
                     'first_name' => $this->shipping_first_name,
@@ -580,7 +580,7 @@ class Create extends \Genesis\API\Request
                     'zip_code'   => $this->shipping_zip_code,
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country,
+                    'country'    => $this->shipping_country
                 ),
                 'transaction_types'  => $this->transaction_types,
                 'risk_params'        => array(
@@ -592,12 +592,12 @@ class Create extends \Genesis\API\Request
                     'email'         => $this->risk_email,
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number,
+                    'serial_number' => $this->risk_serial_number
                 ),
                 'dynamic_descriptor_params' => array(
                     'merchant_name' => $this->dynamic_merchant_name,
-                    'merchant_city' => $this->dynamic_merchant_city,
-                ),
+                    'merchant_city' => $this->dynamic_merchant_city
+                )
             )
         );
 

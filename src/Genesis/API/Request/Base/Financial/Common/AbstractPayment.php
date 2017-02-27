@@ -63,7 +63,7 @@ abstract class AbstractPayment extends \Genesis\API\Request\Base\Financial\Abstr
                     'amount',
                     array(
                         $this->amount,
-                        $this->currency,
+                        $this->currency
                     )
                 ),
                 'currency' => $this->currency

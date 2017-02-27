@@ -141,16 +141,16 @@ abstract class ASale3D extends \Genesis\API\Request\Base\Financial\Cards\Asynchr
         return array_merge(
             $treeStructure,
             array(
-                'gaming'            => $this->gaming,
-                'moto'              => $this->moto,
-                'mpi_params'                => array(
+                'gaming'     => $this->gaming,
+                'moto'       => $this->moto,
+                'mpi_params' => array(
                     'cavv' => $this->mpi_cavv,
                     'eci'  => $this->mpi_eci,
-                    'xid'  => $this->mpi_xid,
+                    'xid'  => $this->mpi_xid
                 ),
                 'dynamic_descriptor_params' => array(
                     'merchant_name' => $this->dynamic_merchant_name,
-                    'merchant_city' => $this->dynamic_merchant_city,
+                    'merchant_city' => $this->dynamic_merchant_city
                 )
             )
         );

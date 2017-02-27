@@ -60,7 +60,7 @@ abstract class ASale extends \Genesis\API\Request\Base\Financial\Cards\Synchrono
             $treeStructure,
             array(
                 'card_type'   => $this->card_type,
-                'redeem_type' => $this->redeem_type,
+                'redeem_type' => $this->redeem_type
             )
         );
     }

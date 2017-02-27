@@ -53,7 +53,7 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\Abstr
             'card_holder',
             'card_number',
             'expiration_month',
-            'expiration_year',
+            'expiration_year'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

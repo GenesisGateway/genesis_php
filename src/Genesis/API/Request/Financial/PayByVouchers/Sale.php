@@ -73,7 +73,7 @@ class Sale extends \Genesis\API\Request\Base\Financial\PayByVouchers\ASale
             'card_holder',
             'card_number',
             'expiration_month',
-            'expiration_year',
+            'expiration_year'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -92,7 +92,7 @@ class Sale extends \Genesis\API\Request\Base\Financial\PayByVouchers\ASale
             array(
                 'dynamic_descriptor_params' => array(
                     'merchant_name' => $this->dynamic_merchant_name,
-                    'merchant_city' => $this->dynamic_merchant_city,
+                    'merchant_city' => $this->dynamic_merchant_city
                 )
             )
         );

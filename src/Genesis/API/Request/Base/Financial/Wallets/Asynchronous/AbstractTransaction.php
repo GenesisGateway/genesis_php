@@ -48,7 +48,7 @@ abstract class AbstractTransaction extends AbstractBaseCustomerInfo
             'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_email',
+            'customer_email'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

@@ -80,15 +80,15 @@ abstract class AbstractReference extends \Genesis\API\Request\Base\Financial\Abs
     protected function getRequestTreeStructure()
     {
         return array(
-            'reference_id'     => $this->reference_id,
-            'amount'           => $this->transform(
+            'reference_id' => $this->reference_id,
+            'amount'       => $this->transform(
                 'amount',
                 array(
                     $this->amount,
-                    $this->currency,
+                    $this->currency
                 )
             ),
-            'currency'         => $this->currency
+            'currency' => $this->currency
         );
     }
 }

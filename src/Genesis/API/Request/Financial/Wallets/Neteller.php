@@ -73,7 +73,7 @@ class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
             'return_failure_url',
             'customer_email',
             'customer_account',
-            'account_password',
+            'account_password'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -91,7 +91,7 @@ class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
             $treeStructure,
             array(
                 'customer_account'   => $this->customer_account,
-                'account_password'   => $this->account_password,
+                'account_password'   => $this->account_password
             )
         );
     }

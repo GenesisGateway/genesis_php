@@ -56,7 +56,7 @@ class Blacklist extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -87,7 +87,7 @@ class Blacklist extends \Genesis\API\Request
         $treeStructure = array(
             'blacklist_request' => array(
                 'card_number'    => $this->card_number,
-                'terminal_token' => $this->terminal_token,
+                'terminal_token' => $this->terminal_token
             )
         );
 

@@ -99,11 +99,11 @@ abstract class ASale extends \Genesis\API\Request\Base\Financial\Cards\Synchrono
         return array_merge(
             $treeStructure,
             array(
-                'gaming'            => $this->gaming,
-                'moto'              => $this->moto,
+                'gaming'                    => $this->gaming,
+                'moto'                      => $this->moto,
                 'dynamic_descriptor_params' => array(
                     'merchant_name' => $this->dynamic_merchant_name,
-                    'merchant_city' => $this->dynamic_merchant_city,
+                    'merchant_city' => $this->dynamic_merchant_city
                 )
             )
         );

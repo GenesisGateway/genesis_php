@@ -47,9 +47,9 @@ abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financ
         return array_merge(
             $treeStructure,
             array(
-                'return_success_url'  => $this->return_success_url,
-                'return_failure_url'  => $this->return_failure_url,
-                'notification_url'    => $this->notification_url
+                'return_success_url' => $this->return_success_url,
+                'return_failure_url' => $this->return_failure_url,
+                'notification_url'   => $this->notification_url
             )
         );
     }

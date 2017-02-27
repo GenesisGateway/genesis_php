@@ -69,7 +69,7 @@ class Sofort extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchrono
             $treeStructure,
             array(
                 'customer_bank_id'    => $this->customer_bank_id,
-                'bank_account_number' => $this->bank_account_number,
+                'bank_account_number' => $this->bank_account_number
             )
         );
     }

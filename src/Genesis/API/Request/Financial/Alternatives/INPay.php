@@ -163,7 +163,7 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
                 'payout_acc_number'    => $this->payout_acc_number,
                 'payout_bank_address'  => $this->payout_bank_address,
                 'payout_owner_name'    => $this->payout_owner_name,
-                'payout_owner_address' => $this->payout_owner_address,
+                'payout_owner_address' => $this->payout_owner_address
             )
         );
     }
@@ -205,7 +205,7 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
                     'payout_owner_name',
                     'payout_owner_address'
                 )
-            ),
+            )
         );
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);

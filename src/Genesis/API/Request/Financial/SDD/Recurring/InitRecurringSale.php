@@ -52,7 +52,7 @@ class InitRecurringSale extends \Genesis\API\Request\Financial\SDD\Sale
             'transaction_id',
             'amount',
             'currency',
-            'iban',
+            'iban'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

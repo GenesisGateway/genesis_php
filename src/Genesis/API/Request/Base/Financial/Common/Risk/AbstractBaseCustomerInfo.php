@@ -197,9 +197,9 @@ abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financ
         return array_merge(
             $treeStructure,
             array(
-                'customer_email'     => $this->customer_email,
-                'customer_phone'     => $this->customer_phone,
-                'billing_address'      => array(
+                'customer_email'  => $this->customer_email,
+                'customer_phone'  => $this->customer_phone,
+                'billing_address' => array(
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
                     'address1'   => $this->billing_address1,
@@ -207,9 +207,9 @@ abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financ
                     'zip_code'   => $this->billing_zip_code,
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
-                    'country'    => $this->billing_country,
+                    'country'    => $this->billing_country
                 ),
-                'shipping_address'     => array(
+                'shipping_address' => array(
                     'first_name' => $this->shipping_first_name,
                     'last_name'  => $this->shipping_last_name,
                     'address1'   => $this->shipping_address1,
@@ -217,8 +217,8 @@ abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financ
                     'zip_code'   => $this->shipping_zip_code,
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country,
-                ),
+                    'country'    => $this->shipping_country
+                )
             )
         );
     }

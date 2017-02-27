@@ -80,7 +80,7 @@ abstract class AbstractBase extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
@@ -103,10 +103,10 @@ abstract class AbstractBase extends \Genesis\API\Request
     {
         $treeStructure = array(
             'payment_transaction' => array(
-                'transaction_type'          => $this->getTransactionType(),
-                'transaction_id'            => $this->transaction_id,
-                'usage'                     => $this->usage,
-                'remote_ip'                 => $this->remote_ip
+                'transaction_type' => $this->getTransactionType(),
+                'transaction_id'   => $this->transaction_id,
+                'usage'            => $this->usage,
+                'remote_ip'        => $this->remote_ip
             )
         );
 

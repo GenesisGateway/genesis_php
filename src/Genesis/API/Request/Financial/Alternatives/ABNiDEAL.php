@@ -62,7 +62,7 @@ class ABNiDEAL extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchro
         return array_merge(
             $treeStructure,
             array(
-                'customer_bank_id' => $this->customer_bank_id,
+                'customer_bank_id' => $this->customer_bank_id
             )
         );
     }

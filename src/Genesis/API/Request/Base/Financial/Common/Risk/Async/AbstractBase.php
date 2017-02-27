@@ -51,7 +51,7 @@ abstract class AbstractBase extends \Genesis\API\Request\Base\Financial\Common\R
         return array_merge(
             $treeStructure,
             array(
-                'notification_url' => $this->notification_url,
+                'notification_url' => $this->notification_url
             )
         );
     }

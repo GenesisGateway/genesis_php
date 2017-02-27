@@ -96,7 +96,7 @@ abstract class AbstractTransaction extends \Genesis\API\Request\Base\Financial\C
                 'cvv'              => $this->cvv,
                 'expiration_month' => $this->expiration_month,
                 'expiration_year'  => $this->expiration_year,
-                'birth_date'       => $this->birth_date,
+                'birth_date'       => $this->birth_date
             )
         );
     }

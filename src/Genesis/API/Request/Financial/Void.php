@@ -55,7 +55,7 @@ class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
     {
         $requiredFields = array(
             'transaction_id',
-            'reference_id',
+            'reference_id'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -72,7 +72,7 @@ class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
         return array_merge(
             $treeStructure,
             array(
-                'reference_id'     => $this->reference_id
+                'reference_id' => $this->reference_id
             )
         );
     }

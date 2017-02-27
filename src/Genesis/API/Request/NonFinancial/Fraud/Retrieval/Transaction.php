@@ -56,11 +56,18 @@ class Transaction extends \Genesis\API\Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml',
+                'format'   => 'xml'
             )
         );
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'retrieval_requests', false));
+        $this->setApiConfig(
+            'url',
+            $this->buildRequestURL(
+                'gateway',
+                'retrieval_requests',
+                false
+            )
+        );
     }
 
     /**
@@ -88,7 +95,7 @@ class Transaction extends \Genesis\API\Request
         $treeStructure = array(
             'retrieval_request_request' => array(
                 'arn'                            => $this->arn,
-                'original_transaction_unique_id' => $this->original_transaction_unique_id,
+                'original_transaction_unique_id' => $this->original_transaction_unique_id
             )
         );
 
