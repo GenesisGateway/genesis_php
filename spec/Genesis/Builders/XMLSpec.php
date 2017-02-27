@@ -7,25 +7,25 @@ use Prophecy\Argument;
 
 class XMLSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Builders\XML');
     }
 
-    function it_can_generate_content()
+    public function it_can_generate_content()
     {
         $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
     }
 
-    function it_can_generate_valid_xml()
+    public function it_can_generate_valid_xml()
     {
         $this->populateNodes(array('root' => array('node1' => 'value1', 'node2' => 'value2')));
         $this->getOutput()->shouldNotBeEmpty();
         $this->getOutput()->shouldBeValidXML();
     }
 
-    function it_can_generate_valid_xml_with_attributes()
+    public function it_can_generate_valid_xml_with_attributes()
     {
         $this->populateNodes(
             array(
@@ -45,7 +45,7 @@ class XMLSpec extends ObjectBehavior
         $this->getOutput()->shouldBeValidXML();
     }
 
-    function it_can_escape_illegal_characters()
+    public function it_can_escape_illegal_characters()
     {
         $this->populateNodes(
             array('root' => array('amp' => 'http://domain.tld/?arg1=normal&arg2=<&arg3=>'), null)
@@ -57,7 +57,7 @@ class XMLSpec extends ObjectBehavior
         $this->getOutput()->shouldMatch('/&gt;/');
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty' => function ($subject) {

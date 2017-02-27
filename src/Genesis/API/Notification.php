@@ -109,12 +109,12 @@ class Notification
      */
     public function initReconciliation()
     {
+        $type = '';
+
         if ($this->isAPINotification()) {
             $type = 'NonFinancial\Reconcile\Transaction';
         } elseif ($this->isWPFNotification()) {
             $type = 'WPF\Reconcile';
-        } else {
-            $type = '';
         }
 
         $request = new \Genesis\Genesis($type);

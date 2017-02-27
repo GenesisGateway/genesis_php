@@ -27,6 +27,8 @@ namespace Genesis\API;
  *
  * @package    Genesis
  * @subpackage API
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Response
 {
@@ -129,17 +131,10 @@ class Response
         );
 
         if ($status->isValid()) {
-            if ($status->isError()) {
-                $result = false;
-            } else {
-                $result = true;
-            }
-        } else {
-            // return null if status is inapplicable
-            $result = null;
+            return !$status->isError();
         }
 
-        return $result;
+        return null;
     }
 
     /**

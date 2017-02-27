@@ -131,6 +131,8 @@ final class XML implements \Genesis\Interfaces\Parser
      *
      * @param $reader
      * @param $tree
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function processElement(&$reader, &$tree)
     {
@@ -158,6 +160,8 @@ final class XML implements \Genesis\Interfaces\Parser
      *
      * @param \XMLReader $reader
      * @param \stdClass $tree
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function processAttributes(&$reader, &$tree)
     {

@@ -5,32 +5,34 @@ namespace spec\Genesis\API\Request\Financial\Wallets;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+// @codingStandardsIgnoreStart
 class eZeeWalletSpec extends ObjectBehavior
+// @codingStandardsIgnoreEnd
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\eZeeWallet');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
         $this->setSourceWalletId(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    function it_should_encode_password_correctly()
+    public function it_should_encode_password_correctly()
     {
         $faker = \Faker\Factory::create();
 
@@ -42,7 +44,7 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->getDocument()->shouldContain(base64_encode($password));
     }
 
-    function it_should_pass_the_password_correctly_if_previously_encoded()
+    public function it_should_pass_the_password_correctly_if_previously_encoded()
     {
         $faker = \Faker\Factory::create();
 
@@ -54,7 +56,7 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->getDocument()->shouldContain($password);
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 

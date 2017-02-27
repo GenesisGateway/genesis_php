@@ -6,14 +6,16 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Genesis\Config;
 
+// @codingStandardsIgnoreStart
 class cURLSpec extends ObjectBehavior
+// @codingStandardsIgnoreEnd
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Network\cURL');
     }
 
-    function it_can_connect_to_staging_gateway()
+    public function it_can_connect_to_staging_gateway()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -26,13 +28,13 @@ class cURLSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_staging_wpf()
+    public function it_can_connect_to_staging_wpf()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -45,13 +47,13 @@ class cURLSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_production_gateway()
+    public function it_can_connect_to_production_gateway()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -65,13 +67,13 @@ class cURLSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('gateway'), Config::getEndpoint())
             );
         }
     }
 
-    function it_can_connect_to_production_wpf()
+    public function it_can_connect_to_production_wpf()
     {
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
@@ -85,13 +87,13 @@ class cURLSpec extends ObjectBehavior
         foreach ($endpoints as $endpoint) {
             Config::setEndpoint($endpoint);
 
-            $this->send_remote_connection(
+            $this->sendRemoteConnection(
                 sprintf('https://%s%s', Config::getSubDomain('wpf'), Config::getEndpoint())
             );
         }
     }
 
-    function send_remote_connection($remote_url)
+    protected function sendRemoteConnection($remote_url)
     {
         $faker = \Faker\Factory::create();
 
@@ -121,7 +123,7 @@ class cURLSpec extends ObjectBehavior
         $this->getStatus()->shouldBe(200);
     }
 
-    function getMatchers()
+    public function getMatchers()
     {
         return array(
             'beEmpty' => function ($subject) {

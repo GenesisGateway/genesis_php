@@ -9,45 +9,45 @@ class TransactionSpec extends ObjectBehavior
 {
     protected $faker;
 
-    function __construct()
+    public function __construct()
     {
         $this->faker = \Faker\Factory::create();
 
         $this->faker->addProvider(new \Faker\Provider\Uuid($this->faker));
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Reconcile\Transaction');
     }
 
-    function it_should_validate_with_arn()
+    public function it_should_validate_with_arn()
     {
         $this->setArn($this->faker->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_validate_with_transaction_id()
+    public function it_should_validate_with_transaction_id()
     {
         $this->setTransactionId($this->faker->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_validate_with_unique_id()
+    public function it_should_validate_with_unique_id()
     {
         $this->setUniqueId($this->faker->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_parameters()
     {
         $this->setArn(null);
         $this->setTransactionId(null);

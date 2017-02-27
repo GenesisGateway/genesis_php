@@ -27,6 +27,8 @@ namespace Genesis\API\Constants;
  *
  * @package    Genesis
  * @subpackage API
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class Errors
 {
@@ -341,6 +343,9 @@ final class Errors
      * @param int $errorCode
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public static function getErrorDescription($errorCode)
     {
@@ -468,6 +473,9 @@ final class Errors
      * @param $issuerResponseCode
      *
      * @return bool|string
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public static function getIssuerResponseCode($issuerResponseCode)
     {

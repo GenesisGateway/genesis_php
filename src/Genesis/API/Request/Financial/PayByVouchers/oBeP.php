@@ -29,7 +29,9 @@ namespace Genesis\API\Request\Financial\PayByVouchers;
  *
  * @package Genesis\API\Request\Financial\PayByVouchers
  */
+// @codingStandardsIgnoreStart
 class oBeP extends \Genesis\API\Request
+// @codingStandardsIgnoreEnd
 {
     /**
      * Unique transaction id defined by mer-chant

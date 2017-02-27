@@ -7,23 +7,23 @@ use Prophecy\Argument;
 
 class RecurringSaleSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Recurring\RecurringSale');
     }
 
-    function it_can_build_stucture()
+    public function it_can_build_stucture()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
     }
 
-    function it_should_fail_when_no_parameters()
+    public function it_should_fail_when_no_parameters()
     {
         $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    function setRequestParameters()
+    protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 

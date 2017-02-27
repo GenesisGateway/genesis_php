@@ -7,7 +7,7 @@ use Prophecy\Argument;
 
 class MethodsSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    protected function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Constants\Payment\Methods');
     }

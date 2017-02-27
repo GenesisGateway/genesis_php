@@ -7,7 +7,7 @@ use Prophecy\Argument;
 
 class ErrorAPISpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Exceptions\ErrorAPI');
     }
