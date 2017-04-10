@@ -40,21 +40,4 @@ class InitRecurringSale extends \Genesis\API\Request\Financial\SDD\Sale
     {
         return \Genesis\API\Constants\Transaction\Types::SDD_INIT_RECURRING_SALE;
     }
-
-    /**
-     * Set the required fields
-     *
-     * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'amount',
-            'currency',
-            'iban'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
 }

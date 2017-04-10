@@ -31,10 +31,8 @@ namespace Genesis\API\Request\Financial\SDD;
  *
  * @method $this setIban($value) Set a valid IBAN bank account
  * @method $this setBic($value) Set a valid BIC code
- * @method $this setBillingFirstName($value) Set the customer's First name
- * @method $this setBillingLastName($value) Set the customer's Last name
  */
-class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\AbstractBase
+class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\AbstractBaseCustomerInfo
 {
     /**
      * Must contain valid IBAN, check
@@ -51,20 +49,6 @@ class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\Abstrac
      * @var string
      */
     protected $bic;
-
-    /**
-     * Customer's First name
-     *
-     * @var string
-     */
-    protected $billing_first_name;
-
-    /**
-     * Customer's Last name
-     *
-     * @var string
-     */
-    protected $billing_last_name;
 
     /**
      * Returns the Request transaction type
@@ -86,12 +70,8 @@ class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\Abstrac
         return array_merge(
             $treeStructure,
             array(
-                'iban'              => $this->iban,
-                'bic'               => $this->bic,
-                'billing_address' => array(
-                    'first_name'    => $this->billing_first_name,
-                    'last_name'     => $this->billing_last_name
-                )
+                'iban' => $this->iban,
+                'bic'  => $this->bic
             )
         );
     }
@@ -109,6 +89,9 @@ class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\Abstrac
             'amount',
             'currency',
             'iban',
+            'billing_first_name',
+            'billing_last_name',
+            'billing_country'
         );
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
