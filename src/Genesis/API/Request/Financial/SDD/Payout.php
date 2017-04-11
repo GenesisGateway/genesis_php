@@ -20,81 +20,23 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Payment;
+namespace Genesis\API\Request\Financial\SDD;
 
 /**
- * Class Methods
+ * Class Payout
  *
- * Payment methods for Genesis Transactions
+ * SDD Payout Transactions
  *
- * @package Genesis\API\Constants\Transaction
+ * @package Genesis\API\Request\Financial\SDD
  */
-class Methods
+class Payout extends \Genesis\API\Request\Financial\SDD\Sale
 {
     /**
-     * e-payment standard
-     *
-     * PPRO transaction
+     * Returns the Request transaction type
+     * @return string
      */
-    const EPS = 'eps';
-
-    /**
-     * GiroPay
-     *
-     * PPRO transaction
-     */
-    const GIRO_PAY = 'giropay';
-
-    /**
-     * iDEAL
-     *
-     * PPRO transaction
-     */
-    const IDEAL = 'ideal';
-
-    /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * QIWI
-     *
-     * PPRO transaction
-     */
-    const QIWI = 'qiwi';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Teleingreso
-     *
-     * PPRO transaction
-     */
-    const TELEINGRESO = 'teleingreso';
-
-    /**
-     * TrustPay
-     *
-     * PPRO transaction
-     */
-    const TRUST_PAY = 'trustpay';
-
-    /**
-     * Returns all available payment methods
-     * @return array
-     */
-    public static function getMethods()
+    protected function getTransactionType()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
-
-        return array_values($methods);
+        return \Genesis\API\Constants\Transaction\Types::SDD_PAYOUT;
     }
 }

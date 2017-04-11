@@ -288,4 +288,20 @@ final class Common
 
         return $reflectionClass->isAbstract();
     }
+
+    /**
+     * Retrieves all constants in a class in a list
+     * @param string $className
+     * @return array
+     */
+    public static function getClassConstants($className)
+    {
+        if (!class_exists($className)) {
+            return array();
+        }
+
+        $reflection = new \ReflectionClass($className);
+
+        return $reflection->getConstants();
+    }
 }

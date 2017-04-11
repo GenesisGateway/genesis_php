@@ -174,6 +174,13 @@ class Types
     const SDD_SALE = 'sdd_sale';
 
     /**
+     * Sepa Direct Debit Payout, popular in Germany.
+     * Processed as a SEPA CreditTransfer and can be used for all kind of payout services
+     * across the EU with 1 day settlement. Suitable for Gaming, Forex-Binaries, Affiliate Programs or Merchant payouts
+     */
+    const SDD_PAYOUT = 'sdd_payout';
+
+    /**
      * Sepa Direct Debit Refund Transaction.
      * Refunds allow to return already billed amounts to customers.
      */
@@ -198,45 +205,9 @@ class Types
      */
     public static function isValidTransactionType($type)
     {
-        $transactionTypesList = array(
-            self::AVS,
-            self::ACCOUNT_VERIFICATION,
-            self::AUTHORIZE,
-            self::AUTHORIZE_3D,
-            self::SALE,
-            self::SALE_3D,
-            self::CAPTURE,
-            self::REFUND,
-            self::VOID,
-            self::CREDIT,
-            self::PAYOUT,
-            self::INIT_RECURRING_SALE,
-            self::INIT_RECURRING_SALE_3D,
-            self::RECURRING_SALE,
-            self::ABNIDEAL,
-            self::CASHU,
-            self::EZEEWALLET,
-            self::NETELLER,
-            self::POLI,
-            self::WEBMONEY,
-            self::PAYBYVOUCHER_YEEPAY,
-            self::PAYBYVOUCHER_SALE,
-            self::PAYSAFECARD,
-            self::PPRO,
-            self::SOFORT,
-            self::INPAY,
-            self::P24,
-            self::SDD_SALE,
-            self::SDD_REFUND,
-            self::SDD_INIT_RECURRING_SALE,
-            self::SDD_RECURRING_SALE
-        );
+        $transactionTypes = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
-        if (in_array($type, $transactionTypesList)) {
-            return true;
-        }
-
-        return false;
+        return in_array(strtolower($type), $transactionTypes);
     }
 
     /**
@@ -252,11 +223,7 @@ class Types
             self::PAYBYVOUCHER_SALE,
         );
 
-        if (in_array($type, $transactionTypesList)) {
-            return true;
-        }
-
-        return false;
+        return in_array($type, $transactionTypesList);
     }
 
     /**

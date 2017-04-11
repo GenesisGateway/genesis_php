@@ -205,6 +205,7 @@ Financial\Cards\Recurring\RecurringSale
 
 //Sepa Direct Debit transactions
 Financial\SDD\Sale
+Financial\SDD\Payout
 Financial\SDD\Refund
 Financial\SDD\Recurring\InitRecurringSale
 Financial\SDD\Recurring\RecurringSale
