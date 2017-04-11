@@ -23,12 +23,12 @@
 namespace Genesis\API\Request\Financial;
 
 /**
- * Void Request
+ * Cancel/Void Request
  *
  * @package    Genesis
  * @subpackage Request
  */
-class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
+class Cancel extends \Genesis\API\Request\Base\Financial\AbstractBase
 {
     /**
      * Unique id of the existing (target) transaction

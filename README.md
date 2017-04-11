@@ -50,6 +50,7 @@ Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
 Config::setEndpoint('<set_your_endpoint>');
+Config::setEnvironment('<set_your_environment>');
 Config::setUsername('<enter_your_username>');
 Config::setPassword('<enter_your_password>');
 Config::setToken('<enter_your_token>');
@@ -175,7 +176,7 @@ You can use the following request types to initialize the Genesis client:
 // Generic transaction operations
 Financial\Capture
 Financial\Refund
-Financial\Void
+Financial\Cancel
 
 // Alternative Payment Methods transactions
 Financial\Alternatives\ABNiDEAL
