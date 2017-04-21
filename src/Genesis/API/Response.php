@@ -94,6 +94,9 @@ class Response
             );
         }
 
+        // Apply per-field transformations
+        $this->transform([$this->responseObj]);
+
         if (isset($this->responseObj->status)) {
             $state = new Constants\Transaction\States($this->responseObj->status);
 
@@ -111,9 +114,6 @@ class Response
                 );
             }
         }
-
-        // Apply per-field transformations
-        $this->transform(array($this->responseObj));
     }
 
     /**

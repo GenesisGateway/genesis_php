@@ -168,7 +168,7 @@ class Stream implements \Genesis\Interfaces\Network
      */
     public function execute()
     {
-        set_error_handler(array($this, 'processErrors'), E_WARNING);
+        set_error_handler([$this, 'processErrors'], E_WARNING);
 
         $stream = fopen($this->requestData['url'], 'r', false, $this->streamContext);
 
