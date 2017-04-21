@@ -180,6 +180,23 @@ final class Common
     }
 
     /**
+     * Check if the passed key exists in the supplied array
+     *
+     * @param string $key
+     * @param array $arr
+     *
+     * @return bool
+     */
+    public static function isArrayKeyExists($key, $arr)
+    {
+        if (!self::isValidArray($arr)) {
+            return false;
+        }
+
+        return array_key_exists($key, $arr);
+    }
+
+    /**
      * Check if the passed argument is a valid XML tag name
      *
      * @param string $tag

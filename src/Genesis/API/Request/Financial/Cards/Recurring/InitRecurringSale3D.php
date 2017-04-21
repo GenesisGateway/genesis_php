@@ -136,17 +136,7 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial
                 'eci'  => $this->mpi_eci,
                 'xid'  => $this->mpi_xid,
             ],
-            'risk_params'               => [
-                'ssn'           => $this->risk_ssn,
-                'mac_address'   => $this->risk_mac_address,
-                'session_id'    => $this->risk_session_id,
-                'user_id'       => $this->risk_user_id,
-                'user_level'    => $this->risk_user_level,
-                'email'         => $this->risk_email,
-                'phone'         => $this->risk_phone,
-                'remote_ip'     => $this->risk_remote_ip,
-                'serial_number' => $this->risk_serial_number
-            ],
+            'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => [
                 'merchant_name' => $this->dynamic_merchant_name,
                 'merchant_city' => $this->dynamic_merchant_city
