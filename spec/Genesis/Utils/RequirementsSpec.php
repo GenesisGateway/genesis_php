@@ -35,7 +35,7 @@ class RequirementsSpec extends ObjectBehavior
     public function it_can_return_correct_error_message()
     {
         $error_message = 'Unsupported PHP version, please upgrade!' . PHP_EOL .
-                         'This library requires PHP version 5.3.2 or newer.';
+                         'This library requires PHP version 5.5.9 or newer.';
 
         $this::getErrorMessage('system')->shouldBe($error_message);
     }

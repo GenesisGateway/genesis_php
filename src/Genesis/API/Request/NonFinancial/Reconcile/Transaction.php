@@ -58,23 +58,9 @@ class Transaction extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'reconcile',
-                \Genesis\Config::getToken()
-            )
-        );
+        $this->initApiGatewayConfiguration('reconcile');
     }
 
     /**
@@ -84,9 +70,9 @@ class Transaction extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFieldsGroups = array(
-            'id'  => array('arn', 'transaction_id', 'unique_id'),
-        );
+        $requiredFieldsGroups = [
+            'id'  => ['arn', 'transaction_id', 'unique_id']
+        ];
 
         $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
     }
@@ -98,13 +84,13 @@ class Transaction extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'reconcile' => array(
+        $treeStructure = [
+            'reconcile' => [
                 'arn'               => $this->arn,
                 'transaction_id'    => $this->transaction_id,
                 'unique_id'         => $this->unique_id
-            )
-        );
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

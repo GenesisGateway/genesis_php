@@ -277,7 +277,7 @@ class Create extends \Genesis\API\Request
      *
      * @var array
      */
-    protected $transaction_types = array();
+    protected $transaction_types = [];
 
     /**
      * Social Security number or equivalent value for non US customers.
@@ -373,18 +373,18 @@ class Create extends \Genesis\API\Request
      *
      * @return $this
      */
-    public function addTransactionType($name, $parameters = array())
+    public function addTransactionType($name, $parameters = [])
     {
         $this->verifyTransactionType($name, $parameters);
 
-        $structure = array(
-            'transaction_type' => array(
-                '@attributes' => array(
+        $structure = [
+            'transaction_type' => [
+                '@attributes' => [
                     'name' => $name
-                ),
+                ],
                 $parameters
-            )
-        );
+            ]
+        ];
 
         array_push($this->transaction_types, $structure);
 
@@ -400,7 +400,7 @@ class Create extends \Genesis\API\Request
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function verifyTransactionType($transactionType, $parameters = array())
+    protected function verifyTransactionType($transactionType, $parameters = [])
     {
         if (!\Genesis\API\Constants\Transaction\Types::isValidTransactionType($transactionType)) {
             throw new \Genesis\Exceptions\ErrorParameter(
@@ -502,14 +502,7 @@ class Create extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
         $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf', false));
     }
@@ -521,7 +514,7 @@ class Create extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'amount',
             'currency',
@@ -531,7 +524,7 @@ class Create extends \Genesis\API\Request
             'return_failure_url',
             'return_cancel_url',
             'transaction_types'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -543,15 +536,15 @@ class Create extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'wpf_payment' => array(
+        $treeStructure = [
+            'wpf_payment' => [
                 'transaction_id'     => $this->transaction_id,
                 'amount'             => $this->transform(
                     'amount',
-                    array(
+                    [
                         $this->amount,
-                        $this->currency,
-                    )
+                        $this->currency
+                    ]
                 ),
                 'currency'           => $this->currency,
                 'usage'              => $this->usage,
@@ -562,7 +555,7 @@ class Create extends \Genesis\API\Request
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
                 'return_cancel_url'  => $this->return_cancel_url,
-                'billing_address'    => array(
+                'billing_address'    => [
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
                     'address1'   => $this->billing_address1,
@@ -571,8 +564,8 @@ class Create extends \Genesis\API\Request
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
                     'country'    => $this->billing_country
-                ),
-                'shipping_address'   => array(
+                ],
+                'shipping_address'   => [
                     'first_name' => $this->shipping_first_name,
                     'last_name'  => $this->shipping_last_name,
                     'address1'   => $this->shipping_address1,
@@ -581,9 +574,9 @@ class Create extends \Genesis\API\Request
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
                     'country'    => $this->shipping_country
-                ),
+                ],
                 'transaction_types'  => $this->transaction_types,
-                'risk_params'        => array(
+                'risk_params'        => [
                     'ssn'           => $this->risk_ssn,
                     'mac_address'   => $this->risk_mac_address,
                     'session_id'    => $this->risk_session_id,
@@ -593,13 +586,13 @@ class Create extends \Genesis\API\Request
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
                     'serial_number' => $this->risk_serial_number
-                ),
-                'dynamic_descriptor_params' => array(
+                ],
+                'dynamic_descriptor_params' => [
                     'merchant_name' => $this->dynamic_merchant_name,
                     'merchant_city' => $this->dynamic_merchant_city
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

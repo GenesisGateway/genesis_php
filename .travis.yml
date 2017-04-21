@@ -14,21 +14,15 @@ cache:
 
 matrix:
   include:
-    - php: 5.3
-      env: IGNORE_PHPENV='yes'
-    - php: 5.4
     - php: 5.5
     - php: 5.6
     - php: 7.0
     - php: 7.1
-    - php: hhvm
   allow_failures:
-    - php: 5.4
     - php: 5.5
     - php: 5.6
     - php: 7.0
     - php: 7.1
-    - php: hhvm
 
 before_install:
   - composer selfupdate
@@ -40,5 +34,4 @@ install:
   - sudo apt-get install libcurl4-openssl-dev
 
 script:
-  - if [ "$IGNORE_PHPENV" == "yes" ]; then /usr/bin/php5 vendor/bin/phpspec run --format=pretty; fi;
-  - if [ "$IGNORE_PHPENV" != "yes" ]; then php vendor/bin/phpspec run --format=pretty; fi;
+  - php vendor/bin/phpspec run --format=pretty

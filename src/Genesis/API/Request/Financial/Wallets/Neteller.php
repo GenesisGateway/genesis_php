@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Wallets;
+
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
  * Class Neteller
@@ -32,8 +37,10 @@ namespace Genesis\API\Request\Financial\Wallets;
  * @method Neteller setCustomerAccount($value) Set Neteller Account Id
  * @method Neteller setAccountPassword($value) Set Neteller Account Password
  */
-class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\AbstractTransaction
+class Neteller extends \Genesis\API\Request\Base\Financial
 {
+    use PaymentAttributes, AsyncAttributes, AddressInfoAttributes;
+
     /**
      * Neteller Account Id
      *
@@ -64,7 +71,7 @@ class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'remote_ip',
             'amount',
@@ -73,8 +80,9 @@ class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
             'return_failure_url',
             'customer_email',
             'customer_account',
-            'account_password'
-        );
+            'account_password',
+            'billing_country'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -83,16 +91,37 @@ class Neteller extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
+    protected function getPaymentTransactionStructure()
     {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'customer_account'   => $this->customer_account,
-                'account_password'   => $this->account_password
-            )
-        );
+        return [
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'customer_account'   => $this->customer_account,
+            'account_password'   => $this->account_password,
+            'billing_address'    => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'   => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ]
+        ];
     }
 }

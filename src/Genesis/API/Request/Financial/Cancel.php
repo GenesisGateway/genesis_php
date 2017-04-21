@@ -22,20 +22,18 @@
  */
 namespace Genesis\API\Request\Financial;
 
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
+
 /**
- * Cancel/Void Request
+ * Class Cancel
  *
- * @package    Genesis
- * @subpackage Request
+ * Cancel / Void Request
+ *
+ * @package Genesis\API\Request\Financial
  */
-class Cancel extends \Genesis\API\Request\Base\Financial\AbstractBase
+class Cancel extends \Genesis\API\Request\Base\Financial
 {
-    /**
-     * Unique id of the existing (target) transaction
-     *
-     * @var string
-     */
-    protected $reference_id;
+    use ReferenceAttributes;
 
     /**
      * Returns the Request transaction type
@@ -53,10 +51,10 @@ class Cancel extends \Genesis\API\Request\Base\Financial\AbstractBase
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'reference_id'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -65,15 +63,10 @@ class Cancel extends \Genesis\API\Request\Base\Financial\AbstractBase
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
+    protected function getPaymentTransactionStructure()
     {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'reference_id' => $this->reference_id
-            )
-        );
+        return [
+            'reference_id' => $this->reference_id
+        ];
     }
 }

@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Wallets;
+
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
  * Class WebMoney
@@ -31,8 +36,10 @@ namespace Genesis\API\Request\Financial\Wallets;
  *
  * @method WebMoney setCustomerAccountId($value) Set Webmoney account ID (WMID)
  */
-class WebMoney extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\AbstractTransaction
+class WebMoney extends \Genesis\API\Request\Base\Financial
 {
+    use PaymentAttributes, AsyncAttributes, AddressInfoAttributes;
+
     /**
      * Flag for payout transaction
      *
@@ -53,6 +60,7 @@ class WebMoney extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
     public function __construct()
     {
         parent::__construct();
+
         $this->setIsPayout(false);
     }
 
@@ -72,9 +80,7 @@ class WebMoney extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
      */
     public function setIsPayout($value)
     {
-        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-
-        $this->is_payout = ($value ? 'true' : 'false');
+        $this->is_payout = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
         return $this;
     }
@@ -86,15 +92,26 @@ class WebMoney extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
      */
     protected function setRequiredFields()
     {
-        parent::setRequiredFields();
+        $requiredFields = [
+            'transaction_id',
+            'remote_ip',
+            'amount',
+            'currency',
+            'return_success_url',
+            'return_failure_url',
+            'customer_email',
+            'billing_country'
+        ];
 
-        $requiredFieldsConditional = array(
-            'is_payout'   => array(
-                'true' => array(
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldsConditional = [
+            'is_payout' => [
+                true => [
                     'customer_account_id'
-                )
-            ),
-        );
+                ]
+            ]
+        ];
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
     }
@@ -103,16 +120,37 @@ class WebMoney extends \Genesis\API\Request\Base\Financial\Wallets\Asynchronous\
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
+    protected function getPaymentTransactionStructure()
     {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'is_payout'           => $this->is_payout,
-                'customer_account_id' => $this->customer_account_id
-            )
-        );
+        return [
+            'return_success_url'  => $this->return_success_url,
+            'return_failure_url'  => $this->return_failure_url,
+            'amount'              => $this->transformAmount($this->amount, $this->currency),
+            'currency'            => $this->currency,
+            'is_payout'           => var_export($this->is_payout, true),
+            'customer_account_id' => $this->customer_account_id,
+            'customer_email'      => $this->customer_email,
+            'customer_phone'      => $this->customer_phone,
+            'billing_address'     => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'    => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ]
+        ];
     }
 }

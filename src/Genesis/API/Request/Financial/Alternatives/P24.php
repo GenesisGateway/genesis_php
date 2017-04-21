@@ -20,6 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Alternatives;
 
 /**
@@ -29,7 +30,7 @@ namespace Genesis\API\Request\Financial\Alternatives;
  *
  * @package Genesis\API\Request\Financial\Alternatives
  */
-class P24 extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\AbstractTransaction
+class P24 extends \Genesis\API\Request\Base\Financial\Alternative
 {
     /**
      * Returns the Request transaction type
@@ -38,27 +39,5 @@ class P24 extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::P24;
-    }
-
-    /**
-     * Set the required fields
-     *
-     * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'remote_ip',
-            'usage',
-            'amount',
-            'currency',
-            'return_success_url',
-            'return_failure_url',
-            'customer_email',
-            'billing_country'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

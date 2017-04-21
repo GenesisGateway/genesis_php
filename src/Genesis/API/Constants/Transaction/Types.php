@@ -218,10 +218,10 @@ class Types
      */
     public static function isPayByVoucher($type)
     {
-        $transactionTypesList = array(
+        $transactionTypesList = [
             self::PAYBYVOUCHER_YEEPAY,
-            self::PAYBYVOUCHER_SALE,
-        );
+            self::PAYBYVOUCHER_SALE
+        ];
 
         return in_array($type, $transactionTypesList);
     }
@@ -235,26 +235,28 @@ class Types
     {
         switch ($type) {
             case self::PPRO:
-                return array(
-                    'payment_method' =>
-                        \Genesis\API\Constants\Payment\Methods::getMethods()
-                );
+                return [
+                    'payment_method' => \Genesis\API\Constants\Payment\Methods::getMethods()
+                ];
                 break;
 
             case self::PAYBYVOUCHER_SALE:
             case self::PAYBYVOUCHER_YEEPAY:
-                $customParameters = array(
+                $customParameters = [
                     'card_type'   =>
                         \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes::getCardTypes(),
                     'redeem_type' =>
                         \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes::getRedeemTypes()
-                );
+                ];
 
                 if ($type == self::PAYBYVOUCHER_YEEPAY) {
-                    $customParameters = array_merge($customParameters, array(
-                        'product_name'     => null,
-                        'product_category' => null
-                    ));
+                    $customParameters = array_merge(
+                        $customParameters,
+                        [
+                            'product_name'     => null,
+                            'product_category' => null
+                        ]
+                    );
                 }
 
                 return $customParameters;

@@ -14,7 +14,7 @@ Client Library for processing payments through Genesis Payment Processing Gatewa
 Requirements
 ------------
 
-* PHP version 5.3.2 or newer
+* PHP version 5.5.9 or newer
 * PHP Extensions:
     * [BCMath](https://php.net/bcmath)
     * [CURL](https://php.net/curl) (required, only if you use the curl network interface)

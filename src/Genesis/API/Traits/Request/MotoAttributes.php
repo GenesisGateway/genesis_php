@@ -21,41 +21,22 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD\Recurring;
+namespace Genesis\API\Traits\Request;
 
 /**
- * Class RecurringSale
+ * Trait MotoAttributes
+ * @package Genesis\API\Traits\Request
  *
- * SDD Recurring Sale Transaction Request
- *
- * @package Genesis\API\Request\Financial\SDD\Recurring
+ * @method $this setMoto($value) Signifies whether a MOTO (mail order telephone order) transaction is performed.
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
+trait MotoAttributes
 {
     /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::SDD_RECURRING_SALE;
-    }
-
-    /**
-     * Set the required fields
+     * Signifies whether a MOTO (mail order telephone order) transaction is performed.
      *
-     * @return void
+     * Contact tech support for more details.
+     *
+     * @var bool
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = [
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency',
-            'usage'
-        ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    protected $moto;
 }

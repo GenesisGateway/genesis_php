@@ -21,41 +21,28 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD\Recurring;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class RecurringSale
+ * Trait AsyncAttributes
+ * @package Genesis\API\Traits\Request\Financial
  *
- * SDD Recurring Sale Transaction Request
- *
- * @package Genesis\API\Request\Financial\SDD\Recurring
+ * @method $this setReturnSuccessUrl($value) Set the URL where customer is sent to after successful payment
+ * @method $this setReturnFailureUrl($value) Set the URL where customer is sent to after un-successful payment
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
+trait AsyncAttributes
 {
     /**
-     * Returns the Request transaction type
-     * @return string
+     * URL where customer is sent to after successful payment
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::SDD_RECURRING_SALE;
-    }
+    protected $return_success_url;
 
     /**
-     * Set the required fields
+     * URL where customer is sent to after un-successful payment
      *
-     * @return void
+     * @var string
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = [
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency',
-            'usage'
-        ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    protected $return_failure_url;
 }

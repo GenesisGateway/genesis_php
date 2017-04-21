@@ -20,37 +20,32 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Wallets\Asynchronous;
 
-use \Genesis\API\Request\Base\Financial\Common\Risk\Async\AbstractBaseCustomerInfo;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class AbstractTransaction
+ * Trait DescriptorAttributes
  *
- * Abstract Base Class for Financial ASynchronous Wallet Payment Transactions
+ * Trait for Transactions with Dynamic Descriptor Params
  *
- * @package Genesis\API\Request\Base\Financial\Wallets\Asynchronous
+ * @package Genesis\API\Traits\Request\Financial
  *
+ * @method $this setDynamicMerchantName($value) Dynamically override the charge descriptor
+ * @method $this setDynamicMerchantCity($value) Dynamically override the merchant phone number
  */
-abstract class AbstractTransaction extends AbstractBaseCustomerInfo
+trait DescriptorAttributes
 {
     /**
-     * Set the required fields
+     * Allows to dynamically override the charge descriptor
      *
-     * @return void
+     * @var string
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
-            'return_success_url',
-            'return_failure_url',
-            'customer_email'
-        );
+    protected $dynamic_merchant_name;
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    /**
+     * Allows to dynamically override the mer- chant phone number
+     *
+     * @var string
+     */
+    protected $dynamic_merchant_city;
 }

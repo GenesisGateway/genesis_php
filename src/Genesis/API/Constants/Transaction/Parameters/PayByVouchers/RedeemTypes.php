@@ -64,9 +64,9 @@ class RedeemTypes
      */
     public static function getRedeemTypes()
     {
-        return array(
+        return [
             self::STORED,
             self::INSTANT
-        );
+        ];
     }
 }

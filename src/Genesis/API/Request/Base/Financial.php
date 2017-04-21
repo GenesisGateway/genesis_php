@@ -20,41 +20,21 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial;
+
+namespace Genesis\API\Request\Base;
+
+use Genesis\API\Traits\Request\BaseAttributes;
 
 /**
- * Class AbstractBase
+ * Class Financial
  *
  * Base Abstract Class for all Financial Requests
  *
- * @package Genesis\API\Request\Base\Financial
- *
- * @method $this setTransactionId($value) Set a Unique Transaction id
- * @method $this setUsage($value) Set the description of the transaction for later use
- * @method $this setRemoteIp($value) Set the IPv4 address of customer
+ * @package Genesis\API\Request\Base
  */
-abstract class AbstractBase extends \Genesis\API\Request
+abstract class Financial extends \Genesis\API\Request
 {
-    /**
-     * Unique transaction id defined by merchant
-     *
-     * @var string
-     */
-    protected $transaction_id;
-
-    /**
-     * Description of the transaction for later use
-     *
-     * @var string
-     */
-    protected $usage;
-
-    /**
-     * IPv4 address of customer
-     *
-     * @var string
-     */
-    protected $remote_ip;
+    use BaseAttributes;
 
     /**
      * Returns the Request transaction type
@@ -66,32 +46,16 @@ abstract class AbstractBase extends \Genesis\API\Request
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
-    {
-        return array(
+    abstract protected function getPaymentTransactionStructure();
 
-        );
-    }
-
+    /**
+     * Initialize per-request configuration
+     */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'process',
-                \Genesis\Config::getToken()
-            )
-        );
+        $this->initApiGatewayConfiguration();
     }
 
     /**
@@ -101,16 +65,16 @@ abstract class AbstractBase extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'payment_transaction' => array(
+        $treeStructure = [
+            'payment_transaction' => [
                 'transaction_type' => $this->getTransactionType(),
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
                 'remote_ip'        => $this->remote_ip
-            )
-        );
+            ]
+        ];
 
-        $treeStructure['payment_transaction'] += $this->getRequestTreeStructure();
+        $treeStructure['payment_transaction'] += $this->getPaymentTransactionStructure();
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

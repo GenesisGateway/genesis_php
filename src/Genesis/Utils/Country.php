@@ -36,7 +36,7 @@ final class Country
      * @var array
      */
     public static $countries
-        = array(
+        = [
             'AF' => 'Afghanistan',
             'AX' => 'Aland Islands',
             'AL' => 'Albania',
@@ -281,8 +281,8 @@ final class Country
             'EH' => 'Western Sahara',
             'YE' => 'Yemen',
             'ZM' => 'Zambia',
-            'ZW' => 'Zimbabwe',
-        );
+            'ZW' => 'Zimbabwe'
+        ];
 
     /**
      * Get a country's name by its ISO Code

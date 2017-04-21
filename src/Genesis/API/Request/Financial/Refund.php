@@ -23,12 +23,13 @@
 namespace Genesis\API\Request\Financial;
 
 /**
- * Refund request
+ * Class Refund
  *
- * @package    Genesis
- * @subpackage Request
+ * Refund Request
+ *
+ * @package Genesis\API\Request\Financial
  */
-class Refund extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
+class Refund extends \Genesis\API\Request\Base\Financial\Reference
 {
     /**
      * Returns the Request transaction type

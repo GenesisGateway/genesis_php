@@ -21,31 +21,22 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD;
+namespace Genesis\API\Request\Base\Financial;
 
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\Request\Financial\SddBankAttributes;
 
 /**
- * Class Sale
+ * Class Alternative
  *
- * SDD Payment Transactions
+ * Base Class for Alternative Payment Methods
  *
- * @package Genesis\API\Request\Financial\SDD
+ * @package Genesis\API\Request\Base\Financial
  */
-class Sale extends \Genesis\API\Request\Base\Financial
+abstract class Alternative extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes, SddBankAttributes;
-
-    /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::SDD_SALE;
-    }
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
 
     /**
      * Set the required fields
@@ -56,13 +47,12 @@ class Sale extends \Genesis\API\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
-            'usage',
+            'remote_ip',
             'amount',
             'currency',
-            'iban',
-            'bic',
-            'billing_first_name',
-            'billing_last_name',
+            'return_success_url',
+            'return_failure_url',
+            'customer_email',
             'billing_country'
         ];
 
@@ -76,13 +66,13 @@ class Sale extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'           => $this->transformAmount($this->amount, $this->currency),
-            'currency'         => $this->currency,
-            'iban'             => $this->iban,
-            'bic'              => $this->bic,
-            'customer_email'   => $this->customer_email,
-            'customer_phone'   => $this->customer_phone,
-            'billing_address'  => [
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'billing_address'    => [
                 'first_name' => $this->billing_first_name,
                 'last_name'  => $this->billing_last_name,
                 'address1'   => $this->billing_address1,
@@ -92,7 +82,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
                 'state'      => $this->billing_state,
                 'country'    => $this->billing_country
             ],
-            'shipping_address' => [
+            'shipping_address'   => [
                 'first_name' => $this->shipping_first_name,
                 'last_name'  => $this->shipping_last_name,
                 'address1'   => $this->shipping_address1,
@@ -101,7 +91,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
                 'city'       => $this->shipping_city,
                 'state'      => $this->shipping_state,
                 'country'    => $this->shipping_country
-            ],
+            ]
         ];
     }
 }

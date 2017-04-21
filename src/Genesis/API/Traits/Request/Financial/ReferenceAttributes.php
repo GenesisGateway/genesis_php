@@ -20,48 +20,24 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\PayByVouchers;
+
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class ASale
+ * Trait ReferenceAttributes
  *
- * Base Abstract Class for PayByVouchers
+ * Trait for all Reference Financial Requests
  *
- * @package Genesis\API\Request\Base\Financial\PayByVouchers
+ * @package Genesis\API\Traits\Request\Financial
  *
- * @method $this setCardType($value) Set Card type for the voucher - can be ’virtual’ or ’physical’ only
- * @method $this setRedeemType($value) Set Redeem type for the voucher - can be ’stored’ or ’instant’ only
+ * @method $this setReferenceId($value) Set Unique id of the existing (target) transaction
  */
-abstract class ASale extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\AbstractTransaction
+trait ReferenceAttributes
 {
     /**
-     * Card type for the voucher - can be ’virtual’ or ’physical’ only
+     * Unique id of the existing (target) transaction
      *
      * @var string
      */
-    protected $card_type;
-
-    /**
-     * Redeem type for the voucher - can be ’stored’ or ’instant’ only
-     *
-     * @var string
-     */
-    protected $redeem_type;
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'card_type'   => $this->card_type,
-                'redeem_type' => $this->redeem_type
-            )
-        );
-    }
+    protected $reference_id;
 }

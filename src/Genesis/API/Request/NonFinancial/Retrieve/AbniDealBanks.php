@@ -39,21 +39,14 @@ class AbniDealBanks extends \Genesis\API\Request
     protected function initConfiguration()
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
+            [
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'GET',
                 'format'   => 'plain'
-            )
+            ]
         );
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'retrieve_abn_ideal_banks',
-                false
-            )
-        );
+        $this->initApiGatewayConfiguration('retrieve_abn_ideal_banks', false);
     }
 }

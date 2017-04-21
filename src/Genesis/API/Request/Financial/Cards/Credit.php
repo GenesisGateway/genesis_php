@@ -23,12 +23,13 @@
 namespace Genesis\API\Request\Financial\Cards;
 
 /**
+ * Class Credit
+ *
  * Credit Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial\Cards
  */
-class Credit extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
+class Credit extends \Genesis\API\Request\Base\Financial\Reference
 {
     /**
      * Returns the Request transaction type

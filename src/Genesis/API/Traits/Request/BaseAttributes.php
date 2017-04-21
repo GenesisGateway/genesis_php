@@ -21,41 +21,39 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD\Recurring;
+namespace Genesis\API\Traits\Request;
 
 /**
- * Class RecurringSale
+ * Trait BaseAttributes
  *
- * SDD Recurring Sale Transaction Request
+ * Trait for all Financial Request Classes
  *
- * @package Genesis\API\Request\Financial\SDD\Recurring
+ * @package Genesis\API\Traits\Request
+ *
+ * @method $this setTransactionId($value) Set a Unique Transaction id
+ * @method $this setUsage($value) Set the description of the transaction for later use
+ * @method $this setRemoteIp($value) Set the IPv4 address of customer
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
+trait BaseAttributes
 {
     /**
-     * Returns the Request transaction type
-     * @return string
+     * Unique transaction id defined by merchant
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::SDD_RECURRING_SALE;
-    }
+    protected $transaction_id;
 
     /**
-     * Set the required fields
+     * Description of the transaction for later use
      *
-     * @return void
+     * @var string
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = [
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency',
-            'usage'
-        ];
+    protected $usage;
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    /**
+     * IPv4 address of customer
+     *
+     * @var string
+     */
+    protected $remote_ip;
 }

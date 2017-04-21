@@ -20,16 +20,24 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+
 /**
+ * Class Payout
+ *
  * Payout Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial\Cards
  */
-class Payout extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\AbstractTransaction
+class Payout extends \Genesis\API\Request\Base\Financial
 {
+    use PaymentAttributes, CreditCardAttributes, AddressInfoAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -46,7 +54,7 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\Abstr
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'amount',
             'currency',
@@ -54,8 +62,48 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\Abstr
             'card_number',
             'expiration_month',
             'expiration_year'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'amount'           => $this->transformAmount($this->amount, $this->currency),
+            'currency'         => $this->currency,
+            'card_holder'      => $this->card_holder,
+            'card_number'      => $this->card_number,
+            'cvv'              => $this->cvv,
+            'expiration_month' => $this->expiration_month,
+            'expiration_year'  => $this->expiration_year,
+            'customer_email'   => $this->customer_email,
+            'customer_phone'   => $this->customer_phone,
+            'birth_date'       => $this->birth_date,
+            'billing_address'  => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country,
+            ],
+            'shipping_address' => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country,
+            ]
+        ];
     }
 }

@@ -20,15 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Common\Risk;
+
+namespace Genesis\API\Traits\Request;
 
 /**
- * Class AbstractBaseCustomerInfo
- *
- * Base Abstract Class for all Financial Risk Transaction Requests,
- * which require Billing & Shipping Addresses
- *
- * @package Genesis\API\Request\Base\Financial\Common
+ * Trait AddressInfoAttributes
+ * @package Genesis\API\Traits\Request
  *
  * @method $this setCustomerEmail($value) Set Email address of the Customer
  * @method $this setCustomerPhone($value) Set Phone number of the Customer
@@ -50,8 +47,8 @@ namespace Genesis\API\Request\Base\Financial\Common\Risk;
  * @method $this setShippingCity($value) Set Customer's Shipping Address: City
  * @method $this setShippingState($value) Set Customer's Shipping Address: State
  * @method $this setShippingCountry($value) Set Customer's Shipping Address: Country
-*/
-abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financial\Common\Risk\AbstractBase
+ */
+trait AddressInfoAttributes
 {
     /**
      * Email address of the Customer
@@ -185,41 +182,4 @@ abstract class AbstractBaseCustomerInfo extends \Genesis\API\Request\Base\Financ
      * @var string
      */
     protected $shipping_country;
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'customer_email'  => $this->customer_email,
-                'customer_phone'  => $this->customer_phone,
-                'billing_address' => array(
-                    'first_name' => $this->billing_first_name,
-                    'last_name'  => $this->billing_last_name,
-                    'address1'   => $this->billing_address1,
-                    'address2'   => $this->billing_address2,
-                    'zip_code'   => $this->billing_zip_code,
-                    'city'       => $this->billing_city,
-                    'state'      => $this->billing_state,
-                    'country'    => $this->billing_country
-                ),
-                'shipping_address' => array(
-                    'first_name' => $this->shipping_first_name,
-                    'last_name'  => $this->shipping_last_name,
-                    'address1'   => $this->shipping_address1,
-                    'address2'   => $this->shipping_address2,
-                    'zip_code'   => $this->shipping_zip_code,
-                    'city'       => $this->shipping_city,
-                    'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country
-                )
-            )
-        );
-    }
 }

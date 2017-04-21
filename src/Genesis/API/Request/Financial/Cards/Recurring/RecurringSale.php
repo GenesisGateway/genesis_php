@@ -20,15 +20,17 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
 /**
+ * Class RecurringSale
+ *
  * Recurring Sale Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial\Cards\Recurring
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
+class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
 {
     /**
      * Returns the Request transaction type
@@ -37,22 +39,5 @@ class RecurringSale extends \Genesis\API\Request\Base\Financial\Common\AbstractR
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::RECURRING_SALE;
-    }
-
-    /**
-     * Set the required fields
-     *
-     * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }

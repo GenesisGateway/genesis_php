@@ -95,7 +95,7 @@ final class Common
     {
         $snakeCase = explode('_', self::pascalToSnakeCase($input));
 
-        $result = array(
+        $result = [
             current(
                 array_slice($snakeCase, 0, 1)
             ),
@@ -103,7 +103,7 @@ final class Common
                 '_',
                 array_slice($snakeCase, 1)
             )
-        );
+        ];
 
         return $result;
     }
@@ -297,7 +297,7 @@ final class Common
     public static function getClassConstants($className)
     {
         if (!class_exists($className)) {
-            return array();
+            return [];
         }
 
         $reflection = new \ReflectionClass($className);

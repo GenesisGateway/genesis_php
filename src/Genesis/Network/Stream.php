@@ -110,21 +110,21 @@ class Stream implements \Genesis\Interfaces\Network
     {
         $url = parse_url($requestData['url']);
 
-        $headers = array(
+        $headers = [
             'Content-Type: text/xml',
             sprintf('Authorization: Basic %s', base64_encode($requestData['user_login'])),
             sprintf('Content-Length: %s', strlen($requestData['body'])),
             sprintf('User-Agent: %s', $requestData['user_agent']),
-        );
+        ];
 
-        $contextOptions = array(
-            'http' => array(
+        $contextOptions = [
+            'http' => [
                 'method'  => $requestData['type'],
                 'header'  => implode("\r\n", $headers),
                 'content' => $requestData['body'],
                 'timeout' => $requestData['timeout']
-            ),
-            'ssl'  => array(
+            ],
+            'ssl'  => [
                 // DO NOT allow self-signed certificates
                 'allow_self_signed' => false,
                 // Path to certificate/s PEM files used to validate the server authenticity
@@ -139,8 +139,8 @@ class Stream implements \Genesis\Interfaces\Network
                 'SNI_enabled'       => true,
                 // You can tweak the accepted Cipher list (if needed)
                 'ciphers'           => implode(':', self::getCiphers())
-            )
-        );
+            ]
+        ];
 
         // Note: Mitigate CRIME/BEAST attacks
         if (\Genesis\Utils\Common::compareVersions('5.4.13', '>=')) {
@@ -205,7 +205,7 @@ class Stream implements \Genesis\Interfaces\Network
      */
     public static function getCiphers()
     {
-        return array(
+        return [
             'ECDHE-RSA-AES128-GCM-SHA256',
             'ECDHE-ECDSA-AES128-GCM-SHA256',
             'ECDHE-RSA-AES256-GCM-SHA384',
@@ -237,6 +237,6 @@ class Stream implements \Genesis\Interfaces\Network
             '!PSK',
             '!SSLv2',
             '!SSLv3'
-        );
+        ];
     }
 }

@@ -21,41 +21,30 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD\Recurring;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class RecurringSale
+ * Trait SddBankAttributes
+ * @package Genesis\API\Traits\Request\Financial
  *
- * SDD Recurring Sale Transaction Request
- *
- * @package Genesis\API\Request\Financial\SDD\Recurring
+ * @method $this setIban($value) Set a valid IBAN bank account
+ * @method $this setBic($value) Set a valid BIC code
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
+trait SddBankAttributes
 {
     /**
-     * Returns the Request transaction type
-     * @return string
+     * Must contain valid IBAN, check
+     * in the official API documentation
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::SDD_RECURRING_SALE;
-    }
+    protected $iban;
 
     /**
-     * Set the required fields
+     * Must contain valid BIC, check
+     * in the official API documentation
      *
-     * @return void
+     * @var string
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = [
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency',
-            'usage'
-        ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    protected $bic;
 }

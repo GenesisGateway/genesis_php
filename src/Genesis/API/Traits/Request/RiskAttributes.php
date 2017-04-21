@@ -20,14 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Common\Risk;
+
+namespace Genesis\API\Traits\Request;
 
 /**
- * Class AbstractBase
- *
- * Base Abstract Class for Financial Risk Transaction Request
- *
- * @package Genesis\API\Request\Base\Financial\Common
+ * Trait RiskAttributes
+ * @package Genesis\API\Traits\Request
  *
  * @method $this setRiskSsn($value) Set the Social Security number or equivalent value for non US customers.
  * @method $this setRiskMacAddress($value) Set the Customer's MAC address
@@ -39,7 +37,7 @@ namespace Genesis\API\Request\Base\Financial\Common\Risk;
  * @method $this setRiskRemoteIp($value) Set the Customer's IP address
  * @method $this setRiskSerialNumber($value) Set the Customer's Serial Number
  */
-abstract class AbstractBase extends \Genesis\API\Request\Base\Financial\Common\AbstractPayment
+trait RiskAttributes
 {
     /**
      * Social Security number or equivalent value for non US customers.
@@ -111,30 +109,4 @@ abstract class AbstractBase extends \Genesis\API\Request\Base\Financial\Common\A
      * @var string
      */
     protected $risk_serial_number;
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'risk_params' => array(
-                    'ssn'           => $this->risk_ssn,
-                    'mac_address'   => $this->risk_mac_address,
-                    'session_id'    => $this->risk_session_id,
-                    'user_id'       => $this->risk_user_id,
-                    'user_level'    => $this->risk_user_level,
-                    'email'         => $this->risk_email,
-                    'phone'         => $this->risk_phone,
-                    'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number
-                ),
-            )
-        );
-    }
 }
