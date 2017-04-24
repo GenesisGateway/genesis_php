@@ -21,17 +21,45 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request;
-
-use Genesis\API\Traits\Request\CustomerAddress;
+namespace Genesis\API\Request\Financial\Alternatives\Trustly;
 
 /**
- * Trait AddressInfoAttributes
- * @package Genesis\API\Traits\Request
+ * Class Withdrawal
+ *
+ * Trustly Withdrawal Alternative payment method
+ *
+ * @package Genesis\API\Request\Financial\Alternatives\Trustly
  */
-trait AddressInfoAttributes
+class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sale
 {
-    use CustomerAddress\BillingInfoAttributes,
-        CustomerAddress\CustomerInfoAttributes,
-        CustomerAddress\ShippingInfoAttributes;
+    /**
+     * Returns the Request transaction type
+     * @return string
+     */
+    protected function getTransactionType()
+    {
+        return \Genesis\API\Constants\Transaction\Types::TRUSTLY_WITHDRAWAL;
+    }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'remote_ip',
+            'amount',
+            'currency',
+            'return_success_url',
+            'return_failure_url',
+            'customer_email',
+            'birth_date',
+            'billing_country'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
 }

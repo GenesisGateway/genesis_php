@@ -167,6 +167,18 @@ class Types
     const P24 = 'p24';
 
     /**
+     * Trustly is a fast and secure oBeP-style alternative payment method. It is free of charge and
+     * allows you to deposit money directly from your online bank account.
+     */
+    const TRUSTLY_SALE = 'trustly_sale';
+
+    /**
+     * Trustly is an oBeP-style alternative payment method that allows you to
+     * withdraw money directly from your online bank account using your bank credentials.
+     */
+    const TRUSTLY_WITHDRAWAL = 'trustly_withdrawal';
+
+    /**
      * Sepa Direct Debit Payment, popular in Germany.
      * Single Euro Payments Area (SEPA) allows consumers to make cashless Euro payments to
      * any beneficiary located anywhere in the Euro area using only a single bank account

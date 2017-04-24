@@ -21,17 +21,28 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request;
-
-use Genesis\API\Traits\Request\CustomerAddress;
+namespace Genesis\API\Traits\Request\CustomerAddress;
 
 /**
- * Trait AddressInfoAttributes
- * @package Genesis\API\Traits\Request
+ * Trait CustomerInfoAttributes
+ * @package Genesis\API\Traits\Request\CustomerAddress
+ *
+ * @method $this setCustomerEmail($value) Set Email address of the Customer
+ * @method $this setCustomerPhone($value) Set Phone number of the Customer
  */
-trait AddressInfoAttributes
+trait CustomerInfoAttributes
 {
-    use CustomerAddress\BillingInfoAttributes,
-        CustomerAddress\CustomerInfoAttributes,
-        CustomerAddress\ShippingInfoAttributes;
+    /**
+     * Email address of the Customer
+     *
+     * @var string
+     */
+    protected $customer_email;
+
+    /**
+     * Phone number of the customer
+     *
+     * @var string
+     */
+    protected $customer_phone;
 }
