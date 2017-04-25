@@ -187,6 +187,8 @@ Financial\Alternatives\Paysafecard
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
+Financial\Alternatives\Trustly\Sale
+Financial\Alternatives\Trustly\Withdrawal
 
 // PayByVouchers transactions
 Financial\PayByVouchers\oBeP
