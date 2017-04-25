@@ -178,11 +178,7 @@ class States
      */
     public function compare($subject)
     {
-        if ($this->status == constant('self::' . strtoupper($subject))) {
-            return true;
-        }
-
-        return false;
+        return $this->status == constant('self::' . strtoupper($subject));
     }
 
     /**
@@ -192,28 +188,8 @@ class States
      */
     public function isValid()
     {
-        $statusList = array(
-            self::APPROVED,
-            self::DECLINED,
-            self::PENDING,
-            self::PENDING_ASYNC,
-            self::REFUNDED,
-            self::VOIDED,
-            self::ERROR,
-            self::UNSUCCESSFUL,
-            self::IN_PROGRESS,
-            self::NEW_STATUS,
-            self::USER,
-            self::TIMEOUT,
-            self::CHARGEBACKED,
-            self::CHARGEBACK_REVERSED,
-            self::PRE_ARBITRATED,
-        );
+        $statusList = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
-        if (in_array(strtolower($this->status), $statusList)) {
-            return true;
-        }
-
-        return false;
+        return in_array(strtolower($this->status), $statusList);
     }
 }

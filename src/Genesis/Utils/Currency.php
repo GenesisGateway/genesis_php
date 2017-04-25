@@ -1,7 +1,7 @@
 <?php
 /*
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
+ * of this software and associated documentation files (the "Software"], to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -35,1076 +35,1076 @@ final class Currency
      * @var array
      */
     public static $iso4217
-        = array(
-            'AED' => array(
+        = [
+            'AED' => [
                 'name'        => 'UAE Dirham',
                 'code'        => '784',
                 'country'     => 'UNITED ARAB EMIRATES (THE)',
                 'exponent'    => '2'
-            ),
-            'AFN' => array(
+            ],
+            'AFN' => [
                 'name'        => 'Afghani',
                 'code'        => '971',
                 'country'     => 'AFGHANISTAN',
                 'exponent'    => '2'
-            ),
-            'ALL' => array(
+            ],
+            'ALL' => [
                 'name'        => 'Lek',
                 'code'        => '008',
                 'country'     => 'ALBANIA',
                 'exponent'    => '2'
-            ),
-            'AMD' => array(
+            ],
+            'AMD' => [
                 'name'        => 'Armenian Dram',
                 'code'        => '051',
                 'country'     => 'ARMENIA',
                 'exponent'    => '2'
-            ),
-            'ANG' => array(
+            ],
+            'ANG' => [
                 'name'        => 'Netherlands Antillean Guilder',
                 'code'        => '532',
                 'country'     => 'SINT MAARTEN (DUTCH PART)',
                 'exponent'    => '2'
-            ),
-            'AOA' => array(
+            ],
+            'AOA' => [
                 'name'        => 'Kwanza',
                 'code'        => '973',
                 'country'     => 'ANGOLA',
                 'exponent'    => '2'
-            ),
-            'ARS' => array(
+            ],
+            'ARS' => [
                 'name'        => 'Argentine Peso',
                 'code'        => '032',
                 'country'     => 'ARGENTINA',
                 'exponent'    => '2'
-            ),
-            'AUD' => array(
+            ],
+            'AUD' => [
                 'name'        => 'Australian Dollar',
                 'code'        => '036',
                 'country'     => 'TUVALU',
                 'exponent'    => '2'
-            ),
-            'AWG' => array(
+            ],
+            'AWG' => [
                 'name'        => 'Aruban Florin',
                 'code'        => '533',
                 'country'     => 'ARUBA',
                 'exponent'    => '2'
-            ),
-            'AZN' => array(
+            ],
+            'AZN' => [
                 'name'        => 'Azerbaijanian Manat',
                 'code'        => '944',
                 'country'     => 'AZERBAIJAN',
                 'exponent'    => '2'
-            ),
-            'BAM' => array(
+            ],
+            'BAM' => [
                 'name'        => 'Convertible Mark',
                 'code'        => '977',
                 'country'     => 'BOSNIA AND HERZEGOVINA',
                 'exponent'    => '2'
-            ),
-            'BBD' => array(
+            ],
+            'BBD' => [
                 'name'        => 'Barbados Dollar',
                 'code'        => '052',
                 'country'     => 'BARBADOS',
                 'exponent'    => '2'
-            ),
-            'BDT' => array(
+            ],
+            'BDT' => [
                 'name'        => 'Taka',
                 'code'        => '050',
                 'country'     => 'BANGLADESH',
                 'exponent'    => '2'
-            ),
-            'BGN' => array(
+            ],
+            'BGN' => [
                 'name'        => 'Bulgarian Lev',
                 'code'        => '975',
                 'country'     => 'BULGARIA',
                 'exponent'    => '2'
-            ),
-            'BHD' => array(
+            ],
+            'BHD' => [
                 'name'        => 'Bahraini Dinar',
                 'code'        => '048',
                 'country'     => 'BAHRAIN',
                 'exponent'    => '3'
-            ),
-            'BIF' => array(
+            ],
+            'BIF' => [
                 'name'        => 'Burundi Franc',
                 'code'        => '108',
                 'country'     => 'BURUNDI',
                 'exponent'    => '0'
-            ),
-            'BMD' => array(
+            ],
+            'BMD' => [
                 'name'        => 'Bermudian Dollar',
                 'code'        => '060',
                 'country'     => 'BERMUDA',
                 'exponent'    => '2'
-            ),
-            'BND' => array(
+            ],
+            'BND' => [
                 'name'        => 'Brunei Dollar',
                 'code'        => '096',
                 'country'     => 'BRUNEI DARUSSALAM',
                 'exponent'    => '2'
-            ),
-            'BOB' => array(
+            ],
+            'BOB' => [
                 'name'        => 'Boliviano',
                 'code'        => '068',
                 'country'     => 'BOLIVIA (PLURINATIONAL STATE OF)',
                 'exponent'    => '2'
-            ),
-            'BOV' => array(
+            ],
+            'BOV' => [
                 'name'        => 'Mvdol',
                 'code'        => '984',
                 'country'     => 'BOLIVIA (PLURINATIONAL STATE OF)',
                 'exponent'    => '2'
-            ),
-            'BRL' => array(
+            ],
+            'BRL' => [
                 'name'        => 'Brazilian Real',
                 'code'        => '986',
                 'country'     => 'BRAZIL',
                 'exponent'    => '2'
-            ),
-            'BSD' => array(
+            ],
+            'BSD' => [
                 'name'        => 'Bahamian Dollar',
                 'code'        => '044',
                 'country'     => 'BAHAMAS (THE)',
                 'exponent'    => '2'
-            ),
-            'BTN' => array(
+            ],
+            'BTN' => [
                 'name'        => 'Ngultrum',
                 'code'        => '064',
                 'country'     => 'BHUTAN',
                 'exponent'    => '2'
-            ),
-            'BWP' => array(
+            ],
+            'BWP' => [
                 'name'        => 'Pula',
                 'code'        => '072',
                 'country'     => 'BOTSWANA',
                 'exponent'    => '2'
-            ),
-            'BYR' => array(
+            ],
+            'BYR' => [
                 'name'        => 'Belarussian Ruble',
                 'code'        => '974',
                 'country'     => 'BELARUS',
                 'exponent'    => '0'
-            ),
-            'BZD' => array(
+            ],
+            'BZD' => [
                 'name'        => 'Belize Dollar',
                 'code'        => '084',
                 'country'     => 'BELIZE',
                 'exponent'    => '2'
-            ),
-            'CAD' => array(
+            ],
+            'CAD' => [
                 'name'        => 'Canadian Dollar',
                 'code'        => '124',
                 'country'     => 'CANADA',
                 'exponent'    => '2'
-            ),
-            'CDF' => array(
+            ],
+            'CDF' => [
                 'name'        => 'Congolese Franc',
                 'code'        => '976',
                 'country'     => 'CONGO (THE DEMOCRATIC REPUBLIC OF THE)',
                 'exponent'    => '2'
-            ),
-            'CHE' => array(
+            ],
+            'CHE' => [
                 'name'        => 'WIR Euro',
                 'code'        => '947',
                 'country'     => 'SWITZERLAND',
                 'exponent'    => '2'
-            ),
-            'CHF' => array(
+            ],
+            'CHF' => [
                 'name'        => 'Swiss Franc',
                 'code'        => '756',
                 'country'     => 'SWITZERLAND',
                 'exponent'    => '2'
-            ),
-            'CHW' => array(
+            ],
+            'CHW' => [
                 'name'        => 'WIR Franc',
                 'code'        => '948',
                 'country'     => 'SWITZERLAND',
                 'exponent'    => '2'
-            ),
-            'CLF' => array(
+            ],
+            'CLF' => [
                 'name'        => 'Unidad de Fomento',
                 'code'        => '990',
                 'country'     => 'CHILE',
                 'exponent'    => '4'
-            ),
-            'CLP' => array(
+            ],
+            'CLP' => [
                 'name'        => 'Chilean Peso',
                 'code'        => '152',
                 'country'     => 'CHILE',
                 'exponent'    => '0'
-            ),
-            'CNY' => array(
+            ],
+            'CNY' => [
                 'name'        => 'Yuan Renminbi',
                 'code'        => '156',
                 'country'     => 'CHINA',
                 'exponent'    => '2'
-            ),
-            'COP' => array(
+            ],
+            'COP' => [
                 'name'        => 'Colombian Peso',
                 'code'        => '170',
                 'country'     => 'COLOMBIA',
                 'exponent'    => '2'
-            ),
-            'COU' => array(
+            ],
+            'COU' => [
                 'name'        => 'Unidad de Valor Real',
                 'code'        => '970',
                 'country'     => 'COLOMBIA',
                 'exponent'    => '2'
-            ),
-            'CRC' => array(
+            ],
+            'CRC' => [
                 'name'        => 'Costa Rican Colon',
                 'code'        => '188',
                 'country'     => 'COSTA RICA',
                 'exponent'    => '2'
-            ),
-            'CUC' => array(
+            ],
+            'CUC' => [
                 'name'        => 'Peso Convertible',
                 'code'        => '931',
                 'country'     => 'CUBA',
                 'exponent'    => '2'
-            ),
-            'CUP' => array(
+            ],
+            'CUP' => [
                 'name'        => 'Cuban Peso',
                 'code'        => '192',
                 'country'     => 'CUBA',
                 'exponent'    => '2'
-            ),
-            'CVE' => array(
+            ],
+            'CVE' => [
                 'name'        => 'Cabo Verde Escudo',
                 'code'        => '132',
                 'country'     => 'CABO VERDE',
                 'exponent'    => '2'
-            ),
-            'CZK' => array(
+            ],
+            'CZK' => [
                 'name'        => 'Czech Koruna',
                 'code'        => '203',
                 'country'     => 'CZECH REPUBLIC (THE)',
                 'exponent'    => '2'
-            ),
-            'DJF' => array(
+            ],
+            'DJF' => [
                 'name'        => 'Djibouti Franc',
                 'code'        => '262',
                 'country'     => 'DJIBOUTI',
                 'exponent'    => '0'
-            ),
-            'DKK' => array(
+            ],
+            'DKK' => [
                 'name'        => 'Danish Krone',
                 'code'        => '208',
                 'country'     => 'GREENLAND',
                 'exponent'    => '2'
-            ),
-            'DOP' => array(
+            ],
+            'DOP' => [
                 'name'        => 'Dominican Peso',
                 'code'        => '214',
                 'country'     => 'DOMINICAN REPUBLIC (THE)',
                 'exponent'    => '2'
-            ),
-            'DZD' => array(
+            ],
+            'DZD' => [
                 'name'        => 'Algerian Dinar',
                 'code'        => '012',
                 'country'     => 'ALGERIA',
                 'exponent'    => '2'
-            ),
-            'EGP' => array(
+            ],
+            'EGP' => [
                 'name'        => 'Egyptian Pound',
                 'code'        => '818',
                 'country'     => 'EGYPT',
                 'exponent'    => '2'
-            ),
-            'ERN' => array(
+            ],
+            'ERN' => [
                 'name'        => 'Nakfa',
                 'code'        => '232',
                 'country'     => 'ERITREA',
                 'exponent'    => '2'
-            ),
-            'ETB' => array(
+            ],
+            'ETB' => [
                 'name'        => 'Ethiopian Birr',
                 'code'        => '230',
                 'country'     => 'ETHIOPIA',
                 'exponent'    => '2'
-            ),
-            'EUR' => array(
+            ],
+            'EUR' => [
                 'name'        => 'Euro',
                 'code'        => '978',
                 'country'     => 'SPAIN',
                 'exponent'    => '2'
-            ),
-            'FJD' => array(
+            ],
+            'FJD' => [
                 'name'        => 'Fiji Dollar',
                 'code'        => '242',
                 'country'     => 'FIJI',
                 'exponent'    => '2'
-            ),
-            'FKP' => array(
+            ],
+            'FKP' => [
                 'name'        => 'Falkland Islands Pound',
                 'code'        => '238',
                 'country'     => 'FALKLAND ISLANDS (THE) [MALVINAS]',
                 'exponent'    => '2'
-            ),
-            'GBP' => array(
+            ],
+            'GBP' => [
                 'name'        => 'Pound Sterling',
                 'code'        => '826',
                 'country'     => 'UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND (THE)',
                 'exponent'    => '2'
-            ),
-            'GEL' => array(
+            ],
+            'GEL' => [
                 'name'        => 'Lari',
                 'code'        => '981',
                 'country'     => 'GEORGIA',
                 'exponent'    => '2'
-            ),
-            'GHS' => array(
+            ],
+            'GHS' => [
                 'name'        => 'Ghana Cedi',
                 'code'        => '936',
                 'country'     => 'GHANA',
                 'exponent'    => '2'
-            ),
-            'GIP' => array(
+            ],
+            'GIP' => [
                 'name'        => 'Gibraltar Pound',
                 'code'        => '292',
                 'country'     => 'GIBRALTAR',
                 'exponent'    => '2'
-            ),
-            'GMD' => array(
+            ],
+            'GMD' => [
                 'name'        => 'Dalasi',
                 'code'        => '270',
                 'country'     => 'GAMBIA (THE)',
                 'exponent'    => '2'
-            ),
-            'GNF' => array(
+            ],
+            'GNF' => [
                 'name'        => 'Guinea Franc',
                 'code'        => '324',
                 'country'     => 'GUINEA',
                 'exponent'    => '0'
-            ),
-            'GTQ' => array(
+            ],
+            'GTQ' => [
                 'name'        => 'Quetzal',
                 'code'        => '320',
                 'country'     => 'GUATEMALA',
                 'exponent'    => '2'
-            ),
-            'GYD' => array(
+            ],
+            'GYD' => [
                 'name'        => 'Guyana Dollar',
                 'code'        => '328',
                 'country'     => 'GUYANA',
                 'exponent'    => '2'
-            ),
-            'HKD' => array(
+            ],
+            'HKD' => [
                 'name'        => 'Hong Kong Dollar',
                 'code'        => '344',
                 'country'     => 'HONG KONG',
                 'exponent'    => '2'
-            ),
-            'HNL' => array(
+            ],
+            'HNL' => [
                 'name'        => 'Lempira',
                 'code'        => '340',
                 'country'     => 'HONDURAS',
                 'exponent'    => '2'
-            ),
-            'HRK' => array(
+            ],
+            'HRK' => [
                 'name'        => 'Kuna',
                 'code'        => '191',
                 'country'     => 'CROATIA',
                 'exponent'    => '2'
-            ),
-            'HTG' => array(
+            ],
+            'HTG' => [
                 'name'        => 'Gourde',
                 'code'        => '332',
                 'country'     => 'HAITI',
                 'exponent'    => '2'
-            ),
-            'HUF' => array(
+            ],
+            'HUF' => [
                 'name'        => 'Forint',
                 'code'        => '348',
                 'country'     => 'HUNGARY',
                 'exponent'    => '2'
-            ),
-            'IDR' => array(
+            ],
+            'IDR' => [
                 'name'        => 'Rupiah',
                 'code'        => '360',
                 'country'     => 'INDONESIA',
                 'exponent'    => '2'
-            ),
-            'ILS' => array(
+            ],
+            'ILS' => [
                 'name'        => 'New Israeli Sheqel',
                 'code'        => '376',
                 'country'     => 'ISRAEL',
                 'exponent'    => '2'
-            ),
-            'INR' => array(
+            ],
+            'INR' => [
                 'name'        => 'Indian Rupee',
                 'code'        => '356',
                 'country'     => 'INDIA',
                 'exponent'    => '2'
-            ),
-            'IQD' => array(
+            ],
+            'IQD' => [
                 'name'        => 'Iraqi Dinar',
                 'code'        => '368',
                 'country'     => 'IRAQ',
                 'exponent'    => '3'
-            ),
-            'IRR' => array(
+            ],
+            'IRR' => [
                 'name'        => 'Iranian Rial',
                 'code'        => '364',
                 'country'     => 'IRAN (ISLAMIC REPUBLIC OF)',
                 'exponent'    => '2'
-            ),
-            'ISK' => array(
+            ],
+            'ISK' => [
                 'name'        => 'Iceland Krona',
                 'code'        => '352',
                 'country'     => 'ICELAND',
                 'exponent'    => '0'
-            ),
-            'JMD' => array(
+            ],
+            'JMD' => [
                 'name'        => 'Jamaican Dollar',
                 'code'        => '388',
                 'country'     => 'JAMAICA',
                 'exponent'    => '2'
-            ),
-            'JOD' => array(
+            ],
+            'JOD' => [
                 'name'        => 'Jordanian Dinar',
                 'code'        => '400',
                 'country'     => 'JORDAN',
                 'exponent'    => '3'
-            ),
-            'JPY' => array(
+            ],
+            'JPY' => [
                 'name'        => 'Yen',
                 'code'        => '392',
                 'country'     => 'JAPAN',
                 'exponent'    => '0'
-            ),
-            'KES' => array(
+            ],
+            'KES' => [
                 'name'        => 'Kenyan Shilling',
                 'code'        => '404',
                 'country'     => 'KENYA',
                 'exponent'    => '2'
-            ),
-            'KGS' => array(
+            ],
+            'KGS' => [
                 'name'        => 'Som',
                 'code'        => '417',
                 'country'     => 'KYRGYZSTAN',
                 'exponent'    => '2'
-            ),
-            'KHR' => array(
+            ],
+            'KHR' => [
                 'name'        => 'Riel',
                 'code'        => '116',
                 'country'     => 'CAMBODIA',
                 'exponent'    => '2'
-            ),
-            'KMF' => array(
+            ],
+            'KMF' => [
                 'name'        => 'Comoro Franc',
                 'code'        => '174',
                 'country'     => 'COMOROS (THE)',
                 'exponent'    => '0'
-            ),
-            'KPW' => array(
+            ],
+            'KPW' => [
                 'name'        => 'North Korean Won',
                 'code'        => '408',
                 'country'     => 'KOREA (THE DEMOCRATIC PEOPLEâ€™S REPUBLIC OF)',
                 'exponent'    => '2'
-            ),
-            'KRW' => array(
+            ],
+            'KRW' => [
                 'name'        => 'Won',
                 'code'        => '410',
                 'country'     => 'KOREA (THE REPUBLIC OF)',
                 'exponent'    => '0'
-            ),
-            'KWD' => array(
+            ],
+            'KWD' => [
                 'name'        => 'Kuwaiti Dinar',
                 'code'        => '414',
                 'country'     => 'KUWAIT',
                 'exponent'    => '3'
-            ),
-            'KYD' => array(
+            ],
+            'KYD' => [
                 'name'        => 'Cayman Islands Dollar',
                 'code'        => '136',
                 'country'     => 'CAYMAN ISLANDS (THE)',
                 'exponent'    => '2'
-            ),
-            'KZT' => array(
+            ],
+            'KZT' => [
                 'name'        => 'Tenge',
                 'code'        => '398',
                 'country'     => 'KAZAKHSTAN',
                 'exponent'    => '2'
-            ),
-            'LAK' => array(
+            ],
+            'LAK' => [
                 'name'        => 'Kip',
                 'code'        => '418',
                 'country'     => 'LAO PEOPLEâ€™S DEMOCRATIC REPUBLIC (THE)',
                 'exponent'    => '2'
-            ),
-            'LBP' => array(
+            ],
+            'LBP' => [
                 'name'        => 'Lebanese Pound',
                 'code'        => '422',
                 'country'     => 'LEBANON',
                 'exponent'    => '2'
-            ),
-            'LKR' => array(
+            ],
+            'LKR' => [
                 'name'        => 'Sri Lanka Rupee',
                 'code'        => '144',
                 'country'     => 'SRI LANKA',
                 'exponent'    => '2'
-            ),
-            'LRD' => array(
+            ],
+            'LRD' => [
                 'name'        => 'Liberian Dollar',
                 'code'        => '430',
                 'country'     => 'LIBERIA',
                 'exponent'    => '2'
-            ),
-            'LSL' => array(
+            ],
+            'LSL' => [
                 'name'        => 'Loti',
                 'code'        => '426',
                 'country'     => 'LESOTHO',
                 'exponent'    => '2'
-            ),
-            'LYD' => array(
+            ],
+            'LYD' => [
                 'name'        => 'Libyan Dinar',
                 'code'        => '434',
                 'country'     => 'LIBYA',
                 'exponent'    => '3'
-            ),
-            'MAD' => array(
+            ],
+            'MAD' => [
                 'name'        => 'Moroccan Dirham',
                 'code'        => '504',
                 'country'     => 'WESTERN SAHARA',
                 'exponent'    => '2'
-            ),
-            'MDL' => array(
+            ],
+            'MDL' => [
                 'name'        => 'Moldovan Leu',
                 'code'        => '498',
                 'country'     => 'MOLDOVA (THE REPUBLIC OF)',
                 'exponent'    => '2'
-            ),
-            'MGA' => array(
+            ],
+            'MGA' => [
                 'name'        => 'Malagasy Ariary',
                 'code'        => '969',
                 'country'     => 'MADAGASCAR',
                 'exponent'    => '2'
-            ),
-            'MKD' => array(
+            ],
+            'MKD' => [
                 'name'        => 'Denar',
                 'code'        => '807',
                 'country'     => 'MACEDONIA (THE FORMER YUGOSLAV REPUBLIC OF)',
                 'exponent'    => '2'
-            ),
-            'MMK' => array(
+            ],
+            'MMK' => [
                 'name'        => 'Kyat',
                 'code'        => '104',
                 'country'     => 'MYANMAR',
                 'exponent'    => '2'
-            ),
-            'MNT' => array(
+            ],
+            'MNT' => [
                 'name'        => 'Tugrik',
                 'code'        => '496',
                 'country'     => 'MONGOLIA',
                 'exponent'    => '2'
-            ),
-            'MOP' => array(
+            ],
+            'MOP' => [
                 'name'        => 'Pataca',
                 'code'        => '446',
                 'country'     => 'MACAO',
                 'exponent'    => '2'
-            ),
-            'MRO' => array(
+            ],
+            'MRO' => [
                 'name'        => 'Ouguiya',
                 'code'        => '478',
                 'country'     => 'MAURITANIA',
                 'exponent'    => '2'
-            ),
-            'MUR' => array(
+            ],
+            'MUR' => [
                 'name'        => 'Mauritius Rupee',
                 'code'        => '480',
                 'country'     => 'MAURITIUS',
                 'exponent'    => '2'
-            ),
-            'MVR' => array(
+            ],
+            'MVR' => [
                 'name'        => 'Rufiyaa',
                 'code'        => '462',
                 'country'     => 'MALDIVES',
                 'exponent'    => '2'
-            ),
-            'MWK' => array(
+            ],
+            'MWK' => [
                 'name'        => 'Kwacha',
                 'code'        => '454',
                 'country'     => 'MALAWI',
                 'exponent'    => '2'
-            ),
-            'MXN' => array(
+            ],
+            'MXN' => [
                 'name'        => 'Mexican Peso',
                 'code'        => '484',
                 'country'     => 'MEXICO',
                 'exponent'    => '2'
-            ),
-            'MXV' => array(
+            ],
+            'MXV' => [
                 'name'        => 'Mexican Unidad de Inversion (UDI)',
                 'code'        => '979',
                 'country'     => 'MEXICO',
                 'exponent'    => '2'
-            ),
-            'MYR' => array(
+            ],
+            'MYR' => [
                 'name'        => 'Malaysian Ringgit',
                 'code'        => '458',
                 'country'     => 'MALAYSIA',
                 'exponent'    => '2'
-            ),
-            'MZN' => array(
+            ],
+            'MZN' => [
                 'name'        => 'Mozambique Metical',
                 'code'        => '943',
                 'country'     => 'MOZAMBIQUE',
                 'exponent'    => '2'
-            ),
-            'NAD' => array(
+            ],
+            'NAD' => [
                 'name'        => 'Namibia Dollar',
                 'code'        => '516',
                 'country'     => 'NAMIBIA',
                 'exponent'    => '2'
-            ),
-            'NGN' => array(
+            ],
+            'NGN' => [
                 'name'        => 'Naira',
                 'code'        => '566',
                 'country'     => 'NIGERIA',
                 'exponent'    => '2'
-            ),
-            'NIO' => array(
+            ],
+            'NIO' => [
                 'name'        => 'Cordoba Oro',
                 'code'        => '558',
                 'country'     => 'NICARAGUA',
                 'exponent'    => '2'
-            ),
-            'NOK' => array(
+            ],
+            'NOK' => [
                 'name'        => 'Norwegian Krone',
                 'code'        => '578',
                 'country'     => 'SVALBARD AND JAN MAYEN',
                 'exponent'    => '2'
-            ),
-            'NPR' => array(
+            ],
+            'NPR' => [
                 'name'        => 'Nepalese Rupee',
                 'code'        => '524',
                 'country'     => 'NEPAL',
                 'exponent'    => '2'
-            ),
-            'NZD' => array(
+            ],
+            'NZD' => [
                 'name'        => 'New Zealand Dollar',
                 'code'        => '554',
                 'country'     => 'TOKELAU',
                 'exponent'    => '2'
-            ),
-            'OMR' => array(
+            ],
+            'OMR' => [
                 'name'        => 'Rial Omani',
                 'code'        => '512',
                 'country'     => 'OMAN',
                 'exponent'    => '3'
-            ),
-            'PAB' => array(
+            ],
+            'PAB' => [
                 'name'        => 'Balboa',
                 'code'        => '590',
                 'country'     => 'PANAMA',
                 'exponent'    => '2'
-            ),
-            'PEN' => array(
+            ],
+            'PEN' => [
                 'name'        => 'Nuevo Sol',
                 'code'        => '604',
                 'country'     => 'PERU',
                 'exponent'    => '2'
-            ),
-            'PGK' => array(
+            ],
+            'PGK' => [
                 'name'        => 'Kina',
                 'code'        => '598',
                 'country'     => 'PAPUA NEW GUINEA',
                 'exponent'    => '2'
-            ),
-            'PHP' => array(
+            ],
+            'PHP' => [
                 'name'        => 'Philippine Peso',
                 'code'        => '608',
                 'country'     => 'PHILIPPINES (THE)',
                 'exponent'    => '2'
-            ),
-            'PKR' => array(
+            ],
+            'PKR' => [
                 'name'        => 'Pakistan Rupee',
                 'code'        => '586',
                 'country'     => 'PAKISTAN',
                 'exponent'    => '2'
-            ),
-            'PLN' => array(
+            ],
+            'PLN' => [
                 'name'        => 'Zloty',
                 'code'        => '985',
                 'country'     => 'POLAND',
                 'exponent'    => '2'
-            ),
-            'PYG' => array(
+            ],
+            'PYG' => [
                 'name'        => 'Guarani',
                 'code'        => '600',
                 'country'     => 'PARAGUAY',
                 'exponent'    => '0'
-            ),
-            'QAR' => array(
+            ],
+            'QAR' => [
                 'name'        => 'Qatari Rial',
                 'code'        => '634',
                 'country'     => 'QATAR',
                 'exponent'    => '2'
-            ),
-            'RON' => array(
+            ],
+            'RON' => [
                 'name'        => 'Romanian Leu',
                 'code'        => '946',
                 'country'     => 'ROMANIA',
                 'exponent'    => '2'
-            ),
-            'RSD' => array(
+            ],
+            'RSD' => [
                 'name'        => 'Serbian Dinar',
                 'code'        => '941',
                 'country'     => 'SERBIA',
                 'exponent'    => '2'
-            ),
-            'RUB' => array(
+            ],
+            'RUB' => [
                 'name'        => 'Russian Ruble',
                 'code'        => '643',
                 'country'     => 'RUSSIAN FEDERATION (THE)',
                 'exponent'    => '2'
-            ),
-            'RWF' => array(
+            ],
+            'RWF' => [
                 'name'        => 'Rwanda Franc',
                 'code'        => '646',
                 'country'     => 'RWANDA',
                 'exponent'    => '0'
-            ),
-            'SAR' => array(
+            ],
+            'SAR' => [
                 'name'        => 'Saudi Riyal',
                 'code'        => '682',
                 'country'     => 'SAUDI ARABIA',
                 'exponent'    => '2'
-            ),
-            'SBD' => array(
+            ],
+            'SBD' => [
                 'name'        => 'Solomon Islands Dollar',
                 'code'        => '090',
                 'country'     => 'SOLOMON ISLANDS',
                 'exponent'    => '2'
-            ),
-            'SCR' => array(
+            ],
+            'SCR' => [
                 'name'        => 'Seychelles Rupee',
                 'code'        => '690',
                 'country'     => 'SEYCHELLES',
                 'exponent'    => '2'
-            ),
-            'SDG' => array(
+            ],
+            'SDG' => [
                 'name'        => 'Sudanese Pound',
                 'code'        => '938',
                 'country'     => 'SUDAN (THE)',
                 'exponent'    => '2'
-            ),
-            'SEK' => array(
+            ],
+            'SEK' => [
                 'name'        => 'Swedish Krona',
                 'code'        => '752',
                 'country'     => 'SWEDEN',
                 'exponent'    => '2'
-            ),
-            'SGD' => array(
+            ],
+            'SGD' => [
                 'name'        => 'Singapore Dollar',
                 'code'        => '702',
                 'country'     => 'SINGAPORE',
                 'exponent'    => '2'
-            ),
-            'SHP' => array(
+            ],
+            'SHP' => [
                 'name'        => 'Saint Helena Pound',
                 'code'        => '654',
                 'country'     => 'SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA',
                 'exponent'    => '2'
-            ),
-            'SLL' => array(
+            ],
+            'SLL' => [
                 'name'        => 'Leone',
                 'code'        => '694',
                 'country'     => 'SIERRA LEONE',
                 'exponent'    => '2'
-            ),
-            'SOS' => array(
+            ],
+            'SOS' => [
                 'name'        => 'Somali Shilling',
                 'code'        => '706',
                 'country'     => 'SOMALIA',
                 'exponent'    => '2'
-            ),
-            'SRD' => array(
+            ],
+            'SRD' => [
                 'name'        => 'Surinam Dollar',
                 'code'        => '968',
                 'country'     => 'SURINAME',
                 'exponent'    => '2'
-            ),
-            'SSP' => array(
+            ],
+            'SSP' => [
                 'name'        => 'South Sudanese Pound',
                 'code'        => '728',
                 'country'     => 'SOUTH SUDAN',
                 'exponent'    => '2'
-            ),
-            'STD' => array(
+            ],
+            'STD' => [
                 'name'        => 'Dobra',
                 'code'        => '678',
                 'country'     => 'SAO TOME AND PRINCIPE',
                 'exponent'    => '2'
-            ),
-            'SVC' => array(
+            ],
+            'SVC' => [
                 'name'        => 'El Salvador Colon',
                 'code'        => '222',
                 'country'     => 'EL SALVADOR',
                 'exponent'    => '2'
-            ),
-            'SYP' => array(
+            ],
+            'SYP' => [
                 'name'        => 'Syrian Pound',
                 'code'        => '760',
                 'country'     => 'SYRIAN ARAB REPUBLIC',
                 'exponent'    => '2'
-            ),
-            'SZL' => array(
+            ],
+            'SZL' => [
                 'name'        => 'Lilangeni',
                 'code'        => '748',
                 'country'     => 'SWAZILAND',
                 'exponent'    => '2'
-            ),
-            'THB' => array(
+            ],
+            'THB' => [
                 'name'        => 'Baht',
                 'code'        => '764',
                 'country'     => 'THAILAND',
                 'exponent'    => '2'
-            ),
-            'TJS' => array(
+            ],
+            'TJS' => [
                 'name'        => 'Somoni',
                 'code'        => '972',
                 'country'     => 'TAJIKISTAN',
                 'exponent'    => '2'
-            ),
-            'TMT' => array(
+            ],
+            'TMT' => [
                 'name'        => 'Turkmenistan New Manat',
                 'code'        => '934',
                 'country'     => 'TURKMENISTAN',
                 'exponent'    => '2'
-            ),
-            'TND' => array(
+            ],
+            'TND' => [
                 'name'        => 'Tunisian Dinar',
                 'code'        => '788',
                 'country'     => 'TUNISIA',
                 'exponent'    => '3'
-            ),
-            'TOP' => array(
+            ],
+            'TOP' => [
                 'name'        => 'Paâ€™anga',
                 'code'        => '776',
                 'country'     => 'TONGA',
                 'exponent'    => '2'
-            ),
-            'TRY' => array(
+            ],
+            'TRY' => [
                 'name'        => 'Turkish Lira',
                 'code'        => '949',
                 'country'     => 'TURKEY',
                 'exponent'    => '2'
-            ),
-            'TTD' => array(
+            ],
+            'TTD' => [
                 'name'        => 'Trinidad and Tobago Dollar',
                 'code'        => '780',
                 'country'     => 'TRINIDAD AND TOBAGO',
                 'exponent'    => '2'
-            ),
-            'TWD' => array(
+            ],
+            'TWD' => [
                 'name'        => 'New Taiwan Dollar',
                 'code'        => '901',
                 'country'     => 'TAIWAN (PROVINCE OF CHINA)',
                 'exponent'    => '2'
-            ),
-            'TZS' => array(
+            ],
+            'TZS' => [
                 'name'        => 'Tanzanian Shilling',
                 'code'        => '834',
                 'country'     => 'TANZANIA, UNITED REPUBLIC OF',
                 'exponent'    => '2'
-            ),
-            'UAH' => array(
+            ],
+            'UAH' => [
                 'name'        => 'Hryvnia',
                 'code'        => '980',
                 'country'     => 'UKRAINE',
                 'exponent'    => '2'
-            ),
-            'UGX' => array(
+            ],
+            'UGX' => [
                 'name'        => 'Uganda Shilling',
                 'code'        => '800',
                 'country'     => 'UGANDA',
                 'exponent'    => '0'
-            ),
-            'USD' => array(
+            ],
+            'USD' => [
                 'name'        => 'US Dollar',
                 'code'        => '840',
                 'country'     => 'VIRGIN ISLANDS (U.S.)',
                 'exponent'    => '2'
-            ),
-            'USN' => array(
+            ],
+            'USN' => [
                 'name'        => 'US Dollar (Next day)',
                 'code'        => '997',
                 'country'     => 'UNITED STATES OF AMERICA (THE)',
                 'exponent'    => '2'
-            ),
-            'UYI' => array(
+            ],
+            'UYI' => [
                 'name'        => 'Uruguay Peso en Unidades Indexadas (URUIURUI)',
                 'code'        => '940',
                 'country'     => 'URUGUAY',
                 'exponent'    => '0'
-            ),
-            'UYU' => array(
+            ],
+            'UYU' => [
                 'name'        => 'Peso Uruguayo',
                 'code'        => '858',
                 'country'     => 'URUGUAY',
                 'exponent'    => '2'
-            ),
-            'UZS' => array(
+            ],
+            'UZS' => [
                 'name'        => 'Uzbekistan Sum',
                 'code'        => '860',
                 'country'     => 'UZBEKISTAN',
                 'exponent'    => '2'
-            ),
-            'VEF' => array(
+            ],
+            'VEF' => [
                 'name'        => 'Bolivar',
                 'code'        => '937',
                 'country'     => 'VENEZUELA (BOLIVARIAN REPUBLIC OF)',
                 'exponent'    => '2'
-            ),
-            'VND' => array(
+            ],
+            'VND' => [
                 'name'        => 'Dong',
                 'code'        => '704',
                 'country'     => 'VIET NAM',
                 'exponent'    => '0'
-            ),
-            'VUV' => array(
+            ],
+            'VUV' => [
                 'name'        => 'Vatu',
                 'code'        => '548',
                 'country'     => 'VANUATU',
                 'exponent'    => '0'
-            ),
-            'WST' => array(
+            ],
+            'WST' => [
                 'name'        => 'Tala',
                 'code'        => '882',
                 'country'     => 'SAMOA',
                 'exponent'    => '2'
-            ),
-            'XAF' => array(
+            ],
+            'XAF' => [
                 'name'        => 'CFA Franc BEAC',
                 'code'        => '950',
                 'country'     => 'GABON',
                 'exponent'    => '0'
-            ),
-            'XAG' => array(
+            ],
+            'XAG' => [
                 'name'        => 'Silver',
                 'code'        => '961',
                 'country'     => 'ZZ11_Silver',
                 'exponent'    => 'N.A.'
-            ),
-            'XAU' => array(
+            ],
+            'XAU' => [
                 'name'        => 'Gold',
                 'code'        => '959',
                 'country'     => 'ZZ08_Gold',
                 'exponent'    => 'N.A.'
-            ),
-            'XBA' => array(
+            ],
+            'XBA' => [
                 'name'        => 'Bond Markets Unit European Composite Unit (EURCO)',
                 'code'        => '955',
                 'country'     => 'ZZ01_Bond Markets Unit European_EURCO',
                 'exponent'    => 'N.A.'
-            ),
-            'XBB' => array(
+            ],
+            'XBB' => [
                 'name'        => 'Bond Markets Unit European Monetary Unit (E.M.U.-6)',
                 'code'        => '956',
                 'country'     => 'ZZ02_Bond Markets Unit European_EMU-6',
                 'exponent'    => 'N.A.'
-            ),
-            'XBC' => array(
+            ],
+            'XBC' => [
                 'name'        => 'Bond Markets Unit European Unit of Account 9 (E.U.A.-9)',
                 'code'        => '957',
                 'country'     => 'ZZ03_Bond Markets Unit European_EUA-9',
                 'exponent'    => 'N.A.'
-            ),
-            'XBD' => array(
+            ],
+            'XBD' => [
                 'name'        => 'Bond Markets Unit European Unit of Account 17 (E.U.A.-17)',
                 'code'        => '958',
                 'country'     => 'ZZ04_Bond Markets Unit European_EUA-17',
                 'exponent'    => 'N.A.'
-            ),
-            'XCD' => array(
+            ],
+            'XCD' => [
                 'name'        => 'East Caribbean Dollar',
                 'code'        => '951',
                 'country'     => 'SAINT VINCENT AND THE GRENADINES',
                 'exponent'    => '2'
-            ),
-            'XDR' => array(
+            ],
+            'XDR' => [
                 'name'        => 'SDR (Special Drawing Right)',
                 'code'        => '960',
                 'country'     => 'INTERNATIONAL MONETARY FUND (IMF)Â ',
                 'exponent'    => 'N.A.'
-            ),
-            'XOF' => array(
+            ],
+            'XOF' => [
                 'name'        => 'CFA Franc BCEAO',
                 'code'        => '952',
                 'country'     => 'TOGO',
                 'exponent'    => '0'
-            ),
-            'XPD' => array(
+            ],
+            'XPD' => [
                 'name'        => 'Palladium',
                 'code'        => '964',
                 'country'     => 'ZZ09_Palladium',
                 'exponent'    => 'N.A.'
-            ),
-            'XPF' => array(
+            ],
+            'XPF' => [
                 'name'        => 'CFP Franc',
                 'code'        => '953',
                 'country'     => 'WALLIS AND FUTUNA',
                 'exponent'    => '0'
-            ),
-            'XPT' => array(
+            ],
+            'XPT' => [
                 'name'        => 'Platinum',
                 'code'        => '962',
                 'country'     => 'ZZ10_Platinum',
                 'exponent'    => 'N.A.'
-            ),
-            'XSU' => array(
+            ],
+            'XSU' => [
                 'name'        => 'Sucre',
                 'code'        => '994',
                 'country'     => 'SISTEMA UNITARIO DE COMPENSACION REGIONAL DE PAGOS "SUCRE"',
                 'exponent'    => 'N.A.'
-            ),
-            'XTS' => array(
+            ],
+            'XTS' => [
                 'name'        => 'Codes specifically reserved for testing purposes',
                 'code'        => '963',
                 'country'     => 'ZZ06_Testing_Code',
                 'exponent'    => 'N.A.'
-            ),
-            'XUA' => array(
+            ],
+            'XUA' => [
                 'name'        => 'ADB Unit of Account',
                 'code'        => '965',
                 'country'     => 'MEMBER COUNTRIES OF THE AFRICAN DEVELOPMENT BANK GROUP',
                 'exponent'    => 'N.A.'
-            ),
-            'XXX' => array(
+            ],
+            'XXX' => [
                 'name'        => 'The codes assigned for transactions where no currency is involved',
                 'code'        => '999',
                 'country'     => 'ZZ07_No_Currency',
                 'exponent'    => 'N.A.'
-            ),
-            'YER' => array(
+            ],
+            'YER' => [
                 'name'        => 'Yemeni Rial',
                 'code'        => '886',
                 'country'     => 'YEMEN',
                 'exponent'    => '2'
-            ),
-            'ZAR' => array(
+            ],
+            'ZAR' => [
                 'name'        => 'Rand',
                 'code'        => '710',
                 'country'     => 'SOUTH AFRICA',
                 'exponent'    => '2'
-            ),
-            'ZMW' => array(
+            ],
+            'ZMW' => [
                 'name'        => 'Zambian Kwacha',
                 'code'        => '967',
                 'country'     => 'ZAMBIA',
                 'exponent'    => '2'
-            ),
-            'ZWL' => array(
+            ],
+            'ZWL' => [
                 'name'        => 'Zimbabwe Dollar',
                 'code'        => '932',
                 'country'     => 'ZIMBABWE',
                 'exponent'    => '2'
-            ),
-        );
+            ]
+        ];
 
     /**
      * Convert amount to ISO-4217 minor currency unit

@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\SDD;
+
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\SddBankAttributes;
 
 /**
  * Class Sale
@@ -28,43 +33,10 @@ namespace Genesis\API\Request\Financial\SDD;
  * SDD Payment Transactions
  *
  * @package Genesis\API\Request\Financial\SDD
- *
- * @method $this setIban($value) Set a valid IBAN bank account
- * @method $this setBic($value) Set a valid BIC code
- * @method $this setBillingFirstName($value) Set the customer's First name
- * @method $this setBillingLastName($value) Set the customer's Last name
  */
-class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\AbstractBase
+class Sale extends \Genesis\API\Request\Base\Financial
 {
-    /**
-     * Must contain valid IBAN, check
-     * in the official API documentation
-     *
-     * @var string
-     */
-    protected $iban;
-
-    /**
-     * Must contain valid BIC, check
-     * in the official API documentation
-     *
-     * @var string
-     */
-    protected $bic;
-
-    /**
-     * Customer's First name
-     *
-     * @var string
-     */
-    protected $billing_first_name;
-
-    /**
-     * Customer's Last name
-     *
-     * @var string
-     */
-    protected $billing_last_name;
+    use PaymentAttributes, AddressInfoAttributes, SddBankAttributes;
 
     /**
      * Returns the Request transaction type
@@ -76,41 +48,60 @@ class Sale extends \Genesis\API\Request\Base\Financial\Common\Risk\Async\Abstrac
     }
 
     /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'iban'              => $this->iban,
-                'bic'               => $this->bic,
-                'billing_address' => array(
-                    'first_name'    => $this->billing_first_name,
-                    'last_name'     => $this->billing_last_name
-                )
-            )
-        );
-    }
-
-    /**
      * Set the required fields
      *
      * @return void
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'usage',
             'amount',
             'currency',
             'iban',
-        );
+            'bic',
+            'billing_first_name',
+            'billing_last_name',
+            'billing_country'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'amount'           => $this->transformAmount($this->amount, $this->currency),
+            'currency'         => $this->currency,
+            'iban'             => $this->iban,
+            'bic'              => $this->bic,
+            'customer_email'   => $this->customer_email,
+            'customer_phone'   => $this->customer_phone,
+            'billing_address'  => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address' => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ],
+        ];
     }
 }

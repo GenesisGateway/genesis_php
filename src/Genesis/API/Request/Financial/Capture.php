@@ -23,12 +23,13 @@
 namespace Genesis\API\Request\Financial;
 
 /**
+ * Class Capture
+ *
  * Capture Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial
  */
-class Capture extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
+class Capture extends \Genesis\API\Request\Base\Financial\Reference
 {
     /**
      * Returns the Request transaction type

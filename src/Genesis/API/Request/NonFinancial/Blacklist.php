@@ -51,16 +51,9 @@ class Blacklist extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'blacklists', \Genesis\Config::getToken()));
+        $this->initApiGatewayConfiguration('blacklists');
     }
 
     /**
@@ -70,9 +63,9 @@ class Blacklist extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'card_number',
-        );
+        $requiredFields = [
+            'card_number'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -84,12 +77,12 @@ class Blacklist extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'blacklist_request' => array(
+        $treeStructure = [
+            'blacklist_request' => [
                 'card_number'    => $this->card_number,
                 'terminal_token' => $this->terminal_token
-            )
-        );
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

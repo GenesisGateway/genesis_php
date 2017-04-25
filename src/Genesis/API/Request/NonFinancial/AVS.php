@@ -313,16 +313,9 @@ class AVS extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        $this->initApiGatewayConfiguration();
     }
 
     /**
@@ -332,7 +325,7 @@ class AVS extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'card_holder',
             'card_number',
@@ -341,7 +334,7 @@ class AVS extends \Genesis\API\Request
             'billing_address1',
             'billing_zip_code',
             'billing_city'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -353,8 +346,8 @@ class AVS extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'payment_transaction' => array(
+        $treeStructure = [
+            'payment_transaction' => [
                 'transaction_type' => \Genesis\API\Constants\Transaction\Types::AVS,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
@@ -368,7 +361,7 @@ class AVS extends \Genesis\API\Request
                 'customer_email'   => $this->customer_email,
                 'customer_phone'   => $this->customer_phone,
                 'birth_date'       => $this->birth_date,
-                'billing_address'  => array(
+                'billing_address'  => [
                     'first_name' => $this->billing_first_name,
                     'last_name'  => $this->billing_last_name,
                     'address1'   => $this->billing_address1,
@@ -376,9 +369,9 @@ class AVS extends \Genesis\API\Request
                     'zip_code'   => $this->billing_zip_code,
                     'city'       => $this->billing_city,
                     'state'      => $this->billing_state,
-                    'country'    => $this->billing_country,
-                ),
-                'shipping_address' => array(
+                    'country'    => $this->billing_country
+                ],
+                'shipping_address' => [
                     'first_name' => $this->shipping_first_name,
                     'last_name'  => $this->shipping_last_name,
                     'address1'   => $this->shipping_address1,
@@ -386,9 +379,9 @@ class AVS extends \Genesis\API\Request
                     'zip_code'   => $this->shipping_zip_code,
                     'city'       => $this->shipping_city,
                     'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country,
-                ),
-                'risk_params'      => array(
+                    'country'    => $this->shipping_country
+                ],
+                'risk_params'      => [
                     'ssn'           => $this->risk_ssn,
                     'mac_address'   => $this->risk_mac_address,
                     'session_id'    => $this->risk_session_id,
@@ -397,10 +390,10 @@ class AVS extends \Genesis\API\Request
                     'email'         => $this->risk_email,
                     'phone'         => $this->risk_phone,
                     'remote_ip'     => $this->risk_remote_ip,
-                    'serial_number' => $this->risk_serial_number,
-                )
-            )
-        );
+                    'serial_number' => $this->risk_serial_number
+                ]
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

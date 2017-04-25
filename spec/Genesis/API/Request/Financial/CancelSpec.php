@@ -5,11 +5,11 @@ namespace spec\Genesis\API\Request\Financial;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-final class VoidSpec extends ObjectBehavior
+final class CancelSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Void');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Cancel');
     }
 
     public function it_can_build_stucture()

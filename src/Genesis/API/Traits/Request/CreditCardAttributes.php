@@ -20,14 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Cards\Synchronous;
+
+namespace Genesis\API\Traits\Request;
 
 /**
- * Class AbstractTransaction
- *
- * Abstract Base Class for Financial Card Synchronous Payment Transactions
- *
- * @package Genesis\API\Request\Base\Financial\Cards\Synchronous
+ * Trait CreditCardAttributes
+ * @package Genesis\API\Traits\Request
  *
  * @method $this setCardHolder($value) Set Full name of customer as printed on credit card
  * @method $this setCardNumber($value) Set Complete CC number of customer
@@ -36,7 +34,7 @@ namespace Genesis\API\Request\Base\Financial\Cards\Synchronous;
  * @method $this setExpirationYear($value) Set Expiration year as printed on credit card
  * @method $this setBirthDate($value) Set Birth date of the customer
  */
-abstract class AbstractTransaction extends \Genesis\API\Request\Base\Financial\Common\Risk\AbstractBaseCustomerInfo
+trait CreditCardAttributes
 {
     /**
      * Full name of customer as printed on credit card (first name and last name at least)
@@ -79,25 +77,4 @@ abstract class AbstractTransaction extends \Genesis\API\Request\Base\Financial\C
      * @var string
      */
     protected $birth_date;
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'card_holder'      => $this->card_holder,
-                'card_number'      => $this->card_number,
-                'cvv'              => $this->cvv,
-                'expiration_month' => $this->expiration_month,
-                'expiration_year'  => $this->expiration_year,
-                'birth_date'       => $this->birth_date
-            )
-        );
-    }
 }

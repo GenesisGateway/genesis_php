@@ -51,23 +51,9 @@ class Transaction extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'fraud_reports',
-                false
-            )
-        );
+        $this->initApiGatewayConfiguration('fraud_reports', false);
     }
 
     /**
@@ -77,10 +63,10 @@ class Transaction extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFieldsOR = array(
+        $requiredFieldsOR = [
             'arn',
             'original_transaction_unique_id'
-        );
+        ];
 
         $this->requiredFieldsOR = \Genesis\Utils\Common::createArrayObject($requiredFieldsOR);
     }
@@ -92,12 +78,12 @@ class Transaction extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'fraud_report_request' => array(
+        $treeStructure = [
+            'fraud_report_request' => [
                 'arn'                            => $this->arn,
                 'original_transaction_unique_id' => $this->original_transaction_unique_id,
-            )
-        );
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

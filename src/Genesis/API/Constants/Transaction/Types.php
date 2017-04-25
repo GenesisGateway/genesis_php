@@ -167,11 +167,30 @@ class Types
     const P24 = 'p24';
 
     /**
+     * Trustly is a fast and secure oBeP-style alternative payment method. It is free of charge and
+     * allows you to deposit money directly from your online bank account.
+     */
+    const TRUSTLY_SALE = 'trustly_sale';
+
+    /**
+     * Trustly is an oBeP-style alternative payment method that allows you to
+     * withdraw money directly from your online bank account using your bank credentials.
+     */
+    const TRUSTLY_WITHDRAWAL = 'trustly_withdrawal';
+
+    /**
      * Sepa Direct Debit Payment, popular in Germany.
      * Single Euro Payments Area (SEPA) allows consumers to make cashless Euro payments to
      * any beneficiary located anywhere in the Euro area using only a single bank account
      */
     const SDD_SALE = 'sdd_sale';
+
+    /**
+     * Sepa Direct Debit Payout, popular in Germany.
+     * Processed as a SEPA CreditTransfer and can be used for all kind of payout services
+     * across the EU with 1 day settlement. Suitable for Gaming, Forex-Binaries, Affiliate Programs or Merchant payouts
+     */
+    const SDD_PAYOUT = 'sdd_payout';
 
     /**
      * Sepa Direct Debit Refund Transaction.
@@ -198,45 +217,9 @@ class Types
      */
     public static function isValidTransactionType($type)
     {
-        $transactionTypesList = array(
-            self::AVS,
-            self::ACCOUNT_VERIFICATION,
-            self::AUTHORIZE,
-            self::AUTHORIZE_3D,
-            self::SALE,
-            self::SALE_3D,
-            self::CAPTURE,
-            self::REFUND,
-            self::VOID,
-            self::CREDIT,
-            self::PAYOUT,
-            self::INIT_RECURRING_SALE,
-            self::INIT_RECURRING_SALE_3D,
-            self::RECURRING_SALE,
-            self::ABNIDEAL,
-            self::CASHU,
-            self::EZEEWALLET,
-            self::NETELLER,
-            self::POLI,
-            self::WEBMONEY,
-            self::PAYBYVOUCHER_YEEPAY,
-            self::PAYBYVOUCHER_SALE,
-            self::PAYSAFECARD,
-            self::PPRO,
-            self::SOFORT,
-            self::INPAY,
-            self::P24,
-            self::SDD_SALE,
-            self::SDD_REFUND,
-            self::SDD_INIT_RECURRING_SALE,
-            self::SDD_RECURRING_SALE
-        );
+        $transactionTypes = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
-        if (in_array($type, $transactionTypesList)) {
-            return true;
-        }
-
-        return false;
+        return in_array(strtolower($type), $transactionTypes);
     }
 
     /**
@@ -247,16 +230,12 @@ class Types
      */
     public static function isPayByVoucher($type)
     {
-        $transactionTypesList = array(
+        $transactionTypesList = [
             self::PAYBYVOUCHER_YEEPAY,
-            self::PAYBYVOUCHER_SALE,
-        );
+            self::PAYBYVOUCHER_SALE
+        ];
 
-        if (in_array($type, $transactionTypesList)) {
-            return true;
-        }
-
-        return false;
+        return in_array($type, $transactionTypesList);
     }
 
     /**
@@ -268,26 +247,28 @@ class Types
     {
         switch ($type) {
             case self::PPRO:
-                return array(
-                    'payment_method' =>
-                        \Genesis\API\Constants\Payment\Methods::getMethods()
-                );
+                return [
+                    'payment_method' => \Genesis\API\Constants\Payment\Methods::getMethods()
+                ];
                 break;
 
             case self::PAYBYVOUCHER_SALE:
             case self::PAYBYVOUCHER_YEEPAY:
-                $customParameters = array(
+                $customParameters = [
                     'card_type'   =>
                         \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes::getCardTypes(),
                     'redeem_type' =>
                         \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes::getRedeemTypes()
-                );
+                ];
 
                 if ($type == self::PAYBYVOUCHER_YEEPAY) {
-                    $customParameters = array_merge($customParameters, array(
-                        'product_name'     => null,
-                        'product_category' => null
-                    ));
+                    $customParameters = array_merge(
+                        $customParameters,
+                        [
+                            'product_name'     => null,
+                            'product_category' => null
+                        ]
+                    );
                 }
 
                 return $customParameters;

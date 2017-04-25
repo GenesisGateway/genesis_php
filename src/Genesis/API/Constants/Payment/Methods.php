@@ -93,15 +93,8 @@ class Methods
      */
     public static function getMethods()
     {
-        return array(
-            self::EPS,
-            self::GIRO_PAY,
-            self::IDEAL,
-            self::PRZELEWY24,
-            self::QIWI,
-            self::SAFETY_PAY,
-            self::TELEINGRESO,
-            self::TRUST_PAY
-        );
+        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+
+        return array_values($methods);
     }
 }

@@ -20,39 +20,54 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Common\Risk\Async;
+
+namespace Genesis\API\Request\Base\Financial;
+
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 
 /**
- * Class AbstractBase
+ * Class Reference
  *
- * Base Abstract Class for all Financial Asynchronous Risk Transaction Requests
+ * Base Abstract Class for Reference Transactions
+ *  - Capture
+ *  - Refund
+ *  - Credit
+ *  - Recurring
  *
- * @package Genesis\API\Request\Base\Financial\Common
- *
- * @method $this setNotificationUrl($value) Set the URL endpoint for Genesis Notifications
+ * @package Genesis\API\Request\Base\Financial
  */
-abstract class AbstractBase extends \Genesis\API\Request\Base\Financial\Common\Risk\AbstractBase
+abstract class Reference extends \Genesis\API\Request\Base\Financial
 {
+    use ReferenceAttributes, PaymentAttributes;
+
     /**
-     * URL endpoint for Genesis Notifications
+     * Set the required fields
      *
-     * @var string
+     * @return void
      */
-    protected $notification_url;
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'reference_id',
+            'amount',
+            'currency'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
 
     /**
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
+    protected function getPaymentTransactionStructure()
     {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'notification_url' => $this->notification_url
-            )
-        );
+        return [
+            'reference_id' => $this->reference_id,
+            'amount'       => $this->transformAmount($this->amount, $this->currency),
+            'currency'     => $this->currency
+        ];
     }
 }

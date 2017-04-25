@@ -73,9 +73,9 @@ class Notification
      *
      * @throws \Genesis\Exceptions\InvalidArgument()
      */
-    public function parseNotification($notification = array(), $authenticate = true)
+    public function parseNotification($notification = [], $authenticate = true)
     {
-        $notificationWalk = array();
+        $notificationWalk = [];
 
         array_walk($notification, function ($val, $key) use (&$notificationWalk) {
             $key = trim(rawurldecode($key));
@@ -214,11 +214,11 @@ class Notification
     {
         $uniqueId = $this->isWPFNotification() ? 'wpf_unique_id' : 'unique_id';
 
-        $structure = array(
-            'notification_echo' => array(
-                $uniqueId => $this->unique_id,
-            )
-        );
+        $structure = [
+            'notification_echo' => [
+                $uniqueId => $this->unique_id
+            ]
+        ];
 
         $builder = new \Genesis\Builder('xml');
         $builder->parseStructure($structure);

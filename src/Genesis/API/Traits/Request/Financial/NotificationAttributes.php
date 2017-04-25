@@ -20,57 +20,20 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Cards\Asynchronous;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class AbstractTransaction
+ * Trait NotificationAttributes
+ * @package Genesis\API\Traits\Request\Financial
  *
- * Abstract Base Class for Financial Card ASynchronous Payment Transactions
- *
- * @package Genesis\API\Request\Base\Financial\Cards\Asynchronous
- *
- * @method $this setReturnSuccessUrl($value) Set the URL where customer is sent to after successful payment
- * @method $this setReturnFailureUrl($value) Set the URL where customer is sent to after un-successful payment
  * @method $this setNotificationUrl($value) Set the URL endpoint for Genesis Notifications
  */
-abstract class AbstractTransaction extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\AbstractTransaction
+trait NotificationAttributes
 {
-    /**
-     * URL where customer is sent to after successful payment
-     *
-     * @var string
-     */
-    protected $return_success_url;
-
-    /**
-     * URL where customer is sent to after un-successful payment
-     *
-     * @var string
-     */
-    protected $return_failure_url;
-
     /**
      * URL endpoint for Genesis Notifications
      *
      * @var string
      */
     protected $notification_url;
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'return_success_url' => $this->return_success_url,
-                'return_failure_url' => $this->return_failure_url,
-                'notification_url'   => $this->notification_url
-            )
-        );
-    }
 }

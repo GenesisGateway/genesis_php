@@ -60,23 +60,9 @@ class DateRange extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'chargebacks/by_date',
-                false
-            )
-        );
+        $this->initApiGatewayConfiguration('chargebacks/by_date', false);
     }
 
     /**
@@ -86,9 +72,9 @@ class DateRange extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'start_date',
-        );
+        $requiredFields = [
+            'start_date'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -100,13 +86,13 @@ class DateRange extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'chargeback_request' => array(
+        $treeStructure = [
+            'chargeback_request' => [
                 'start_date' => $this->start_date,
                 'end_date'   => $this->end_date,
-                'page'       => $this->page,
-            )
-        );
+                'page'       => $this->page
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

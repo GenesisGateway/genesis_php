@@ -20,16 +20,28 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Traits\Request\MotoAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\RiskAttributes;
+use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+
 /**
+ * Class InitRecurringSale
+ *
  * InitRecurringSale Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial\Cards\Recurring
  */
-class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\Synchronous\ASale
+class InitRecurringSale extends \Genesis\API\Request\Base\Financial
 {
+    use MotoAttributes, PaymentAttributes, CreditCardAttributes,
+        AddressInfoAttributes, RiskAttributes, DescriptorAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -37,5 +49,71 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\Synchr
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::INIT_RECURRING_SALE;
+    }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'amount',
+            'currency',
+            'card_holder',
+            'card_number',
+            'expiration_month',
+            'expiration_year'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'moto'                      => $this->moto,
+            'amount'                    => $this->transformAmount($this->amount, $this->currency),
+            'currency'                  => $this->currency,
+            'card_holder'               => $this->card_holder,
+            'card_number'               => $this->card_number,
+            'cvv'                       => $this->cvv,
+            'expiration_month'          => $this->expiration_month,
+            'expiration_year'           => $this->expiration_year,
+            'customer_email'            => $this->customer_email,
+            'customer_phone'            => $this->customer_phone,
+            'birth_date'                => $this->birth_date,
+            'billing_address'           => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'          => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ],
+            'risk_params'               => $this->getRiskParamsStructure(),
+            'dynamic_descriptor_params' => [
+                'merchant_name' => $this->dynamic_merchant_name,
+                'merchant_city' => $this->dynamic_merchant_city
+            ]
+        ];
     }
 }

@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Alternatives;
+
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
  * Class ABNiDEAL
@@ -31,8 +36,10 @@ namespace Genesis\API\Request\Financial\Alternatives;
  *
  * @method ABNiDEAL setCustomerBankId($value) Set the bank id of the bank where the customer resides
  */
-class ABNiDEAL extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\AbstractTransaction
+class ABNiDEAL extends \Genesis\API\Request\Base\Financial
 {
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+
     /**
      * The bank id of the bank where the customer resides
      *
@@ -52,29 +59,13 @@ class ABNiDEAL extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchro
     }
 
     /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'customer_bank_id' => $this->customer_bank_id
-            )
-        );
-    }
-
-    /**
      * Set the required fields
      *
      * @return void
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'remote_ip',
             'amount',
@@ -84,8 +75,45 @@ class ABNiDEAL extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchro
             'customer_email',
             'customer_bank_id',
             'billing_country'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'customer_bank_id'   => $this->customer_bank_id,
+            'billing_address'    => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'   => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ]
+        ];
     }
 }

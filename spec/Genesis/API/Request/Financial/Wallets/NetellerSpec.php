@@ -37,6 +37,13 @@ class NetellerSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_billing_country_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -63,6 +70,8 @@ class NetellerSpec extends ObjectBehavior
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+
+        $this->setBillingCountry($faker->countryCode);
     }
 
     public function getMatchers()

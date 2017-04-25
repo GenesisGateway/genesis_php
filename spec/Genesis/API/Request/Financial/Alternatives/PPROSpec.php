@@ -30,6 +30,38 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_bic_for_giropay()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('giropay');
+        $this->setBic(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_iban_for_giropay()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('giropay');
+        $this->setIban(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_customer_email_for_przelewy24()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('przelewy24');
+        $this->setCustomerEmail(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_account_phone_for_qiwi()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('qiwi');
+        $this->setAccountPhone(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();

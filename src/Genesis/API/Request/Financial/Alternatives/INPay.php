@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Alternatives;
+
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
  * Class INPay
@@ -40,8 +45,10 @@ namespace Genesis\API\Request\Financial\Alternatives;
  * @method INPay setPayoutOwnerName($value) Set Bank account owner name
  * @method INPay setPayoutOwnerAddress($value) Set Bank account owner address
  */
-class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\AbstractTransaction
+class INPay extends \Genesis\API\Request\Base\Financial
 {
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+
     /**
      * Flag for payout transaction
      *
@@ -116,6 +123,7 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
     public function __construct()
     {
         parent::__construct();
+
         $this->setIsPayout(false);
     }
 
@@ -135,37 +143,9 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
      */
     public function setIsPayout($value)
     {
-        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-
-        $this->is_payout = ($value ? 'true' : 'false');
+        $this->is_payout = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
         return $this;
-    }
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'is_payout'            => $this->is_payout,
-                'customer_bank_id'     => $this->customer_bank_id,
-                'order_description'    => $this->order_description,
-                'payout_order_id'      => $this->payout_order_id,
-                'payout_bank_country'  => $this->payout_bank_country,
-                'payout_bank_name'     => $this->payout_bank_name,
-                'payout_swift'         => $this->payout_swift,
-                'payout_acc_number'    => $this->payout_acc_number,
-                'payout_bank_address'  => $this->payout_bank_address,
-                'payout_owner_name'    => $this->payout_owner_name,
-                'payout_owner_address' => $this->payout_owner_address
-            )
-        );
     }
 
     /**
@@ -175,7 +155,7 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'remote_ip',
             'amount',
@@ -184,18 +164,17 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
             'return_failure_url',
             'customer_email',
             'billing_country'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
-        $requiredFieldsConditional = array(
-            'is_payout'   => array(
-                'false' => array(
-                    'notification_url',
+        $requiredFieldsConditional = [
+            'is_payout' => [
+                false => [
                     'customer_bank_id',
                     'order_description'
-                ),
-                'true' => array(
+                ],
+                true  => [
                     'payout_order_id',
                     'payout_bank_country',
                     'payout_bank_name',
@@ -204,10 +183,57 @@ class INPay extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronou
                     'payout_bank_address',
                     'payout_owner_name',
                     'payout_owner_address'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'return_success_url'   => $this->return_success_url,
+            'return_failure_url'   => $this->return_failure_url,
+            'amount'               => $this->transformAmount($this->amount, $this->currency),
+            'currency'             => $this->currency,
+            'is_payout'            => var_export($this->is_payout, true),
+            'customer_bank_id'     => $this->customer_bank_id,
+            'order_description'    => $this->order_description,
+            'payout_order_id'      => $this->payout_order_id,
+            'payout_bank_country'  => $this->payout_bank_country,
+            'payout_bank_name'     => $this->payout_bank_name,
+            'payout_swift'         => $this->payout_swift,
+            'payout_acc_number'    => $this->payout_acc_number,
+            'payout_bank_address'  => $this->payout_bank_address,
+            'payout_owner_name'    => $this->payout_owner_name,
+            'payout_owner_address' => $this->payout_owner_address,
+            'customer_email'       => $this->customer_email,
+            'customer_phone'       => $this->customer_phone,
+            'billing_address'      => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'     => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ]
+        ];
     }
 }

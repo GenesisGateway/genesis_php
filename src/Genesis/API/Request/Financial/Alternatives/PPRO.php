@@ -20,7 +20,13 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Alternatives;
+
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Constants\Payment\Methods as PaymentMethods;
 
 /**
  * Class PPRO
@@ -36,8 +42,10 @@ namespace Genesis\API\Request\Financial\Alternatives;
  * @method PPRO setIban($value) Set a valid IBAN bank account
  * @method PPRO setAccountPhone($value) Set phone number for destination account to pay out
  */
-class PPRO extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\AbstractTransaction
+class PPRO extends \Genesis\API\Request\Base\Financial
 {
+    use PaymentAttributes, AsyncAttributes, AddressInfoAttributes;
+
     /**
      * Used payment method
      *
@@ -116,7 +124,7 @@ class PPRO extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'payment_type',
             'remote_ip',
@@ -126,29 +134,67 @@ class PPRO extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous
             'return_failure_url',
             'customer_email',
             'billing_country'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldsConditional = [
+            'payment_type' => [
+                PaymentMethods::GIRO_PAY   => [
+                    'bic',
+                    'iban'
+                ],
+                PaymentMethods::PRZELEWY24 => [
+                    'customer_email'
+                ],
+                PaymentMethods::QIWI       => [
+                    'account_phone'
+                ]
+            ]
+        ];
+
+        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
     }
 
     /**
      * Return additional request attributes
      * @return array
      */
-    protected function getRequestTreeStructure()
+    protected function getPaymentTransactionStructure()
     {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'payment_type'       => $this->payment_type,
-                'account_number'     => $this->account_number,
-                'bank_code'          => $this->bank_code,
-                'bic'                => $this->bic,
-                'iban'               => $this->iban,
-                'account_phone'      => $this->account_phone
-            )
-        );
+        return [
+            'payment_type'       => $this->payment_type,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'account_number'     => $this->account_number,
+            'bank_code'          => $this->bank_code,
+            'bic'                => $this->bic,
+            'iban'               => $this->iban,
+            'account_phone'      => $this->account_phone,
+            'billing_address'    => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country,
+            ],
+            'shipping_address'   => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country,
+            ]
+        ];
     }
 }

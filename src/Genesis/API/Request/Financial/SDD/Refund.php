@@ -20,6 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\SDD;
 
 /**
@@ -30,7 +31,7 @@ namespace Genesis\API\Request\Financial\SDD;
  * @package Genesis\API\Request\Financial\SDD
  *
  */
-class Refund extends \Genesis\API\Request\Base\Financial\Common\AbstractReference
+class Refund extends \Genesis\API\Request\Base\Financial\Reference
 {
     /**
      * Returns the Request transaction type
@@ -39,5 +40,23 @@ class Refund extends \Genesis\API\Request\Base\Financial\Common\AbstractReferenc
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::SDD_REFUND;
+    }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'reference_id',
+            'amount',
+            'currency',
+            'usage'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
 }
