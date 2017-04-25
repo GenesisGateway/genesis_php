@@ -20,7 +20,12 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Wallets;
+
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\NotificationAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 
 /**
  * Class eZeeWallet
@@ -29,36 +34,14 @@ namespace Genesis\API\Request\Financial\Wallets;
  *
  * @package Genesis\API\Request\Financial\Wallets
  *
- * @method eZeeWallet setNotificationUrl($value) Set the URL endpoint for Genesis Notifications
- * @method eZeeWallet setReturnSuccessUrl($value) Set the URL where customer is sent to after successful payment
- * @method eZeeWallet setReturnFailureUrl($value) Set the URL where customer is sent to after un-successful payment
  * @method eZeeWallet setSourceWalletId($value) Set Email address of consumer who owns the source wallet
  * @method eZeeWallet setSourceWalletPwd($value) Set the Password of consumer who owns the source wallet
  */
 // @codingStandardsIgnoreStart
-class eZeeWallet extends \Genesis\API\Request\Base\Financial\Common\AbstractPayment
+class eZeeWallet extends \Genesis\API\Request\Base\Financial
 // @codingStandardsIgnoreEnd
 {
-    /**
-     * URL endpoint for Genesis Notifications
-     *
-     * @var string
-     */
-    protected $notification_url;
-
-    /**
-     * URL where customer is sent to after successful payment
-     *
-     * @var string
-     */
-    protected $return_success_url;
-
-    /**
-     * URL where customer is sent to after unsuccessful payment
-     *
-     * @var string
-     */
-    protected $return_failure_url;
+    use PaymentAttributes, NotificationAttributes, AsyncAttributes;
 
     /**
      * Email address of consumer who owns the source wallet
@@ -84,49 +67,43 @@ class eZeeWallet extends \Genesis\API\Request\Base\Financial\Common\AbstractPaym
     }
 
     /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'notification_url'   => $this->notification_url,
-                'return_success_url' => $this->return_success_url,
-                'return_failure_url' => $this->return_failure_url,
-                'source_wallet_id'   => $this->source_wallet_id,
-                'source_wallet_pwd'  => $this->transform(
-                    'wallet_password',
-                    array(
-                        $this->source_wallet_pwd
-                    )
-                )
-            )
-        );
-    }
-
-    /**
      * Set the required fields
      *
      * @return void
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'amount',
             'currency',
             'return_success_url',
             'return_failure_url',
+            'notification_url',
             'source_wallet_id',
-            'source_wallet_pwd',
-        );
+            'source_wallet_pwd'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'notification_url'   => $this->notification_url,
+            'source_wallet_id'   => $this->source_wallet_id,
+            'source_wallet_pwd'  => $this->transformWalletPassword($this->source_wallet_pwd)
+        ];
+    }
+
 
     /**
      * Apply transformation:

@@ -20,54 +20,29 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Common;
+
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class AbstractPayment
+ * Trait VoucherAttributes
+ * @package Genesis\API\Traits\Request\Financial
  *
- * Base Abstract Class for Financial Payment Transaction Request without RISK Params
- *
- * @package Genesis\API\Request\Base\Financial\Common
- *
- * @method $this setAmount($value) Set the amount of transaction in minor currency unit
- * @method $this setCurrency($value) Set the currency code in ISO-4217
+ * @method $this setCardType($value) Set Card type for the voucher - can be ’virtual’ or ’physical’ only
+ * @method $this setRedeemType($value) Set Redeem type for the voucher - can be ’stored’ or ’instant’ only
  */
-abstract class AbstractPayment extends \Genesis\API\Request\Base\Financial\AbstractBase
+trait VoucherAttributes
 {
     /**
-     * Amount of transaction in minor currency unit
-     *
-     * @var int|float|double
-     */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
+     * Card type for the voucher - can be ’virtual’ or ’physical’ only
      *
      * @var string
      */
-    protected $currency;
+    protected $card_type;
 
     /**
-     * Return additional request attributes
-     * @return array
+     * Redeem type for the voucher - can be ’stored’ or ’instant’ only
+     *
+     * @var string
      */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'amount' => $this->transform(
-                    'amount',
-                    array(
-                        $this->amount,
-                        $this->currency
-                    )
-                ),
-                'currency' => $this->currency
-            )
-        );
-    }
+    protected $redeem_type;
 }

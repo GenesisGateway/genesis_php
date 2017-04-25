@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "license": "MIT",
   "keywords": [
     "genesis",
@@ -31,6 +31,9 @@
     "cashu",
     "inpay",
     "p24",
+    "trustly",
+    "trustly_sale",
+    "trustly_withdrawal",
     "eps",
     "giropay",
     "przelewy24",
@@ -41,6 +44,7 @@
     "webmoney",
     "poli",
     "sdd",
+    "sdd_payout",
     "sdd_refund",
     "sdd_recurring",
     "tc40",
@@ -48,7 +52,7 @@
     "chargeback"
   ],
   "require": {
-    "php": ">=5.3.2",
+    "php": ">=5.5.9",
     "ext-bcmath": "*",
     "ext-curl": "*",
     "ext-filter": "*",

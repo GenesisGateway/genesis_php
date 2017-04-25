@@ -14,7 +14,7 @@ Client Library for processing payments through Genesis Payment Processing Gatewa
 Requirements
 ------------
 
-* PHP version 5.3.2 or newer
+* PHP version 5.5.9 or newer
 * PHP Extensions:
     * [BCMath](https://php.net/bcmath)
     * [CURL](https://php.net/curl) (required, only if you use the curl network interface)
@@ -50,6 +50,7 @@ Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
 Config::setEndpoint('<set_your_endpoint>');
+Config::setEnvironment('<set_your_environment>');
 Config::setUsername('<enter_your_username>');
 Config::setPassword('<enter_your_password>');
 Config::setToken('<enter_your_token>');
@@ -175,7 +176,7 @@ You can use the following request types to initialize the Genesis client:
 // Generic transaction operations
 Financial\Capture
 Financial\Refund
-Financial\Void
+Financial\Cancel
 
 // Alternative Payment Methods transactions
 Financial\Alternatives\ABNiDEAL
@@ -186,6 +187,8 @@ Financial\Alternatives\Paysafecard
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
+Financial\Alternatives\Trustly\Sale
+Financial\Alternatives\Trustly\Withdrawal
 
 // PayByVouchers transactions
 Financial\PayByVouchers\oBeP
@@ -204,6 +207,7 @@ Financial\Cards\Recurring\RecurringSale
 
 //Sepa Direct Debit transactions
 Financial\SDD\Sale
+Financial\SDD\Payout
 Financial\SDD\Refund
 Financial\SDD\Recurring\InitRecurringSale
 Financial\SDD\Recurring\RecurringSale

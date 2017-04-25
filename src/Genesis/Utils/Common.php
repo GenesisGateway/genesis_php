@@ -95,7 +95,7 @@ final class Common
     {
         $snakeCase = explode('_', self::pascalToSnakeCase($input));
 
-        $result = array(
+        $result = [
             current(
                 array_slice($snakeCase, 0, 1)
             ),
@@ -103,7 +103,7 @@ final class Common
                 '_',
                 array_slice($snakeCase, 1)
             )
-        );
+        ];
 
         return $result;
     }
@@ -177,6 +177,23 @@ final class Common
         }
 
         return true;
+    }
+
+    /**
+     * Check if the passed key exists in the supplied array
+     *
+     * @param string $key
+     * @param array $arr
+     *
+     * @return bool
+     */
+    public static function isArrayKeyExists($key, $arr)
+    {
+        if (!self::isValidArray($arr)) {
+            return false;
+        }
+
+        return array_key_exists($key, $arr);
     }
 
     /**
@@ -287,5 +304,21 @@ final class Common
         $reflectionClass = new \ReflectionClass($className);
 
         return $reflectionClass->isAbstract();
+    }
+
+    /**
+     * Retrieves all constants in a class in a list
+     * @param string $className
+     * @return array
+     */
+    public static function getClassConstants($className)
+    {
+        if (!class_exists($className)) {
+            return [];
+        }
+
+        $reflection = new \ReflectionClass($className);
+
+        return $reflection->getConstants();
     }
 }

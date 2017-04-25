@@ -44,14 +44,7 @@ class Reconcile extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
         $this->setApiConfig('url', $this->buildRequestURL('wpf', 'wpf/reconcile', false));
     }
@@ -63,9 +56,9 @@ class Reconcile extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'unique_id',
-        );
+        $requiredFields = [
+            'unique_id'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -77,11 +70,11 @@ class Reconcile extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'wpf_reconcile' => array(
+        $treeStructure = [
+            'wpf_reconcile' => [
                 'unique_id' => $this->unique_id
-            )
-        );
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

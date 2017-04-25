@@ -30,6 +30,13 @@ class WebMoneySpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_payout_transaction_without_billing_country()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_build_payout_structure()
     {
         $faker = $this->getFaker();
@@ -56,6 +63,8 @@ class WebMoneySpec extends ObjectBehavior
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+
+        $this->setBillingCountry($faker->countryCode);
     }
 
     protected function getFaker()

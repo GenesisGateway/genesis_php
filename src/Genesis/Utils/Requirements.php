@@ -30,6 +30,13 @@ namespace Genesis\Utils;
 final class Requirements
 {
     /**
+     * The earliest supported PHP Version
+     *
+     * @var string
+     */
+    protected static $minPHPVersion = '5.5.9';
+
+    /**
      * Check if the current system fulfils the project's dependencies
      *
      * @throws \Exception
@@ -70,7 +77,7 @@ final class Requirements
      */
     public static function checkSystemVersion()
     {
-        if (\Genesis\Utils\Common::compareVersions('5.3.2', '<')) {
+        if (\Genesis\Utils\Common::compareVersions(self::$minPHPVersion, '<')) {
             throw new \Exception(self::getErrorMessage('system'));
         }
     }
@@ -126,9 +133,9 @@ final class Requirements
      */
     public static function getErrorMessage($name)
     {
-        $messages = array(
+        $messages = [
             'system'    => 'Unsupported PHP version, please upgrade!' . PHP_EOL .
-                           'This library requires PHP version 5.3.2 or newer.',
+                           'This library requires PHP version ' . self::$minPHPVersion . ' or newer.',
             'bcmath'    => 'BCMath extension is required!' . PHP_EOL .
                            'Please install the extension or rebuild with "--enable-bcmath" option.',
             'filter'    => 'Filter extensions is required!' . PHP_EOL .
@@ -141,7 +148,7 @@ final class Requirements
                            'Please install the extension or rebuild with "--enable-xmlwriter" option.',
             'curl'      => 'cURL interface is selected, but its not installed on your system!' . PHP_EOL .
                            'Please install the extension or select "stream" as your network interface.'
-        );
+        ];
 
         if (array_key_exists($name, $messages)) {
             return $messages[$name];

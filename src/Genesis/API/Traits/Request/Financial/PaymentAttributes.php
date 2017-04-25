@@ -20,20 +20,20 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Common;
+
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class AbstractReference
+ * Trait PaymentAttributes
  *
- * Base Abstract Class for Reference Transactions (Capture, Refund, Credit & Recurring)
+ * Trait for all AmountBased Financial Requests
  *
- * @package Genesis\API\Request\Base\Financial\Common
+ * @package Genesis\API\Traits\Request\Financial
  *
- * @method $this setAmount($value) Set the Amount of transaction in minor currency unit
+ * @method $this setAmount($value) Set the amount of transaction in minor currency unit
  * @method $this setCurrency($value) Set the currency code in ISO-4217
- * @method $this setReferenceId($value) Set Unique id of the existing (target) transaction
  */
-abstract class AbstractReference extends \Genesis\API\Request\Base\Financial\AbstractBase
+trait PaymentAttributes
 {
     /**
      * Amount of transaction in minor currency unit
@@ -48,47 +48,4 @@ abstract class AbstractReference extends \Genesis\API\Request\Base\Financial\Abs
      * @var string
      */
     protected $currency;
-
-    /**
-     * Unique id of the existing (target) transaction
-     *
-     * @var string
-     */
-    protected $reference_id;
-
-    /**
-     * Set the required fields
-     *
-     * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'reference_id',
-            'amount',
-            'currency'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        return array(
-            'reference_id' => $this->reference_id,
-            'amount'       => $this->transform(
-                'amount',
-                array(
-                    $this->amount,
-                    $this->currency
-                )
-            ),
-            'currency' => $this->currency
-        );
-    }
 }

@@ -20,16 +20,33 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Traits\Request\Financial\GamingAttributes;
+use Genesis\API\Traits\Request\MotoAttributes;
+use Genesis\API\Traits\Request\Financial\NotificationAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\MpiAttributes;
+use Genesis\API\Traits\Request\RiskAttributes;
+use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+
 /**
+ * Class Sale3D
+ *
  * Sale 3D Request
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\API\Request\Financial\Cards
  */
-class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\Asynchronous\ASale3D
+class Sale3D extends \Genesis\API\Request\Base\Financial
 {
+    use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
+        PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
+        MpiAttributes, RiskAttributes, DescriptorAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -37,5 +54,95 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\Asynchronous\ASal
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::SALE_3D;
+    }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'amount',
+            'currency',
+            'card_holder',
+            'card_number',
+            'expiration_month',
+            'expiration_year'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldsConditional = [
+            'notification_url'   => ['return_success_url', 'return_failure_url'],
+            'return_success_url' => ['notification_url', 'return_failure_url'],
+            'return_failure_url' => ['notification_url', 'return_success_url']
+        ];
+
+        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+
+        $requiredFieldsGroups = [
+            'synchronous'  => ['notification_url', 'return_success_url', 'return_failure_url'],
+            'asynchronous' => ['mpi_eci']
+        ];
+
+        $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'gaming'                    => $this->gaming,
+            'moto'                      => $this->moto,
+            'notification_url'          => $this->notification_url,
+            'return_success_url'        => $this->return_success_url,
+            'return_failure_url'        => $this->return_failure_url,
+            'amount'                    => $this->transformAmount($this->amount, $this->currency),
+            'currency'                  => $this->currency,
+            'card_holder'               => $this->card_holder,
+            'card_number'               => $this->card_number,
+            'cvv'                       => $this->cvv,
+            'expiration_month'          => $this->expiration_month,
+            'expiration_year'           => $this->expiration_year,
+            'customer_email'            => $this->customer_email,
+            'customer_phone'            => $this->customer_phone,
+            'birth_date'                => $this->birth_date,
+            'billing_address'           => [
+                'first_name' => $this->billing_first_name,
+                'last_name'  => $this->billing_last_name,
+                'address1'   => $this->billing_address1,
+                'address2'   => $this->billing_address2,
+                'zip_code'   => $this->billing_zip_code,
+                'city'       => $this->billing_city,
+                'state'      => $this->billing_state,
+                'country'    => $this->billing_country
+            ],
+            'shipping_address'          => [
+                'first_name' => $this->shipping_first_name,
+                'last_name'  => $this->shipping_last_name,
+                'address1'   => $this->shipping_address1,
+                'address2'   => $this->shipping_address2,
+                'zip_code'   => $this->shipping_zip_code,
+                'city'       => $this->shipping_city,
+                'state'      => $this->shipping_state,
+                'country'    => $this->shipping_country
+            ],
+            'mpi_params'                => [
+                'cavv' => $this->mpi_cavv,
+                'eci'  => $this->mpi_eci,
+                'xid'  => $this->mpi_xid,
+            ],
+            'risk_params'               => $this->getRiskParamsStructure(),
+            'dynamic_descriptor_params' => [
+                'merchant_name' => $this->dynamic_merchant_name,
+                'merchant_city' => $this->dynamic_merchant_city
+            ]
+        ];
     }
 }

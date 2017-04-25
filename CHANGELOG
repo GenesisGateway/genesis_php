@@ -1,3 +1,35 @@
+1.6.0
+-----
+* Restructured Financial API Requests
+    - Added Traits for Transaction Attributes in API Requests
+    - Restructured Base API Requests
+* Removed Support for PHP < 5.5
+    - Minimum Requirements (PHP >= 5.5.9)
+* Added Support for PHP 7.1
+    - Void Request Class is now renamed to Cancel
+    - Updated Build Jobs for Travis CI
+* Added Support for new Transaction Types
+    - Added API for SDD Payout
+    - Added API for Trustly (Sale & Withdrawal)
+* Updated Risk Params List
+    - Use Risk Params only for user-triggered payment transactions
+        - Authorize
+        - Authorize3d
+        - Sale
+        - Sale3d
+        - InitRecurringSale
+        - InitRecurringSale3d
+        - AccountVerification
+        - AVS
+    - Added new Risk Params
+* Fix for Response Object Transformation when Error Response received from Gateway
+    - Amount is now always transformed from Exponent
+    - Timestamp is now always transformed from ISO 8601
+* Fix for SDD Sale
+    - Added missing Request Attributes for Consumer's Addresses
+    - Added missing attribute billing_country to the Required API Params
+* Fix Required API Params for Alternative Financial API Requests
+
 1.5.0
 -----
 * Added Support Genesis v6.2

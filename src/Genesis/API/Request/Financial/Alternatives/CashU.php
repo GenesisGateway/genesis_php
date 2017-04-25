@@ -20,6 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Alternatives;
 
 /**
@@ -29,7 +30,7 @@ namespace Genesis\API\Request\Financial\Alternatives;
  *
  * @package Genesis\API\Request\Financial\Alternatives
  */
-class CashU extends \Genesis\API\Request\Base\Financial\Alternatives\Asynchronous\AbstractTransaction
+class CashU extends \Genesis\API\Request\Base\Financial\Alternative
 {
     /**
      * Returns the Request transaction type

@@ -79,6 +79,7 @@ class eZeeWalletSpec extends ObjectBehavior
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setNotificationUrl($faker->url);
     }
 
     public function getMatchers()

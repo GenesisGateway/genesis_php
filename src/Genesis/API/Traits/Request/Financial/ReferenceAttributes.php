@@ -20,15 +20,19 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial;
+
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Void Request
+ * Trait ReferenceAttributes
  *
- * @package    Genesis
- * @subpackage Request
+ * Trait for all Reference Financial Requests
+ *
+ * @package Genesis\API\Traits\Request\Financial
+ *
+ * @method $this setReferenceId($value) Set Unique id of the existing (target) transaction
  */
-class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
+trait ReferenceAttributes
 {
     /**
      * Unique id of the existing (target) transaction
@@ -36,44 +40,4 @@ class Void extends \Genesis\API\Request\Base\Financial\AbstractBase
      * @var string
      */
     protected $reference_id;
-
-    /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::VOID;
-    }
-
-    /**
-     * Set the required fields
-     *
-     * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'reference_id'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
-
-    /**
-     * Return additional request attributes
-     * @return array
-     */
-    protected function getRequestTreeStructure()
-    {
-        $treeStructure = parent::getRequestTreeStructure();
-
-        return array_merge(
-            $treeStructure,
-            array(
-                'reference_id' => $this->reference_id
-            )
-        );
-    }
 }

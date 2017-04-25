@@ -2,7 +2,7 @@
 * Description of changes 2
 * Description of changes 3, etc
 
-Fixes eMerchantPay/\<project_name_here\>#number
+Fixes eMerchantPay/genesis_php#number
 
 -----------------
 
@@ -12,7 +12,9 @@ Before merging the PR make sure the following are checked:
 * [ ] Commit message starts with `{f|b}{year}{month}{day}{num}`, e.g. f2016071101
 * [ ] Necessary specs are added.
 * [ ] All specs are passing.
+* [ ] The **PHP** code style complies with the [PSR-2][2] recommendation
 * [ ] All automated or manual PR comments are resolved or proper explanation is included for the given change
 * [ ] The PR relates to **only** one subject with a clear title
 
 [1]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[2]: http://www.php-fig.org/psr/psr-2/

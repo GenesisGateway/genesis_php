@@ -50,6 +50,13 @@ class SaleSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setBaseRequestParameters()
     {
         $faker = $this->getFaker();
@@ -64,8 +71,6 @@ class SaleSpec extends ObjectBehavior
 
         $this->setCustomerEmail($faker->email);
 
-        $this->setBillingCountry($faker->countryCode);
-
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
     }
@@ -76,14 +81,22 @@ class SaleSpec extends ObjectBehavior
 
         $this->setIban($faker->iban('DE'));
         $this->setBic('PBNKDEFFXXX');
+    }
+
+    protected function setBillingInfoRequestParams()
+    {
+        $faker = $this->getFaker();
+
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
+        $this->setBillingCountry($faker->countryCode);
     }
 
     protected function setRequestParameters()
     {
         $this->setBaseRequestParameters();
         $this->setSDDRequestParameters();
+        $this->setBillingInfoRequestParams();
     }
 
     protected function getFaker()

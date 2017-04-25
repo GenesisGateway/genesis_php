@@ -56,13 +56,6 @@ class INPaySpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_auth_transaction_without_notify_url()
-    {
-        $this->setRequestParameters(false);
-        $this->setNotificationUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
     public function it_should_fail_auth_transaction_without_customer_bank_id()
     {
         $this->setRequestParameters(false);

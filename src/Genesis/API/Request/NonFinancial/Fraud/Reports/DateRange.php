@@ -61,23 +61,9 @@ class DateRange extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
-                'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                'gateway',
-                'fraud_reports/by_date',
-                false
-            )
-        );
+        $this->initApiGatewayConfiguration('fraud_reports/by_date', false);
     }
 
     /**
@@ -87,9 +73,9 @@ class DateRange extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
-            'start_date',
-        );
+        $requiredFields = [
+            'start_date'
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -101,13 +87,13 @@ class DateRange extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'fraud_report_request' => array(
+        $treeStructure = [
+            'fraud_report_request' => [
                 'start_date' => $this->start_date,
                 'end_date'   => $this->end_date,
-                'page'       => $this->page,
-            )
-        );
+                'page'       => $this->page
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }

@@ -20,37 +20,23 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Base\Financial\Alternatives\Asynchronous;
 
-use \Genesis\API\Request\Base\Financial\Common\Risk\Async\AbstractBaseCustomerInfo;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class AbstractTransaction
+ * Trait GamingAttributes
+ * @package Genesis\API\Traits\Request\Financial
  *
- * Abstract Base Class for Financial APM ASynchronous Payment Transactions
- *
- * @package Genesis\API\Request\Base\Financial\Alternatives\Asynchronous
- *
+ * @method $this setGaming($value) Signifies whether a gaming transaction is performed.
  */
-abstract class AbstractTransaction extends AbstractBaseCustomerInfo
+trait GamingAttributes
 {
     /**
-     * Set the required fields
+     * Signifies whether a gaming transaction is performed.
      *
-     * @return void
+     * Gaming transactions usually use MCC 7995, contact tech support for more details.
+     *
+     * @var bool
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = array(
-            'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
-            'return_success_url',
-            'return_failure_url',
-            'customer_email'
-        );
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    protected $gaming;
 }

@@ -155,16 +155,9 @@ class oBeP extends \Genesis\API\Request
      */
     protected function initConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
-            array(
-                 'protocol' => 'https',
-                 'port'     => 443,
-                 'type'     => 'POST',
-                 'format'   => 'xml'
-            )
-        );
+        $this->initXmlConfiguration();
 
-        $this->setApiConfig('url', $this->buildRequestURL('gateway', 'process', \Genesis\Config::getToken()));
+        $this->initApiGatewayConfiguration();
     }
 
     /**
@@ -174,7 +167,7 @@ class oBeP extends \Genesis\API\Request
      */
     protected function setRequiredFields()
     {
-        $requiredFields = array(
+        $requiredFields = [
             'transaction_id',
             'card_type',
             'redeem_type',
@@ -188,7 +181,7 @@ class oBeP extends \Genesis\API\Request
             'customer_id_number',
             'customer_bank_id',
             'bank_account_number'
-        );
+        ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
     }
@@ -200,8 +193,8 @@ class oBeP extends \Genesis\API\Request
      */
     protected function populateStructure()
     {
-        $treeStructure = array(
-            'payment_transaction' => array(
+        $treeStructure = [
+            'payment_transaction' => [
                 'transaction_type'    => \Genesis\API\Constants\Transaction\Types::PAYBYVOUCHER_YEEPAY,
                 'transaction_id'      => $this->transaction_id,
                 'card_type'           => $this->card_type,
@@ -209,10 +202,10 @@ class oBeP extends \Genesis\API\Request
                 'remote_ip'           => $this->remote_ip,
                 'amount'              => $this->transform(
                     'amount',
-                    array(
+                    [
                         $this->amount,
                         $this->currency
-                    )
+                    ]
                 ),
                 'currency'            => $this->currency,
                 'product_name'        => $this->product_name,
@@ -223,8 +216,8 @@ class oBeP extends \Genesis\API\Request
                 'customer_id_number'  => $this->customer_id_number,
                 'customer_bank_id'    => $this->customer_bank_id,
                 'bank_account_number' => $this->bank_account_number
-            )
-        );
+            ]
+        ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
     }
