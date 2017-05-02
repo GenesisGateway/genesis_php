@@ -50,6 +50,9 @@
     "idebit",
     "idebit_payin",
     "idebit_payout",
+    "insta_debit",
+    "insta_debit_payin",
+    "insta_debit_payout",
     "tc40",
     "fraud",
     "chargeback"

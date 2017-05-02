@@ -214,7 +214,7 @@ class Types
      * real-time payments without a credit card.
      * Using iDebit allows consumers to transfer funds to merchants without
      * revealing their personal banking information.
-     * iDebit Payin transactions are only asynchronous.
+     * iDebit Payin is only asynchronous and uses eCheck.
      */
     const IDEBIT_PAYIN = 'idebit_payin';
 
@@ -223,9 +223,27 @@ class Types
      * real-time payments without a credit card.
      * Using iDebit allows consumers to transfer funds to merchants without
      * revealing their personal banking information.
-     * iDebit Payout transactions are synchronous.
+     * iDebit Payout is only synchronous and uses eCheck.
      */
     const IDEBIT_PAYOUT = 'idebit_payout';
+
+    /**
+     * InstaDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real- time payments without a credit card.
+     * Using InstaDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * InstaDebit Payin is only asynchronous and uses online bank transfer.
+     */
+    const INSTA_DEBIT_PAYIN = 'insta_debit_payin';
+
+    /**
+     * InstaDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real- time payments without a credit card.
+     * Using InstaDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * InstaDebit Payout is only synchronous and uses online bank transfer.
+     */
+    const INSTA_DEBIT_PAYOUT = 'insta_debit_payout';
 
     /**
      * Check whether this is a valid (known) transaction type
