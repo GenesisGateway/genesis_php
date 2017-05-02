@@ -47,6 +47,9 @@
     "sdd_payout",
     "sdd_refund",
     "sdd_recurring",
+    "idebit",
+    "idebit_payin",
+    "idebit_payout",
     "tc40",
     "fraud",
     "chargeback"

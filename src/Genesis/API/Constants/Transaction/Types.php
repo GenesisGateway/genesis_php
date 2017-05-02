@@ -210,6 +210,24 @@ class Types
     const SDD_RECURRING_SALE = 'sdd_recurring_sale';
 
     /**
+     * iDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real-time payments without a credit card.
+     * Using iDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * iDebit Payin transactions are only asynchronous.
+     */
+    const IDEBIT_PAYIN = 'idebit_payin';
+
+    /**
+     * iDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real-time payments without a credit card.
+     * Using iDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * iDebit Payout transactions are synchronous.
+     */
+    const IDEBIT_PAYOUT = 'idebit_payout';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
