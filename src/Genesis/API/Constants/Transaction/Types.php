@@ -179,6 +179,13 @@ class Types
     const TRUSTLY_WITHDRAWAL = 'trustly_withdrawal';
 
     /**
+     * PayPal Express Checkout is a fast, easy way for buyers to pay with PayPal.
+     * Express Checkout eliminates one of the major causes of checkout abandonment by giving buyers
+     * all the transaction details at once, including order details, shipping options, insurance choices, and tax totals
+     */
+    const PAYPAL_EXPRESS = 'paypal_express';
+
+    /**
      * Sepa Direct Debit Payment, popular in Germany.
      * Single Euro Payments Area (SEPA) allows consumers to make cashless Euro payments to
      * any beneficiary located anywhere in the Euro area using only a single bank account

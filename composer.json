@@ -31,6 +31,8 @@
     "cashu",
     "inpay",
     "p24",
+    "paypal",
+    "paypal_express",
     "trustly",
     "trustly_sale",
     "trustly_withdrawal",
