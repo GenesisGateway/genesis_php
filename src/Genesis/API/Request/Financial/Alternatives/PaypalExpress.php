@@ -54,7 +54,6 @@ class PaypalExpress extends \Genesis\API\Request\Base\Financial\Alternative
             'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_email',
             'billing_country'
         ];
 

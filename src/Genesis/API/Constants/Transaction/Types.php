@@ -253,6 +253,26 @@ class Types
     const INSTA_DEBIT_PAYOUT = 'insta_debit_payout';
 
     /**
+     * Citadel is an oBeP-style alternative payment method.
+     * It offers merchants the ability to send/receive consumer payments via the use of bank transfer functionality
+     * available from the consumer’s online banking website.
+     *
+     * Payins are only asynchronous. After initiating a transaction the transaction status is set to pending async and
+     * the consumer is redirected to Citadel’s Instant Banking website.
+     */
+    const CITADEL_PAYIN = 'citadel_payin';
+
+    /**
+     * Citadel is an oBeP-style alternative payment method.
+     * It offers merchants the ability to send/receive consumer payments via the use of bank transfer functionality
+     * available from the consumer’s online banking website.
+     *
+     * The workflow for Payouts is synchronous, there is no redirect to the Citadel’s Instant Banking website.
+     * There are different required fields per country, e.g. IBAN and SWIFT Code or Account Number and Branch Code
+     */
+    const CITADEL_PAYOUT = 'citadel_payout';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type

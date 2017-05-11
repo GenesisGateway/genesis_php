@@ -21,38 +21,34 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\OnlineBankingPayments\iDebit;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments\Citadel;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 
 /**
  * Class Payin
  *
- * iDebit Payin - Online Banking ePayments (oBeP)
+ * Citadel Payin - oBeP-style alternative payment method
  *
- * @package Genesis\API\Request\Financial\OnlineBankingPayments\iDebit
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments\Citadel
  *
- * @method Payin setCustomerAccountId($value) Set Unique consumer account ID
- * @method Payin setReturnUrl($value) Set the URL where customer is sent to after payment
+ * @method Payin setMerchantCustomerId($value) Set Unique consumer account ID
  */
 class Payin extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes;
+    use AsyncAttributes, NotificationAttributes, PaymentAttributes, AddressInfoAttributes;
 
     /**
      * Unique consumer account ID
      *
-     * @var string
-     */
-    protected $customer_account_id;
-
-    /**
-     * URL where customer is sent to after payment
+     * Identifier provided by the merchant that uniquely identifies the customer in their system
      *
      * @var string
      */
-    protected $return_url;
+    protected $merchant_customer_id;
 
     /**
      * Returns the Request transaction type
@@ -60,7 +56,7 @@ class Payin extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::IDEBIT_PAYIN;
+        return \Genesis\API\Constants\Transaction\Types::CITADEL_PAYIN;
     }
 
     /**
@@ -73,9 +69,14 @@ class Payin extends \Genesis\API\Request\Base\Financial
         $requiredFields = [
             'transaction_id',
             'amount',
+            'return_success_url',
+            'return_failure_url',
+            'notification_url',
             'currency',
-            'return_url',
-            'customer_account_id',
+            'customer_email',
+            'merchant_customer_id',
+            'billing_first_name',
+            'billing_last_name',
             'billing_country'
         ];
 
@@ -89,13 +90,15 @@ class Payin extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'              => $this->transformAmount($this->amount, $this->currency),
-            'currency'            => $this->currency,
-            'customer_account_id' => $this->customer_account_id,
-            'return_url'          => $this->return_url,
-            'customer_email'      => $this->customer_email,
-            'customer_phone'      => $this->customer_phone,
-            'billing_address'     => [
+            'amount'               => $this->transformAmount($this->amount, $this->currency),
+            'currency'             => $this->currency,
+            'return_success_url'   => $this->return_success_url,
+            'return_failure_url'   => $this->return_failure_url,
+            'notification_url'     => $this->notification_url,
+            'customer_email'       => $this->customer_email,
+            'customer_phone'       => $this->customer_phone,
+            'merchant_customer_id' => $this->merchant_customer_id,
+            'billing_address'      => [
                 'first_name' => $this->billing_first_name,
                 'last_name'  => $this->billing_last_name,
                 'address1'   => $this->billing_address1,
@@ -105,7 +108,7 @@ class Payin extends \Genesis\API\Request\Base\Financial
                 'state'      => $this->billing_state,
                 'country'    => $this->billing_country
             ],
-            'shipping_address'    => [
+            'shipping_address'     => [
                 'first_name' => $this->shipping_first_name,
                 'last_name'  => $this->shipping_last_name,
                 'address1'   => $this->shipping_address1,
