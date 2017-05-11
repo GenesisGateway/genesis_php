@@ -43,6 +43,8 @@
     "safetypay",
     "teleingreso",
     "trustpay",
+    "bcmc",
+    "mybank",
     "webmoney",
     "poli",
     "sdd",
@@ -55,6 +57,9 @@
     "insta_debit",
     "insta_debit_payin",
     "insta_debit_payout",
+    "citadel",
+    "citadel_payin",
+    "citadel_payout",
     "tc40",
     "fraud",
     "chargeback"
