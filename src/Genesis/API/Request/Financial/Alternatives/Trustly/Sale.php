@@ -25,8 +25,7 @@ namespace Genesis\API\Request\Financial\Alternatives\Trustly;
 
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\CustomerAddress\CustomerInfoAttributes;
-use Genesis\API\Traits\Request\CustomerAddress\BillingInfoAttributes;
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
  * Class Sale
@@ -39,7 +38,7 @@ use Genesis\API\Traits\Request\CustomerAddress\BillingInfoAttributes;
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, CustomerInfoAttributes, BillingInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
 
     /**
      * Birth date of the customer
@@ -76,6 +75,16 @@ class Sale extends \Genesis\API\Request\Base\Financial
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldValues = [
+            'billing_country' => [
+                'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU',
+                'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+            ],
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 
     /**
@@ -92,16 +101,8 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'customer_email'     => $this->customer_email,
             'customer_phone'     => $this->customer_phone,
             'birth_date'         => $this->birth_date,
-            'billing_address'    => [
-                'first_name' => $this->billing_first_name,
-                'last_name'  => $this->billing_last_name,
-                'address1'   => $this->billing_address1,
-                'address2'   => $this->billing_address2,
-                'zip_code'   => $this->billing_zip_code,
-                'city'       => $this->billing_city,
-                'state'      => $this->billing_state,
-                'country'    => $this->billing_country
-            ]
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];
     }
 }

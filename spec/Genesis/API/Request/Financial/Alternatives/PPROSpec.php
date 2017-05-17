@@ -62,6 +62,30 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_country_code_for_safetypay()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('safetypay');
+        $this->setBillingCountry('BE');
+        $this->setCurrency('EUR');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_unsupported_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('ZZ');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_unsupported_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('ABC');
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -79,7 +103,7 @@ class PPROSpec extends ObjectBehavior
         $this->setPaymentType('trustpay');
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('USD');
+        $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
@@ -94,7 +118,7 @@ class PPROSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('EE');
     }
 
     public function getMatchers()

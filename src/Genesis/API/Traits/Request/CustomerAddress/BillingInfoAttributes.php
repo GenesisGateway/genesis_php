@@ -96,4 +96,23 @@ trait BillingInfoAttributes
      * @var string
      */
     protected $billing_country;
+
+    /**
+     * Builds an array list with all Params
+     *
+     * @return array
+     */
+    protected function getBillingAddressParamsStructure()
+    {
+        return [
+            'first_name' => $this->billing_first_name,
+            'last_name'  => $this->billing_last_name,
+            'address1'   => $this->billing_address1,
+            'address2'   => $this->billing_address2,
+            'zip_code'   => $this->billing_zip_code,
+            'city'       => $this->billing_city,
+            'state'      => $this->billing_state,
+            'country'    => $this->billing_country
+        ];
+    }
 }

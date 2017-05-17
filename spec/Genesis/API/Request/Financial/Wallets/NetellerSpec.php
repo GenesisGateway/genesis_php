@@ -59,7 +59,11 @@ class NetellerSpec extends ObjectBehavior
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
@@ -71,7 +75,11 @@ class NetellerSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
 
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry(
+            $faker->randomElement(
+                \Genesis\Utils\Country::getList()
+            )
+        );
     }
 
     public function getMatchers()

@@ -292,32 +292,11 @@ class Create extends \Genesis\API\Request
                 'return_success_url'        => $this->return_success_url,
                 'return_failure_url'        => $this->return_failure_url,
                 'return_cancel_url'         => $this->return_cancel_url,
-                'billing_address'           => [
-                    'first_name' => $this->billing_first_name,
-                    'last_name'  => $this->billing_last_name,
-                    'address1'   => $this->billing_address1,
-                    'address2'   => $this->billing_address2,
-                    'zip_code'   => $this->billing_zip_code,
-                    'city'       => $this->billing_city,
-                    'state'      => $this->billing_state,
-                    'country'    => $this->billing_country
-                ],
-                'shipping_address'          => [
-                    'first_name' => $this->shipping_first_name,
-                    'last_name'  => $this->shipping_last_name,
-                    'address1'   => $this->shipping_address1,
-                    'address2'   => $this->shipping_address2,
-                    'zip_code'   => $this->shipping_zip_code,
-                    'city'       => $this->shipping_city,
-                    'state'      => $this->shipping_state,
-                    'country'    => $this->shipping_country
-                ],
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'transaction_types'         => $this->transaction_types,
                 'risk_params'               => $this->getRiskParamsStructure(),
-                'dynamic_descriptor_params' => [
-                    'merchant_name' => $this->dynamic_merchant_name,
-                    'merchant_city' => $this->dynamic_merchant_city
-                ]
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
             ]
         ];
 

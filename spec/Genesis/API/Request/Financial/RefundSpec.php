@@ -37,7 +37,11 @@ class RefundSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);

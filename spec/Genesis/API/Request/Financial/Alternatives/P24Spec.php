@@ -44,6 +44,13 @@ class P24Spec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_billing_country_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('BG');
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -59,12 +66,17 @@ class P24Spec extends ObjectBehavior
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
-        $this->setCurrency('EUR');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
+
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
 
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('NL');
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);

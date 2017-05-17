@@ -89,7 +89,7 @@ class InitRecurringSaleSpec extends ObjectBehavior
 
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('NL');
     }
 
     protected function setRequestParameters()

@@ -42,7 +42,11 @@ class SaleSpec extends ObjectBehavior
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setRemoteIp($faker->ipv4);
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));

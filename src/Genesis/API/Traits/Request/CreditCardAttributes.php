@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Traits\Request;
 
+use Genesis\API\Validators\Request\RegexValidator;
+
 /**
  * Trait CreditCardAttributes
  * @package Genesis\API\Traits\Request
@@ -77,4 +79,79 @@ trait CreditCardAttributes
      * @var string
      */
     protected $birth_date;
+
+    /**
+     * Returns a list with all CC Validators
+     *
+     * @return array
+     */
+    protected function getCCFieldValueFormatValidators()
+    {
+        return [
+            'card_holder'      => $this->getCreditCardHolderValidator(),
+            'card_number'      => $this->getCreditCardNumberValidator(),
+            'expiration_month' => $this->getCreditCardExpMonthValidator(),
+            'expiration_year'  => $this->getCreditCardExpYearValidator()
+        ];
+    }
+
+    /**
+     * Instance of CC Holder Validator
+     *
+     * @return RegexValidator
+     */
+    protected function getCreditCardHolderValidator()
+    {
+        return new RegexValidator(
+            RegexValidator::PATTERN_CREDIT_CARD_HOLDER
+        );
+    }
+
+    /**
+     * Instance of CC Number Format Validator
+     *
+     * @return RegexValidator
+     */
+    protected function getCreditCardNumberValidator()
+    {
+        return new RegexValidator(
+            RegexValidator::PATTERN_CREDIT_CARD_NUMBER
+        );
+    }
+
+    /**
+     * Instance of CC CVV Format Validator
+     *
+     * @return RegexValidator
+     */
+    protected function getCreditCardCVVValidator()
+    {
+        return new RegexValidator(
+            RegexValidator::PATTERN_CREDIT_CARD_CVV
+        );
+    }
+
+    /**
+     * Instance of CC Expiration Month Format Validator
+     *
+     * @return RegexValidator
+     */
+    protected function getCreditCardExpMonthValidator()
+    {
+        return new RegexValidator(
+            RegexValidator::PATTERN_CREDIT_CART_EXP_MONTH
+        );
+    }
+
+    /**
+     * Instance of CC Expiration Year Format Validator
+     *
+     * @return RegexValidator
+     */
+    protected function getCreditCardExpYearValidator()
+    {
+        return new RegexValidator(
+            RegexValidator::PATTERN_CREDIT_CART_EXP_YEAR
+        );
+    }
 }

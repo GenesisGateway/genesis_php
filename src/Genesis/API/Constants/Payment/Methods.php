@@ -88,6 +88,20 @@ class Methods
     const TRUST_PAY = 'trustpay';
 
     /**
+     * Mr.Cash
+     *
+     * PPRO transaction
+     */
+    const BCMC = 'bcmc';
+
+    /**
+     * MyBank
+     *
+     * PPRO transaction
+     */
+    const MYBANK = 'mybank';
+
+    /**
      * Returns all available payment methods
      * @return array
      */

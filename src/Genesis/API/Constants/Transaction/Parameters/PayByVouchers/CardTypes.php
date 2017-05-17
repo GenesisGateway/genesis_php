@@ -63,9 +63,8 @@ class CardTypes
      */
     public static function getCardTypes()
     {
-        return [
-            self::VIRTUAL,
-            self::PHYSICAL
-        ];
+        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+
+        return array_values($methods);
     }
 }

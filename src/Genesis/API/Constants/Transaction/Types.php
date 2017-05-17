@@ -179,6 +179,13 @@ class Types
     const TRUSTLY_WITHDRAWAL = 'trustly_withdrawal';
 
     /**
+     * PayPal Express Checkout is a fast, easy way for buyers to pay with PayPal.
+     * Express Checkout eliminates one of the major causes of checkout abandonment by giving buyers
+     * all the transaction details at once, including order details, shipping options, insurance choices, and tax totals
+     */
+    const PAYPAL_EXPRESS = 'paypal_express';
+
+    /**
      * Sepa Direct Debit Payment, popular in Germany.
      * Single Euro Payments Area (SEPA) allows consumers to make cashless Euro payments to
      * any beneficiary located anywhere in the Euro area using only a single bank account
@@ -208,6 +215,62 @@ class Types
      * which follows and references an SDD initial transaction
      */
     const SDD_RECURRING_SALE = 'sdd_recurring_sale';
+
+    /**
+     * iDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real-time payments without a credit card.
+     * Using iDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * iDebit Payin is only asynchronous and uses eCheck.
+     */
+    const IDEBIT_PAYIN = 'idebit_payin';
+
+    /**
+     * iDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real-time payments without a credit card.
+     * Using iDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * iDebit Payout is only synchronous and uses eCheck.
+     */
+    const IDEBIT_PAYOUT = 'idebit_payout';
+
+    /**
+     * InstaDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real- time payments without a credit card.
+     * Using InstaDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * InstaDebit Payin is only asynchronous and uses online bank transfer.
+     */
+    const INSTA_DEBIT_PAYIN = 'insta_debit_payin';
+
+    /**
+     * InstaDebit connects consumers to their online banking directly from checkout, enabling secure,
+     * real- time payments without a credit card.
+     * Using InstaDebit allows consumers to transfer funds to merchants without
+     * revealing their personal banking information.
+     * InstaDebit Payout is only synchronous and uses online bank transfer.
+     */
+    const INSTA_DEBIT_PAYOUT = 'insta_debit_payout';
+
+    /**
+     * Citadel is an oBeP-style alternative payment method.
+     * It offers merchants the ability to send/receive consumer payments via the use of bank transfer functionality
+     * available from the consumer’s online banking website.
+     *
+     * Payins are only asynchronous. After initiating a transaction the transaction status is set to pending async and
+     * the consumer is redirected to Citadel’s Instant Banking website.
+     */
+    const CITADEL_PAYIN = 'citadel_payin';
+
+    /**
+     * Citadel is an oBeP-style alternative payment method.
+     * It offers merchants the ability to send/receive consumer payments via the use of bank transfer functionality
+     * available from the consumer’s online banking website.
+     *
+     * The workflow for Payouts is synchronous, there is no redirect to the Citadel’s Instant Banking website.
+     * There are different required fields per country, e.g. IBAN and SWIFT Code or Account Number and Branch Code
+     */
+    const CITADEL_PAYOUT = 'citadel_payout';
 
     /**
      * Check whether this is a valid (known) transaction type

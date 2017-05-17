@@ -40,4 +40,27 @@ class CashU extends \Genesis\API\Request\Base\Financial\Alternative
     {
         return \Genesis\API\Constants\Transaction\Types::CASHU;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'billing_country' => [
+                'DZ', 'BH', 'EG', 'GM', 'GH', 'IN', 'IR', 'IQ', 'IL', 'JO', 'KE',
+                'KR', 'KW', 'LB', 'LY', 'MY', 'MR', 'MA', 'NG', 'OM', 'PK', 'PS',
+                'QA', 'SA', 'SL', 'SD', 'SY', 'TZ', 'TN', 'TR', 'AE', 'US', 'YE'
+            ],
+            'currency'        => [
+                'USD', 'AED', 'EUR', 'JOD', 'EGP', 'SAR', 'DZD', 'LBP', 'MAD', 'QAR', 'TRY'
+            ]
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }

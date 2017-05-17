@@ -27,6 +27,7 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Constants\Payment\Methods as PaymentMethods;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class PPRO
@@ -136,7 +137,15 @@ class PPRO extends \Genesis\API\Request\Base\Financial
             'billing_country'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
+
+        $requiredFieldValues = [
+            'payment_type'    => PaymentMethods::getMethods(),
+            'billing_country' => \Genesis\Utils\Country::getList(),
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
 
         $requiredFieldsConditional = [
             'payment_type' => [
@@ -153,7 +162,130 @@ class PPRO extends \Genesis\API\Request\Base\Financial
             ]
         ];
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
+
+        $this->setRequiredFieldValuesConditional();
+    }
+
+    /**
+     * Set the required fields - conditionally depending on other fields
+     *
+     * @return void
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    protected function setRequiredFieldValuesConditional()
+    {
+        $requiredFieldValuesConditional = [
+            'payment_type' => [
+                PaymentMethods::EPS         => [
+                    [
+                        'billing_country' => 'AT',
+                        'currency'        => 'EUR'
+                    ]
+                ],
+                PaymentMethods::TELEINGRESO => [
+                    [
+                        'billing_country' => 'ES',
+                        'currency'        => 'EUR'
+                    ]
+                ],
+                PaymentMethods::SAFETY_PAY  => [
+                    [
+                        'billing_country' => ['AT', 'DE', 'CA', 'MX', 'NI', 'CR', 'PA', 'CO', 'PE', 'BR', 'NL'],
+                        'currency'        => ['EUR', 'USD']
+                    ]
+                ],
+                PaymentMethods::TRUST_PAY   => [
+                    [
+                        'billing_country' => 'BA',
+                        'currency'        => 'BAM'
+                    ],
+                    [
+                        'billing_country' => 'BG',
+                        'currency'        => 'BGN'
+                    ],
+                    [
+                        'billing_country' => 'CZ',
+                        'currency'        => 'CZK'
+                    ],
+                    [
+                        'billing_country' => 'EE',
+                        'currency'        => 'EEK'
+                    ],
+                    [
+                        'billing_country' => ['EE', 'SL', 'SK'],
+                        'currency'        => 'EUR'
+                    ],
+                    [
+                        'billing_country' => 'GB',
+                        'currency'        => 'GBP'
+                    ],
+                    [
+                        'billing_country' => 'HR',
+                        'currency'        => 'HRK'
+                    ],
+                    [
+                        'billing_country' => 'HU',
+                        'currency'        => 'HUF'
+                    ],
+                    [
+                        'billing_country' => 'LT',
+                        'currency'        => 'LTL'
+                    ],
+                    [
+                        'billing_country' => 'LV',
+                        'currency'        => 'LVL'
+                    ],
+                    [
+                        'billing_country' => 'PL',
+                        'currency'        => 'PLN'
+                    ],
+                    [
+                        'billing_country' => 'RO',
+                        'currency'        => 'RON'
+                    ]
+                ],
+                PaymentMethods::PRZELEWY24  => [
+                    [
+                        'billing_country' => 'PL',
+                        'currency'        => 'PLN'
+                    ]
+                ],
+                PaymentMethods::IDEAL       => [
+                    [
+                        'billing_country' => 'NL',
+                        'currency'        => 'EUR'
+                    ]
+                ],
+                PaymentMethods::QIWI        => [
+                    [
+                        'billing_country' => 'RU',
+                        'currency'        => ['EUR', 'RUB']
+                    ]
+                ],
+                PaymentMethods::GIRO_PAY    => [
+                    [
+                        'billing_country' => 'DE',
+                        'currency'        => 'EUR'
+                    ]
+                ],
+                PaymentMethods::BCMC        => [
+                    [
+                        'billing_country' => 'BE',
+                        'currency'        => 'EUR'
+                    ]
+                ],
+                PaymentMethods::MYBANK      => [
+                    [
+                        'billing_country' => ['BE', 'FR', 'IT', 'LU'],
+                        'currency'        => 'EUR'
+                    ]
+                ]
+            ]
+        ];
+
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldValuesConditional);
     }
 
     /**
@@ -175,26 +307,8 @@ class PPRO extends \Genesis\API\Request\Base\Financial
             'bic'                => $this->bic,
             'iban'               => $this->iban,
             'account_phone'      => $this->account_phone,
-            'billing_address'    => [
-                'first_name' => $this->billing_first_name,
-                'last_name'  => $this->billing_last_name,
-                'address1'   => $this->billing_address1,
-                'address2'   => $this->billing_address2,
-                'zip_code'   => $this->billing_zip_code,
-                'city'       => $this->billing_city,
-                'state'      => $this->billing_state,
-                'country'    => $this->billing_country,
-            ],
-            'shipping_address'   => [
-                'first_name' => $this->shipping_first_name,
-                'last_name'  => $this->shipping_last_name,
-                'address1'   => $this->shipping_address1,
-                'address2'   => $this->shipping_address2,
-                'zip_code'   => $this->shipping_zip_code,
-                'city'       => $this->shipping_city,
-                'state'      => $this->shipping_state,
-                'country'    => $this->shipping_country,
-            ]
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];
     }
 }

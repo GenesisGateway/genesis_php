@@ -40,4 +40,21 @@ class POLi extends \Genesis\API\Request\Base\Financial\Alternative
     {
         return \Genesis\API\Constants\Transaction\Types::POLI;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'billing_country' => ['AU', 'NZ'],
+            'currency'        => ['AUD', 'NZD']
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }
