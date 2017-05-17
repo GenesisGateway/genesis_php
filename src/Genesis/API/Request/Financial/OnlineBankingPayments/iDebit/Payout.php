@@ -56,5 +56,11 @@ class Payout extends \Genesis\API\Request\Base\Financial\Reference
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldValues = [
+            'currency' => ['CAD', 'USD', 'EUR', 'GBP', 'AUD']
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 }

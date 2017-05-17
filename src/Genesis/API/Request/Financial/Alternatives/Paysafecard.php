@@ -40,4 +40,25 @@ class Paysafecard extends \Genesis\API\Request\Base\Financial\Alternative
     {
         return \Genesis\API\Constants\Transaction\Types::PAYSAFECARD;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'billing_country' => [
+                'AT', 'BE', 'CY', 'CZ', 'DK', 'FI', 'FR', 'DE', 'GR', 'IE',
+                'IT', 'LU', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES',
+                'SE', 'CH', 'UK', 'HU', 'HR', 'MT', 'US', 'CA', 'MX', 'TR'
+            ],
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }

@@ -81,7 +81,7 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('CA');
     }
 
     public function getMatchers()

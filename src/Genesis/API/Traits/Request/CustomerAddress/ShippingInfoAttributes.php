@@ -97,4 +97,23 @@ trait ShippingInfoAttributes
      * @var string
      */
     protected $shipping_country;
+
+    /**
+     * Builds an array list with all Params
+     *
+     * @return array
+     */
+    protected function getShippingAddressParamsStructure()
+    {
+        return [
+            'first_name' => $this->shipping_first_name,
+            'last_name'  => $this->shipping_last_name,
+            'address1'   => $this->shipping_address1,
+            'address2'   => $this->shipping_address2,
+            'zip_code'   => $this->shipping_zip_code,
+            'city'       => $this->shipping_city,
+            'state'      => $this->shipping_state,
+            'country'    => $this->shipping_country
+        ];
+    }
 }

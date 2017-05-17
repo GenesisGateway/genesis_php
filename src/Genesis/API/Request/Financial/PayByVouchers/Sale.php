@@ -23,11 +23,14 @@
 
 namespace Genesis\API\Request\Financial\PayByVouchers;
 
+use Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes;
+use Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes;
 use Genesis\API\Traits\Request\Financial\VoucherAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\Utils\Currency;
 
 /**
  * Class Sale
@@ -69,6 +72,17 @@ class Sale extends \Genesis\API\Request\Base\Financial
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldValues = array_merge(
+            [
+                'card_type'   => CardTypes::getCardTypes(),
+                'redeem_type' => RedeemTypes::getRedeemTypes(),
+                'currency'    => Currency::getList()
+            ],
+            $this->getCCFieldValueFormatValidators()
+        );
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 
     /**
@@ -90,30 +104,9 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'customer_email'            => $this->customer_email,
             'customer_phone'            => $this->customer_phone,
             'birth_date'                => $this->birth_date,
-            'billing_address'           => [
-                'first_name' => $this->billing_first_name,
-                'last_name'  => $this->billing_last_name,
-                'address1'   => $this->billing_address1,
-                'address2'   => $this->billing_address2,
-                'zip_code'   => $this->billing_zip_code,
-                'city'       => $this->billing_city,
-                'state'      => $this->billing_state,
-                'country'    => $this->billing_country
-            ],
-            'shipping_address'          => [
-                'first_name' => $this->shipping_first_name,
-                'last_name'  => $this->shipping_last_name,
-                'address1'   => $this->shipping_address1,
-                'address2'   => $this->shipping_address2,
-                'zip_code'   => $this->shipping_zip_code,
-                'city'       => $this->shipping_city,
-                'state'      => $this->shipping_state,
-                'country'    => $this->shipping_country
-            ],
-            'dynamic_descriptor_params' => [
-                'merchant_name' => $this->dynamic_merchant_name,
-                'merchant_city' => $this->dynamic_merchant_city
-            ]
+            'billing_address'           => $this->getBillingAddressParamsStructure(),
+            'shipping_address'          => $this->getShippingAddressParamsStructure(),
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
         ];
     }
 }

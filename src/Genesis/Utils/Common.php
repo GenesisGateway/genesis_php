@@ -197,6 +197,79 @@ final class Common
     }
 
     /**
+     * Makes a copy of an array
+     *
+     * @param array $arr
+     * @return array|null
+     */
+    public static function copyArray($arr)
+    {
+        if (!self::isValidArray($arr)) {
+            return null;
+        }
+
+        return array_merge([], $arr);
+    }
+
+    /**
+     * Sorts an array by value and returns a new instance
+     *
+     * @param array $arr
+     * @return array
+     */
+    public static function getSortedArrayByValue($arr)
+    {
+        $duplicate = self::copyArray($arr);
+
+        if ($duplicate === null) {
+            return null;
+        }
+
+        asort($duplicate);
+
+        return $duplicate;
+    }
+
+    /**
+     * Appends items to an ArrayObject by key
+     *
+     * @param \ArrayObject $arrObj
+     * @param string $key
+     * @param array $values
+     * @return \ArrayObject|null
+     */
+    public static function appendItemsToArrayObj(&$arrObj, $key, $values)
+    {
+        if (! $arrObj instanceof \ArrayObject) {
+            return null;
+        }
+
+        $arr = $arrObj->getArrayCopy();
+
+        $commonArrKeyValues =
+            Common::isArrayKeyExists($key, $arr)
+                ? $arr[$key]
+                : [];
+
+        $arr[$key] = array_merge($commonArrKeyValues, $values);
+
+        return $arrObj = self::createArrayObject($arr);
+    }
+
+    /**
+     * @param array $arr
+     * @return array
+     */
+    public static function getArrayKeys($arr)
+    {
+        if (self::isValidArray($arr)) {
+            return array_keys($arr);
+        }
+
+        return [];
+    }
+
+    /**
      * Check if the passed argument is a valid XML tag name
      *
      * @param string $tag
@@ -320,5 +393,14 @@ final class Common
         $reflection = new \ReflectionClass($className);
 
         return $reflection->getConstants();
+    }
+
+    /**
+     * @param string $pattern
+     * @return bool
+     */
+    public static function isRegexExpr($pattern)
+    {
+        return @preg_match($pattern, null) !== false;
     }
 }

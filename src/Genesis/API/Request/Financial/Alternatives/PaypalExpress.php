@@ -48,6 +48,8 @@ class PaypalExpress extends \Genesis\API\Request\Base\Financial\Alternative
      */
     protected function setRequiredFields()
     {
+        parent::setRequiredFields();
+
         $requiredFields = [
             'transaction_id',
             'amount',

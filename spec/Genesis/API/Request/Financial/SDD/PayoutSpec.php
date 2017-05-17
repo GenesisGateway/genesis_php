@@ -65,7 +65,11 @@ class PayoutSpec extends ObjectBehavior
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
-        $this->setCurrency('EUR');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
@@ -88,7 +92,7 @@ class PayoutSpec extends ObjectBehavior
 
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('BG');
     }
 
     protected function setRequestParameters()

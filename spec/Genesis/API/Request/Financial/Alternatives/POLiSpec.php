@@ -30,6 +30,20 @@ class POLiSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('US');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('USD');
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -45,7 +59,7 @@ class POLiSpec extends ObjectBehavior
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
-        $this->setCurrency('USD');
+        $this->setCurrency('AUD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
@@ -53,7 +67,7 @@ class POLiSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
 
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('AU');
     }
 
     public function getMatchers()

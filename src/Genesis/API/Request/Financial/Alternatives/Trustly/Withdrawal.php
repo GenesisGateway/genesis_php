@@ -48,6 +48,8 @@ class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sal
      */
     protected function setRequiredFields()
     {
+        parent::setRequiredFields();
+
         $requiredFields = [
             'transaction_id',
             'remote_ip',

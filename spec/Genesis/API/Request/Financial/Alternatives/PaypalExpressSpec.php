@@ -51,7 +51,11 @@ class PaypalExpressSpec extends ObjectBehavior
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
@@ -61,7 +65,11 @@ class PaypalExpressSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry(
+            $faker->randomElement(
+                \Genesis\Utils\Country::getList()
+            )
+        );
     }
 
     public function getMatchers()

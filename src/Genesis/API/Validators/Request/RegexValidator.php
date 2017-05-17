@@ -20,51 +20,60 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Transaction\Parameters\PayByVouchers;
+
+namespace Genesis\API\Validators\Request;
+
+use Genesis\Utils\Common as CommonUtils;
 
 /**
- * Class CardTypes
- *
- * CardTypes of PayByVouchers Genesis Transaction
- *
- * @package Genesis\API\Constants\Transaction\Parameters\PayByVouchers
- *
+ * Class RegexValidator
+ * @package Genesis\API\Validators\Request
  */
-class CardTypes
+class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
 {
     /**
-     * The type of the issued card will be virtual
+     * CC Regex Validation Patterns
      */
-    const VIRTUAL = 'virtual';
+    const PATTERN_CREDIT_CARD_HOLDER    = '/^[\p{L}\'\-,.]+[ ]+[\p{L}\'\-,. ]+$/u';
+    const PATTERN_CREDIT_CARD_NUMBER    = '/\A[0-9]{13,19}\Z/';
+    const PATTERN_CREDIT_CARD_CVV       = '/\A[0-9]{3,4}\Z/';
+    const PATTERN_CREDIT_CART_EXP_MONTH = '/^(0?[1-9]|1[012])$/';
+    const PATTERN_CREDIT_CART_EXP_YEAR  = '/^(20)\d{2}$/';
 
     /**
-     * The type of the issued card will be physical
-     */
-    const PHYSICAL = 'physical';
-
-    /**
-     * Check if a card type is supported
+     * Regex expression
      *
-     * @param $cardType
-     * @return string
+     * @var string
      */
-    public static function isValidCardType($cardType)
-    {
-        if (@constant('self::' . strtoupper($cardType))) {
-            return true;
-        }
+    protected $pattern;
 
-        return false;
+    /**
+     * RegexValidator constructor.
+     *
+     * @param string $pattern
+     * @param null|string $message
+     */
+    public function __construct($pattern, $message = null)
+    {
+        parent::__construct($message);
+
+        $this->pattern = $pattern;
     }
 
     /**
-     * Returns all available Card Types
-     * @return array
+     * Execute field name validation
+     *
+     * @return bool
      */
-    public static function getCardTypes()
+    protected function validate()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+        if (!CommonUtils::isRegexExpr($this->pattern)) {
+            return false;
+        }
 
-        return array_values($methods);
+        return (bool) preg_match(
+            $this->pattern,
+            $this->getRequestValue()
+        );
     }
 }

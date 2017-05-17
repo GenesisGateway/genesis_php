@@ -40,4 +40,20 @@ class Payout extends \Genesis\API\Request\Financial\OnlineBankingPayments\iDebit
     {
         return \Genesis\API\Constants\Transaction\Types::INSTA_DEBIT_PAYOUT;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'currency' => ['CAD', 'USD']
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }

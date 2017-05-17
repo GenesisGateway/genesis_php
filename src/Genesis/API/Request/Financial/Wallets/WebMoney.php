@@ -105,6 +105,13 @@ class WebMoney extends \Genesis\API\Request\Base\Financial
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
+        $requiredFieldValues = [
+            'billing_country' => \Genesis\Utils\Country::getList(),
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        
         $requiredFieldsConditional = [
             'is_payout' => [
                 true => [
@@ -131,26 +138,8 @@ class WebMoney extends \Genesis\API\Request\Base\Financial
             'customer_account_id' => $this->customer_account_id,
             'customer_email'      => $this->customer_email,
             'customer_phone'      => $this->customer_phone,
-            'billing_address'     => [
-                'first_name' => $this->billing_first_name,
-                'last_name'  => $this->billing_last_name,
-                'address1'   => $this->billing_address1,
-                'address2'   => $this->billing_address2,
-                'zip_code'   => $this->billing_zip_code,
-                'city'       => $this->billing_city,
-                'state'      => $this->billing_state,
-                'country'    => $this->billing_country
-            ],
-            'shipping_address'    => [
-                'first_name' => $this->shipping_first_name,
-                'last_name'  => $this->shipping_last_name,
-                'address1'   => $this->shipping_address1,
-                'address2'   => $this->shipping_address2,
-                'zip_code'   => $this->shipping_zip_code,
-                'city'       => $this->shipping_city,
-                'state'      => $this->shipping_state,
-                'country'    => $this->shipping_country
-            ]
+            'billing_address'     => $this->getBillingAddressParamsStructure(),
+            'shipping_address'    => $this->getShippingAddressParamsStructure()
         ];
     }
 }

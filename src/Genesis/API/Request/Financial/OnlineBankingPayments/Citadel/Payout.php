@@ -161,6 +161,17 @@ class Payout extends \Genesis\API\Request\Base\Financial
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
+        $requiredFieldValues = [
+            'billing_country' => [
+                'АЕ', 'AT', 'AU', 'BE', 'BG', 'CA', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES',
+                'FI', 'FR', 'GB', 'GF', 'GP', 'GR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV',
+                'MC', 'MQ', 'MT', 'MX', 'NL', 'PL', 'PT', 'RE', 'SE', 'SI', 'SK'
+            ],
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+
         $this->setRequiredFieldsConditional();
     }
 
@@ -236,26 +247,8 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'bank_code'          => $this->bank_code,
             'branch_code'        => $this->branch_code,
             'branch_check_digit' => $this->branch_check_digit,
-            'billing_address'    => [
-                'first_name' => $this->billing_first_name,
-                'last_name'  => $this->billing_last_name,
-                'address1'   => $this->billing_address1,
-                'address2'   => $this->billing_address2,
-                'zip_code'   => $this->billing_zip_code,
-                'city'       => $this->billing_city,
-                'state'      => $this->billing_state,
-                'country'    => $this->billing_country
-            ],
-            'shipping_address'   => [
-                'first_name' => $this->shipping_first_name,
-                'last_name'  => $this->shipping_last_name,
-                'address1'   => $this->shipping_address1,
-                'address2'   => $this->shipping_address2,
-                'zip_code'   => $this->shipping_zip_code,
-                'city'       => $this->shipping_city,
-                'state'      => $this->shipping_state,
-                'country'    => $this->shipping_country
-            ]
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];
     }
 }

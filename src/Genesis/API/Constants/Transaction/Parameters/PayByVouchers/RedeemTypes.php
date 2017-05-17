@@ -64,9 +64,8 @@ class RedeemTypes
      */
     public static function getRedeemTypes()
     {
-        return [
-            self::STORED,
-            self::INSTANT
-        ];
+        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+
+        return array_values($methods);
     }
 }

@@ -73,7 +73,7 @@ class PayinSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnUrl($faker->url);
         $this->setCustomerAccountId($faker->userName);
-        $this->setCurrency('USD');
+        $this->setCurrency('CAD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
@@ -81,7 +81,7 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('CA');
     }
 
     public function getMatchers()

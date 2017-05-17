@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\Citadel;
 
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 
 class PayoutSpec extends ObjectBehavior
@@ -41,6 +42,13 @@ class PayoutSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setBillingCountry(null);
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('NR');
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
     public function it_should_fail_when_missing_holder_name_parameter()
@@ -85,7 +93,11 @@ class PayoutSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setHolderName($faker->name);
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setBillingCountry('DE');

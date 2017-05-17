@@ -37,6 +37,20 @@ class CashUSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('LT');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('GBP');
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -63,7 +77,7 @@ class CashUSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('US');
     }
 
     public function getMatchers()

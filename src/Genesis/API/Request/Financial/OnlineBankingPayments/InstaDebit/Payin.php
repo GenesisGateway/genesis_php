@@ -40,4 +40,21 @@ class Payin extends \Genesis\API\Request\Financial\OnlineBankingPayments\iDebit\
     {
         return \Genesis\API\Constants\Transaction\Types::INSTA_DEBIT_PAYIN;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'billing_country' => ['CA'],
+            'currency'        => ['CAD', 'USD']
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }

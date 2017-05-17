@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\Citadel;
 
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 
 class PayinSpec extends ObjectBehavior
@@ -57,6 +58,13 @@ class PayinSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('RU');
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
     public function it_should_fail_when_missing_notification_url_parameter()
     {
         $this->setRequestParameters();
@@ -95,7 +103,11 @@ class PayinSpec extends ObjectBehavior
         $this->setReturnFailureUrl($faker->url);
         $this->setNotificationUrl($faker->url);
         $this->setMerchantCustomerId($faker->uuid);
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setBillingFirstName($faker->firstName);
@@ -104,7 +116,7 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('DE');
     }
 
     public function getMatchers()

@@ -30,6 +30,72 @@ class AuthorizeSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_cc_holder_last_name_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCardHolder('First');
+
+        $this->shouldThrow(
+            $this->getExpectedFieldValueException('card_holder')
+        )->during('getDocument');
+    }
+
+    public function it_should_fail_when_invalid_cc_holder_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCardHolder('First$% Last');
+
+        $this->shouldThrow(
+            $this->getExpectedFieldValueException('card_holder')
+        )->during('getDocument');
+    }
+
+    public function it_can_set_cc_holder_parameter_with_special_chars()
+    {
+        $this->setRequestParameters();
+        $this->setCardHolder('Müller O\'Conner');
+
+        $this->getDocument()->shouldNotBeEmpty();
+    }
+
+    public function it_should_fail_when_invalid_credit_card_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCardNumber('47123');
+
+        $this->shouldThrow(
+            $this->getExpectedFieldValueException('card_number')
+        )->during('getDocument');
+    }
+
+    public function it_should_fail_when_invalid_cc_exp_month_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setExpirationMonth('13');
+
+        $this->shouldThrow(
+            $this->getExpectedFieldValueException('expiration_month')
+        )->during('getDocument');
+    }
+
+    public function it_should_fail_when_invalid_cc_exp_year_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setExpirationYear('201');
+
+        $this->shouldThrow(
+            $this->getExpectedFieldValueException('expiration_year')
+        )->during('getDocument');
+    }
+
+    public function it_should_fail_when_unsupported_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('ABC');
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -41,7 +107,11 @@ class AuthorizeSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
@@ -59,6 +129,13 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry($faker->countryCode);
+    }
+
+    protected function getExpectedFieldValueException($field)
+    {
+        return new \Genesis\Exceptions\InvalidArgument(
+            "Please check input data for errors. '{$field}' has invalid format"
+        );
     }
 
     public function getMatchers()
