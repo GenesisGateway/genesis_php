@@ -43,6 +43,13 @@ class WithdrawalSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_wrong_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('JP');
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_fail_when_missing_customer_email_parameter()
     {
         $this->setRequestParameters();
@@ -73,7 +80,7 @@ class WithdrawalSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('USD');
+        $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
@@ -84,7 +91,7 @@ class WithdrawalSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBirthDate($faker->date('d-m-Y'));
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('DE');
     }
 
     public function getMatchers()

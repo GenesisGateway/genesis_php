@@ -1153,4 +1153,14 @@ final class Currency
 
         return strval($amount);
     }
+
+    /**
+     * Retrieves a list with all supported currencies
+     *
+     * @return array
+     */
+    public static function getList()
+    {
+        return \Genesis\Utils\Common::getArrayKeys(self::$iso4217);
+    }
 }

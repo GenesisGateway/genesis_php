@@ -56,6 +56,12 @@ abstract class Reference extends \Genesis\API\Request\Base\Financial
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldValues = [
+            'currency' => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 
     /**

@@ -189,6 +189,7 @@ Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
 Financial\Alternatives\Trustly\Sale
 Financial\Alternatives\Trustly\Withdrawal
+Financial\Alternatives\PaypalExpress
 
 // PayByVouchers transactions
 Financial\PayByVouchers\oBeP
@@ -211,6 +212,14 @@ Financial\SDD\Payout
 Financial\SDD\Refund
 Financial\SDD\Recurring\InitRecurringSale
 Financial\SDD\Recurring\RecurringSale
+
+//Online Banking Payments
+Financial\OnlineBankingPayments\Citadel\Payin
+Financial\OnlineBankingPayments\Citadel\Payout
+Financial\OnlineBankingPayments\InstaDebit\Payin
+Financial\OnlineBankingPayments\InstaDebit\Payout
+Financial\OnlineBankingPayments\iDebit\Payin
+Financial\OnlineBankingPayments\iDebit\Payout
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet

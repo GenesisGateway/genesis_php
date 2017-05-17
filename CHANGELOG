@@ -1,3 +1,24 @@
+1.7.0
+-----
+* Added Support for new Transaction Types
+    - Added API for iDebit
+    - Added API for InstaDebit
+    - Added API for PayPal Express
+    - Added API for Citadel
+* Added Payment Methods to PPRO
+    - Mr.Cash
+    - MyBank
+* Extended Validations to API Requests for:
+    - Credit Card
+    - Required Field Values
+    - Conditionally required fields
+    - Supported Countries & Currencies for:
+        - APMs
+        - Wallets
+        - oBeP
+        - SDD
+* Internal Refactoring
+
 1.6.0
 -----
 * Restructured Financial API Requests

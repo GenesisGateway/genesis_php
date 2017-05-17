@@ -20,7 +20,11 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API;
+
+use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Request
@@ -61,6 +65,13 @@ abstract class Request
      * @var \ArrayObject
      */
     protected $requiredFields;
+
+    /**
+     * Store the names of the field values that are Required
+     *
+     * @var \ArrayObject
+     */
+    protected $requiredFieldValues;
 
     /**
      * Store the names of "conditionally" Required fields.
@@ -115,7 +126,7 @@ abstract class Request
      */
     public function __call($method, $args)
     {
-        list($action, $target) = \Genesis\Utils\Common::resolveDynamicMethod($method);
+        list($action, $target) = CommonUtils::resolveDynamicMethod($method);
 
         switch ($action) {
             case 'get':
@@ -185,7 +196,7 @@ abstract class Request
     {
         if ($this->treeStructure instanceof \ArrayObject) {
             $this->treeStructure->exchangeArray(
-                \Genesis\Utils\Common::emptyValueRecursiveRemoval(
+                CommonUtils::emptyValueRecursiveRemoval(
                     $this->treeStructure->getArrayCopy()
                 )
             );
@@ -201,6 +212,8 @@ abstract class Request
     protected function checkRequirements()
     {
         $this->verifyFieldRequirements();
+
+        $this->verifyFieldValuesRequirements();
 
         $this->verifyGroupRequirements();
 
@@ -227,6 +240,57 @@ abstract class Request
                         sprintf('Empty (null) required parameter: %s', $fieldName)
                     );
                 }
+            }
+        }
+    }
+
+    /**
+     * Verify that all required fields are populated with expected values
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyFieldValuesRequirements()
+    {
+        if (!isset($this->requiredFieldValues)) {
+            return;
+        }
+
+        $iterator = $this->requiredFieldValues->getArrayCopy();
+
+        foreach ($iterator as $fieldName => $validator) {
+            if ($validator instanceof RequestValidator) {
+                $validator->run($this, $fieldName);
+
+                continue;
+            }
+
+            if (CommonUtils::isValidArray($validator)) {
+                if (!in_array($this->$fieldName, $validator)) {
+                    throw new \Genesis\Exceptions\ErrorParameter(
+                        sprintf(
+                            'Required parameter %s is set to %s, but expected to be one of (%s)',
+                            $fieldName,
+                            $this->$fieldName,
+                            implode(
+                                ', ',
+                                CommonUtils::getSortedArrayByValue($validator)
+                            )
+                        )
+                    );
+                }
+
+                continue;
+            }
+
+            if ($this->$fieldName !== $validator) {
+                throw new \Genesis\Exceptions\ErrorParameter(
+                    sprintf(
+                        'Required parameter %s is set to %s, but expected to be %s',
+                        $fieldName,
+                        $this->$fieldName,
+                        $validator
+                    )
+                );
             }
         }
     }
@@ -366,7 +430,7 @@ abstract class Request
      */
     protected function transform($method, $args, $prefix = 'transform')
     {
-        $method = $prefix . \Genesis\Utils\Common::snakeCaseToCamelCase($method);
+        $method = $prefix . CommonUtils::snakeCaseToCamelCase($method);
 
         if (method_exists($this, $method)) {
             $result = call_user_func_array([$this, $method], $args);
@@ -466,7 +530,7 @@ abstract class Request
      */
     protected function initXmlConfiguration()
     {
-        $this->config = \Genesis\Utils\Common::createArrayObject(
+        $this->config = CommonUtils::createArrayObject(
             [
                 'protocol' => 'https',
                 'port'     => 443,

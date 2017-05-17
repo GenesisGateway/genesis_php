@@ -40,4 +40,25 @@ class P24 extends \Genesis\API\Request\Base\Financial\Alternative
     {
         return \Genesis\API\Constants\Transaction\Types::P24;
     }
+
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        $requiredFieldValues = [
+            'billing_country' => [
+                'AD', 'AT', 'BE', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'EL', 'ES', 'NL',
+                'IE', 'IS', 'LT', 'LV', 'LU', 'MT', 'DE', 'NO', 'PL', 'PT', 'SM', 'SK',
+                'SI', 'CH', 'SE', 'HU', 'GB', 'IT', 'US', 'CA', 'JP', 'UA', 'BY', 'RU'
+            ],
+            'currency'        => \Genesis\Utils\Currency::getList()
+        ];
+
+        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
 }

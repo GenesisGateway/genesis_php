@@ -56,4 +56,18 @@ trait MpiAttributes
      * @var string
      */
     protected $mpi_xid;
+
+    /**
+     * Builds an array list with all Params
+     *
+     * @return array
+     */
+    protected function getMpiParamsStructure()
+    {
+        return [
+            'cavv' => $this->mpi_cavv,
+            'eci'  => $this->mpi_eci,
+            'xid'  => $this->mpi_xid,
+        ];
+    }
 }

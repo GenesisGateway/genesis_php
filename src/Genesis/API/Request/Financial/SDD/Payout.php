@@ -22,6 +22,8 @@
  */
 namespace Genesis\API\Request\Financial\SDD;
 
+use Genesis\Utils\Common as CommonUtils;
+
 /**
  * Class Payout
  *
@@ -31,6 +33,22 @@ namespace Genesis\API\Request\Financial\SDD;
  */
 class Payout extends \Genesis\API\Request\Financial\SDD\Sale
 {
+    /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        parent::setRequiredFields();
+
+        CommonUtils::appendItemsToArrayObj(
+            $this->requiredFieldValues,
+            'billing_country',
+            ['BG', 'HR', 'CZ', 'DK', 'UK', 'HU', 'IS', 'LI', 'NO', 'PL', 'RO', 'SE', 'CH']
+        );
+    }
+
     /**
      * Returns the Request transaction type
      * @return string

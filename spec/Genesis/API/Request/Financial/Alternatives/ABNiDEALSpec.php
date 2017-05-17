@@ -44,6 +44,21 @@ class ABNiDEALSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_unsupported_billing_country_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('ZZ');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_unsupported_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('ABC');
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -59,14 +74,23 @@ class ABNiDEALSpec extends ObjectBehavior
         $this->setUsage('Genesis Automated PHP Request');
         $this->setRemoteIp($faker->ipv4);
 
-        $this->setCurrency('USD');
+        $this->setCurrency(
+            $faker->randomElement(
+                \Genesis\Utils\Currency::getList()
+            )
+        );
+
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
 
         $this->setCustomerBankId($faker->uuid);
 
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry(
+            $faker->randomElement(
+                \Genesis\Utils\Country::getList()
+            )
+        );
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);

@@ -48,4 +48,17 @@ trait DescriptorAttributes
      * @var string
      */
     protected $dynamic_merchant_city;
+
+    /**
+     * Builds an array list with all Params
+     *
+     * @return array
+     */
+    protected function getDynamicDescriptorParamsStructure()
+    {
+        return [
+            'merchant_name' => $this->dynamic_merchant_name,
+            'merchant_city' => $this->dynamic_merchant_city
+        ];
+    }
 }

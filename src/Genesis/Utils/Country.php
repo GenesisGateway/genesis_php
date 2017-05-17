@@ -311,4 +311,14 @@ final class Country
     {
         return array_search(strtolower($country_name), array_map('strtolower', self::$countries));
     }
+
+    /**
+     * Retrieves a list with all supported countries
+     *
+     * @return array
+     */
+    public static function getList()
+    {
+        return \Genesis\Utils\Common::getArrayKeys(self::$countries);
+    }
 }

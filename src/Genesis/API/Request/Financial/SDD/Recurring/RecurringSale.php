@@ -48,6 +48,8 @@ class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
      */
     protected function setRequiredFields()
     {
+        parent::setRequiredFields();
+
         $requiredFields = [
             'transaction_id',
             'reference_id',
