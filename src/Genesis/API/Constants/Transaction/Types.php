@@ -273,6 +273,13 @@ class Types
     const CITADEL_PAYOUT = 'citadel_payout';
 
     /**
+     * Earthport’s service supports payouts from e-commerce companies. The workflow is synchronous, there
+     * is no redirect to the Earthport’s website. There are different required fields per country, e.g. IBAN
+     * or Account Number.
+     */
+    const EARTHPORT = 'earthport';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
