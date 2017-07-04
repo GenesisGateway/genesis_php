@@ -20,7 +20,7 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\Financial\SDD;
+namespace Genesis\API\Request\Financial\SCT;
 
 use Genesis\Utils\Common as CommonUtils;
 
@@ -29,7 +29,7 @@ use Genesis\Utils\Common as CommonUtils;
  *
  * SDD Payout Transactions
  *
- * @package Genesis\API\Request\Financial\SDD
+ * @package Genesis\API\Request\Financial\SCT
  */
 class Payout extends \Genesis\API\Request\Financial\SDD\Sale
 {
@@ -55,6 +55,6 @@ class Payout extends \Genesis\API\Request\Financial\SDD\Sale
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::SDD_PAYOUT;
+        return \Genesis\API\Constants\Transaction\Types::SCT_PAYOUT;
     }
 }

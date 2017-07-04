@@ -197,7 +197,7 @@ class Types
      * Processed as a SEPA CreditTransfer and can be used for all kind of payout services
      * across the EU with 1 day settlement. Suitable for Gaming, Forex-Binaries, Affiliate Programs or Merchant payouts
      */
-    const SDD_PAYOUT = 'sdd_payout';
+    const SCT_PAYOUT = 'sct_payout';
 
     /**
      * Sepa Direct Debit Refund Transaction.
