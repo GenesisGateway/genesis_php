@@ -280,6 +280,13 @@ class Types
     const EARTHPORT = 'earthport';
 
     /**
+     * Alipay is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
+     * After initiating a transaction Alipay will redirect you to their page. There you will see a picture of a QR code,
+     * which you will have to scan with your Alipay mobile application.
+     */
+    const ALIPAY = 'alipay';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
