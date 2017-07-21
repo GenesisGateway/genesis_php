@@ -62,7 +62,8 @@
     "citadel_payout",
     "tc40",
     "fraud",
-    "chargeback"
+    "chargeback",
+    "wechat"
   ],
   "require": {
     "php": ">=5.5.9",

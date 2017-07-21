@@ -216,6 +216,7 @@ Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
 Financial\OnlineBankingPayments\iDebit\Payin
 Financial\OnlineBankingPayments\iDebit\Payout
+Financial\OnlineBankingPayments\WeChat
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet

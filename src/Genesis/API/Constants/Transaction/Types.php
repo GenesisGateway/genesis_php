@@ -287,6 +287,12 @@ class Types
     const ALIPAY = 'alipay';
 
     /**
+     * WeChat Pay solution offers merchants access to the over 300 million WeChat users that have linked payment
+     * to their WeChat account. The solution works on desktop and mobile via a QR code generation platform.
+     */
+    const WECHAT = 'wechat';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
