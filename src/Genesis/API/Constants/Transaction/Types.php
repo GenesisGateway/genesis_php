@@ -293,6 +293,19 @@ class Types
     const WECHAT = 'wechat';
 
     /**
+     * PaySec is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
+     * After initiating a transaction PaySec will redirect you to their page. There you will find a list with
+     * available banks to finish the payment.
+     */
+    const PAYSEC_PAYIN = 'paysec';
+
+    /**
+     * PaySec Payout is an oBeP-style alternative payment method that allows you to transfer money with your ebank
+     * account.
+     */
+    const PAYSEC_PAYOUT = 'paysec_payout';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type

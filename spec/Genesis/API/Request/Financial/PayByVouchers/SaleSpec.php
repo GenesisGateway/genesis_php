@@ -11,7 +11,7 @@ class SaleSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Genesis\API\Request\Financial\PayByVouchers\Sale');
     }
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
