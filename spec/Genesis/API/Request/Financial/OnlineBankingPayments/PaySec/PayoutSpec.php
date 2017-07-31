@@ -37,13 +37,6 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_notification_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setNotificationUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
     public function it_should_fail_when_missing_return_success_url_param()
     {
         $this->setRequestParameters();
@@ -146,6 +139,19 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_incorrect_bank_account_number_for_CNY_param()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('CNY');
+        $this->setBankAccountNumber($this->generateBankAccountNumber(15));
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    private function generateBankAccountNumber ($length = 19)
+    {
+        return substr(str_shuffle(str_repeat('0123456789', 5)), 1, $length);
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -161,12 +167,13 @@ class PayoutSpec extends ObjectBehavior
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setNotificationUrl($faker->url);
         $this->setRemoteIp($faker->ipv4);
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency('IDR');
+        $this->setCurrency($faker->randomElement([
+            'CNY', 'THB', 'IDR'
+        ]));
         $this->setBankAccountName($faker->name);
-        $this->setBankAccountNumber(1234567890123456789); // it has to be exactly 19 numbers
+        $this->setBankAccountNumber($this->generateBankAccountNumber()); // Bank account number should be exactly 19 digits
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingState($faker->state);

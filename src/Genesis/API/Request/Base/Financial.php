@@ -24,6 +24,7 @@
 namespace Genesis\API\Request\Base;
 
 use Genesis\API\Traits\Request\BaseAttributes;
+use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -112,6 +113,16 @@ abstract class Financial extends \Genesis\API\Request
                     $childFieldValuesValidated = true;
 
                     foreach ($childFieldDependency as $childFieldName => $childFieldValues) {
+                        if ($childFieldValues instanceof RequestValidator) {
+                            try {
+                                $childFieldValues->run($this, $childFieldName);
+                            } catch (\Genesis\Exceptions\InvalidArgument $e) {
+                                $childFieldValuesValidated = false;
+                            }
+
+                            continue;
+                        }
+
                         if (CommonUtils::isValidArray($childFieldValues)) {
                             if (!in_array($this->$childFieldName, $childFieldValues)) {
                                 $childFieldValuesValidated = false;

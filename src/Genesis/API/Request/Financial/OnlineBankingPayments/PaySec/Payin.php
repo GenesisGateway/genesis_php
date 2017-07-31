@@ -25,7 +25,6 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
-use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 
 /**
@@ -38,7 +37,7 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  */
 class Payin extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, NotificationAttributes, PaymentAttributes, AddressInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
 
     /**
      * Returns the Request transaction type
@@ -85,7 +84,6 @@ class Payin extends \Genesis\API\Request\Base\Financial
      */
     protected function setRequiredFieldsConditional()
     {
-
         $requiredFieldsConditional = [
             'billing_country' => [
                 'US' => ['billing_state'],

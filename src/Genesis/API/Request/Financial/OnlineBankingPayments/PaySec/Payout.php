@@ -25,7 +25,6 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
-use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Validators\Request\RegexValidator;
 
@@ -44,7 +43,7 @@ use Genesis\API\Validators\Request\RegexValidator;
  */
 class Payout extends \Genesis\API\Request\Base\Financial
 {
-    use AddressInfoAttributes, AsyncAttributes, NotificationAttributes, PaymentAttributes;
+    use AddressInfoAttributes, AsyncAttributes, PaymentAttributes;
 
     /**
      * Customer’s bank account name
@@ -104,7 +103,6 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'return_success_url',
             'return_failure_url',
             'remote_ip',
-            'notification_url',
             'bank_account_name',
             'bank_account_number',
             'billing_first_name',
@@ -118,8 +116,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
         $requiredFieldValues = [
             'currency' => [
                 'CNY', 'THB', 'IDR'
-            ],
-            'bank_account_number' => new RegexValidator('/^[0-9]{19}$/')
+            ]
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -143,6 +140,18 @@ class Payout extends \Genesis\API\Request\Base\Financial
         ];
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+
+        $requiredFieldValuesConditional = [
+            'currency' => [
+                'CNY' => [
+                    [
+                        'bank_account_number' => new RegexValidator('/^[0-9]{19}$/')
+                    ]
+                ]
+            ]
+        ];
+
+        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldValuesConditional);
     }
 
     /**
@@ -157,7 +166,6 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'customer_email'      => $this->customer_email,
             'customer_phone'      => $this->customer_phone,
             'return_success_url'  => $this->return_success_url,
-            'notification_url'    => $this->notification_url,
             'return_failure_url'  => $this->return_failure_url,
             'bank_code'           => $this->bank_code,
             'bank_name'           => $this->bank_name,
