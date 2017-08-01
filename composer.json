@@ -21,6 +21,8 @@
     "refund",
     "void",
     "3d-secure",
+    "alipay",
+    "earthport",
     "neteller",
     "ezeewallet",
     "paybyvouchers",
