@@ -12,7 +12,7 @@ class Authorize3DSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Authorize3D');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

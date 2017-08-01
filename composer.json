@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "license": "MIT",
   "keywords": [
     "genesis",
@@ -21,6 +21,8 @@
     "refund",
     "void",
     "3d-secure",
+    "alipay",
+    "earthport",
     "neteller",
     "ezeewallet",
     "paybyvouchers",
@@ -33,6 +35,7 @@
     "p24",
     "paypal",
     "paypal_express",
+    "paysec",
     "trustly",
     "trustly_sale",
     "trustly_withdrawal",
@@ -48,7 +51,7 @@
     "webmoney",
     "poli",
     "sdd",
-    "sdd_payout",
+    "sct_payout",
     "sdd_refund",
     "sdd_recurring",
     "idebit",
@@ -62,7 +65,8 @@
     "citadel_payout",
     "tc40",
     "fraud",
-    "chargeback"
+    "chargeback",
+    "wechat"
   ],
   "require": {
     "php": ">=5.5.9",

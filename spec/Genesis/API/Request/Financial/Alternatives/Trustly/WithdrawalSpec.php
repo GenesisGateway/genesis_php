@@ -11,7 +11,7 @@ class WithdrawalSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Trustly\Withdrawal');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

@@ -197,7 +197,7 @@ class Types
      * Processed as a SEPA CreditTransfer and can be used for all kind of payout services
      * across the EU with 1 day settlement. Suitable for Gaming, Forex-Binaries, Affiliate Programs or Merchant payouts
      */
-    const SDD_PAYOUT = 'sdd_payout';
+    const SCT_PAYOUT = 'sct_payout';
 
     /**
      * Sepa Direct Debit Refund Transaction.
@@ -273,6 +273,39 @@ class Types
     const CITADEL_PAYOUT = 'citadel_payout';
 
     /**
+     * Earthport’s service supports payouts from e-commerce companies. The workflow is synchronous, there
+     * is no redirect to the Earthport’s website. There are different required fields per country, e.g. IBAN
+     * or Account Number.
+     */
+    const EARTHPORT = 'earthport';
+
+    /**
+     * Alipay is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
+     * After initiating a transaction Alipay will redirect you to their page. There you will see a picture of a QR code,
+     * which you will have to scan with your Alipay mobile application.
+     */
+    const ALIPAY = 'alipay';
+
+    /**
+     * WeChat Pay solution offers merchants access to the over 300 million WeChat users that have linked payment
+     * to their WeChat account. The solution works on desktop and mobile via a QR code generation platform.
+     */
+    const WECHAT = 'wechat';
+
+    /**
+     * PaySec is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
+     * After initiating a transaction PaySec will redirect you to their page. There you will find a list with
+     * available banks to finish the payment.
+     */
+    const PAYSEC_PAYIN = 'paysec';
+
+    /**
+     * PaySec Payout is an oBeP-style alternative payment method that allows you to transfer money with your ebank
+     * account.
+     */
+    const PAYSEC_PAYOUT = 'paysec_payout';
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
@@ -283,6 +316,58 @@ class Types
         $transactionTypes = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
         return in_array(strtolower($type), $transactionTypes);
+    }
+
+    /**
+     * Get valid WPF transaction types
+     *
+     * @return array
+     */
+    public static function getWPFTransactionTypes()
+    {
+        return [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::SALE,
+            self::SALE_3D,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::CASHU,
+            self::PAYSAFECARD,
+            self::EZEEWALLET,
+            self::PAYBYVOUCHER_YEEPAY,
+            self::PPRO,
+            self::SOFORT,
+            self::NETELLER,
+            self::ABNIDEAL,
+            self::WEBMONEY,
+            self::POLI,
+            self::PAYBYVOUCHER_SALE,
+            self::INPAY,
+            self::SDD_SALE,
+            self::SDD_INIT_RECURRING_SALE,
+            self::P24,
+            self::TRUSTLY_SALE,
+            self::TRUSTLY_WITHDRAWAL,
+            self::PAYPAL_EXPRESS,
+            self::CITADEL_PAYIN,
+            self::INSTA_DEBIT_PAYIN,
+            self::WECHAT,
+            self::ALIPAY,
+            self::PAYSEC_PAYIN,
+            self::PAYSEC_PAYOUT
+        ];
+    }
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @param string $type
+     * @return bool
+     */
+    public static function isValidWPFTransactionType($type)
+    {
+        return in_array(strtolower($type), self::getWPFTransactionTypes());
     }
 
     /**
@@ -335,6 +420,19 @@ class Types
                 }
 
                 return $customParameters;
+                break;
+
+            case self::CITADEL_PAYIN:
+                return [
+                    'merchant_customer_id' => null
+                ];
+                break;
+
+            case self::INSTA_DEBIT_PAYIN:
+            case self::IDEBIT_PAYIN:
+                return [
+                    'customer_account_id' => null
+                ];
                 break;
 
             default:

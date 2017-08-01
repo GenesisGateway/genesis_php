@@ -14,7 +14,7 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\eZeeWallet');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

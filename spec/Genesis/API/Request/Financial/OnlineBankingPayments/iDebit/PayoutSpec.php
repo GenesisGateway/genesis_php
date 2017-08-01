@@ -11,7 +11,7 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\iDebit\Payout');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

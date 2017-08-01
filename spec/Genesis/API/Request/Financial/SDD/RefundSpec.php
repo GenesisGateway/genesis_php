@@ -12,7 +12,7 @@ class RefundSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\SDD\Refund');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

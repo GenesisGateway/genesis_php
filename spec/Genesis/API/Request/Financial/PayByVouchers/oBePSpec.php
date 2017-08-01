@@ -14,7 +14,7 @@ class oBePSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\PayByVouchers\oBeP');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

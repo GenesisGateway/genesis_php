@@ -1,3 +1,16 @@
+1.8.0
+-----
+* Added Support for new Transaction Types
+    - Alipay
+    - Earthport
+    - PaySec
+    - WeChat
+* Added mappings for deprecated API requests
+    - Created an alias Void for Cancel transaction
+* Extended WPF validations and specs
+* Internal Refactoring
+    - SDD Payout is renamed to SCT Payout
+
 1.7.0
 -----
 * Added Support for new Transaction Types

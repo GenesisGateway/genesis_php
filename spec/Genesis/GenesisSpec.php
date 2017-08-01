@@ -20,6 +20,13 @@ class GenesisSpec extends ObjectBehavior
         $this->request()->shouldHaveType('\Genesis\API\Request\NonFinancial\Blacklist');
     }
 
+    public function it_can_load_deprecated_request()
+    {
+        $this->beConstructedWith('Financial\Void');
+
+        $this->request()->shouldHaveType('\Genesis\API\Request\Financial\Cancel');
+    }
+
     public function it_can_set_request_property()
     {
         $this->beConstructedWith('NonFinancial\Blacklist');

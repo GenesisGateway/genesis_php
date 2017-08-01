@@ -12,7 +12,7 @@ class POLiSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\POLi');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

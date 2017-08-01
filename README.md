@@ -42,18 +42,15 @@ Getting Started
 <?php
 require 'vendor/autoload.php';
 
-// Use the Genesis Namespace
-use \Genesis;
-
 // Load the pre-configured ini file...
-Config::loadSettings('/path/to/config.ini');
+\Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-Config::setEndpoint('<set_your_endpoint>');
-Config::setEnvironment('<set_your_environment>');
-Config::setUsername('<enter_your_username>');
-Config::setPassword('<enter_your_password>');
-Config::setToken('<enter_your_token>');
+\Genesis\Config::setEndpoint('<set_your_endpoint>');
+\Genesis\Config::setEnvironment('<set_your_environment>');
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+\Genesis\Config::setToken('<enter_your_token>');
 
 // Create a new Genesis instance with desired API request
 $genesis = new \Genesis\Genesis('Financial\Cards\Authorize');
@@ -124,11 +121,8 @@ Example:
 <?php
 require 'vendor/autoload.php';
 
-// Use the Genesis Namespace
-use \Genesis;
-
 try {
-    $notification = new API\Notification($_POST);
+    $notification = new \Genesis\API\Notification($_POST);
 
     // Reconciliation is generally optional, but
     // its a recommended practice to ensure
@@ -181,6 +175,7 @@ Financial\Cancel
 // Alternative Payment Methods transactions
 Financial\Alternatives\ABNiDEAL
 Financial\Alternatives\CashU
+Financial\Alternatives\Earthport
 Financial\Alternatives\INPay
 Financial\Alternatives\P24
 Financial\Alternatives\Paysafecard
@@ -207,19 +202,23 @@ Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
 
 //Sepa Direct Debit transactions
+Financial\SCT\Payout
 Financial\SDD\Sale
-Financial\SDD\Payout
 Financial\SDD\Refund
 Financial\SDD\Recurring\InitRecurringSale
 Financial\SDD\Recurring\RecurringSale
 
 //Online Banking Payments
+Financial\OnlineBankingPayments\Alipay
 Financial\OnlineBankingPayments\Citadel\Payin
 Financial\OnlineBankingPayments\Citadel\Payout
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
 Financial\OnlineBankingPayments\iDebit\Payin
 Financial\OnlineBankingPayments\iDebit\Payout
+Financial\OnlineBankingPayments\PaySec\Payin
+Financial\OnlineBankingPayments\PaySec\Payout
+Financial\OnlineBankingPayments\WeChat
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
