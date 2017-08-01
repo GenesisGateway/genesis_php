@@ -305,6 +305,39 @@ class Types
      */
     const PAYSEC_PAYOUT = 'paysec_payout';
 
+    const SUPPORTED_WPF_TRANSACTION_TYPES = [
+        self::AUTHORIZE,
+        self::AUTHORIZE_3D,
+        self::SALE,
+        self::SALE_3D,
+        self::INIT_RECURRING_SALE,
+        self::INIT_RECURRING_SALE_3D,
+        self::CASHU,
+        self::PAYSAFECARD,
+        self::EZEEWALLET,
+        self::PAYBYVOUCHER_YEEPAY,
+        self::PPRO,
+        self::SOFORT,
+        self::NETELLER,
+        self::ABNIDEAL,
+        self::WEBMONEY,
+        self::POLI,
+        self::PAYBYVOUCHER_SALE,
+        self::INPAY,
+        self::SDD_SALE,
+        self::SDD_INIT_RECURRING_SALE,
+        self::P24,
+        self::TRUSTLY_SALE,
+        self::TRUSTLY_WITHDRAWAL,
+        self::PAYPAL_EXPRESS,
+        self::CITADEL_PAYIN,
+        self::INSTA_DEBIT_PAYIN,
+        self::WECHAT,
+        self::ALIPAY,
+        self::PAYSEC_PAYIN,
+        self::PAYSEC_PAYOUT
+    ];
+
     /**
      * Check whether this is a valid (known) transaction type
      *
@@ -316,6 +349,17 @@ class Types
         $transactionTypes = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
         return in_array(strtolower($type), $transactionTypes);
+    }
+
+    /**
+     * Check whether this is a valid (known) transaction type
+     *
+     * @param string $type
+     * @return bool
+     */
+    public static function isValidWPFTransactionType($type)
+    {
+        return in_array(strtolower($type), self::SUPPORTED_WPF_TRANSACTION_TYPES);
     }
 
     /**
@@ -368,6 +412,19 @@ class Types
                 }
 
                 return $customParameters;
+                break;
+
+            case self::CITADEL_PAYIN:
+                return [
+                    'merchant_customer_id' => null
+                ];
+                break;
+
+            case self::INSTA_DEBIT_PAYIN:
+            case self::IDEBIT_PAYIN:
+                return [
+                    'customer_account_id' => null
+                ];
                 break;
 
             default:
