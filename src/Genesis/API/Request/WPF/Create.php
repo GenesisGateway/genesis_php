@@ -126,7 +126,7 @@ class Create extends \Genesis\API\Request
                 sprintf(
                     'Transaction type (%s) is not valid. Valid WPF transactions are: %s.',
                     $transactionType,
-                    implode(', ', Types::SUPPORTED_WPF_TRANSACTION_TYPES)
+                    implode(', ', Types::getWPFTransactionTypes())
                 )
             );
         }
