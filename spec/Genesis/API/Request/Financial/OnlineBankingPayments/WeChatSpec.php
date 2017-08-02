@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use PhpSpec\ObjectBehavior;
 
-class PaypalExpressSpec extends ObjectBehavior
+class WeChatSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\PaypalExpress');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\WeChat');
     }
 
     public function it_can_build_structure()
@@ -22,17 +22,45 @@ class PaypalExpressSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_amount_param()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_required_currency_param()
     {
         $this->setRequestParameters();
         $this->setCurrency(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_billing_country_parameter()
+    public function it_should_fail_when_missing_required_billing_country_param()
     {
         $this->setRequestParameters();
         $this->setBillingCountry(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_required_return_success_url_param()
+    {
+        $this->setRequestParameters();
+        $this->setReturnSuccessUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_required_return_failure_url_param()
+    {
+        $this->setRequestParameters();
+        $this->setReturnFailureUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_required_usage_param()
+    {
+        $this->setRequestParameters();
+        $this->setUsage(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -49,27 +77,19 @@ class PaypalExpressSpec extends ObjectBehavior
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency(
-            $faker->randomElement(
-                \Genesis\Utils\Currency::getList()
-            )
-        );
+        $this->setCustomerAccountId($faker->userName);
+        $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry(
-            $faker->randomElement(
-                \Genesis\Utils\Country::getList()
-            )
-        );
+        $this->setBillingCountry('CA');
     }
 
     public function getMatchers()

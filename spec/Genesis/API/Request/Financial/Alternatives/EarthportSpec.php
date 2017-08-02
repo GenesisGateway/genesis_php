@@ -5,11 +5,11 @@ namespace spec\Genesis\API\Request\Financial\Alternatives;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PPROSpec extends ObjectBehavior
+class EarthportSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\PPRO');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Earthport');
     }
 
     public function it_can_build_structure()
@@ -26,48 +26,96 @@ class PPROSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->setPaymentType(null);
+        $this->setAccountName(null);
+        $this->setBankName(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_bic_for_giropay()
+    public function it_should_fail_when_missing_bic_for_andorra()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('giropay');
+        $this->setBillingCountry('AD');
         $this->setBic(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_iban_for_giropay()
+    public function it_should_fail_when_missing_iban_for_andorra()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('giropay');
+        $this->setBillingCountry('AD');
         $this->setIban(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_customer_email_for_przelewy24()
+    public function it_should_fail_when_missing_account_number_for_australia()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('przelewy24');
-        $this->setCustomerEmail(null);
+        $this->setBillingCountry('AU');
+        $this->setAccountNumber(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_account_phone_for_qiwi()
+    public function it_should_fail_when_missing_bank_code_for_australia()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('qiwi');
-        $this->setAccountPhone(null);
+        $this->setBillingCountry('AU');
+        $this->setBankCode(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_wrong_country_code_for_safetypay()
+    public function it_should_fail_when_missing_branch_code_for_australia()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('safetypay');
-        $this->setBillingCountry('BE');
-        $this->setCurrency('EUR');
+        $this->setBillingCountry('AU');
+        $this->setBranchCode(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_account_number_for_egypt()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('EG');
+        $this->setAccountNumber(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_bic_for_egypt()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('EG');
+        $this->setBic(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_bank_code_for_hong_kong()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('HK');
+        $this->setBankCode(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_branch_code_for_hong_kong()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('HK');
+        $this->setBranchCode(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_account_number_for_hong_kong()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('HK');
+        $this->setAccountNumber(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_account_number_suffix_for_hong_kong()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('HK');
+        $this->setAccountNumberSuffix(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -100,25 +148,29 @@ class PPROSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setPaymentType('trustpay');
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
+
+        $this->setAccountNumber($faker->numberBetween(1, 16));
+        $this->setAccountName($faker->firstName . ' ' . $faker->lastName);
+        $this->setBankName('Deutsche Bank');
         $this->setBankCode('0000');
+        $this->setBranchCode('0000');
         $this->setBic('BOFAGB3SSWI');
         $this->setIban('DE12345678901234567890');
-        $this->setAccountPhone($faker->phoneNumber);
+        $this->setAccountNumberSuffix($faker->numberBetween(1, 16));
+        $this->setSortCode($faker->numberBetween(1, 16));
+        $this->setAbaRoutingNumber($faker->numberBetween(1, 16));
+
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('EE');
+        $this->setBillingCountry('AD');
     }
 
     public function getMatchers()

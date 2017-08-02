@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
 
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class PaysafecardSpec extends ObjectBehavior
+class PayinSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Paysafecard');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\PaySec\Payin');
     }
 
     public function it_can_build_structure()
@@ -23,24 +23,61 @@ class PaysafecardSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_required_amount_param()
     {
         $this->setRequestParameters();
-        $this->setCustomerEmail(null);
+        $this->setAmount(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_billing_country_parameter()
+    public function it_should_fail_when_missing_required_currency_param()
     {
         $this->setRequestParameters();
-        $this->setBillingCountry(null);
+        $this->setCurrency(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_wrong_billing_country_parameter()
+    public function it_should_fail_when_missing_return_success_url_param()
     {
         $this->setRequestParameters();
-        $this->setBillingCountry('ML');
+        $this->setReturnSuccessUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_return_failure_url_param()
+    {
+        $this->setRequestParameters();
+        $this->setReturnFailureUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_remote_ip_param()
+    {
+        $this->setRequestParameters();
+        $this->setRemoteIp(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_currency_param()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('USD');
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_billing_state_for_US_param()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('US');
+        $this->setBillingState(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_billing_state_for_CA_param()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('CA');
+        $this->setBillingState(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -57,24 +94,23 @@ class PaysafecardSpec extends ObjectBehavior
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setRemoteIp($faker->ipv4);
         $this->setCurrency(
-            $faker->randomElement(
-                \Genesis\Utils\Currency::getList()
-            )
+            $faker->randomElement([
+                'CNY', 'THB', 'IDR'
+            ])
         );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('US');
+        $this->setBillingCountry($faker->countryCode);
     }
 
     public function getMatchers()

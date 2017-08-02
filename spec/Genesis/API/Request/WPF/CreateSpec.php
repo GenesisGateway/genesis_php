@@ -2,9 +2,8 @@
 
 namespace spec\Genesis\API\Request\WPF;
 
+use Genesis\API\Constants\Transaction\Types;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use \Genesis\API as API;
 
 class CreateSpec extends ObjectBehavior
 {
@@ -13,11 +12,20 @@ class CreateSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\WPF\Create');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
         $this->getDocument()->shouldContainString('transaction_types');
+    }
+
+    public function it_should_fail_with_non_wpf_transaction_type()
+    {
+        $this
+            ->shouldThrow('\Genesis\Exceptions\ErrorParameter')
+            ->during('addTransactionType' , array(
+                Types::EARTHPORT
+            ));
     }
 
     public function it_should_fail_when_no_parameters()
@@ -84,6 +92,30 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_required_custom_parameters()
+    {
+        $this->shouldThrow()
+             ->during('addTransactionType', [
+                 Types::CITADEL_PAYIN
+             ]);
+    }
+
+    public function it_should_fail_when_missing_value_for_required_custom_parameters()
+    {
+        $this->shouldThrow()
+             ->during('addTransactionType', [
+                 Types::CITADEL_PAYIN, [ 'merchant_customer_id' => null ]
+             ]);
+    }
+
+    public function it_should_validate_required_custom_parameters()
+    {
+        $this->addTransactionType(
+            Types::CITADEL_PAYIN,
+            [ 'merchant_customer_id' => 8 ]
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -112,17 +144,21 @@ class CreateSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry($faker->countryCode);
-        $this->addTransactionType('sale');
-        $this->addTransactionType('sale3d');
         $this->addTransactionType(
-            'ezeewallet',
+            Types::SALE
+        );
+        $this->addTransactionType(
+            Types::SALE_3D
+        );
+        $this->addTransactionType(
+            Types::EZEEWALLET,
             array(
                 'wallet_id'   => 'john@example.com',
                 'wallet_pass' => 'password'
             )
         );
         $this->addTransactionType(
-            'paybyvoucher_sale',
+            Types::PAYBYVOUCHER_SALE,
             array(
                 'card_type' => 'virtual',
                 'redeem_type' => 'instant'

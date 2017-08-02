@@ -63,7 +63,7 @@ class Genesis
         \Genesis\Utils\Requirements::verify();
 
         // Initialize the request
-        $request = sprintf('\Genesis\API\Request\%s', $request);
+        $request = $this->getRequestClass($request);
 
         if (!class_exists($request)) {
             throw new \Genesis\Exceptions\InvalidMethod(
@@ -83,6 +83,27 @@ class Genesis
 
         // Initialize Response Object
         $this->responseCtx = new \Genesis\API\Response();
+    }
+
+    /**
+     * @param string $request
+     *
+     * @return string
+     */
+    protected function getRequestClass($request)
+    {
+        $parts = explode('\\', $request);
+        $lastIndex = count($parts) - 1;
+
+        switch ($parts[$lastIndex]) {
+            case 'Void':
+                $parts[$lastIndex] = 'Cancel';
+        }
+
+        return sprintf(
+            '\Genesis\API\Request\%s',
+            implode('\\', $parts)
+        );
     }
 
     /**

@@ -12,7 +12,7 @@ class AccountVerificationSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\NonFinancial\AccountVerification');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();

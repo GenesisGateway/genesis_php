@@ -12,7 +12,7 @@ class Sale3DSpec extends ObjectBehavior
         $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Sale3D');
     }
 
-    public function it_can_build_stucture()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters();
         $this->Build();

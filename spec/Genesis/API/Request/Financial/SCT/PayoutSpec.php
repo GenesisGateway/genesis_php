@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\SDD;
+namespace spec\Genesis\API\Request\Financial\SCT;
 
 use PhpSpec\ObjectBehavior;
 
@@ -8,7 +8,7 @@ class PayoutSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\SDD\Payout');
+        $this->shouldHaveType('Genesis\API\Request\Financial\SCT\Payout');
     }
 
     public function it_can_build_structure()
