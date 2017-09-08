@@ -98,6 +98,11 @@ class Genesis
         switch ($parts[$lastIndex]) {
             case 'Void':
                 $parts[$lastIndex] = 'Cancel';
+                break;
+            case 'AVS':
+                throw new \Genesis\Exceptions\DeprecatedMethod(
+                    'The selected transaction type is deprecated!'
+                );
         }
 
         return sprintf(
