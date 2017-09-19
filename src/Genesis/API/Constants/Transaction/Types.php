@@ -306,6 +306,61 @@ class Types
     const PAYSEC_PAYOUT = 'paysec_payout';
 
     /**
+     * @param $type
+     *
+     * @return bool|string
+     */
+    public static function getFinancialRequestClassForTrxType($type)
+    {
+        $map = [
+            self::ABNIDEAL                => 'Alternatives\ABNiDEAL',
+            self::CASHU                   => 'Alternatives\CashU',
+            self::EARTHPORT               => 'Alternatives\Earthport',
+            self::INPAY                   => 'Alternatives\INPay',
+            self::P24                     => 'Alternatives\P24',
+            self::PAYPAL_EXPRESS          => 'Alternatives\PaypalExpress',
+            self::PAYSAFECARD             => 'Alternatives\Paysafecard',
+            self::POLI                    => 'Alternatives\POLi',
+            self::PPRO                    => 'Alternatives\PPRO',
+            self::SOFORT                  => 'Alternatives\Sofort',
+            self::TRUSTLY_SALE            => 'Alternatives\Trustly\Sale',
+            self::TRUSTLY_WITHDRAWAL      => 'Alternatives\Trustly\Withdrawal',
+            self::INIT_RECURRING_SALE     => 'Cards\Recurring\InitRecurringSale',
+            self::INIT_RECURRING_SALE_3D  => 'Cards\Recurring\InitRecurringSale3D',
+            self::RECURRING_SALE          => 'Cards\Recurring\RecurringSale',
+            self::AUTHORIZE               => 'Cards\Authorize',
+            self::AUTHORIZE_3D            => 'Cards\Authorize3D',
+            self::CREDIT                  => 'Cards\Credit',
+            self::PAYOUT                  => 'Cards\Payout',
+            self::SALE                    => 'Cards\Sale',
+            self::SALE_3D                 => 'Cards\Sale3D',
+            self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
+            self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
+            self::IDEBIT_PAYIN            => 'OnlineBankingPayments\iDebit\Payin',
+            self::IDEBIT_PAYOUT           => 'OnlineBankingPayments\iDebit\Payout',
+            self::INSTA_DEBIT_PAYIN       => 'OnlineBankingPayments\InstaDebit\PayIn',
+            self::INSTA_DEBIT_PAYOUT      => 'OnlineBankingPayments\InstaDebit\Payout',
+            self::PAYSEC_PAYIN            => 'OnlineBankingPayments\PaySec\Payin',
+            self::PAYSEC_PAYOUT           => 'OnlineBankingPayments\PaySec\Payout',
+            self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
+            self::WECHAT                  => 'OnlineBankingPayments\WeChat',
+            self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
+            self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
+            self::SCT_PAYOUT              => 'SCT\Payout',
+            self::SDD_SALE                => 'SDD\Sale',
+            self::SDD_INIT_RECURRING_SALE => 'SDD\Recurring\InitRecurringSale',
+            self::SDD_RECURRING_SALE      => 'SDD\Recurring\RecurringSale',
+            self::SDD_REFUND              => 'SDD\Refund',
+            self::SDD_SALE                => 'SDD\Sale',
+            self::EZEEWALLET              => 'Wallets\eZeeWallet',
+            self::NETELLER                => 'Wallets\Neteller',
+            self::WEBMONEY                => 'Wallets\WebMoney',
+        ];
+
+        return isset($map[$type]) ? 'Financial\\' . $map[$type] : false;
+    }
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
