@@ -226,7 +226,6 @@ Financial\Wallets\Neteller
 Financial\Wallets\WebMoney
 
 // Generic (Non-Financial) requests
-NonFinancial\AVS
 NonFinancial\AccountVerification
 NonFinancial\Blacklist
 

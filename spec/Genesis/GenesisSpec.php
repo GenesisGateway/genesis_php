@@ -20,7 +20,7 @@ class GenesisSpec extends ObjectBehavior
         $this->request()->shouldHaveType('\Genesis\API\Request\NonFinancial\Blacklist');
     }
 
-    public function it_can_load_deprecated_request()
+    public function it_can_load_deprecated_void_request()
     {
         $this->beConstructedWith('Financial\Void');
 
@@ -47,5 +47,19 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\ErrorNetwork')->during('execute');
 
         $this->response()->getResponseObject()->shouldBe(null);
+    }
+
+    public function it_fails_on_deprecated_request()
+    {
+        $this->beConstructedWith('NonFinancial\AVS');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_non_existing_transaction_request()
+    {
+        $this->beConstructedWith('Non\Existing\Transaction');
+
+        $this->shouldThrow('\Genesis\Exceptions\InvalidMethod')->duringInstantiation();
     }
 }
