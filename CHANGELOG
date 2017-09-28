@@ -1,3 +1,8 @@
+1.8.2
+-----
+* Added factory method for financial requests in base Genesis class for easier creation of request objects.
+* Changed request's magic setter methods to return false for missing properties.
+
 1.8.1
 -----
 * Deprecate AVS Transaction Type
