@@ -2,8 +2,8 @@
 
 namespace spec\Genesis;
 
+use Genesis\API\Constants\Transaction\Types;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class GenesisSpec extends ObjectBehavior
 {
@@ -18,6 +18,56 @@ class GenesisSpec extends ObjectBehavior
         $this->beConstructedWith('NonFinancial\Blacklist');
 
         $this->request()->shouldHaveType('\Genesis\API\Request\NonFinancial\Blacklist');
+    }
+
+    public function it_can_load_financial_request_from_factory()
+    {
+        $params = [
+            'card_number' => '420000',
+            'card_holder' => 'Card Holder'
+        ];
+
+        $this->beConstructedThrough(
+            'financialFactory',
+            [
+                Types::SALE,
+                $params
+            ]
+        );
+        $this->shouldHaveType('\Genesis\Genesis');
+
+        $this->request()->shouldHaveType('\Genesis\API\Request\Financial\Cards\Sale');
+        $this->request()->getCardNumber()->shouldBe('420000');
+        $this->request()->getCardHolder()->shouldBe('Card Holder');
+    }
+
+    public function it_should_fail_loading_financial_request_from_factory_with_wrong_type()
+    {
+        $this->beConstructedThrough(
+            'financialFactory',
+            [
+                'wrong_type'
+            ]
+        );
+
+        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->duringInstantiation();
+    }
+
+    public function it_should_fail_loading_financial_request_from_factory_with_wrong_params()
+    {
+        $params = [
+            'wrong' => 'parameter'
+        ];
+
+        $this->beConstructedThrough(
+            'financialFactory',
+            [
+                Types::SALE,
+                $params
+            ]
+        );
+
+        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->duringInstantiation();
     }
 
     public function it_can_load_deprecated_void_request()

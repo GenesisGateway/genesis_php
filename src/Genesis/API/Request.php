@@ -122,7 +122,7 @@ abstract class Request
      * @param $method
      * @param $args
      *
-     * @return $this
+     * @return $this|false
      */
     public function __call($method, $args)
     {
@@ -141,7 +141,7 @@ abstract class Request
                     return $this;
                 }
 
-                break;
+                return false;
         }
 
         return $this;

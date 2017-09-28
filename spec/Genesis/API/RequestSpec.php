@@ -28,7 +28,7 @@ class RequestSpec extends ObjectBehavior
 
     public function it_cant_set_unknown_variables()
     {
-        $this->setUnknownProperty(true)->shouldBe($this);
+        $this->setUnknownProperty(true)->shouldBe(false);
 
         $this->getUnownProperty()->shouldBe($this);
     }

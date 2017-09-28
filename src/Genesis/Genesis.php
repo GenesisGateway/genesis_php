@@ -22,6 +22,11 @@
  */
 namespace Genesis;
 
+use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Request;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common;
+
 /**
  * Base class of Genesis
  *
@@ -89,6 +94,7 @@ class Genesis
      * @param string $request
      *
      * @return string
+     * @throws \Genesis\Exceptions\DeprecatedMethod
      */
     protected function getRequestClass($request)
     {
@@ -109,6 +115,36 @@ class Genesis
             '\Genesis\API\Request\%s',
             implode('\\', $parts)
         );
+    }
+
+    /**
+     * @param string $trxType
+     * @param array $params
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @return Genesis
+     */
+    public static function financialFactory($trxType, $params = [])
+    {
+        $requestClass = Types::getFinancialRequestClassForTrxType($trxType);
+        if ($requestClass === false) {
+            throw new InvalidArgument(
+                'The selected transaction type is invalid!'
+            );
+        }
+
+        $genesis = new static($requestClass);
+
+        foreach ($params as $name => $value) {
+            $method = 'set' . Common::snakeCaseToCamelCase($name);
+
+            if (call_user_func([ $genesis->request(), $method ], $value) === false) {
+                throw new InvalidArgument(
+                    'Invalid argument ' . $name . ' for transaction type ' . $trxType
+                );
+            }
+        }
+
+        return $genesis;
     }
 
     /**
