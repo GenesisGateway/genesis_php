@@ -410,7 +410,8 @@ class Types
             self::WECHAT,
             self::ALIPAY,
             self::PAYSEC_PAYIN,
-            self::PAYSEC_PAYOUT
+            self::PAYSEC_PAYOUT,
+            self::IDEBIT_PAYIN
         ];
     }
 

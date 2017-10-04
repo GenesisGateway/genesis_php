@@ -24,15 +24,15 @@ class TypesSpec extends ObjectBehavior
         )->shouldReturn(false);
     }
 
-    public function it_can_validate_wpf_transaction_types()
+    public function it_can_detect_supported_wpf_trx_types()
     {
-        $this->isValidWPFTransactionType(
-            Types::EZEEWALLET
-        )->shouldReturn(true);
+        $this->isValidWPFTransactionType(Types::EZEEWALLET)->shouldReturn(true);
+        $this->isValidWPFTransactionType(Types::IDEBIT_PAYIN)->shouldReturn(true);
+    }
 
-        $this->isValidWPFTransactionType(
-            Types::EARTHPORT
-        )->shouldReturn(false);
+    public function it_can_detect_not_supported_wpf_trx_types()
+    {
+        $this->isValidWPFTransactionType(Types::EARTHPORT)->shouldReturn(false);
     }
 
     public function it_can_validate_pay_by_voucher_transaction_types()
