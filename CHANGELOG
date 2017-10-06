@@ -1,3 +1,7 @@
+1.8.3
+-----
+* Fixed bug with missing iDebit Payin transaction type for Web Payment Form.
+
 1.8.2
 -----
 * Added factory method for financial requests in base Genesis class for easier creation of request objects.
