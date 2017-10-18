@@ -403,4 +403,17 @@ final class Common
     {
         return @preg_match($pattern, null) !== false;
     }
+
+    /**
+     * Checks if $str ends with $suffix.
+     *
+     * @param $str
+     * @param $suffix
+     *
+     * @return bool
+     */
+    public static function endsWith($str, $suffix)
+    {
+        return stripos($str, $suffix) === strlen($str) - strlen($suffix);
+    }
 }

@@ -22,6 +22,8 @@
  */
 namespace Genesis\API\Constants\Transaction;
 
+use Genesis\Utils\Common;
+
 /**
  * Class Types
  *
@@ -364,6 +366,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isValidTransactionType($type)
@@ -419,6 +422,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isValidWPFTransactionType($type)
@@ -430,6 +434,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isPayByVoucher($type)
@@ -439,7 +444,73 @@ class Types
             self::PAYBYVOUCHER_SALE
         ];
 
-        return in_array($type, $transactionTypesList);
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canCapture($type)
+    {
+        $transactionTypesList = [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canRefund($type)
+    {
+        $transactionTypesList = [
+            self::ABNIDEAL,
+            self::CAPTURE,
+            self::CASHU,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::INPAY,
+            self::P24,
+            self::PAYPAL_EXPRESS,
+            self::PPRO,
+            self::SALE,
+            self::SALE_3D,
+            self::TRUSTLY_SALE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canVoid($type)
+    {
+        $transactionTypesList = [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::TRUSTLY_SALE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function is3D($type)
+    {
+        return Common::endsWith($type, '3d');
     }
 
     /**
