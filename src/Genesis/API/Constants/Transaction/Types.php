@@ -308,6 +308,15 @@ class Types
     const PAYSEC_PAYOUT = 'paysec_payout';
 
     /**
+     * Fashioncheque transactions are made using gift card provided by Fashioncheque.
+     *
+     * Using a fashioncheque transaction, the amount is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction on the same day of the transaction.
+     * They can also be refunded.
+     */
+    const FASHIONCHEQUE = 'fashioncheque';
+
+    /**
      * @param $type
      *
      * @return bool|string
