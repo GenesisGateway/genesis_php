@@ -317,6 +317,13 @@ class Types
     const FASHIONCHEQUE = 'fashioncheque';
 
     /**
+     * Intersolve transactions are made using gift card provided by Intersolve
+     * Using a intersolve transaction, the amount is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction.
+     */
+    const INTERSOLVE = 'intersolve';
+
+    /**
      * @param $type
      *
      * @return bool|string
