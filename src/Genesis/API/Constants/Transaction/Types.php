@@ -22,6 +22,8 @@
  */
 namespace Genesis\API\Constants\Transaction;
 
+use Genesis\Utils\Common;
+
 /**
  * Class Types
  *
@@ -306,6 +308,29 @@ class Types
     const PAYSEC_PAYOUT = 'paysec_payout';
 
     /**
+     * TCS Thecontainerstore transactions are made using gift cards provided by TCS The amount from a
+     * Container Store Transactions is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction.
+     */
+    const TCS = 'container_store';
+
+    /**
+     * Fashioncheque transactions are made using gift card provided by Fashioncheque.
+     *
+     * Using a fashioncheque transaction, the amount is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction on the same day of the transaction.
+     * They can also be refunded.
+     */
+    const FASHIONCHEQUE = 'fashioncheque';
+
+    /**
+     * Intersolve transactions are made using gift card provided by Intersolve
+     * Using a intersolve transaction, the amount is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction.
+     */
+    const INTERSOLVE = 'intersolve';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -334,6 +359,9 @@ class Types
             self::PAYOUT                  => 'Cards\Payout',
             self::SALE                    => 'Cards\Sale',
             self::SALE_3D                 => 'Cards\Sale3D',
+            self::TCS                     => 'GiftCards\Tcs',
+            self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
+            self::INTERSOLVE              => 'GiftCards\Intersolve',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
             self::IDEBIT_PAYIN            => 'OnlineBankingPayments\iDebit\Payin',
@@ -364,6 +392,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isValidTransactionType($type)
@@ -411,7 +440,10 @@ class Types
             self::ALIPAY,
             self::PAYSEC_PAYIN,
             self::PAYSEC_PAYOUT,
-            self::IDEBIT_PAYIN
+            self::IDEBIT_PAYIN,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
         ];
     }
 
@@ -419,6 +451,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isValidWPFTransactionType($type)
@@ -430,6 +463,7 @@ class Types
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type
+     *
      * @return bool
      */
     public static function isPayByVoucher($type)
@@ -439,7 +473,77 @@ class Types
             self::PAYBYVOUCHER_SALE
         ];
 
-        return in_array($type, $transactionTypesList);
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canCapture($type)
+    {
+        $transactionTypesList = [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canRefund($type)
+    {
+        $transactionTypesList = [
+            self::ABNIDEAL,
+            self::CAPTURE,
+            self::CASHU,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::INPAY,
+            self::P24,
+            self::PAYPAL_EXPRESS,
+            self::PPRO,
+            self::SALE,
+            self::SALE_3D,
+            self::TRUSTLY_SALE,
+            self::FASHIONCHEQUE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function canVoid($type)
+    {
+        $transactionTypesList = [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::TRUSTLY_SALE,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function is3D($type)
+    {
+        return Common::endsWith($type, '3d');
     }
 
     /**

@@ -201,6 +201,11 @@ Financial\Cards\Recurring\InitRecurringSale
 Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
 
+// Gift Cards transactions
+Financial\GiftCards\Intersolve
+Financial\GiftCards\Fashioncheque
+Financial\GiftCards\TCS
+
 //Sepa Direct Debit transactions
 Financial\SCT\Payout
 Financial\SDD\Sale
