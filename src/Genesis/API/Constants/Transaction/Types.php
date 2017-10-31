@@ -308,6 +308,13 @@ class Types
     const PAYSEC_PAYOUT = 'paysec_payout';
 
     /**
+     * TCS Thecontainerstore transactions are made using gift cards provided by TCS The amount from a
+     * Container Store Transactions is immediately billed to the customer’s gift card.
+     * It can be reversed via a void transaction.
+     */
+    const TCS = 'container_store';
+
+    /**
      * Fashioncheque transactions are made using gift card provided by Fashioncheque.
      *
      * Using a fashioncheque transaction, the amount is immediately billed to the customer’s gift card.
@@ -352,6 +359,9 @@ class Types
             self::PAYOUT                  => 'Cards\Payout',
             self::SALE                    => 'Cards\Sale',
             self::SALE_3D                 => 'Cards\Sale3D',
+            self::TCS                     => 'GiftCards\Tcs',
+            self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
+            self::INTERSOLVE              => 'GiftCards\Intersolve',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
             self::IDEBIT_PAYIN            => 'OnlineBankingPayments\iDebit\Payin',
@@ -430,7 +440,10 @@ class Types
             self::ALIPAY,
             self::PAYSEC_PAYIN,
             self::PAYSEC_PAYOUT,
-            self::IDEBIT_PAYIN
+            self::IDEBIT_PAYIN,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
         ];
     }
 

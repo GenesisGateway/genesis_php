@@ -34,8 +34,8 @@ use Genesis\Utils\Common;
  * Class GiftCard
  * @package Genesis\API\Request\Base\Financial
  *
- * @method GiftCard setCardNumber($value)
- * @method GiftCard setCvv($value)
+ * @method $this setCardNumber($value)
+ * @method $this setCvv($value)
  */
 abstract class GiftCard extends Financial
 {
