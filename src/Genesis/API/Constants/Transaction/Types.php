@@ -510,7 +510,8 @@ class Types
             self::PPRO,
             self::SALE,
             self::SALE_3D,
-            self::TRUSTLY_SALE
+            self::TRUSTLY_SALE,
+            self::FASHIONCHEQUE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -526,7 +527,10 @@ class Types
         $transactionTypesList = [
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
-            self::TRUSTLY_SALE
+            self::TRUSTLY_SALE,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
