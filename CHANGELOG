@@ -1,3 +1,10 @@
+1.9.0
+-----
+* Added Support for new Gift Cards Transaction Types
+    - TCS
+    - Fashioncheque
+    - Intersolve
+
 1.8.3
 -----
 * Fixed bug with missing iDebit Payin transaction type for Web Payment Form.
