@@ -2,7 +2,7 @@
 * Description of changes 2
 * Description of changes 3, etc
 
-Fixes eMerchantPay/genesis_php#number
+Fixes eMerchantPay/genesis_client_integrations#number
 
 -----------------
 
