@@ -184,12 +184,6 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                         'currency'        => 'EUR'
                     ]
                 ],
-                PaymentMethods::TELEINGRESO => [
-                    [
-                        'billing_country' => 'ES',
-                        'currency'        => 'EUR'
-                    ]
-                ],
                 PaymentMethods::SAFETY_PAY  => [
                     [
                         'billing_country' => ['AT', 'DE', 'CA', 'MX', 'NI', 'CR', 'PA', 'CO', 'PE', 'BR', 'NL'],
