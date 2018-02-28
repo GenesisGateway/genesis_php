@@ -118,7 +118,7 @@ class PPROSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('EE');
+        $this->setBillingCountry('CZ');
     }
 
     public function getMatchers()

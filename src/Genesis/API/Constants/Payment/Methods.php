@@ -74,13 +74,6 @@ class Methods
     const SAFETY_PAY = 'safetypay';
 
     /**
-     * Teleingreso
-     *
-     * PPRO transaction
-     */
-    const TELEINGRESO = 'teleingreso';
-
-    /**
      * TrustPay
      *
      * PPRO transaction

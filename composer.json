@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "license": "MIT",
   "keywords": [
     "genesis",
@@ -44,7 +44,6 @@
     "przelewy24",
     "qiwi",
     "safetypay",
-    "teleingreso",
     "trustpay",
     "bcmc",
     "mybank",
