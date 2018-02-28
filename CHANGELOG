@@ -1,3 +1,14 @@
+1.9.1
+-----
+* Added Paysafecard supported countries
+    - AR
+    - AE
+    - KW
+* Update TrustPay supported countries
+    - CZ
+    - SK
+* Remove Teleingreso payment type
+
 1.9.0
 -----
 * Added Support for new Gift Cards Transaction Types
