@@ -106,14 +106,28 @@ class Genesis
                 $parts[$lastIndex] = 'Cancel';
                 break;
             case 'AVS':
-                throw new \Genesis\Exceptions\DeprecatedMethod(
-                    'The selected transaction type is deprecated!'
-                );
+            case 'INPay':
+            case 'ABNiDEAL':
+                $this->throwDeprecatedTransactionType();
+        }
+
+        if (isset($parts[$lastIndex - 1]) && $parts[$lastIndex - 1] === 'PayByVauchers') {
+            $this->throwDeprecatedTransactionType();
         }
 
         return sprintf(
             '\Genesis\API\Request\%s',
             implode('\\', $parts)
+        );
+    }
+
+    /**
+     * @throws \Genesis\Exceptions\DeprecatedMethod
+     */
+    protected function throwDeprecatedTransactionType()
+    {
+        throw new \Genesis\Exceptions\DeprecatedMethod(
+            'The selected transaction type is deprecated!'
         );
     }
 
