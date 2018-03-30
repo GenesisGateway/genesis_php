@@ -30,6 +30,7 @@ use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 
 /**
  * Class Sale
@@ -37,11 +38,12 @@ use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
  * Sale Request
  *
  * @package Genesis\API\Request\Financial\Cards
+ *
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
     use GamingAttributes, MotoAttributes, PaymentAttributes, CreditCardAttributes,
-        AddressInfoAttributes, RiskAttributes, DescriptorAttributes;
+        AddressInfoAttributes, RiskAttributes, DescriptorAttributes, ReferenceAttributes;
 
     /**
      * Returns the Request transaction type
@@ -103,7 +105,8 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'reference_id'              => $this->reference_id
         ];
     }
 }

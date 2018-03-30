@@ -23,10 +23,10 @@
 
 namespace Genesis\API\Request\Base\Financial;
 
-use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Utils\Common;
 
@@ -37,9 +37,9 @@ use Genesis\Utils\Common;
  * @method $this setCardNumber($value)
  * @method $this setCvv($value)
  */
-abstract class GiftCard extends Financial
+abstract class GiftCard extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes, DescriptorAttributes;
+    use PaymentAttributes, AddressInfoAttributes, DescriptorAttributes, ReferenceAttributes;
 
     /**
      * Gift card number
@@ -100,7 +100,8 @@ abstract class GiftCard extends Financial
             'customer_phone'            => $this->customer_phone,
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'reference_id'              => $this->reference_id
         ];
     }
 }

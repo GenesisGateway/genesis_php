@@ -460,6 +460,34 @@ class Types
     }
 
     /**
+     * Get valid split payment transaction types
+     *
+     * @return array
+     */
+    public static function getSplitPaymentsTrxTypes()
+    {
+        return [
+            self::SALE,
+            self::SALE_3D,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
+        ];
+    }
+
+    /**
+     * Check whether this is a valid (known) split payment transaction type
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function isValidSplitPaymentTrxType($type)
+    {
+        return in_array(strtolower($type), self::getSplitPaymentsTrxTypes());
+    }
+
+    /**
      * Check whether this is a valid (known) transaction type
      *
      * @param string $type

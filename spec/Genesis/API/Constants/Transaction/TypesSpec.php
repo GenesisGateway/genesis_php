@@ -43,4 +43,11 @@ class TypesSpec extends ObjectBehavior
         $this->is3D(Types::SALE)->shouldReturn(false);
         $this->is3D('test_3d_fake')->shouldReturn(false);
     }
+
+    public function it_can_validate_split_payments_transaction_types()
+    {
+        $this->isValidSplitPaymentTrxType(Types::INTERSOLVE)->shouldReturn(true);
+        $this->isValidSplitPaymentTrxType(Types::SALE)->shouldReturn(true);
+        $this->isValidSplitPaymentTrxType(Types::AUTHORIZE)->shouldReturn(false);
+    }
 }

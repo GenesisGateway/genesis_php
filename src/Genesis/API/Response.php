@@ -254,7 +254,7 @@ class Response
     public static function transformObject(&$entry)
     {
         $filters = [
-            'transformFilterAmount',
+            'transformFilterAmounts',
             'transformFilterTimestamp'
         ];
 
@@ -267,6 +267,31 @@ class Response
                 }
             }
         }
+    }
+
+    /**
+     * Get formatted response amounts (instead of ISO4217, return in float)
+     *
+     * @param \stdClass|\ArrayObject $transaction
+     *
+     * @return \stdClass|\ArrayObject $transaction
+     */
+    public static function transformFilterAmounts($transaction)
+    {
+        $properties = [
+            'amount',
+            'leftover_amount'
+        ];
+
+        foreach ($properties as $property) {
+            if (isset($transaction->{$property}) && isset($transaction->currency)) {
+                $transaction->{$property} = \Genesis\Utils\Currency::exponentToAmount(
+                    $transaction->{$property},
+                    $transaction->currency
+                );
+            }
+        }
+        return $transaction;
     }
 
     /**
@@ -285,7 +310,6 @@ class Response
                 $transaction->currency
             );
         }
-
         return $transaction;
     }
 
