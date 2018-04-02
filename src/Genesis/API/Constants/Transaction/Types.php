@@ -331,6 +331,30 @@ class Types
     const INTERSOLVE = 'intersolve';
 
     /**
+     * With Klarna Authorize transactions, you can confirm that an order is successful.
+     * After settling the transaction (e.g. shipping the goods), you should use klarna_capture transaction
+     * type to capture the amount.
+     * Klarna authorize transaction will automatically be cancelled after a certain time frame, most likely two weeks.
+     */
+    const KLARNA_AUTHORIZE = 'klarna_authorize';
+
+    /**
+     * Klarna capture settles a klarna_authorize transaction.
+     * Do this when you are shipping goods, for example. A klarna_capture can only be used after an
+     * klarna_authorize on the same transaction.
+     * Therefore, the reference id of the klarna authorize transaction is mandatory.
+     */
+    const KLARNA_CAPTURE = 'klarna_capture';
+
+    /**
+     * Klarna Refunds allow to return already billed amounts to customers.
+     * The amount can be fully or partially refunded. Klarna refunds can only be done on former klarna_capture(settled)
+     * transactions.
+     * Therefore, the reference id for the corresponding transaction is mandatory
+     */
+    const KLARNA_REFUND = 'klarna_refund';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -443,7 +467,8 @@ class Types
             self::IDEBIT_PAYIN,
             self::TCS,
             self::FASHIONCHEQUE,
-            self::INTERSOLVE
+            self::INTERSOLVE,
+            self::KLARNA_AUTHORIZE
         ];
     }
 
@@ -457,6 +482,34 @@ class Types
     public static function isValidWPFTransactionType($type)
     {
         return in_array(strtolower($type), self::getWPFTransactionTypes());
+    }
+
+    /**
+     * Get valid split payment transaction types
+     *
+     * @return array
+     */
+    public static function getSplitPaymentsTrxTypes()
+    {
+        return [
+            self::SALE,
+            self::SALE_3D,
+            self::TCS,
+            self::FASHIONCHEQUE,
+            self::INTERSOLVE
+        ];
+    }
+
+    /**
+     * Check whether this is a valid (known) split payment transaction type
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    public static function isValidSplitPaymentTrxType($type)
+    {
+        return in_array(strtolower($type), self::getSplitPaymentsTrxTypes());
     }
 
     /**

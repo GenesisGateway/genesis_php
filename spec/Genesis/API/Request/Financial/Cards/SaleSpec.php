@@ -31,6 +31,14 @@ class SaleSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_can_build_with_reference_id_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setReferenceId('transaction-reference-id');
+        $this->getReferenceId()->shouldBe('transaction-reference-id');
+        $this->getDocument()->shouldContain('transaction-reference-id');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
