@@ -1,3 +1,9 @@
+1.9.2
+-----
+* Added Support for Klarna Transaction Type
+* Added Support for Split Payments
+* Deprecate INPay ABNiDEAL Transaction Type
+
 1.9.1
 -----
 * Added Paysafecard supported countries
