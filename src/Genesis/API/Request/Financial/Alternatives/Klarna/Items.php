@@ -113,7 +113,6 @@ class Items
     public function toArray()
     {
         return [
-            'amount'           => CurrencyUtils::amountToExponent($this->getAmount(), $this->currency),
             'order_tax_amount' => CurrencyUtils::amountToExponent($this->getOrderTaxAmount(), $this->currency),
             'items'            => array_map(
                 function ($item) {

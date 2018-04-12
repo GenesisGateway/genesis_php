@@ -39,13 +39,6 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
     use AsyncAttributes, AddressInfoAttributes;
 
     /**
-     * Allowed countries
-     *
-     * @const array
-     */
-    const ALLOWED_COUNTRIES = array('AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE');
-
-    /**
      * Returns the Request transaction type
      * @return string
      */
@@ -64,6 +57,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
         $requiredFields = [
             'transaction_id',
             'remote_ip',
+            'amount',
             'currency',
             'return_success_url',
             'return_failure_url',
@@ -73,9 +67,11 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
+        $allowed_countries = array('AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE');
+
         $requiredFieldValues = [
-            'billing_country'  => self::ALLOWED_COUNTRIES,
-            'shipping_country' => self::ALLOWED_COUNTRIES
+            'billing_country'  => $allowed_countries,
+            'shipping_country' => $allowed_countries
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);

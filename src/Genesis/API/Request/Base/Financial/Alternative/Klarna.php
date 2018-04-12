@@ -73,6 +73,7 @@ abstract class Klarna extends \Genesis\API\Request\Base\Financial
     {
         return array_merge(
             [
+                'amount'           => \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency),
                 'currency'         => $this->currency,
                 'customer_gender'  => $this->customer_gender,
             ],

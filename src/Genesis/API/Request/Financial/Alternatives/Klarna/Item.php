@@ -33,16 +33,9 @@ use Genesis\Utils\Currency as CurrencyUtils;
  *
  * @package Genesis\API\Request\Financial\Alternatives\Klarna
  *
- * @method $this setItemType($value) Set item type
- * @method $this setQuantity($value) Set quantity
- * @method $this setUnitPrice($value) Set unit price
  * @method $this setReference($value) Set reference
- * @method $this setName($value) Set name
- * @method $this setTaxRate($value) Set tax rate
- * @method $this setTotalDiscountAmount($value) Set total discount amount
  * @method $this setImageUrl($value) Set image url
  * @method $this setProductUrl($value) Set product url
- * @method $this setQuantityUnit($value) Set quantity unit
  */
 class Item
 {
@@ -126,12 +119,6 @@ class Item
     protected $marketplace_seller_info = [];
 
     /**
-     * Item mandatory fields
-     * @const array
-     */
-    const REQUIRED_FIELDS = array('name', 'item_type', 'quantity', 'unit_price');
-
-    /**
      * Item type physical
      * @const string
      */
@@ -180,31 +167,6 @@ class Item
     const ITEM_TYPE_SURCHARGE = 'surcharge';
 
     /**
-     * Item types
-     * @const array
-     */
-    const ITEM_TYPES = array(
-        self::ITEM_TYPE_PHYSICAL,
-        self::ITEM_TYPE_DISCOUNT,
-        self::ITEM_TYPE_SHIPPING_FEE,
-        self::ITEM_TYPE_SALES_TAX,
-        self::ITEM_TYPE_DIGITAL,
-        self::ITEM_TYPE_GIFT_CARD,
-        self::ITEM_TYPE_STORE_CREDIT,
-        self::ITEM_TYPE_SURCHARGE
-    );
-
-    /**
-     * Not implemented item types
-     * @const array
-     */
-    const NOT_IMPLEMENTED_ITEM_TYPES = array(
-        self::ITEM_TYPE_DISCOUNT,
-        self::ITEM_TYPE_SALES_TAX,
-        self::ITEM_TYPE_STORE_CREDIT
-    );
-
-    /**
      * Item constructor.
      * @param $name
      * @param $item_type
@@ -247,8 +209,8 @@ class Item
      *
      * @param $method
      * @param $args
-     *
-     * @return $this|false
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidMethod
      */
     public function __call($method, $args)
     {
@@ -397,21 +359,36 @@ class Item
         $this->verifyRequiredField('item_type', $value);
 
         // check if it is valid type
-        if (!in_array($value, self::ITEM_TYPES)) {
+        $item_types = array(
+            self::ITEM_TYPE_PHYSICAL,
+            self::ITEM_TYPE_DISCOUNT,
+            self::ITEM_TYPE_SHIPPING_FEE,
+            self::ITEM_TYPE_SALES_TAX,
+            self::ITEM_TYPE_DIGITAL,
+            self::ITEM_TYPE_GIFT_CARD,
+            self::ITEM_TYPE_STORE_CREDIT,
+            self::ITEM_TYPE_SURCHARGE
+        );
+        if (!in_array($value, $item_types)) {
             throw new \Genesis\Exceptions\ErrorParameter(
                 sprintf(
                     'Required item parameter item_type is set to %s, but expected to be one of (%s)',
                     $value,
                     implode(
                         ', ',
-                        CommonUtils::getSortedArrayByValue(self::ITEM_TYPES)
+                        CommonUtils::getSortedArrayByValue($item_types)
                     )
                 )
             );
         }
 
         // check if it is not implemented
-        if (in_array($value, self::NOT_IMPLEMENTED_ITEM_TYPES)) {
+        $not_implemented_item_types = array(
+            self::ITEM_TYPE_DISCOUNT,
+            self::ITEM_TYPE_SALES_TAX,
+            self::ITEM_TYPE_STORE_CREDIT
+        );
+        if (in_array($value, $not_implemented_item_types)) {
             throw new \Genesis\Exceptions\NotImplemented(
                 sprintf(
                     'Item type %s it is not implemented yet',

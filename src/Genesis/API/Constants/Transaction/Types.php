@@ -374,6 +374,7 @@ class Types
             self::SOFORT                  => 'Alternatives\Sofort',
             self::TRUSTLY_SALE            => 'Alternatives\Trustly\Sale',
             self::TRUSTLY_WITHDRAWAL      => 'Alternatives\Trustly\Withdrawal',
+            self::KLARNA_AUTHORIZE        => 'Alternatives\Klarna\Authorize',
             self::INIT_RECURRING_SALE     => 'Cards\Recurring\InitRecurringSale',
             self::INIT_RECURRING_SALE_3D  => 'Cards\Recurring\InitRecurringSale3D',
             self::RECURRING_SALE          => 'Cards\Recurring\RecurringSale',
@@ -538,7 +539,8 @@ class Types
     {
         $transactionTypesList = [
             self::AUTHORIZE,
-            self::AUTHORIZE_3D
+            self::AUTHORIZE_3D,
+            self::KLARNA_AUTHORIZE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -552,7 +554,6 @@ class Types
     public static function canRefund($type)
     {
         $transactionTypesList = [
-            self::ABNIDEAL,
             self::CAPTURE,
             self::CASHU,
             self::INIT_RECURRING_SALE,
@@ -563,8 +564,10 @@ class Types
             self::PPRO,
             self::SALE,
             self::SALE_3D,
+            self::SOFORT,
             self::TRUSTLY_SALE,
-            self::FASHIONCHEQUE
+            self::FASHIONCHEQUE,
+            self::KLARNA_CAPTURE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -597,6 +600,87 @@ class Types
     public static function is3D($type)
     {
         return Common::endsWith($type, '3d');
+    }
+
+    /**
+     * @param $type
+     *
+     * @return bool
+     */
+    public static function isAuthorize($type)
+    {
+        $transactionTypesList = [
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::KLARNA_AUTHORIZE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param $type
+     *
+     * @return bool
+     */
+    public static function isCapture($type)
+    {
+        $transactionTypesList = [
+            self::CAPTURE,
+            self::KLARNA_CAPTURE
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * @param $type
+     *
+     * @return bool
+     */
+    public static function isRefund($type)
+    {
+        $transactionTypesList = [
+            self::REFUND,
+            self::SDD_REFUND,
+            self::KLARNA_REFUND
+        ];
+
+        return in_array(strtolower($type), $transactionTypesList);
+    }
+
+    /**
+     * Get capture transaction class from authorize type
+     *
+     * @param $authorizeType
+     * @return string
+     */
+    public static function getCaptureTransactionClass($authorizeType)
+    {
+        switch ($authorizeType) {
+            case self::AUTHORIZE:
+                return 'Financial\Capture';
+            case self::KLARNA_AUTHORIZE:
+                return 'Financial\Alternatives\Klarna\Capture';
+            break;
+        }
+    }
+
+    /**
+     * Get refund transaction class from authorize type
+     *
+     * @param $captureType
+     * @return string
+     */
+    public static function getRefundTransactionClass($captureType)
+    {
+        switch ($captureType) {
+            case self::CAPTURE:
+                return 'Financial\Refund';
+            case self::KLARNA_CAPTURE:
+                return 'Financial\Alternatives\Klarna\Refund';
+                break;
+        }
     }
 
     /**

@@ -55,6 +55,7 @@ class Refund extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
         $requiredFields = [
             'transaction_id',
             'remote_ip',
+            'amount',
             'currency',
             'reference_id'
         ];

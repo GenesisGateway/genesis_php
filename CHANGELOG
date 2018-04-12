@@ -1,3 +1,8 @@
+1.9.3
+-----
+* Small fixes for Klarna Transaction Type
+* Update refundable transactions list
+
 1.9.2
 -----
 * Added Support for Klarna Transaction Type

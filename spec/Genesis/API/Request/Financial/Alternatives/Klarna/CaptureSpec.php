@@ -62,6 +62,17 @@ class CaptureSpec extends ObjectBehavior
         $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
         $faker->addProvider(new \Faker\Provider\Internet($faker));
 
+        $item  = new KlarnaItem(
+            $faker->name,
+            KlarnaItem::ITEM_TYPE_PHYSICAL,
+            1,
+            10,
+            25
+        );
+
+        $items = new KlarnaItems('EUR');
+        $items->addItem($item);
+
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -69,6 +80,7 @@ class CaptureSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setAmount($items->getAmount());
         $this->setCurrency('EUR');
 
         $this->setBillingFirstName($faker->firstName);
@@ -86,17 +98,6 @@ class CaptureSpec extends ObjectBehavior
         $this->setShippingCity($faker->city);
         $this->setShippingState($faker->state);
         $this->setShippingCountry('NL');
-
-        $item  = new KlarnaItem(
-            $faker->name,
-            KlarnaItem::ITEM_TYPE_PHYSICAL,
-            1,
-            10,
-            25
-        );
-
-        $items = new KlarnaItems('EUR');
-        $items->addItem($item);
 
         $this->setItems($items);
     }
