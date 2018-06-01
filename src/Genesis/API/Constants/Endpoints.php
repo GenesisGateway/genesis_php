@@ -39,7 +39,7 @@ class Endpoints
     const ECOMPROCESSING    = 'e-comprocessing.net';
 
     /**
-     * Domain for eMerchantPay's Genesis instance
+     * Domain for emerchantpay's Genesis instance
      *
      * @link https://www.emerchantpay.com
      */

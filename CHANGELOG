@@ -174,7 +174,7 @@
 -----
 
 * Add support for Genesis Gateway v3.9
-* Add support for 'eMerchantPay' endpoint
+* Add support for 'emerchantpay' endpoint
 * New transaction types:
     - CashU
     - eZeeWallet

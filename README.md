@@ -147,7 +147,7 @@ catch (\Exception $e) {
 Endpoints
 ---------
 
-The current versions supports two separate endpoints: ```E-ComProcessing``` and ```eMerchantPay```
+The current versions supports two separate endpoints: ```E-ComProcessing``` and ```emerchantpay```
 
 For example:
 
@@ -156,7 +156,7 @@ For example:
 \Genesis\Config::setEndpoint('e-comprocessing');
 ```
 
-- You can set the Endpoint to ```eMerchantPay```, thus all the requests will go to ```eMerchantPay```s Genesis instance:
+- You can set the Endpoint to ```emerchantpay```, thus all the requests will go to ```emerchantpay```s Genesis instance:
 ```php
 \Genesis\Config::setEndpoint('emerchantpay');
 ```
