@@ -87,6 +87,20 @@ class AuthorizeSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_required_payment_method_category_param()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentMethodCategory(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_payment_method_category_param()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentMethodCategory('NOT_VALID_PAYMENT_METHOD_CATEGORY');
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -114,6 +128,7 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setPaymentMethodCategory('pay_later');
         $this->setAmount($items->getAmount());
         $this->setCurrency('EUR');
 

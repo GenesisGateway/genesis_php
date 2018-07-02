@@ -33,10 +33,18 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
  *
  * @package Genesis\API\Request\Financial\Alternatives\Klarna
  *
+ * @method $this setPaymentMethodCategory($value) Set payment method category
  */
 class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
 {
     use AsyncAttributes, AddressInfoAttributes;
+    
+    /**
+     * Payment Method Category
+     *
+     * @var string
+     */
+    protected $payment_method_category;
 
     /**
      * Returns the Request transaction type
@@ -61,17 +69,19 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
             'currency',
             'return_success_url',
             'return_failure_url',
+            'payment_method_category',
             'billing_country',
             'shipping_country'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
-        $allowed_countries = array('AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE');
+        $allowed_countries = ['AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE'];
 
         $requiredFieldValues = [
-            'billing_country'  => $allowed_countries,
-            'shipping_country' => $allowed_countries
+            'payment_method_category' => ['pay_later', 'pay_over_time'],
+            'billing_country'         => $allowed_countries,
+            'shipping_country'        => $allowed_countries
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -86,12 +96,13 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
         return array_merge(
             parent::getPaymentTransactionStructure(),
             [
-                'customer_email'   => $this->customer_email,
-                'customer_phone'   => $this->customer_phone,
-                'billing_address'    => $this->getBillingAddressParamsStructure(),
-                'shipping_address'   => $this->getShippingAddressParamsStructure(),
-                'return_success_url' => $this->return_success_url,
-                'return_failure_url' => $this->return_failure_url
+                'customer_email'          => $this->customer_email,
+                'customer_phone'          => $this->customer_phone,
+                'payment_method_category' => $this->payment_method_category,
+                'billing_address'         => $this->getBillingAddressParamsStructure(),
+                'shipping_address'        => $this->getShippingAddressParamsStructure(),
+                'return_success_url'      => $this->return_success_url,
+                'return_failure_url'      => $this->return_failure_url
             ]
         );
     }

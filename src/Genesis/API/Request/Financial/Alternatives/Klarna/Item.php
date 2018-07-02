@@ -137,12 +137,6 @@ class Item
     const ITEM_TYPE_SHIPPING_FEE = 'shipping_fee';
 
     /**
-     * Item type sales_tax
-     * @const string
-     */
-    const ITEM_TYPE_SALES_TAX = 'sales_tax';
-
-    /**
      * Item type digital
      * @const string
      */
@@ -179,6 +173,7 @@ class Item
      * @param $product_url
      * @param $quantity_unit
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function __construct(
         $name,
@@ -277,10 +272,49 @@ class Item
     }
 
     /**
+     * Verify negative filed
+     *
+     * @param $field
+     * @param $value
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyNegativeField($field, $value)
+    {
+        if (!empty($value) && $value > 0) {
+            throw new \Genesis\Exceptions\ErrorParameter(
+                sprintf(
+                    'Item parameter %s is set to %s, but expected to be negative number',
+                    $field,
+                    $value
+                )
+            );
+        }
+    }
+
+    /**
+     * Verify unit_price filed
+     *
+     * @param $value
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function verifyUnitPriceField($value)
+    {
+        $this->verifyRequiredField('unit_price', $value);
+
+        if (in_array($this->item_type, [self::ITEM_TYPE_DISCOUNT, self::ITEM_TYPE_STORE_CREDIT])) {
+            $this->verifyNegativeField('unit_price', $value);
+            return;
+        }
+        
+        $this->verifyNonNegativeField('unit_price', $value);
+    }
+
+    /**
      * Set name
      *
      * @param $value
      * @return $this
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function setName($value)
     {
@@ -295,10 +329,11 @@ class Item
      *
      * @param $value
      * @return $this
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function setUnitPrice($value)
     {
-        $this->verifyRequiredField('unit_price', $value);
+        $this->verifyUnitPriceField($value);
 
         $this->unit_price = $value;
         return $this;
@@ -309,6 +344,7 @@ class Item
      *
      * @param $value
      * @return $this
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function setQuantity($value)
     {
@@ -324,6 +360,7 @@ class Item
      *
      * @param $value
      * @return $this
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function setTaxRate($value)
     {
@@ -337,6 +374,7 @@ class Item
      * Set total discount amount
      * @param $value
      * @return $this
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     public function setTotalDiscountAmount($value)
     {
@@ -352,7 +390,6 @@ class Item
      * @param $value
      * @return $this
      * @throws \Genesis\Exceptions\ErrorParameter
-     * @throws \Genesis\Exceptions\NotImplemented
      */
     public function setItemType($value)
     {
@@ -363,7 +400,6 @@ class Item
             self::ITEM_TYPE_PHYSICAL,
             self::ITEM_TYPE_DISCOUNT,
             self::ITEM_TYPE_SHIPPING_FEE,
-            self::ITEM_TYPE_SALES_TAX,
             self::ITEM_TYPE_DIGITAL,
             self::ITEM_TYPE_GIFT_CARD,
             self::ITEM_TYPE_STORE_CREDIT,
@@ -378,21 +414,6 @@ class Item
                         ', ',
                         CommonUtils::getSortedArrayByValue($item_types)
                     )
-                )
-            );
-        }
-
-        // check if it is not implemented
-        $not_implemented_item_types = array(
-            self::ITEM_TYPE_DISCOUNT,
-            self::ITEM_TYPE_SALES_TAX,
-            self::ITEM_TYPE_STORE_CREDIT
-        );
-        if (in_array($value, $not_implemented_item_types)) {
-            throw new \Genesis\Exceptions\NotImplemented(
-                sprintf(
-                    'Item type %s it is not implemented yet',
-                    $value
                 )
             );
         }
