@@ -19,7 +19,6 @@ class AbniDealBanksSpec extends ObjectBehavior
 
     public function it_should_build_empty_body()
     {
-        $this->Build();
         $this->getDocument()->shouldBeNull();
     }
 

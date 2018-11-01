@@ -176,7 +176,6 @@ class INPaySpec extends ObjectBehavior
 
         $this->setIsPayout(false);
 
-        $this->setNotificationUrl($faker->url);
         $this->setCustomerBankId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setOrderDescription($faker->text);
     }

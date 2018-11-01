@@ -29,7 +29,14 @@ Note: Most of the extension are part of PHP and enabled by default, however some
 Installation
 ------------
 
-* clone / [download](https://github.com/GenesisGateway/genesis_php/archive/master.zip) this repo
+#### Composer
+
+```sh
+composer.phar require genesisgateway/genesis_php
+```
+
+#### Manual
+* Clone / [download](https://github.com/GenesisGateway/genesis_php/archive/master.zip) this repo
 
 ```sh
 git clone http://github.com/GenesisGateway/genesis_php genesis_php && cd genesis_php

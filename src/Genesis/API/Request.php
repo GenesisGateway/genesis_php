@@ -23,6 +23,7 @@
 
 namespace Genesis\API;
 
+use Genesis\API\Traits\MagicAccessors;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -38,6 +39,8 @@ use Genesis\Utils\Common as CommonUtils;
  */
 abstract class Request
 {
+    use MagicAccessors;
+
     /**
      * Store Request's configuration, like URL, Request Type, Transport Layer
      *
@@ -114,37 +117,6 @@ abstract class Request
         if (method_exists($this, 'setRequiredFields')) {
             $this->setRequiredFields();
         }
-    }
-
-    /**
-     * Convert Pascal to Camel case and set the correct property
-     *
-     * @param $method
-     * @param $args
-     *
-     * @return $this|false
-     */
-    public function __call($method, $args)
-    {
-        list($action, $target) = CommonUtils::resolveDynamicMethod($method);
-
-        switch ($action) {
-            case 'get':
-                if (property_exists($this, $target)) {
-                    return $this->$target;
-                }
-
-                break;
-            case 'set':
-                if (property_exists($this, $target)) {
-                    $this->$target = trim(reset($args));
-                    return $this;
-                }
-
-                return false;
-        }
-
-        return $this;
     }
 
     /**

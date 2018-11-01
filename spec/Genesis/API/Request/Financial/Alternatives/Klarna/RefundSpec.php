@@ -78,26 +78,8 @@ class RefundSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
         $this->setAmount($items->getAmount());
         $this->setCurrency('EUR');
-
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
-        $this->setBillingCountry('NL');
-
-        $this->setShippingFirstName($faker->firstName);
-        $this->setShippingLastName($faker->lastName);
-        $this->setShippingAddress1($faker->streetAddress);
-        $this->setShippingZipCode($faker->postcode);
-        $this->setShippingCity($faker->city);
-        $this->setShippingState($faker->state);
-        $this->setShippingCountry('NL');
 
         $this->setItems($items);
     }

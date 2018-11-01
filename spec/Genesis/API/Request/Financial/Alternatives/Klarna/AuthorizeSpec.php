@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\Alternatives\Klarna;
 
+use Genesis\API\Request\Financial\Alternatives\Klarna\Authorize;
 use PhpSpec\ObjectBehavior;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Items as KlarnaItems;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Item as KlarnaItem;
@@ -128,7 +129,7 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setPaymentMethodCategory('pay_later');
+        $this->setPaymentMethodCategory(Authorize::PAYMENT_METHOD_CATEGORY_PAY_LATER);
         $this->setAmount($items->getAmount());
         $this->setCurrency('EUR');
 

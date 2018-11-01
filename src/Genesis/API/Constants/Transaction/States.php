@@ -22,6 +22,8 @@
  */
 namespace Genesis\API\Constants\Transaction;
 
+use Genesis\Exceptions\InvalidMethod;
+
 /**
  * Class States
  *
@@ -149,7 +151,8 @@ class States
      * @param $method
      * @param $args
      *
-     * @return $this|bool
+     * @throws InvalidMethod
+     * @return bool
      */
     public function __call($method, $args)
     {
@@ -160,13 +163,15 @@ class States
                 if (isset($this->status)) {
                     return $this->compare($target);
                 }
-
-                break;
-            default:
-                break;
         }
 
-        return null;
+        throw new InvalidMethod(
+            sprintf(
+                'You\'re trying to call a non-existent method %s of class %s!',
+                $method,
+                __CLASS__
+            )
+        );
     }
 
     /**

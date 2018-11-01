@@ -50,4 +50,15 @@ class TypesSpec extends ObjectBehavior
         $this->isValidSplitPaymentTrxType(Types::SALE)->shouldReturn(true);
         $this->isValidSplitPaymentTrxType(Types::AUTHORIZE)->shouldReturn(false);
     }
+
+    public function it_can_get_custom_required_parameters()
+    {
+        $this->getCustomRequiredParameters(Types::PPRO)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::PAYBYVOUCHER_SALE)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::PAYBYVOUCHER_YEEPAY)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::INSTA_DEBIT_PAYIN)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::IDEBIT_PAYIN)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::CITADEL_PAYIN)->shouldNotBe(false);
+        $this->getCustomRequiredParameters(Types::KLARNA_AUTHORIZE)->shouldNotBe(false);
+    }
 }

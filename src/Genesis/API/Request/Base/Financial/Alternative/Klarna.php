@@ -40,13 +40,6 @@ abstract class Klarna extends \Genesis\API\Request\Base\Financial
     use PaymentAttributes;
 
     /**
-     * Customer Gender
-     *
-     * @var string
-     */
-    protected $customer_gender;
-
-    /**
      * Items list
      *
      * @var Items
@@ -57,11 +50,13 @@ abstract class Klarna extends \Genesis\API\Request\Base\Financial
      * Set items
      *
      * @param Items $items
+     *
      * @return $this
      */
     public function setItems(Items $items)
     {
         $this->items = $items;
+
         return $this;
     }
 
@@ -73,9 +68,8 @@ abstract class Klarna extends \Genesis\API\Request\Base\Financial
     {
         return array_merge(
             [
-                'amount'           => \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency),
-                'currency'         => $this->currency,
-                'customer_gender'  => $this->customer_gender,
+                'amount'   => \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency),
+                'currency' => $this->currency,
             ],
             $this->items instanceof Items ? $this->items->toArray() : []
         );

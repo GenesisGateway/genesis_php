@@ -28,9 +28,13 @@ class RequestSpec extends ObjectBehavior
 
     public function it_cant_set_unknown_variables()
     {
-        $this->setUnknownProperty(true)->shouldBe(false);
+        $this
+            ->shouldThrow('\Genesis\Exceptions\InvalidMethod')
+            ->during('setUnknownProperty', [ true ]);
 
-        $this->getUnownProperty()->shouldBe($this);
+        $this
+            ->shouldThrow('\Genesis\Exceptions\InvalidMethod')
+            ->during('getUnownProperty');
     }
 
     public function it_can_get_api_configs()

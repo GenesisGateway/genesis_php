@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Financial\Alternatives\Klarna;
 
+use Genesis\API\Traits\MagicAccessors;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Currency as CurrencyUtils;
 
@@ -39,6 +40,8 @@ use Genesis\Utils\Currency as CurrencyUtils;
  */
 class Item
 {
+    use MagicAccessors;
+
     /**
      * Currency code in ISO-4217
      *
@@ -197,39 +200,6 @@ class Item
         $this->setImageUrl($image_url);
         $this->setProductUrl($product_url);
         $this->setQuantityUnit($quantity_unit);
-    }
-
-    /**
-     * Convert Pascal to Camel case and set the correct property
-     *
-     * @param $method
-     * @param $args
-     * @return $this
-     * @throws \Genesis\Exceptions\InvalidMethod
-     */
-    public function __call($method, $args)
-    {
-        list($action, $target) = CommonUtils::resolveDynamicMethod($method);
-
-        switch ($action) {
-            case 'get':
-                if (property_exists($this, $target)) {
-                    return $this->$target;
-                }
-                break;
-            case 'set':
-                if (property_exists($this, $target)) {
-                    $this->$target = trim(reset($args));
-                    return $this;
-                }
-        }
-        throw new \Genesis\Exceptions\InvalidMethod(
-            sprintf(
-                'You\'re trying to call a non-existent method %s of class %s!',
-                $method,
-                __CLASS__
-            )
-        );
     }
 
     /**

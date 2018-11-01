@@ -67,7 +67,7 @@ class GenesisSpec extends ObjectBehavior
             ]
         );
 
-        $this->shouldThrow('\Genesis\Exceptions\InvalidArgument')->duringInstantiation();
+        $this->shouldThrow('\Genesis\Exceptions\InvalidMethod')->duringInstantiation();
     }
 
     public function it_can_load_deprecated_void_request()

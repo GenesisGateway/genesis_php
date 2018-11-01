@@ -135,6 +135,7 @@ class Types
 
     /**
      * PayByVouchers via oBeP
+     * @deprecated Payment method is deprecated and will be removed
      */
     const PAYBYVOUCHER_YEEPAY = 'paybyvoucher_yeepay';
 
@@ -690,50 +691,12 @@ class Types
      */
     public static function getCustomRequiredParameters($type)
     {
-        switch ($type) {
-            case self::PPRO:
-                return [
-                    'payment_method' => \Genesis\API\Constants\Payment\Methods::getMethods()
-                ];
-                break;
+        $method = 'for' . Common::snakeCaseToCamelCase($type);
 
-            case self::PAYBYVOUCHER_SALE:
-            case self::PAYBYVOUCHER_YEEPAY:
-                $customParameters = [
-                    'card_type'   =>
-                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\CardTypes::getCardTypes(),
-                    'redeem_type' =>
-                        \Genesis\API\Constants\Transaction\Parameters\PayByVouchers\RedeemTypes::getRedeemTypes()
-                ];
-
-                if ($type == self::PAYBYVOUCHER_YEEPAY) {
-                    $customParameters = array_merge(
-                        $customParameters,
-                        [
-                            'product_name'     => null,
-                            'product_category' => null
-                        ]
-                    );
-                }
-
-                return $customParameters;
-                break;
-
-            case self::CITADEL_PAYIN:
-                return [
-                    'merchant_customer_id' => null
-                ];
-                break;
-
-            case self::INSTA_DEBIT_PAYIN:
-            case self::IDEBIT_PAYIN:
-                return [
-                    'customer_account_id' => null
-                ];
-                break;
-
-            default:
-                return false;
+        if (!method_exists(CustomRequiredParameters::class, $method)) {
+            return false;
         }
+
+        return CustomRequiredParameters::$method();
     }
 }

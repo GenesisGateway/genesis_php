@@ -29,6 +29,7 @@ use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -79,11 +80,40 @@ class Create extends \Genesis\API\Request
     protected $return_cancel_url;
 
     /**
+     * Number of minutes determining how long the WPF will be valid.
+     * Will be set to 30 minutes by default.
+     * Valid value ranges between 1 minute and 31 days given in minutes
+     * @var int
+     */
+    protected $lifetime;
+
+    /**
      * The transaction types that the merchant is willing to accept payments for
      *
      * @var array
      */
     protected $transaction_types = [];
+
+    /**
+     * Number of minutes determining how long the WPF will be valid.
+     * Will be set to 30 minutes by default.
+     * Valid value ranges between 1 minute and 31 days given in minutes
+     * @param int $lifetime
+     * @throws InvalidArgument
+     * @return $this
+     */
+    public function setLifetime($lifetime)
+    {
+        $lifetime = intval($lifetime);
+
+        if ($lifetime < 1 || $lifetime > 44640) {
+            throw new InvalidArgument('Valid value ranges between 1 minute and 31 days given in minutes');
+        }
+
+        $this->lifetime = $lifetime;
+
+        return $this;
+    }
 
     /**
      * Add transaction type to the list of available types
@@ -139,7 +169,9 @@ class Create extends \Genesis\API\Request
             return;
         }
 
-        if (!CommonUtils::isValidArray($parameters)) {
+        $txnCustomRequiredParams = static::validateNativeCustomParameters($transactionType, $txnCustomRequiredParams);
+
+        if (CommonUtils::isValidArray($txnCustomRequiredParams) && !CommonUtils::isValidArray($parameters)) {
             throw new \Genesis\Exceptions\ErrorParameter(
                 sprintf(
                     'Custom transaction parameters (%s) are required and none are set.',
@@ -156,6 +188,30 @@ class Create extends \Genesis\API\Request
                 $parameters
             );
         }
+    }
+
+    /**
+     * @param string $transactionType
+     * @param array $txnCustomRequiredParams
+     *
+     * @return array
+     */
+    protected function validateNativeCustomParameters($transactionType, $txnCustomRequiredParams)
+    {
+        foreach ($txnCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
+            if (property_exists($this, $customRequiredParam)) {
+                $this->validateRequiredParameter(
+                    $transactionType,
+                    $customRequiredParam,
+                    $customRequiredParamValues,
+                    [ $customRequiredParam => $this->{$customRequiredParam} ]
+                );
+
+                unset($txnCustomRequiredParams[$customRequiredParam]);
+            }
+        }
+
+        return $txnCustomRequiredParams;
     }
 
     protected function validateRequiredParameter(
@@ -346,6 +402,7 @@ class Create extends \Genesis\API\Request
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'transaction_types'         => $this->transaction_types,
+                'lifetime'                  => $this->lifetime,
                 'risk_params'               => $this->getRiskParamsStructure(),
                 'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
             ]

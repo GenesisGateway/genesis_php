@@ -116,6 +116,13 @@ class CreateSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_validate_lifetime_parameter()
+    {
+        $this->shouldNotThrow()->during('setLifetime', [ 5 ]);
+        $this->shouldThrow()->during('setLifetime', [ 9000000 ]);
+        $this->shouldThrow()->during('setLifetime', [ -5 ]);
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();

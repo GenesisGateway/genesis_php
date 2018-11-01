@@ -15,7 +15,6 @@ class SaleSpec extends ObjectBehavior
     public function it_can_build_structure()
     {
         $this->setRequestParameters();
-        $this->Build();
         $this->getDocument()->shouldNotBeEmpty();
     }
 

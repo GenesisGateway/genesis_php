@@ -109,10 +109,12 @@ class Genesis
             case 'INPay':
             case 'ABNiDEAL':
                 $this->throwDeprecatedTransactionType();
-        }
-
-        if (isset($parts[$lastIndex - 1]) && $parts[$lastIndex - 1] === 'PayByVauchers') {
-            $this->throwDeprecatedTransactionType();
+                break;
+            case 'oBeP':
+                if (isset($parts[$lastIndex - 1]) && $parts[$lastIndex - 1] === 'PayByVouchers') {
+                    $this->throwDeprecatedTransactionType();
+                }
+                break;
         }
 
         return sprintf(

@@ -38,6 +38,9 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
 {
     use AsyncAttributes, AddressInfoAttributes;
+
+    const PAYMENT_METHOD_CATEGORY_PAY_LATER      = 'pay_later';
+    const PAYMENT_METHOD_CATEGORY_PAY_OVER_TIME  = 'pay_over_time';
     
     /**
      * Payment Method Category
@@ -45,6 +48,21 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
      * @var string
      */
     protected $payment_method_category;
+
+    /**
+     * Customer Gender
+     *
+     * @var string
+     */
+    protected $customer_gender;
+
+    /**
+     * @return array
+     */
+    public static function getAllowedCountries()
+    {
+        return ['AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE'];
+    }
 
     /**
      * Returns the Request transaction type
@@ -76,12 +94,13 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
-        $allowed_countries = ['AT', 'DK', 'FI', 'DE', 'NL', 'NO', 'SE'];
-
         $requiredFieldValues = [
-            'payment_method_category' => ['pay_later', 'pay_over_time'],
-            'billing_country'         => $allowed_countries,
-            'shipping_country'        => $allowed_countries
+            'payment_method_category' => [
+                self::PAYMENT_METHOD_CATEGORY_PAY_LATER,
+                self::PAYMENT_METHOD_CATEGORY_PAY_OVER_TIME
+            ],
+            'billing_country'         => static::getAllowedCountries(),
+            'shipping_country'        => static::getAllowedCountries()
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -99,6 +118,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Alternative\Klarna
                 'customer_email'          => $this->customer_email,
                 'customer_phone'          => $this->customer_phone,
                 'payment_method_category' => $this->payment_method_category,
+                'customer_gender'         => $this->customer_gender,
                 'billing_address'         => $this->getBillingAddressParamsStructure(),
                 'shipping_address'        => $this->getShippingAddressParamsStructure(),
                 'return_success_url'      => $this->return_success_url,

@@ -74,9 +74,6 @@ class SaleSpec extends ObjectBehavior
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setCustomerEmail($faker->email);
-
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
     }
 
     protected function setSDDRequestParameters()
