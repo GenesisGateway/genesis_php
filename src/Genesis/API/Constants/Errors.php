@@ -115,6 +115,11 @@ final class Errors
     const INPUT_DATA_FORMAT_ERROR           = 330;
 
     /**
+     * This is a format error stopped by MasterCard due to invalid formatting in certain fields.
+     */
+    const MASTERCARD_FORMAT_ERROR           = 331;
+
+    /**
      * Argument passed in valid format but makes no sense (e.g. incorrect country code or currency)
      */
     const INPUT_DATA_INVALID_ERROR          = 340;
@@ -166,6 +171,21 @@ final class Errors
     const TRANSACTION_NOT_FOUND_ERROR       = 460;
 
     /**
+     * Chargeback not found!
+     */
+    const CHARGEBACK_NOT_FOUND_ERROR        = 470;
+
+    /**
+     * Retrieval Request not found!
+     */
+    const RETRIEVAL_REQUEST_NOT_FOUND_ERROR = 480;
+
+    /**
+     * Fraud Report not found!
+     */
+    const FRAUD_REPORT_NOT_FOUND_ERROR      = 490;
+
+    /**
      * Transaction declined by issuer
      */
     const PROCESSING_ERROR                  = 500;
@@ -174,6 +194,11 @@ final class Errors
      * Transaction declined, Credit card number is invalid
      */
     const INVALID_CARD_ERROR                = 510;
+
+    /**
+     * OCT not enabled error.
+     */
+    const ISSUER_OCT_NOT_ENABLED_ERROR      = 511;
 
     /**
      * Transaction declined, expiration date not in the future or date invalid
@@ -191,9 +216,24 @@ final class Errors
     const CREDIT_EXCEEDED_ERROR             = 540;
 
     /**
+     * The voucher could not be issued!
+     */
+    const ISSUING_ERROR                     = 550;
+
+    /**
      * Transaction declined by risk management
      */
     const RISK_ERROR                       = 600;
+
+    /**
+     * Interchange reject received for transaction!
+     */
+    const INTERCHANGE_REJECT_ERROR         = 601;
+
+    /**
+     * Transaction declined by frontend reject!
+     */
+    const FRONT_END_REJECT_ERROR           = 602;
 
     /**
      * Card bin does not match billing country
@@ -276,6 +316,16 @@ final class Errors
     const RECURRING_LIMIT_EXCEEDED_ERROR   = 628;
 
     /**
+     * Transaction declined by risk management.
+     */
+    const IRIS_FILTER_DECLINED_ERROR       = 629;
+
+    /**
+     * Transaction on hold, a manual review will be done
+     */
+    const IRIS_FILTER_ON_HOLD_ERROR        = 630;
+
+    /**
      * Address Verification failed
      */
     const AVS_ERROR                        = 690;
@@ -289,6 +339,26 @@ final class Errors
      * ThreatMetrix High Risk Error
      */
     const THREAT_METRIX_RISK_ERROR         = 692;
+
+    /**
+     * Transaction declined by risk management, IP is NOT whitelisted!
+     */
+    const IP_NOT_WHITELISTED_ERROR         = 693;
+
+    /**
+     * Transaction declined by risk management, domain is blacklisted!
+     */
+    const DOMAIN_BLACKLISTED_ERROR         = 694;
+
+    /**
+     * Risk Error: Please contact the risk team!
+     */
+    const FRAUD_ERROR                      = 695;
+
+    /**
+     * Transaction declined by risk management, iban blacklisted!
+     */
+    const IBAN_BLACKLIST_ERROR             = 696;
 
     /**
      * Some error occurred on the issuer side
@@ -351,118 +421,148 @@ final class Errors
     {
         switch (intval($errorCode)) {
             default:
-            case 001:
+            case self::ERROR:
                 return 'Undefined error.';
-            case 100:
+            case self::SYSTEM_ERROR:
                 return 'A general system error occurred.';
-            case 101:
+            case self::MAINTENANCE_ERROR:
                 return 'System is undergoing maintenance, request could not be handled.';
-            case 110:
+            case self::AUTHENTICATION_ERROR:
                 return 'Login failed. Check your API credentials.';
-            case 120:
+            case self::CONFIGURATION_ERROR:
                 return 'Config error occurred, e.g. terminal not configured properly. Check terminal settings.';
-            case 200:
+            case self::COMMUNICATION_ERROR:
                 return 'Communication with issuer failed, please contact support.';
-            case 210:
+            case self::CONNECTION_ERROR:
                 return 'Connection to issuer could not be established, please contact support.';
-            case 220:
+            case self::ACCOUNT_ERROR:
                 return 'Issuer account data invalid, please contact support.';
-            case 230:
+            case self::TIMEOUT_ERROR:
                 return 'Issuer does not respond within given time-frame - please reconcile.';
-            case 240:
+            case self::RESPONSE_ERROR:
                 return 'Issuer returned invalid response - please reconcile and contact support.';
-            case 250:
+            case self::PARSING_ERROR:
                 return 'Issuer response could not be parsed - please reconcile and contact support.';
-            case 300:
+            case self::INPUT_DATA_ERROR:
                 return 'Invalid were data sent to the API.';
-            case 310:
+            case self::INVALID_TRANSACTION_TYPE_ERROR:
                 return 'Invalid transaction type was passed to API.';
-            case 320:
+            case self::INPUT_DATA_MISSING_ERROR:
                 return 'Required argument is missing.';
-            case 330:
+            case self::INPUT_DATA_FORMAT_ERROR:
                 return 'Argument passed in invalid format.';
-            case 340:
+            case self::MASTERCARD_FORMAT_ERROR:
+                return 'This is a format error stopped by MasterCard due to invalid formatting in certain fields.';
+            case self::INPUT_DATA_INVALID_ERROR:
                 return 'Argument passed in valid format but makes no sense (e.g. incorrect country code or currency).';
-            case 350:
+            case self::INVALID_XML_ERROR:
                 return 'The input Builder could not be parsed due to invalid code.';
-            case 400:
+            case self::INVALID_CONTENT_TYPE_ERROR:
+                return 'Missing or invalid content type: should be text/xml!';
+            case self::WORKFLOW_ERROR:
                 return 'A transaction was triggered that is not possible at this time in the workflow,' .
                        'e.g. a refund on a declined transaction.';
-            case 410:
+            case self::REFERENCE_NOT_FOUND_ERROR:
                 return 'Reference transaction was not found.';
-            case 420:
+            case self::REFERENCE_WORKFLOW_ERROR:
                 return 'Wrong Workflow specified.';
-            case 430:
+            case self::REFERENCE_INVALIDATED_ERROR:
                 return 'Reference transaction already invalidated!';
-            case 440:
+            case self::REFERENCE_MISMATCH_ERROR:
                 return 'Data mismatch with reference, e.g. amount exceeds reference.';
-            case 450:
+            case self::DOUBLE_TRANSACTION_ERROR:
                 return 'Transaction doublet was detected, transaction was blocked.';
-            case 460:
+            case self::TRANSACTION_NOT_FOUND_ERROR:
                 return 'The referenced transaction could not be found.';
-            case 500:
+            case self::CHARGEBACK_NOT_FOUND_ERROR:
+                return 'Chargeback not found!';
+            case self::RETRIEVAL_REQUEST_NOT_FOUND_ERROR:
+                return 'Retrieval Request not found!';
+            case self::FRAUD_REPORT_NOT_FOUND_ERROR:
+                return 'Fraud Report not found!';
+            case self::PROCESSING_ERROR:
                 return 'Transaction declined by issuer.';
-            case 510:
+            case self::INVALID_CARD_ERROR:
                 return 'Transaction declined, Credit card number is invalid.';
-            case 520:
+            case self::ISSUER_OCT_NOT_ENABLED_ERROR:
+                return 'OCT not enabled error.';
+            case self::EXPIRED_CARD_ERROR:
                 return 'Transaction declined, expiration date not in the future or date invalid.';
-            case 530:
+            case self::TRANSACTION_PENDING_ERROR:
                 return 'Transaction pending.';
-            case 540:
+            case self::CREDIT_EXCEEDED_ERROR:
                 return 'Amount exceeds credit card limit.';
-            case 600:
+            case self::ISSUING_ERROR:
+                return 'The voucher could not be issued!';
+            case self::RISK_ERROR:
                 return 'Transaction declined by risk management.';
-            case 609:
+            case self::INTERCHANGE_REJECT_ERROR:
+                return 'Interchange reject received for transaction!';
+            case self::FRONT_END_REJECT_ERROR:
+                return 'Transaction declined by frontend reject!';
+            case self::BIN_COUNTRY_CHECK_ERROR:
                 return 'Card bin does not match billing country.';
-            case 610:
+            case self::CARD_BLACKLIST_ERROR:
                 return 'Card is blacklisted.';
-            case 611:
+            case self::BIN_BLACKLIST_ERROR:
                 return 'BIN blacklisted.';
-            case 612:
+            case self::COUNTRY_BLACKLIST_ERROR:
                 return 'Country blacklisted.';
-            case 613:
+            case self::IP_BLACKLIST_ERROR:
                 return 'IP address blacklisted.';
-            case 614:
+            case self::BLACKLIST_ERROR:
                 return 'Value from the Transaction Request or Risk Parameters is blacklisted.';
-            case 616:
+            case self::CARD_WHITELIST_ERROR:
                 return 'PAN Whitelist Filter blocked the transaction.';
-            case 620:
+            case self::CARD_LIMIT_EXCEEDED_ERROR:
                 return 'Card limit exceeded configured limits.';
-            case 621:
+            case self::TERMINAL_LIMIT_EXCEEDED_ERROR:
                 return 'Terminal limits exceeded.';
-            case 622:
+            case self::CONTRACT_LIMIT_EXCEEDED_ERROR:
                 return 'MID limits exceeded.';
-            case 623:
+            case self::CARD_VELOCITY_EXCEEDED_ERROR:
                 return 'Velocity by unknown card exceeded!';
-            case 624:
+            case self::CARD_TICKET_SIZE_EXCEEDED_ERROR:
                 return 'Ticket size by unknown card exceeded!';
-            case 625:
+            case self::USER_LIMIT_EXCEEDED_ERROR:
                 return 'User limit exceeded configured limits.';
-            case 626:
+            case self::MULTIPLE_FAILURE_DETECTION_ERROR:
                 return 'Found user transaction declined by issuer.';
-            case 627:
+            case self::CS_DETECTION_ERROR:
                 return 'CrossSelling Error!';
-            case 628:
+            case self::RECURRING_LIMIT_EXCEEDED_ERROR:
                 return 'Amount/count by recurring subscription exceeded.';
-            case 629:
+            case self::IRIS_FILTER_DECLINED_ERROR:
+                return 'Transaction declined by risk management.';
+            case self::IRIS_FILTER_ON_HOLD_ERROR:
+                return 'Transaction on hold, a manual review will be done';
+            case self::AVS_ERROR:
                 return 'Address Verification failed.';
-            case 691:
+            case self::MAX_MIND_RISK_ERROR:
                 return 'MaxMind High Risk Error.';
-            case 692:
+            case self::THREAT_METRIX_RISK_ERROR:
                 return 'ThreatMetrix High Risk Error.';
-            case 900:
+            case self::IP_NOT_WHITELISTED_ERROR:
+                return 'Transaction declined by risk management, IP is NOT whitelisted!';
+            case self::DOMAIN_BLACKLISTED_ERROR:
+                return 'Transaction declined by risk management, domain is blacklisted!';
+            case self::FRAUD_ERROR:
+                return 'Please contact the risk team!';
+            case self::IBAN_BLACKLIST_ERROR:
+                return 'Transaction declined by risk management, iban blacklisted!';
+            case self::REMOTE_ERROR:
                 return 'Some error occurred on the issuer.';
-            case 910:
+            case self::REMOTE_SYSTEM_ERROR:
                 return 'Some error occurred on the issuer.';
-            case 920:
+            case self::REMOTE_CONFIGURATION_ERROR:
                 return 'Issuer configuration error.';
-            case 930:
+            case self::REMOTE_DATA_ERROR:
                 return 'Some passed data caused an error on the issuer.';
-            case 940:
+            case self::REMOTE_WORKFLOW_ERROR:
                 return 'Remote workflow error.';
-            case 950:
+            case self::REMOTE_TIMEOUT_ERROR:
                 return 'Issuer has time-out with clearing network.';
-            case 960:
+            case self::REMOTE_CONNECTION_ERROR:
                 return 'Issuer could not reach clearing network.';
         }
     }
