@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class ABNiDEALSpec extends ObjectBehavior
+class PayUSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\ABNiDEAL');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\PayU');
     }
 
     public function it_can_build_structure()
@@ -23,38 +22,38 @@ class ABNiDEALSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_email_parameters()
+    public function it_should_fail_when_missing_return_success_url_parameter()
     {
         $this->setRequestParameters();
-        $this->shouldThrow()->during('setCustomerEmail', [ null ]);
-    }
-
-    public function it_should_fail_when_missing_bank_id_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCustomerBankId(null);
+        $this->setReturnSuccessUrl(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_billing_country_parameter()
+    public function it_should_fail_when_missing_return_failure_url_parameter()
     {
         $this->setRequestParameters();
-        $this->setBillingCountry(null);
+        $this->setReturnFailureUrl(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_unsupported_billing_country_parameter()
+    public function it_should_fail_when_missing_required_amount_param()
     {
         $this->setRequestParameters();
-        $this->setBillingCountry('ZZ');
+        $this->setAmount(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_unsupported_currency_parameter()
+    public function it_should_fail_when_invalid_currency()
     {
         $this->setRequestParameters();
-        $this->setCurrency('ABC');
+        $this->setCurrency('USD');
+        $this->shouldThrow()->during('getDocument');
+    }
 
+    public function it_should_fail_when_invalid_country()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('BG');
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -70,39 +69,26 @@ class ABNiDEALSpec extends ObjectBehavior
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setUsage('Genesis Automated PHP Request');
+        $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-
-        $this->setCurrency(
-            $faker->randomElement(
-                \Genesis\Utils\Currency::getList()
-            )
-        );
-
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setCustomerEmail($faker->email);
-
-        $this->setCustomerBankId($faker->uuid);
-
-        $this->setBillingCountry(
-            $faker->randomElement(
-                \Genesis\Utils\Country::getList()
-            )
-        );
-
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCurrency('PLN');
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingAddress1($faker->streetAddress);
+        $this->setBillingZipCode($faker->postcode);
+        $this->setBillingCity($faker->city);
+        $this->setBillingState($faker->state);
+        $this->setBillingCountry('PL');
     }
 
     public function getMatchers()
     {
         return array(
-            'beEmpty'       => function ($subject) {
+            'beEmpty' => function ($subject) {
                 return empty($subject);
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
             },
         );
     }

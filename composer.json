@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.10.3",
+  "version": "1.11.0",
   "license": "MIT",
   "keywords": [
     "genesis",
@@ -59,7 +59,6 @@
     "insta_debit",
     "insta_debit_payin",
     "insta_debit_payout",
-    "citadel",
     "citadel_payin",
     "citadel_payout",
     "tc40",
@@ -68,7 +67,14 @@
     "wechat",
     "container_store",
     "fashioncheque",
-    "intersolve"
+    "intersolve",
+    "bitpay",
+    "zimpler",
+    "entercash",
+    "multibanco",
+    "payu",
+    "instant_transfer",
+    "banco_do_brasil"
   ],
   "require": {
     "php": ">=5.5.9",
@@ -87,6 +93,11 @@
   "autoload": {
     "psr-0": {
       "Genesis": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "spec\\": "spec/"
     }
   }
 }

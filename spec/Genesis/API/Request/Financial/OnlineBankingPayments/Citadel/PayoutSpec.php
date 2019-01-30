@@ -61,8 +61,7 @@ class PayoutSpec extends ObjectBehavior
     public function it_should_fail_when_missing_customer_email_parameter()
     {
         $this->setRequestParameters();
-        $this->setCustomerEmail(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldThrow()->during('setCustomerEmail', [ null ]);
     }
 
     public function it_should_fail_when_missing_de_iban_parameter()

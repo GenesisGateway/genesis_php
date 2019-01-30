@@ -23,15 +23,23 @@
 
 namespace Genesis\API\Traits\Request\Financial;
 
+use Genesis\Exceptions\ErrorParameter;
+
 /**
- * Trait SddBankAttributes
+ * Trait BankAttributes
  * @package Genesis\API\Traits\Request\Financial
  *
- * @method $this setIban($value) Set a valid IBAN bank account
- * @method $this setBic($value) Set a valid BIC code
  */
-trait SddBankAttributes
+trait BankAttributes
 {
+    /**
+     * @return array
+     */
+    public function getAllowedBicSizes()
+    {
+        return [8, 11];
+    }
+
     /**
      * Must contain valid IBAN, check
      * in the official API documentation
@@ -47,4 +55,25 @@ trait SddBankAttributes
      * @var string
      */
     protected $bic;
+
+    /**
+     * SWIFT/BIC code of the customer’s bank
+     *
+     * @param $value
+     *
+     * @return $this
+     * @throws ErrorParameter
+     */
+    public function setBic($value)
+    {
+        if (in_array(strlen($value), $this->getAllowedBicSizes()) === false) {
+            throw new ErrorParameter(
+                'Bic must be with one of these lengths: ' . implode(', ', $this->getAllowedBicSizes())
+            );
+        }
+
+        $this->bic = $value;
+
+        return $this;
+    }
 }

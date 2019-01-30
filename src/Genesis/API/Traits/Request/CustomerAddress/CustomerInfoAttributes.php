@@ -23,11 +23,12 @@
 
 namespace Genesis\API\Traits\Request\CustomerAddress;
 
+use Genesis\Exceptions\ErrorParameter;
+
 /**
  * Trait CustomerInfoAttributes
  * @package Genesis\API\Traits\Request\CustomerAddress
  *
- * @method $this setCustomerEmail($value) Set Email address of the Customer
  * @method $this setCustomerPhone($value) Set Phone number of the Customer
  */
 trait CustomerInfoAttributes
@@ -38,6 +39,22 @@ trait CustomerInfoAttributes
      * @var string
      */
     protected $customer_email;
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     * @throws ErrorParameter
+     */
+    public function setCustomerEmail($value)
+    {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+            throw new ErrorParameter('Please, enter a valid email');
+        }
+
+        $this->customer_email = $value;
+        return $this;
+    }
 
     /**
      * Phone number of the customer

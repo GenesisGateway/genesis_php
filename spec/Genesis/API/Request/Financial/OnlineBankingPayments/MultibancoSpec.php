@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives\Trustly;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use PhpSpec\ObjectBehavior;
 
-class WithdrawalSpec extends ObjectBehavior
+class MultibancoSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Trustly\Withdrawal');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\Multibanco');
     }
 
     public function it_can_build_structure()
@@ -22,6 +22,20 @@ class WithdrawalSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_return_success_url_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setReturnSuccessUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_return_failure_url_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setReturnFailureUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_fail_when_missing_required_amount_param()
     {
         $this->setRequestParameters();
@@ -29,38 +43,16 @@ class WithdrawalSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_currency_param()
+    public function it_should_fail_when_country_not_pt_param()
     {
         $this->setRequestParameters();
-        $this->setCurrency(null);
+        $this->setBillingCountry('BG');
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_billing_country_parameter()
+    public function it_should_fail_when_email_not_valid_param()
     {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_wrong_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry('JP');
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_customer_email_parameter()
-    {
-        $this->setRequestParameters();
-        $this->shouldThrow()->during('setCustomerEmail', [ null ]);
-    }
-
-    public function it_should_fail_when_missing_birth_date_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBirthDate(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldThrow()->during('setCustomerEmail', [ 'fdsfsfsf' ]);
     }
 
     protected function setRequestParameters()
@@ -79,18 +71,16 @@ class WithdrawalSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setCurrency('EUR');
+        $this->setCustomerEmail('test@test.com');
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBirthDate($faker->date('d-m-Y'));
-        $this->setBillingCountry('DE');
+        $this->setBillingCountry('PT');
     }
 
     public function getMatchers()

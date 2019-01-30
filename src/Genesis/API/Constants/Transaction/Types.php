@@ -262,6 +262,8 @@ class Types
      *
      * Payins are only asynchronous. After initiating a transaction the transaction status is set to pending async and
      * the consumer is redirected to Citadel’s Instant Banking website.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const CITADEL_PAYIN = 'citadel_payin';
 
@@ -272,6 +274,8 @@ class Types
      *
      * The workflow for Payouts is synchronous, there is no redirect to the Citadel’s Instant Banking website.
      * There are different required fields per country, e.g. IBAN and SWIFT Code or Account Number and Branch Code
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const CITADEL_PAYOUT = 'citadel_payout';
 
@@ -356,6 +360,55 @@ class Types
     const KLARNA_REFUND = 'klarna_refund';
 
     /**
+     * Zimpler is a Swedish payment method.
+     */
+    const ZIMPLER = 'zimpler';
+
+    /**
+     * Banco do Brasil offers online bank transfer payment service.
+     */
+    const BANCO_DO_BRASIL = 'banco_do_brasil';
+
+    /**
+     * Entercash is a payment method provider across Europe
+     */
+    const ENTERCASH = 'entercash';
+
+    /**
+     * InstantTransfer is a payment method in Germany
+     */
+    const INSTANT_TRANSFER = 'instant_transfer';
+
+    /**
+     * PayU is a payment method for Czech Republic and Poland
+     */
+    const PAYU = 'payu';
+
+    /**
+     * Multibanco allows Portuguese shoppers to do payments through the Internet by using virtual credit cards
+     */
+    const MULTIBANCO = 'multibanco';
+
+    /**
+     * BitPay is a cryptocurrency payments provider supporting blockchain payments
+     * with Bitcoin (BTC) and BitcoinCash (BCH).
+     */
+    const BITPAY_SALE = 'bitpay_sale';
+
+    /**
+     * BitPay Refund is a custom refund method which will handle the asynchronous BitPay refund workflow.
+     * BitPay refunds can only be done on former transactions. Therefore, the reference id for the
+     * corresponding BitPay Sale transaction is mandatory.
+     */
+    const BITPAY_REFUND = 'bitpay_refund';
+
+    /**
+     * BitPay Payout is a crypto currency payout method where merchants are requesting
+     * payouts in FIAT currency and the funds are transfered in Bitcoin equivalent to a crypto wallet address.
+     */
+    const BITPAY_PAYOUT = 'bitpay_payout';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -385,18 +438,26 @@ class Types
             self::PAYOUT                  => 'Cards\Payout',
             self::SALE                    => 'Cards\Sale',
             self::SALE_3D                 => 'Cards\Sale3D',
+            self::BITPAY_PAYOUT           => 'Crypto\BitPay\Payout',
+            self::BITPAY_REFUND           => 'Crypto\BitPay\Refund',
+            self::BITPAY_SALE             => 'Crypto\BitPay\Sale',
             self::TCS                     => 'GiftCards\Tcs',
             self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
             self::INTERSOLVE              => 'GiftCards\Intersolve',
+            self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
+            self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
+            self::ENTERCASH               => 'OnlineBankingPayments\Entercash',
             self::IDEBIT_PAYIN            => 'OnlineBankingPayments\iDebit\Payin',
             self::IDEBIT_PAYOUT           => 'OnlineBankingPayments\iDebit\Payout',
             self::INSTA_DEBIT_PAYIN       => 'OnlineBankingPayments\InstaDebit\PayIn',
             self::INSTA_DEBIT_PAYOUT      => 'OnlineBankingPayments\InstaDebit\Payout',
+            self::INSTANT_TRANSFER        => 'OnlineBankingPayments\InstantTransfer',
+            self::MULTIBANCO              => 'OnlineBankingPayments\Multibanco',
             self::PAYSEC_PAYIN            => 'OnlineBankingPayments\PaySec\Payin',
             self::PAYSEC_PAYOUT           => 'OnlineBankingPayments\PaySec\Payout',
-            self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
+            self::PAYU                    => 'OnlineBankingPayments\PayU',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
@@ -409,6 +470,7 @@ class Types
             self::EZEEWALLET              => 'Wallets\eZeeWallet',
             self::NETELLER                => 'Wallets\Neteller',
             self::WEBMONEY                => 'Wallets\WebMoney',
+            self::ZIMPLER                 => 'Wallets\Zimpler',
         ];
 
         return isset($map[$type]) ? 'Financial\\' . $map[$type] : false;
@@ -470,7 +532,15 @@ class Types
             self::TCS,
             self::FASHIONCHEQUE,
             self::INTERSOLVE,
-            self::KLARNA_AUTHORIZE
+            self::KLARNA_AUTHORIZE,
+            self::ZIMPLER,
+            self::BANCO_DO_BRASIL,
+            self::ENTERCASH,
+            self::INSTANT_TRANSFER,
+            self::PAYU,
+            self::MULTIBANCO,
+            self::BITPAY_SALE,
+            self::BITPAY_PAYOUT
         ];
     }
 
@@ -568,7 +638,12 @@ class Types
             self::SOFORT,
             self::TRUSTLY_SALE,
             self::FASHIONCHEQUE,
-            self::KLARNA_CAPTURE
+            self::KLARNA_CAPTURE,
+            self::ZIMPLER,
+            self::ENTERCASH,
+            self::INSTANT_TRANSFER,
+            self::PAYU,
+            self::BITPAY_SALE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -644,7 +719,8 @@ class Types
         $transactionTypesList = [
             self::REFUND,
             self::SDD_REFUND,
-            self::KLARNA_REFUND
+            self::KLARNA_REFUND,
+            self::BITPAY_REFUND
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -680,6 +756,8 @@ class Types
                 return 'Financial\Refund';
             case self::KLARNA_CAPTURE:
                 return 'Financial\Alternatives\Klarna\Refund';
+            case self::BITPAY_SALE:
+                return 'Financial\Crypto\BitPay\Refund';
                 break;
         }
     }

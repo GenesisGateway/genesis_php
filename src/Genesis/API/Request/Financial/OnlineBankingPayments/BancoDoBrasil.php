@@ -21,22 +21,27 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\Request\Financial\BankAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PproAttributes;
 
 /**
- * Class Sale
+ * Class BancoDoBrasil
  *
- * SDD Payment Transactions
+ * BancoDoBrasil - oBeP-style alternative payment method
  *
- * @package Genesis\API\Request\Financial\SDD
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments
+ *
+ * @method string getConsumerReference()
+ * @method string getNationalId()
+ * @method string getBirthDate()
  */
-class Sale extends \Genesis\API\Request\Base\Financial
+class BancoDoBrasil extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes, BankAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
 
     /**
      * Returns the Request transaction type
@@ -44,7 +49,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::SDD_SALE;
+        return \Genesis\API\Constants\Transaction\Types::BANCO_DO_BRASIL;
     }
 
     /**
@@ -56,24 +61,20 @@ class Sale extends \Genesis\API\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
-            'usage',
+            'return_success_url',
+            'return_failure_url',
             'amount',
             'currency',
-            'iban',
-            'bic',
-            'billing_first_name',
-            'billing_last_name',
+            'consumer_reference',
+            'national_id',
+            'customer_email',
             'billing_country'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => [
-                'AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV',
-                'LT', 'LU', 'MT', 'MC', 'NL', 'PT', 'SK', 'SM', 'SI', 'ES'
-            ],
-            'currency'        => \Genesis\Utils\Currency::getList()
+            'billing_country' => [ 'BR' ]
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -86,14 +87,18 @@ class Sale extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'           => $this->transformAmount($this->amount, $this->currency),
-            'currency'         => $this->currency,
-            'iban'             => $this->iban,
-            'bic'              => $this->bic,
-            'customer_email'   => $this->customer_email,
-            'customer_phone'   => $this->customer_phone,
-            'billing_address'  => $this->getBillingAddressParamsStructure(),
-            'shipping_address' => $this->getShippingAddressParamsStructure()
+            'usage'              => $this->usage,
+            'remote_ip'          => $this->remote_ip,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'consumer_reference' => $this->consumer_reference,
+            'national_id'        => $this->national_id,
+            'birth_date'         => $this->birth_date,
+            'customer_email'     => $this->customer_email,
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];
     }
 }

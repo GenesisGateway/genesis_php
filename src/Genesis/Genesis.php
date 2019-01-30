@@ -110,8 +110,14 @@ class Genesis
             case 'ABNiDEAL':
                 $this->throwDeprecatedTransactionType();
                 break;
+            case 'Payin':
+            case 'Payout':
+                if ($this->getParentClass($parts, $lastIndex) === 'Citadel') {
+                    $this->throwDeprecatedTransactionType();
+                }
+                break;
             case 'oBeP':
-                if (isset($parts[$lastIndex - 1]) && $parts[$lastIndex - 1] === 'PayByVouchers') {
+                if ($this->getParentClass($parts, $lastIndex) === 'PayByVouchers') {
                     $this->throwDeprecatedTransactionType();
                 }
                 break;
@@ -121,6 +127,17 @@ class Genesis
             '\Genesis\API\Request\%s',
             implode('\\', $parts)
         );
+    }
+
+    /**
+     * @param array $classParts
+     * @param int $lastIndex Index of the last element in the array
+     *
+     * @return string Returns empty string, if there is no parent class
+     */
+    protected function getParentClass($classParts, $lastIndex)
+    {
+        return isset($classParts[$lastIndex - 1]) ? $classParts[$lastIndex - 1] : '';
     }
 
     /**

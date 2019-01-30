@@ -180,10 +180,8 @@ Financial\Refund
 Financial\Cancel
 
 // Alternative Payment Methods transactions
-Financial\Alternatives\ABNiDEAL
 Financial\Alternatives\CashU
 Financial\Alternatives\Earthport
-Financial\Alternatives\INPay
 Financial\Alternatives\P24
 Financial\Alternatives\Paysafecard
 Financial\Alternatives\POLi
@@ -208,6 +206,10 @@ Financial\Cards\Recurring\InitRecurringSale
 Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
 
+Financial\Crypto\BitPay\Sale
+Financial\Crypto\BitPay\Refund
+Financial\Crypto\BitPay\Payout
+
 // Gift Cards transactions
 Financial\GiftCards\Intersolve
 Financial\GiftCards\Fashioncheque
@@ -222,20 +224,24 @@ Financial\SDD\Recurring\RecurringSale
 
 //Online Banking Payments
 Financial\OnlineBankingPayments\Alipay
-Financial\OnlineBankingPayments\Citadel\Payin
-Financial\OnlineBankingPayments\Citadel\Payout
+Financial\OnlineBankingPayments\BancoDoBrasil
+Financial\OnlineBankingPayments\Entercash
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
+Financial\OnlineBankingPayments\InstantTransfer
 Financial\OnlineBankingPayments\iDebit\Payin
 Financial\OnlineBankingPayments\iDebit\Payout
+Financial\OnlineBankingPayments\Multibanco
 Financial\OnlineBankingPayments\PaySec\Payin
 Financial\OnlineBankingPayments\PaySec\Payout
+Financial\OnlineBankingPayments\PayU
 Financial\OnlineBankingPayments\WeChat
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
 Financial\Wallets\Neteller
 Financial\Wallets\WebMoney
+Financial\Wallets\Zimpler
 
 // Generic (Non-Financial) requests
 NonFinancial\AccountVerification

@@ -21,22 +21,21 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\SDD;
+namespace Genesis\API\Request\Financial\Crypto\BitPay;
 
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\Request\Financial\BankAttributes;
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 
 /**
- * Class Sale
+ * BitPay Refund is a custom refund method which will handle the asynchronous BitPay refund workflow.
+ * BitPay refunds can only be done on former transactions. Therefore, the reference id for the
+ * corresponding BitPay Sale transaction is mandatory.
  *
- * SDD Payment Transactions
- *
- * @package Genesis\API\Request\Financial\SDD
+ * @package Genesis\API\Request\Financial\Crypto\BitPay
  */
-class Sale extends \Genesis\API\Request\Base\Financial
+class Refund extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes, BankAttributes;
+    use ReferenceAttributes, PaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -44,7 +43,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::SDD_SALE;
+        return \Genesis\API\Constants\Transaction\Types::BITPAY_REFUND;
     }
 
     /**
@@ -56,27 +55,12 @@ class Sale extends \Genesis\API\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
-            'usage',
             'amount',
             'currency',
-            'iban',
-            'bic',
-            'billing_first_name',
-            'billing_last_name',
-            'billing_country'
+            'reference_id'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-
-        $requiredFieldValues = [
-            'billing_country' => [
-                'AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV',
-                'LT', 'LU', 'MT', 'MC', 'NL', 'PT', 'SK', 'SM', 'SI', 'ES'
-            ],
-            'currency'        => \Genesis\Utils\Currency::getList()
-        ];
-
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 
     /**
@@ -86,14 +70,11 @@ class Sale extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'           => $this->transformAmount($this->amount, $this->currency),
-            'currency'         => $this->currency,
-            'iban'             => $this->iban,
-            'bic'              => $this->bic,
-            'customer_email'   => $this->customer_email,
-            'customer_phone'   => $this->customer_phone,
-            'billing_address'  => $this->getBillingAddressParamsStructure(),
-            'shipping_address' => $this->getShippingAddressParamsStructure()
+            'usage'        => $this->usage,
+            'remote_ip'    => $this->remote_ip,
+            'amount'       => $this->transformAmount($this->amount, $this->currency),
+            'currency'     => $this->currency,
+            'reference_id' => $this->reference_id
         ];
     }
 }
