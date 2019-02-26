@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
@@ -9,7 +9,7 @@ class PayoutSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\PaySec\Payout');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout');
     }
 
     public function it_can_build_structure()

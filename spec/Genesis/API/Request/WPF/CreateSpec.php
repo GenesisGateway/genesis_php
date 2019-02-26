@@ -123,6 +123,22 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->during('setLifetime', [ -5 ]);
     }
 
+    public function it_should_fail_when_set_remember_card_and_missing_customer_email()
+    {
+        $this->setRequestParameters();
+        $this->setRememberCard(true);
+        $this->setCustomerEmail(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_set_consumer_id_and_missing_customer_email()
+    {
+        $this->setRequestParameters();
+        $this->setConsumerId(8);
+        $this->setCustomerEmail(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();

@@ -21,7 +21,7 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
@@ -30,9 +30,9 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 /**
  * Class Payin
  *
- * PaySec Payin - oBeP-style alternative payment method
+ * OnlineBanking Payin - oBeP-style alternative payment method
  *
- * @package Genesis\API\Request\Financial\OnlineBankingPayments\PaySec
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
  *
  */
 class Payin extends \Genesis\API\Request\Base\Financial
@@ -40,12 +40,19 @@ class Payin extends \Genesis\API\Request\Base\Financial
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
 
     /**
+     * Customer’s bank ode
+     *
+     * @var string
+     */
+    protected $bank_code;
+
+    /**
      * Returns the Request transaction type
      * @return string
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::PAYSEC_PAYIN;
+        return \Genesis\API\Constants\Transaction\Types::ONLINE_BANKING_PAYIN;
     }
 
     /**
@@ -61,14 +68,15 @@ class Payin extends \Genesis\API\Request\Base\Financial
             'return_success_url',
             'return_failure_url',
             'amount',
-            'currency'
+            'currency',
+            'bank_code'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
             'currency' => [
-                'CNY', 'THB', 'IDR'
+                'CNY', 'THB', 'IDR', 'MYR', 'INR'
             ]
         ];
 
@@ -92,6 +100,39 @@ class Payin extends \Genesis\API\Request\Base\Financial
         ];
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+
+        $requiredFieldValuesConditional = [
+            'currency' => [
+                'CNY' => [
+                    [
+                        'bank_code' => ['CITIC', 'GDB', 'PSBC', 'BOC', 'ABC', 'CEB', 'CCB', 'ICBC', 'CMBC', 'QUICKPAY']
+                    ]
+                ],
+                'THB' => [
+                    [
+                        'bank_code' => ['SCB_THB', 'KTB_THB', 'BAY_THB', 'UOB_THB', 'KKB_THB', 'BBL_THB']
+                    ]
+                ],
+                'MYR' => [
+                    [
+                        'bank_code' => ['CIMB_MYR', 'PBE_MYR', 'RHB_MYR', 'HLE_MYR', 'MAY_MYR']
+                    ]
+                ],
+                'IDR' => [
+                    [
+                        'bank_code' => [
+                            'MDR_IDR', 'BNI_IDR', 'BCA_IDR', 'BRI_IDR',
+                            'PMB_IDR', 'CIMB_IDR', 'DMN_IDR', 'BTN_IDR', 'VA'
+                        ]
+                    ]
+                ],
+                'INR' => [
+                    'bank_code' => ['NB', 'UI']
+                ]
+            ]
+        ];
+
+        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldValuesConditional);
     }
 
     /**
@@ -103,6 +144,7 @@ class Payin extends \Genesis\API\Request\Base\Financial
         return [
             'amount'               => $this->transformAmount($this->amount, $this->currency),
             'currency'             => $this->currency,
+            'bank_code'            => $this->bank_code,
             'return_success_url'   => $this->return_success_url,
             'return_failure_url'   => $this->return_failure_url,
             'customer_email'       => $this->customer_email,

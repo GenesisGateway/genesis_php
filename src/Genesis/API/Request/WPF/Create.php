@@ -41,8 +41,15 @@ use Genesis\Utils\Common as CommonUtils;
  * @method $this setTransactionId($value) Set a Unique Transaction id
  * @method $this setUsage($value) Set the description of the transaction for later use
  * @method $this setDescription($value) Set a text describing the reason of the payment
-
  * @method $this setReturnCancelUrl($value) Set the  URL where the customer is sent to after they cancel the payment
+ * @method $this setConsumerId($value) Saved cards will be listed for user to select
+ * @method string getTransactionId()
+ * @method string getUsage()
+ * @method string getDescription()
+ * @method string getReturnCancelUrl()
+ * @method bool getRememberCard()
+ * @method string getConsumerId()
+ * @method string getLifetime()
  */
 class Create extends \Genesis\API\Request
 {
@@ -62,6 +69,21 @@ class Create extends \Genesis\API\Request
      * @var string
      */
     protected $usage;
+
+    /**
+     * Check documentation section Tokenize. Offer the user the option to save
+     * cardholder details for future use (tokenize).
+     *
+     * @var string
+     */
+    protected $remember_card = false;
+
+    /**
+     * Check documentation section Consumers and Tokenization. Saved cards will be listed for user to select
+     *
+     * @var string
+     */
+    protected $consumer_id;
 
     /**
      * a text describing the reason of the payment
@@ -93,6 +115,18 @@ class Create extends \Genesis\API\Request
      * @var array
      */
     protected $transaction_types = [];
+
+    /**
+     * @param bool $flag
+     *
+     * @return Create
+     */
+    public function setRememberCard($flag)
+    {
+        $this->remember_card = (bool) $flag;
+
+        return $this;
+    }
 
     /**
      * Number of minutes determining how long the WPF will be valid.
@@ -371,6 +405,19 @@ class Create extends \Genesis\API\Request
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+
+        $requiredFieldsConditional = [
+            'remember_card' => [
+                true => [
+                    'customer_email'
+                ]
+            ],
+            'consumer_id'   => [
+                'customer_email'
+            ]
+        ];
+
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
     /**
@@ -393,6 +440,7 @@ class Create extends \Genesis\API\Request
                 'currency'                  => $this->currency,
                 'usage'                     => $this->usage,
                 'description'               => $this->description,
+                'consumer_id'               => $this->consumer_id,
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
                 'notification_url'          => $this->notification_url,
@@ -401,6 +449,7 @@ class Create extends \Genesis\API\Request
                 'return_cancel_url'         => $this->return_cancel_url,
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'remember_card'             => var_export($this->remember_card, true),
                 'transaction_types'         => $this->transaction_types,
                 'lifetime'                  => $this->lifetime,
                 'risk_params'               => $this->getRiskParamsStructure(),

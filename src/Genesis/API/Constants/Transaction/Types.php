@@ -300,17 +300,17 @@ class Types
     const WECHAT = 'wechat';
 
     /**
-     * PaySec is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
-     * After initiating a transaction PaySec will redirect you to their page. There you will find a list with
-     * available banks to finish the payment.
+     * Online Banking is an oBeP-style alternative payment method that allows you to pay directly
+     * with your ebank account. After initiating a transaction, the online banking will redirect you to their page.
+     * There you will find a list with available banks to finish the payment.
      */
-    const PAYSEC_PAYIN = 'paysec';
+    const ONLINE_BANKING_PAYIN = 'online_banking';
 
     /**
-     * PaySec Payout is an oBeP-style alternative payment method that allows you to transfer money with your ebank
-     * account.
+     * Bank Pay-out is a bank pay-out method. It allows merchants to transfer funds directly to customers’
+     * bank accounts.
      */
-    const PAYSEC_PAYOUT = 'paysec_payout';
+    const ONLINE_BANKING_PAYOUT = 'bank_payout';
 
     /**
      * TCS Thecontainerstore transactions are made using gift cards provided by TCS The amount from a
@@ -409,6 +409,123 @@ class Types
     const BITPAY_PAYOUT = 'bitpay_payout';
 
     /**
+     * Banco de Occidente is a cash payment method for Colombia
+     */
+    const BANCO_DE_OCCIDENTE = 'banco_de_occidente';
+
+    /**
+     * Baloto is a cash payment option in Colombia. It allows the customers to receive a voucher at check-out.
+     * The voucher can then be paid in any of the Via Boleto offices in cash.
+     */
+    const BALOTO = 'baloto';
+
+    /**
+     * Banamex is local card payment in Mexico
+     */
+    const BANAMEX = 'banamex';
+
+    /**
+     * Boleto is a payment service in Brazil
+     */
+    const BOLETO = 'boleto';
+
+    /**
+     * Astropay Direct is Online Banking ePayment which allows the customers to pay with their bank accounts
+     * in their local currency. Customers go straight from the merchant checkout page to a payment interface,
+     * which connects the customer with their bank of preference.
+     */
+    const ASTROPAY_DIRECT = 'astropay_direct';
+
+    /**
+     * Emprese De Energia is a cash payment in Colombia
+     */
+    const EMPRESE_DE_ENERGIA = 'emprese_de_energia';
+
+    /**
+     * Carulla is a payment service in Columbia that allows its users to send money,
+     * top up their cell phone and payments.
+     */
+    const CARULLA = 'carulla';
+
+    /**
+     * OXXO is the preferred payment method in Mexico. It is a cash payment via a barcode document
+     * thats accepted in more than 14,000 stores.
+     */
+    const OXXO = 'oxxo';
+
+    /**
+     * Pago Facil is a payment service in Argentina that allows its users to send money,
+     * top up their cell phone and payments.
+     */
+    const PAGO_FACIL = 'pago_facil';
+
+    /**
+     * Redpagos is a cash payment in Uruguay
+     */
+    const REDPAGOS = 'redpagos';
+
+    /**
+     * Santander Cash is local card payment in Mexico
+     */
+    const SANTANDER_CASH = 'santander_cash';
+
+    /**
+     * Surtimax is a cash payment method in Columbia.
+     */
+    const SURTIMAX = 'surtimax';
+
+    /**
+     * Efecty is an offline cash payment voucher option in Colombia.
+     */
+    const EFECTY = 'efecty';
+
+    /**
+     * Argencard is a debit or credit card used in Argentina. It allows online shoppers to pay offline
+     * for their online purchases at over 150,000 physical outlets.
+     */
+    const ARGENCARD = 'argencard';
+
+    /**
+     * Aura is a local Brazilian credit card.
+     */
+    const AURA = 'aura';
+
+    /**
+     * Cencosud is a local credit card in Argentina
+     */
+    const CENCOSUD = 'cencosud';
+
+    /**
+     * Elo is a local Brazilian payment card.
+     */
+    const ELO = 'elo';
+
+    /**
+     * Hipercard is a local credit card in Brazil.
+     */
+    const HIPERCARD = 'hipercard';
+
+    /**
+     * Cabal is a local debit/credit card brand in Argentina which can be used for online purchases.
+     */
+    const CABAL = 'cabal';
+
+    /**
+     * Naranja is a local credit card issued in Argentina which can be used for purchases over the internet.
+     */
+    const NARANJA = 'naranja';
+
+    /**
+     * Nativa is an Argentinian credit card provided by the National Bank of Argentina.
+     */
+    const NATIVA = 'nativa';
+
+    /**
+     * Tarjeta Shopping is a cash payment in Argentina.
+     */
+    const TARJETA_SHOPPING = 'tarjeta_shopping';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -432,12 +549,33 @@ class Types
             self::INIT_RECURRING_SALE     => 'Cards\Recurring\InitRecurringSale',
             self::INIT_RECURRING_SALE_3D  => 'Cards\Recurring\InitRecurringSale3D',
             self::RECURRING_SALE          => 'Cards\Recurring\RecurringSale',
+            self::ARGENCARD               => 'Cards\Argencard',
+            self::AURA                    => 'Cards\Aura',
             self::AUTHORIZE               => 'Cards\Authorize',
             self::AUTHORIZE_3D            => 'Cards\Authorize3D',
+            self::CABAL                   => 'Cards\Cabal',
+            self::CENCOSUD                => 'Cards\Cencosud',
             self::CREDIT                  => 'Cards\Credit',
+            self::ELO                     => 'Cards\Elo',
+            self::HIPERCARD               => 'Cards\Hipercard',
+            self::NARANJA                 => 'Cards\Naranja',
+            self::NATIVA                  => 'Cards\Nativa',
             self::PAYOUT                  => 'Cards\Payout',
             self::SALE                    => 'Cards\Sale',
             self::SALE_3D                 => 'Cards\Sale3D',
+            self::TARJETA_SHOPPING        => 'Cards\TarjetaShopping',
+            self::BALOTO                  => 'CashPayments\Baloto',
+            self::BANAMEX                 => 'CashPayments\Banamex',
+            self::BANCO_DE_OCCIDENTE      => 'CashPayments\BancoDeOccidente',
+            self::BOLETO                  => 'CashPayments\Boleto',
+            self::CARULLA                 => 'CashPayments\Carulla',
+            self::EFECTY                  => 'CashPayments\Efecty',
+            self::EMPRESE_DE_ENERGIA      => 'CashPayments\EmpreseDeEnergia',
+            self::OXXO                    => 'CashPayments\Oxxo',
+            self::PAGO_FACIL              => 'CashPayments\PagoFacil',
+            self::REDPAGOS                => 'CashPayments\Redpagos',
+            self::SANTANDER_CASH          => 'CashPayments\SantanderCash',
+            self::SURTIMAX                => 'CashPayments\Surtimax',
             self::BITPAY_PAYOUT           => 'Crypto\BitPay\Payout',
             self::BITPAY_REFUND           => 'Crypto\BitPay\Refund',
             self::BITPAY_SALE             => 'Crypto\BitPay\Sale',
@@ -445,6 +583,7 @@ class Types
             self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
             self::INTERSOLVE              => 'GiftCards\Intersolve',
             self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
+            self::ASTROPAY_DIRECT         => 'OnlineBankingPayments\AstropayDirect',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
@@ -455,8 +594,8 @@ class Types
             self::INSTA_DEBIT_PAYOUT      => 'OnlineBankingPayments\InstaDebit\Payout',
             self::INSTANT_TRANSFER        => 'OnlineBankingPayments\InstantTransfer',
             self::MULTIBANCO              => 'OnlineBankingPayments\Multibanco',
-            self::PAYSEC_PAYIN            => 'OnlineBankingPayments\PaySec\Payin',
-            self::PAYSEC_PAYOUT           => 'OnlineBankingPayments\PaySec\Payout',
+            self::ONLINE_BANKING_PAYIN    => 'OnlineBankingPayments\OnlineBanking\Payin',
+            self::ONLINE_BANKING_PAYOUT   => 'OnlineBankingPayments\OnlineBanking\Payout',
             self::PAYU                    => 'OnlineBankingPayments\PayU',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
@@ -526,8 +665,8 @@ class Types
             self::INSTA_DEBIT_PAYIN,
             self::WECHAT,
             self::ALIPAY,
-            self::PAYSEC_PAYIN,
-            self::PAYSEC_PAYOUT,
+            self::ONLINE_BANKING_PAYIN,
+            self::ONLINE_BANKING_PAYOUT,
             self::IDEBIT_PAYIN,
             self::TCS,
             self::FASHIONCHEQUE,
@@ -540,7 +679,32 @@ class Types
             self::PAYU,
             self::MULTIBANCO,
             self::BITPAY_SALE,
-            self::BITPAY_PAYOUT
+            self::BITPAY_PAYOUT,
+            self::BANCO_DE_OCCIDENTE,
+            self::BALOTO,
+            self::CARULLA,
+            self::BANAMEX,
+            self::CARULLA,
+            self::BOLETO,
+            self::CARULLA,
+            self::CARULLA,
+            self::OXXO,
+            self::PAGO_FACIL,
+            self::REDPAGOS,
+            self::SANTANDER_CASH,
+            self::SURTIMAX,
+            self::EFECTY,
+            self::ASTROPAY_DIRECT,
+            self::EMPRESE_DE_ENERGIA,
+            self::ARGENCARD,
+            self::AURA,
+            self::CENCOSUD,
+            self::ELO,
+            self::HIPERCARD,
+            self::CABAL,
+            self::NARANJA,
+            self::NATIVA,
+            self::TARJETA_SHOPPING
         ];
     }
 

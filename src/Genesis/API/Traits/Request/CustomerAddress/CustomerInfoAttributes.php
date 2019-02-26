@@ -48,7 +48,7 @@ trait CustomerInfoAttributes
      */
     public function setCustomerEmail($value)
     {
-        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+        if ($value !== null && filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
             throw new ErrorParameter('Please, enter a valid email');
         }
 

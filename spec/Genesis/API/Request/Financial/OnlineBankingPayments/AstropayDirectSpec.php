@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
+namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
-use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 
-class PayinSpec extends ObjectBehavior
+class AstropayDirectSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\PaySec\Payin');
+        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\AstropayDirect');
     }
 
     public function it_can_build_structure()
@@ -23,6 +22,20 @@ class PayinSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_missing_return_success_url_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setReturnSuccessUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_missing_return_failure_url_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setReturnFailureUrl(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_fail_when_missing_required_amount_param()
     {
         $this->setRequestParameters();
@@ -30,55 +43,27 @@ class PayinSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_currency_param()
+    public function it_should_fail_when_country_not_valid_param()
     {
         $this->setRequestParameters();
-        $this->setCurrency(null);
+        $this->setBillingCountry('BG');
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_return_success_url_param()
+    public function it_should_set_consumer_reference_correctly()
     {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldNotThrow()->during(
+            'setConsumerReference',
+            [str_repeat('8', $this->object->getWrappedObject()->getMaxConsumerReferenceLen())]
+        );
     }
 
-    public function it_should_fail_when_missing_return_failure_url_param()
+    public function it_should_fail_when_consumer_reference_is_invalid()
     {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_remote_ip_param()
-    {
-        $this->setRequestParameters();
-        $this->setRemoteIp(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_wrong_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency('USD');
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_state_for_US_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry('US');
-        $this->setBillingState(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_state_for_CA_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry('CA');
-        $this->setBillingState(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldThrow()->during(
+            'setConsumerReference',
+            [str_repeat('8', $this->object->getWrappedObject()->getMaxConsumerReferenceLen() + 1)]
+        );
     }
 
     protected function setRequestParameters()
@@ -94,15 +79,12 @@ class PayinSpec extends ObjectBehavior
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
         $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setRemoteIp($faker->ipv4);
-        $this->setCurrency(
-            $faker->randomElement([
-                'CNY', 'THB', 'IDR'
-            ])
-        );
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCurrency('USD');
+        $this->setConsumerReference('1234');
         $this->setCustomerEmail($faker->email);
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
@@ -110,7 +92,7 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
+        $this->setBillingCountry('BR');
     }
 
     public function getMatchers()

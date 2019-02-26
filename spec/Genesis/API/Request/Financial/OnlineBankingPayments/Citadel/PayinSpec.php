@@ -82,7 +82,7 @@ class PayinSpec extends ObjectBehavior
     public function it_should_fail_when_missing_customer_email_parameter()
     {
         $this->setRequestParameters();
-        $this->shouldThrow()->during('setCustomerEmail', [ null ]);
+        $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
     }
 
     protected function setRequestParameters()

@@ -21,7 +21,7 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\OnlineBankingPayments\PaySec;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
@@ -31,9 +31,9 @@ use Genesis\API\Validators\Request\RegexValidator;
 /**
  * Class Payout
  *
- * PaySec Payout - oBeP-style alternative payment method
+ * OnlineBanking Payout - oBeP-style alternative payment method
  *
- * @package Genesis\API\Request\Financial\OnlineBankingPayments\PaySec
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
  *
  * @method Payout setBankAccountName($value) Set Customer’s bank account name
  * @method Payout setBankAccountNumber($value) Set Customer’s bank account number
@@ -86,7 +86,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::PAYSEC_PAYOUT;
+        return \Genesis\API\Constants\Transaction\Types::ONLINE_BANKING_PAYOUT;
     }
 
     /**

@@ -31,6 +31,10 @@ use Genesis\Exceptions\ErrorParameter;
  * Trait with common fields for PPRO payment types
  *
  * @package Genesis\API\Traits\Request\Financial
+ *
+ * @method string getConsumerReference()
+ * @method string getNationalId()
+ * @method string getBirthDate()
  */
 trait PproAttributes
 {

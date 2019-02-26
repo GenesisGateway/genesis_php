@@ -196,16 +196,40 @@ Financial\PayByVouchers\oBeP
 Financial\PayByVouchers\Sale
 
 // Credit Cards transactions
+Financial\Cards\Argencard
+Financial\Cards\Aura
 Financial\Cards\Authorize
 Financial\Cards\Authorize3D
+Financial\Cards\Cabal
+Financial\Cards\Cencosud
 Financial\Cards\Credit
+Financial\Cards\Elo
+Financial\Cards\Hipercard
+Financial\Cards\Naranja
+Financial\Cards\Nativa
 Financial\Cards\Payout
 Financial\Cards\Sale
 Financial\Cards\Sale3D
+Financial\Cards\TarjetaShopping
 Financial\Cards\Recurring\InitRecurringSale
 Financial\Cards\Recurring\InitRecurringSale3D
 Financial\Cards\Recurring\RecurringSale
 
+// Cash Payments transactions
+Financial\CashPayments\Baloto
+Financial\CashPayments\Banamex
+Financial\CashPayments\BancoDeOccidente
+Financial\CashPayments\Boleto
+Financial\CashPayments\Carulla
+Financial\CashPayments\Efecty
+Financial\CashPayments\EmpreseDeEnergia
+Financial\CashPayments\Oxxo
+Financial\CashPayments\PagoFacil
+Financial\CashPayments\Redpagos
+Financial\CashPayments\SantanderCash
+Financial\CashPayments\Surtimax
+
+// Crypto transactions
 Financial\Crypto\BitPay\Sale
 Financial\Crypto\BitPay\Refund
 Financial\Crypto\BitPay\Payout
