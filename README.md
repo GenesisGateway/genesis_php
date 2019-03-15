@@ -180,10 +180,8 @@ Financial\Refund
 Financial\Cancel
 
 // Alternative Payment Methods transactions
-Financial\Alternatives\CashU
 Financial\Alternatives\Earthport
 Financial\Alternatives\P24
-Financial\Alternatives\Paysafecard
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
@@ -249,17 +247,30 @@ Financial\SDD\Recurring\RecurringSale
 //Online Banking Payments
 Financial\OnlineBankingPayments\Alipay
 Financial\OnlineBankingPayments\BancoDoBrasil
+Financial\OnlineBankingPayments\Bancomer
+Financial\OnlineBankingPayments\Bradesco
 Financial\OnlineBankingPayments\Entercash
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
 Financial\OnlineBankingPayments\InstantTransfer
 Financial\OnlineBankingPayments\iDebit\Payin
 Financial\OnlineBankingPayments\iDebit\Payout
+Financial\OnlineBankingPayments\Itau
 Financial\OnlineBankingPayments\Multibanco
 Financial\OnlineBankingPayments\PaySec\Payin
 Financial\OnlineBankingPayments\PaySec\Payout
 Financial\OnlineBankingPayments\PayU
+Financial\OnlineBankingPayments\Pse
+Financial\OnlineBankingPayments\Rapipago
+Financial\OnlineBankingPayments\SafetyPay
+Financial\OnlineBankingPayments\Santander
 Financial\OnlineBankingPayments\WeChat
+
+// Vouchers
+Financial\Vouchers\AstropayCard
+Financial\Vouchers\CashU
+Financial\Vouchers\Neosurf
+Financial\Vouchers\Paysafecard
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet

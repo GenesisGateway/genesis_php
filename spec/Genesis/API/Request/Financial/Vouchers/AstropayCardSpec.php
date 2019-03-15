@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\Vouchers;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class PPROSpec extends ObjectBehavior
+class AstropayCardSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\PPRO');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\AstropayCard');
     }
 
     public function it_can_build_structure()
@@ -23,66 +22,48 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_parameters()
+    public function it_should_fail_when_missing_return_success_url_parameter()
     {
         $this->setRequestParameters();
-        $this->setPaymentType(null);
+        $this->setReturnSuccessUrl(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_bic_for_giropay()
+    public function it_should_fail_when_missing_return_failure_url_parameter()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('giropay');
-        $this->setBic(null);
+        $this->setReturnFailureUrl(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_iban_for_giropay()
+    public function it_should_fail_when_missing_required_amount_param()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('giropay');
-        $this->setIban(null);
+        $this->setAmount(null);
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_customer_email_for_przelewy24()
+    public function it_should_fail_when_country_not_br_param()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('przelewy24');
-        $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
-    }
-
-    public function it_should_fail_when_missing_account_phone_for_qiwi()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType('qiwi');
-        $this->setAccountPhone(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_wrong_country_code_for_safetypay()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType('safetypay');
         $this->setBillingCountry('BG');
-        $this->setCurrency('EUR');
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_unsupported_billing_country_parameter()
+    public function it_should_set_consumer_reference_correctly()
     {
-        $this->setRequestParameters();
-        $this->setBillingCountry('ZZ');
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldNotThrow()->during(
+            'setConsumerReference',
+            [str_repeat('8', $this->object->getWrappedObject()->getMaxConsumerReferenceLen())]
+        );
     }
 
-    public function it_should_fail_when_unsupported_currency_parameter()
+    public function it_should_fail_when_consumer_reference_is_invalid()
     {
-        $this->setRequestParameters();
-        $this->setCurrency('ABC');
-
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldThrow()->during(
+            'setConsumerReference',
+            [str_repeat('8', $this->object->getWrappedObject()->getMaxConsumerReferenceLen() + 1)]
+        );
     }
 
     protected function setRequestParameters()
@@ -99,25 +80,19 @@ class PPROSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setPaymentType('trustpay');
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCurrency('USD');
+        $this->setConsumerReference('1234');
         $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
-        $this->setAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setBankCode('0000');
-        $this->setBic('BOFAGB3SSWI');
-        $this->setIban('DE12345678901234567890');
-        $this->setAccountPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('CZ');
+        $this->setBillingCountry('BR');
     }
 
     public function getMatchers()

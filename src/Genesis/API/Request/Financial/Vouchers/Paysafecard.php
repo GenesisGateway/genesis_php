@@ -21,31 +21,25 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Alternatives\Trustly;
+namespace Genesis\API\Request\Financial\Vouchers;
 
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\AddressInfoAttributes;
 
 /**
- * Class Sale
+ * Class Paysafecard
  *
- * Trustly Sale Alternative payment method
+ * Paysafecard transactions are only asynchronous. After a successful validation of transaction parameters
+ * transaction status is set to pending async the user is redirected to Paysafecard authentication page where
+ * he enters additional information to finish the payment. When the payment reached a final state Genesis gateway
+ * sends notification to merchant on the configured url into its account.
  *
- * @package Genesis\API\Request\Financial\Alternatives\Trustly
- *
- * @method $this setBirthDate($value) Set Birth date of the customer
+ * @package Genesis\API\Request\Financial\Vouchers
  */
-class Sale extends \Genesis\API\Request\Base\Financial
+class Paysafecard extends \Genesis\API\Request\Base\Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
-
-    /**
-     * Birth date of the customer
-     *
-     * @var string
-     */
-    protected $birth_date;
 
     /**
      * Returns the Request transaction type
@@ -53,7 +47,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::TRUSTLY_SALE;
+        return \Genesis\API\Constants\Transaction\Types::PAYSAFECARD;
     }
 
     /**
@@ -63,23 +57,13 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function setRequiredFields()
     {
-        $requiredFields = [
-            'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
-            'return_success_url',
-            'return_failure_url',
-            'customer_email',
-            'billing_country'
-        ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        parent::setRequiredFields();
 
         $requiredFieldValues = [
             'billing_country' => [
-                'AT', 'BE', 'BG', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'GB', 'GR', 'HR', 'HU',
-                'IE', 'IT', 'LT', 'LV', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+                'AE', 'AR', 'AT', 'BE', 'CY', 'CZ', 'DK', 'FI', 'FR', 'DE', 'GR',
+                'IE', 'IT', 'KW', 'LU', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI',
+                'ES', 'SE', 'CH', 'UK', 'HU', 'HR', 'MT', 'US', 'CA', 'MX', 'TR'
             ],
             'currency'        => \Genesis\Utils\Currency::getList()
         ];
@@ -100,7 +84,6 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,
             'customer_phone'     => $this->customer_phone,
-            'birth_date'         => $this->birth_date,
             'billing_address'    => $this->getBillingAddressParamsStructure(),
             'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];

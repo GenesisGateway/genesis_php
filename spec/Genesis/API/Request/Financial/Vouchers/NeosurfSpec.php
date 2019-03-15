@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\Vouchers;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class CashUSpec extends ObjectBehavior
+class NeosurfSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\CashU');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\Neosurf');
     }
 
     public function it_can_build_structure()
@@ -44,10 +43,17 @@ class CashUSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_wrong_currency_parameter()
+    public function it_should_fail_when_voucher_number_is_missing()
     {
         $this->setRequestParameters();
-        $this->setCurrency('GBP');
+        $this->setVoucherNumber(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_voucher_number_is_invalid()
+    {
+        $this->setRequestParameters();
+        $this->setVoucherNumber('ABC-=*1234');
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -69,15 +75,14 @@ class CashUSpec extends ObjectBehavior
         $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCustomerEmail($faker->email);
-        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setVoucherNumber('ABC1234');
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingAddress1($faker->streetAddress);
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('US');
+        $this->setBillingCountry('AT');
     }
 
     public function getMatchers()

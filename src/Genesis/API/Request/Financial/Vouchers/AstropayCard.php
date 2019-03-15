@@ -21,24 +21,33 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Alternatives\Trustly;
+namespace Genesis\API\Request\Financial\Vouchers;
+
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PproAttributes;
 
 /**
- * Class Withdrawal
+ * Class AstropayCard
  *
- * Trustly Withdrawal Alternative payment method
+ * Astropay Card is the most popular virtual pre-paid card for making deposits and withdrawals. It is accepted at
+ * hundreds of online sites all around the globe. It is the preferred option by users because of its instantaneity,
+ * flexibility, confidentiality and safety.
  *
- * @package Genesis\API\Request\Financial\Alternatives\Trustly
+ * @package Genesis\API\Request\Financial\Vouchers
  */
-class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sale
+class AstropayCard extends \Genesis\API\Request\Base\Financial
 {
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::TRUSTLY_WITHDRAWAL;
+        return \Genesis\API\Constants\Transaction\Types::ASTROPAY_CARD;
     }
 
     /**
@@ -48,30 +57,41 @@ class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sal
      */
     protected function setRequiredFields()
     {
-        parent::setRequiredFields();
-
         $requiredFields = [
             'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_email',
-            'birth_date',
+            'amount',
+            'currency',
+            'consumer_reference',
             'billing_country'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => [
-                'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU',
-                'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
-            ],
-            'currency'        => \Genesis\Utils\Currency::getList()
+            'billing_country' => ['AR', 'BR', 'CL', 'CO', 'CR', 'MX', 'PE', 'UY', 'VE']
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'usage'              => $this->usage,
+            'remote_ip'          => $this->remote_ip,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'consumer_reference' => $this->consumer_reference,
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
+        ];
     }
 }

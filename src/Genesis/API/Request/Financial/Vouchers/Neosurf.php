@@ -21,31 +21,30 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Alternatives\Trustly;
+namespace Genesis\API\Request\Financial\Vouchers;
 
+use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Validators\Request\RegexValidator;
 
 /**
- * Class Sale
+ * Class Neosurf
  *
- * Trustly Sale Alternative payment method
+ * Neosurf is a prepaid card (voucher) that is used for online shopping. The card is available in over 100,000 stores
+ * worldwide, where customers can buy the prepaid vouchers, denominated up to EUR 250.00 or its equivalent
+ * in other currencies.
  *
- * @package Genesis\API\Request\Financial\Alternatives\Trustly
+ * @package Genesis\API\Request\Financial\Vouchers
  *
- * @method $this setBirthDate($value) Set Birth date of the customer
+ * @method string getVoucherNumber()
+ * @method Neosurf setVoucherNumber(string $voucherNumber)
  */
-class Sale extends \Genesis\API\Request\Base\Financial
+class Neosurf extends \Genesis\API\Request\Base\Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
 
-    /**
-     * Birth date of the customer
-     *
-     * @var string
-     */
-    protected $birth_date;
+    protected $voucher_number;
 
     /**
      * Returns the Request transaction type
@@ -53,7 +52,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::TRUSTLY_SALE;
+        return \Genesis\API\Constants\Transaction\Types::NEOSURF;
     }
 
     /**
@@ -70,7 +69,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'currency',
             'return_success_url',
             'return_failure_url',
-            'customer_email',
+            'voucher_number',
             'billing_country'
         ];
 
@@ -78,10 +77,13 @@ class Sale extends \Genesis\API\Request\Base\Financial
 
         $requiredFieldValues = [
             'billing_country' => [
-                'AT', 'BE', 'BG', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'GB', 'GR', 'HR', 'HU',
-                'IE', 'IT', 'LT', 'LV', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
+                'AT', 'AU', 'BE', 'BF', 'BI', 'BJ', 'CA', 'CD', 'CF', 'CG', 'CH', 'CI', 'CM', 'CO',
+                'CV', 'CY', 'DE', 'DK', 'DZ', 'ES', 'FR', 'GA', 'GB', 'GH', 'GM', 'GN', 'GQ', 'GW',
+                'HK', 'IE', 'IT', 'KE', 'LU', 'MA', 'ML', 'MR', 'MW', 'MZ', 'NE', 'NG', 'NL', 'NO',
+                'PL', 'PT', 'RO', 'RS', 'RU', 'RW', 'SE', 'SL', 'SN', 'ST', 'TD', 'TG', 'TN', 'TR',
+                'TZ', 'UG', 'ZM', 'ZW'
             ],
-            'currency'        => \Genesis\Utils\Currency::getList()
+            'voucher_number'  => new RegexValidator(RegexValidator::PATTERN_NEOSURF_VOUCHER_NUMBER)
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -98,9 +100,9 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'return_failure_url' => $this->return_failure_url,
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
+            'voucher_number'     => $this->voucher_number,
             'customer_email'     => $this->customer_email,
             'customer_phone'     => $this->customer_phone,
-            'birth_date'         => $this->birth_date,
             'billing_address'    => $this->getBillingAddressParamsStructure(),
             'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];

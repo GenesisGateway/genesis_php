@@ -21,16 +21,18 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Alternatives;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 /**
- * Class Paysafecard
+ * Class Pse
  *
- * Alternative payment method
+ * PSE (Pagos Seguros en Linea) is the preferred alternative payment solution in Colombia.The solution consists
+ * of an interface that offers the client the option to pay for their online purchases in cash,
+ * directing it to their online banking.
  *
- * @package Genesis\API\Request\Financial\Alternatives
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments
  */
-class Paysafecard extends \Genesis\API\Request\Base\Financial\Alternative
+class Pse extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
 {
     /**
      * Returns the Request transaction type
@@ -38,27 +40,14 @@ class Paysafecard extends \Genesis\API\Request\Base\Financial\Alternative
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::PAYSAFECARD;
+        return \Genesis\API\Constants\Transaction\Types::PSE;
     }
 
     /**
-     * Set the required fields
-     *
-     * @return void
+     * @return array
      */
-    protected function setRequiredFields()
+    public function getAllowedBillingCountries()
     {
-        parent::setRequiredFields();
-
-        $requiredFieldValues = [
-            'billing_country' => [
-                'AE', 'AR', 'AT', 'BE', 'CY', 'CZ', 'DK', 'FI', 'FR', 'DE', 'GR',
-                'IE', 'IT', 'KW', 'LU', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI',
-                'ES', 'SE', 'CH', 'UK', 'HU', 'HR', 'MT', 'US', 'CA', 'MX', 'TR'
-            ],
-            'currency'        => \Genesis\Utils\Currency::getList()
-        ];
-
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        return ['CO'];
     }
 }

@@ -46,6 +46,11 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     const PATTERN_GIFT_CARD_NUMBER      = '/^\d+$/';
 
     /**
+     * Vouchers Regex Validation Patterns
+     */
+    const PATTERN_NEOSURF_VOUCHER_NUMBER = '/^[A-Za-z0-9]{1,10}$/';
+
+    /**
      * Regex expression
      *
      * @var string

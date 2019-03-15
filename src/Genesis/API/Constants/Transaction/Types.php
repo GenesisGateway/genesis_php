@@ -526,6 +526,60 @@ class Types
     const TARJETA_SHOPPING = 'tarjeta_shopping';
 
     /**
+     * Neosurf is a prepaid card (voucher) that is used for online shopping. The card is available in over 100,000
+     * stores worldwide, where customers can buy the prepaid vouchers, denominated up to EUR 250.00 or its equivalent
+     * in other currencies.
+     */
+    const NEOSURF = 'neosurf';
+
+    /**
+     * Safetypay is a real-time bank transfer system that operates in more than 10 different countries.
+     * Their main market is in Latin America.
+     */
+    const SAFETYPAY = 'safetypay';
+
+    /**
+     * Itau is a real-time online bank transfer method and a virtual card.
+     */
+    const ITAU = 'itau';
+
+    /**
+     * Santander is an online bank transfer for ecommerce purchases. Consumers use their trusted home
+     * banking environment, merchants benefit from payment guarantee and swift settlement.
+     */
+    const SANTANDER = 'santander';
+
+    /**
+     * Bancomer offers two options for payments in Mexico, cash payment and bank transfer.
+     */
+    const BANCOMER = 'bancomer';
+
+    /**
+     * Bradesco is a payment service in Brazil
+     */
+    const BRADESCO = 'bradesco';
+
+    /**
+     * Astropay Card is the most popular virtual pre-paid card for making deposits and withdrawals. It is accepted
+     * at hundreds of online sites all around the globe. It is the preferred option by users because of its
+     * instantaneity, flexibility, confidentiality and safety.
+     */
+    const ASTROPAY_CARD = 'astropay_card';
+
+    /**
+     * Rapipago from Argentina is an offline payment method used for online purchases.
+     * Shoppers buy their goods and services online and pay offline at one of the 6,000+ Rapipago payment locations.
+     */
+    const RAPIPAGO = 'rapipago';
+
+    /**
+     * PSE (Pagos Seguros en Linea) is the preferred alternative payment solution in Colombia.
+     * The solution consists of an interface that offers the client the option to pay for their online purchases
+     * in cash, directing it to their online banking.
+     */
+    const PSE = 'pse';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -534,12 +588,10 @@ class Types
     {
         $map = [
             self::ABNIDEAL                => 'Alternatives\ABNiDEAL',
-            self::CASHU                   => 'Alternatives\CashU',
             self::EARTHPORT               => 'Alternatives\Earthport',
             self::INPAY                   => 'Alternatives\INPay',
             self::P24                     => 'Alternatives\P24',
             self::PAYPAL_EXPRESS          => 'Alternatives\PaypalExpress',
-            self::PAYSAFECARD             => 'Alternatives\Paysafecard',
             self::POLI                    => 'Alternatives\POLi',
             self::PPRO                    => 'Alternatives\PPRO',
             self::SOFORT                  => 'Alternatives\Sofort',
@@ -585,6 +637,8 @@ class Types
             self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
             self::ASTROPAY_DIRECT         => 'OnlineBankingPayments\AstropayDirect',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
+            self::BANCOMER                => 'OnlineBankingPayments\Bancomer',
+            self::BRADESCO                => 'OnlineBankingPayments\Bradesco',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
             self::ENTERCASH               => 'OnlineBankingPayments\Entercash',
@@ -593,10 +647,15 @@ class Types
             self::INSTA_DEBIT_PAYIN       => 'OnlineBankingPayments\InstaDebit\PayIn',
             self::INSTA_DEBIT_PAYOUT      => 'OnlineBankingPayments\InstaDebit\Payout',
             self::INSTANT_TRANSFER        => 'OnlineBankingPayments\InstantTransfer',
+            self::ITAU                    => 'OnlineBankingPayments\Itau',
             self::MULTIBANCO              => 'OnlineBankingPayments\Multibanco',
             self::ONLINE_BANKING_PAYIN    => 'OnlineBankingPayments\OnlineBanking\Payin',
             self::ONLINE_BANKING_PAYOUT   => 'OnlineBankingPayments\OnlineBanking\Payout',
             self::PAYU                    => 'OnlineBankingPayments\PayU',
+            self::PSE                     => 'OnlineBankingPayments\Pse',
+            self::RAPIPAGO                => 'OnlineBankingPayments\Rapipago',
+            self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
+            self::SANTANDER               => 'OnlineBankingPayments\Santander',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
@@ -606,6 +665,10 @@ class Types
             self::SDD_RECURRING_SALE      => 'SDD\Recurring\RecurringSale',
             self::SDD_REFUND              => 'SDD\Refund',
             self::SDD_SALE                => 'SDD\Sale',
+            self::ASTROPAY_CARD           => 'Vouchers\AstropayCard',
+            self::CASHU                   => 'Vouchers\CashU',
+            self::NEOSURF                 => 'Vouchers\Neosurf',
+            self::PAYSAFECARD             => 'Vouchers\Paysafecard',
             self::EZEEWALLET              => 'Wallets\eZeeWallet',
             self::NETELLER                => 'Wallets\Neteller',
             self::WEBMONEY                => 'Wallets\WebMoney',
@@ -704,7 +767,16 @@ class Types
             self::CABAL,
             self::NARANJA,
             self::NATIVA,
-            self::TARJETA_SHOPPING
+            self::TARJETA_SHOPPING,
+            self::NEOSURF,
+            self::SAFETYPAY,
+            self::ITAU,
+            self::SANTANDER,
+            self::BANCOMER,
+            self::BRADESCO,
+            self::ASTROPAY_CARD,
+            self::RAPIPAGO,
+            self::PSE
         ];
     }
 
@@ -807,7 +879,9 @@ class Types
             self::ENTERCASH,
             self::INSTANT_TRANSFER,
             self::PAYU,
-            self::BITPAY_SALE
+            self::BITPAY_SALE,
+            self::NEOSURF,
+            self::SAFETYPAY
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

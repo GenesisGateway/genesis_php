@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\Alternatives;
+namespace spec\Genesis\API\Request\Financial\Vouchers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PaysafecardSpec extends ObjectBehavior
+class CashUSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Paysafecard');
+        $this->shouldHaveType('Genesis\API\Request\Financial\Vouchers\CashU');
     }
 
     public function it_can_build_structure()
@@ -26,7 +26,8 @@ class PaysafecardSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
+        $this->setCurrency(null);
+        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_missing_billing_country_parameter()
@@ -39,7 +40,14 @@ class PaysafecardSpec extends ObjectBehavior
     public function it_should_fail_when_wrong_billing_country_parameter()
     {
         $this->setRequestParameters();
-        $this->setBillingCountry('ML');
+        $this->setBillingCountry('LT');
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_wrong_currency_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('GBP');
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -59,11 +67,7 @@ class PaysafecardSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency(
-            $faker->randomElement(
-                \Genesis\Utils\Currency::getList()
-            )
-        );
+        $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);

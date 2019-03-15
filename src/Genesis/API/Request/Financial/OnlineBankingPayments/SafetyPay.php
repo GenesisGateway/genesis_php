@@ -21,24 +21,30 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Alternatives\Trustly;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments;
+
+use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 
 /**
- * Class Withdrawal
+ * Class SafetyPay
  *
- * Trustly Withdrawal Alternative payment method
+ * SafetyPay - oBeP-style alternative payment method
  *
- * @package Genesis\API\Request\Financial\Alternatives\Trustly
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments
  */
-class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sale
+class SafetyPay extends \Genesis\API\Request\Base\Financial
 {
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::TRUSTLY_WITHDRAWAL;
+        return \Genesis\API\Constants\Transaction\Types::SAFETYPAY;
     }
 
     /**
@@ -48,30 +54,41 @@ class Withdrawal extends \Genesis\API\Request\Financial\Alternatives\Trustly\Sal
      */
     protected function setRequiredFields()
     {
-        parent::setRequiredFields();
-
         $requiredFields = [
             'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
             'return_success_url',
             'return_failure_url',
+            'amount',
+            'currency',
             'customer_email',
-            'birth_date',
             'billing_country'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => [
-                'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU',
-                'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'
-            ],
-            'currency'        => \Genesis\Utils\Currency::getList()
+            'billing_country' => ['AT', 'BE', 'BR', 'CL', 'CO', 'CR', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR']
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Return additional request attributes
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return [
+            'usage'              => $this->usage,
+            'remote_ip'          => $this->remote_ip,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'customer_email'     => $this->customer_email,
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
+        ];
     }
 }

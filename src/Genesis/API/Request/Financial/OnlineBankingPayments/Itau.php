@@ -21,16 +21,16 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\CashPayments;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 /**
- * Class BancoDeOccidente
+ * Class Itau
  *
- * BancoDeOccidente - oBeP-style alternative payment method
+ * Itau is a real-time online bank transfer method and a virtual card.
  *
- * @package Genesis\API\Request\Financial\CashPayments
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments
  */
-class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
+class Itau extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
 {
     /**
      * Returns the Request transaction type
@@ -38,7 +38,7 @@ class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmerican
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::BANCO_DE_OCCIDENTE;
+        return \Genesis\API\Constants\Transaction\Types::ITAU;
     }
 
     /**
@@ -46,6 +46,6 @@ class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmerican
      */
     public function getAllowedBillingCountries()
     {
-        return ['CO'];
+        return ['BR'];
     }
 }

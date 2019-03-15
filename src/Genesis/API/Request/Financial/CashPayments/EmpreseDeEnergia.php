@@ -23,11 +23,6 @@
 
 namespace Genesis\API\Request\Financial\CashPayments;
 
-use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\Request\Financial\AsyncAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\Financial\PproAttributes;
-
 /**
  * Class EmpreseDeEnergia
  *
@@ -37,8 +32,6 @@ use Genesis\API\Traits\Request\Financial\PproAttributes;
  */
 class EmpreseDeEnergia extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
-
     /**
      * Returns the Request transaction type
      * @return string

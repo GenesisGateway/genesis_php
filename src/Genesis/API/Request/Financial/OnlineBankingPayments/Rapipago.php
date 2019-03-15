@@ -21,16 +21,17 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\CashPayments;
+namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 /**
- * Class BancoDeOccidente
+ * Class Rapipago
  *
- * BancoDeOccidente - oBeP-style alternative payment method
+ * Rapipago from Argentina is an offline payment method used for online purchases.
+ * Shoppers buy their goods and services online and pay offline at one of the 6,000+ Rapipago payment locations.
  *
- * @package Genesis\API\Request\Financial\CashPayments
+ * @package Genesis\API\Request\Financial\OnlineBankingPayments
  */
-class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
+class Rapipago extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
 {
     /**
      * Returns the Request transaction type
@@ -38,7 +39,7 @@ class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmerican
      */
     protected function getTransactionType()
     {
-        return \Genesis\API\Constants\Transaction\Types::BANCO_DE_OCCIDENTE;
+        return \Genesis\API\Constants\Transaction\Types::RAPIPAGO;
     }
 
     /**
@@ -46,6 +47,6 @@ class BancoDeOccidente extends \Genesis\API\Request\Base\Financial\SouthAmerican
      */
     public function getAllowedBillingCountries()
     {
-        return ['CO'];
+        return ['AR'];
     }
 }
