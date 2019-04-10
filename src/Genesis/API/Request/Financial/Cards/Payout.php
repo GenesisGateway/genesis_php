@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
@@ -36,7 +37,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
  */
 class Payout extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, CreditCardAttributes, AddressInfoAttributes;
+    use PaymentAttributes, CreditCardAttributes, AddressInfoAttributes, DocumentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -92,6 +93,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'expiration_year'  => $this->expiration_year,
             'customer_email'   => $this->customer_email,
             'customer_phone'   => $this->customer_phone,
+            'document_id'      => $this->document_id,
             'birth_date'       => $this->birth_date,
             'billing_address'  => $this->getBillingAddressParamsStructure(),
             'shipping_address' => $this->getShippingAddressParamsStructure()

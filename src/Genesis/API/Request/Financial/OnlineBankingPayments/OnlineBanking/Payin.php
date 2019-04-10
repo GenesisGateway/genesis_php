@@ -24,8 +24,10 @@
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Class Payin
@@ -34,10 +36,15 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  *
  * @package Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
  *
+ * @method string getPaymentType()
  */
 class Payin extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes;
+
+    const PAYMENT_TYPE_ONLINE_BANKING = 'online_banking';
+    const PAYMENT_TYPE_QR_PAYMENT     = 'qr_payment';
+    const PAYMENT_TYPE_QUICK_PAYMENT  = 'quick_payment';
 
     /**
      * Customer’s bank ode
@@ -45,6 +52,36 @@ class Payin extends \Genesis\API\Request\Base\Financial
      * @var string
      */
     protected $bank_code;
+
+    /**
+     * The payment type describes the type of online banking used to process the transaction.
+     *
+     * @var string
+     */
+    protected $payment_type;
+
+    /**
+     * @param $paymentType
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setPaymentType($paymentType)
+    {
+        $allowedPaymentTypes = [
+            self::PAYMENT_TYPE_ONLINE_BANKING, self::PAYMENT_TYPE_QR_PAYMENT, self::PAYMENT_TYPE_QUICK_PAYMENT
+        ];
+
+        if (in_array($paymentType, $allowedPaymentTypes)) {
+            $this->payment_type = $paymentType;
+
+            return $this;
+        }
+
+        throw new InvalidArgument(
+            'Invalid value for payment_type. Allowed values are ' . implode(', ', $allowedPaymentTypes)
+        );
+    }
 
     /**
      * Returns the Request transaction type
@@ -127,12 +164,16 @@ class Payin extends \Genesis\API\Request\Base\Financial
                     ]
                 ],
                 'INR' => [
-                    'bank_code' => ['NB', 'UI']
+                    [
+                        'bank_code' => ['NB', 'UI']
+                    ]
                 ]
             ]
         ];
 
-        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldValuesConditional);
+        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject(
+            $requiredFieldValuesConditional
+        );
     }
 
     /**
@@ -142,15 +183,17 @@ class Payin extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'               => $this->transformAmount($this->amount, $this->currency),
-            'currency'             => $this->currency,
-            'bank_code'            => $this->bank_code,
-            'return_success_url'   => $this->return_success_url,
-            'return_failure_url'   => $this->return_failure_url,
-            'customer_email'       => $this->customer_email,
-            'customer_phone'       => $this->customer_phone,
-            'billing_address'      => $this->getBillingAddressParamsStructure(),
-            'shipping_address'     => $this->getShippingAddressParamsStructure()
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'bank_code'          => $this->bank_code,
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'payment_type'       => $this->payment_type,
+            'document_id'        => $this->document_id,
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];
     }
 }

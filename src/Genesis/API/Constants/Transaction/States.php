@@ -38,6 +38,8 @@ use Genesis\Exceptions\InvalidMethod;
  * @method bool isError()
  * @method bool isRefunded()
  * @method bool isVoided()
+ * @method bool isEnabled()
+ * @method bool isDisabled()
  */
 class States
 {
@@ -125,6 +127,16 @@ class States
      * Once a chargeback reversed transaction is chargebacked the state changes to pre arbitrated.
      */
     const PRE_ARBITRATED = 'pre_arbitrated';
+
+    /**
+     * Status of the consumer from Consumer API
+     */
+    const ENABLED = 'enabled';
+
+    /**
+     * Status of the consumer from Consumer API
+     */
+    const DISABLED = 'disabled';
 
     /**
      * Store the state of transaction for comparison

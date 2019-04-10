@@ -282,6 +282,13 @@ Financial\Wallets\Zimpler
 NonFinancial\AccountVerification
 NonFinancial\Blacklist
 
+// Consumers API requests
+NonFinancial\Consumers\Create
+NonFinancial\Consumers\Retrieve
+NonFinancial\Consumers\Update
+NonFinancial\Consumers\Disable
+NonFinancial\Consumers\Enable
+
 // Chargeback information request
 NonFinancial\Fraud\Chargeback\DateRange
 NonFinancial\Fraud\Chargeback\Transaction

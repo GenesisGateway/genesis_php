@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payin;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 
@@ -86,6 +87,16 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingCountry('CA');
         $this->setBillingState(null);
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_invalid_payment_type_param()
+    {
+        $this->shouldThrow()->during('setPaymentType', ['fake_type']);
+    }
+
+    public function it_should_succeed_when_valid_payment_type_param()
+    {
+        $this->shouldNotThrow()->during('setPaymentType', [Payin::PAYMENT_TYPE_QR_PAYMENT]);
     }
 
     protected function setRequestParameters()

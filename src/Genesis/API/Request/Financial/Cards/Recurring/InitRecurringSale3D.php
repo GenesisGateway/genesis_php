@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
@@ -44,7 +45,7 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial
 {
     use MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
-        MpiAttributes, RiskAttributes, DescriptorAttributes;
+        MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -119,6 +120,7 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial
             'expiration_year'           => $this->expiration_year,
             'customer_email'            => $this->customer_email,
             'customer_phone'            => $this->customer_phone,
+            'document_id'               => $this->document_id,
             'birth_date'                => $this->birth_date,
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),

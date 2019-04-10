@@ -26,6 +26,7 @@ namespace Genesis\API\Request\NonFinancial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\BaseAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 
@@ -37,7 +38,7 @@ use Genesis\API\Traits\Request\RiskAttributes;
  */
 class AccountVerification extends \Genesis\API\Request
 {
-    use BaseAttributes, MotoAttributes, CreditCardAttributes, AddressInfoAttributes, RiskAttributes;
+    use BaseAttributes, MotoAttributes, CreditCardAttributes, AddressInfoAttributes, RiskAttributes, DocumentAttributes;
 
     /**
      * Set the per-request configuration
@@ -97,6 +98,7 @@ class AccountVerification extends \Genesis\API\Request
                 'expiration_year'  => $this->expiration_year,
                 'customer_email'   => $this->customer_email,
                 'customer_phone'   => $this->customer_phone,
+                'document_id'      => $this->document_id,
                 'birth_date'       => $this->birth_date,
                 'billing_address'  => $this->getBillingAddressParamsStructure(),
                 'shipping_address' => $this->getShippingAddressParamsStructure(),
