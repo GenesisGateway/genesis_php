@@ -29,6 +29,7 @@ use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -50,11 +51,17 @@ use Genesis\Utils\Common as CommonUtils;
  * @method bool getRememberCard()
  * @method string getConsumerId()
  * @method string getLifetime()
+ * @method string getReminders()
  */
 class Create extends \Genesis\API\Request
 {
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes;
+
+    const REMINDERS_CHANNEL_EMAIL      = 'email';
+    const REMINDERS_CHANNEL_SMS        = 'sms';
+    const MIN_ALLOWED_REMINDER_MINUTES = 1;
+    const MAX_ALLOWED_REMINDER_DAYS    = 31;
 
     /**
      * unique transaction id defined by merchant
@@ -105,9 +112,22 @@ class Create extends \Genesis\API\Request
      * Number of minutes determining how long the WPF will be valid.
      * Will be set to 30 minutes by default.
      * Valid value ranges between 1 minute and 31 days given in minutes
+     *
      * @var int
      */
     protected $lifetime;
+
+    /**
+     * Signifies whether the ’Pay Later’ feature would be enabled on the WPF
+     *
+     * @var bool
+     */
+    protected $pay_later = false;
+
+    /**
+     * @var array
+     */
+    protected $reminders = [];
 
     /**
      * The transaction types that the merchant is willing to accept payments for
@@ -147,6 +167,75 @@ class Create extends \Genesis\API\Request
         $this->lifetime = $lifetime;
 
         return $this;
+    }
+
+    /**
+     * @param bool $flag
+     *
+     * @return Create
+     */
+    public function setPayLater($flag)
+    {
+        $this->pay_later = (bool) $flag;
+
+        return $this;
+    }
+
+    /**
+     * @param $channel
+     * @param $after
+     *
+     * @return Create
+     * @throws ErrorParameter
+     */
+    public function addReminder($channel, $after)
+    {
+        if (count($this->reminders) === 3) {
+            throw new ErrorParameter(
+                'Maximum number of 3 allowed reminders reached. You can\'t add more reminders.'
+            );
+        }
+
+        $after = (int) $after;
+
+        if ($after < self::MIN_ALLOWED_REMINDER_MINUTES || $after > self::MAX_ALLOWED_REMINDER_DAYS * 24 * 60) {
+            throw new ErrorParameter('After parameter must be between 1 minute and 31 days in minutes.');
+        }
+
+        $allowedChannels = [self::REMINDERS_CHANNEL_EMAIL, self::REMINDERS_CHANNEL_SMS];
+
+        if (!in_array($channel, $allowedChannels)) {
+            throw new ErrorParameter('Invalid channel value. Allowed are ' . implode(', ', $allowedChannels));
+        }
+
+        $this->reminders[] = [
+            'reminder' => [
+                'channel' => $channel,
+                'after'   => $after
+            ]
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Clears all reminders
+     */
+    public function clearReminders()
+    {
+        $this->reminders = [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRemindersStructure()
+    {
+        if ($this->pay_later === false) {
+            return [];
+        }
+
+        return $this->reminders;
     }
 
     /**
@@ -453,7 +542,9 @@ class Create extends \Genesis\API\Request
                 'transaction_types'         => $this->transaction_types,
                 'lifetime'                  => $this->lifetime,
                 'risk_params'               => $this->getRiskParamsStructure(),
-                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'pay_later'                 => var_export($this->pay_later, true),
+                'reminders'                 => $this->getRemindersStructure()
             ]
         ];
 

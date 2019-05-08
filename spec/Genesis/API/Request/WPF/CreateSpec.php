@@ -3,6 +3,7 @@
 namespace spec\Genesis\API\Request\WPF;
 
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Request\WPF\Create;
 use PhpSpec\ObjectBehavior;
 
 class CreateSpec extends ObjectBehavior
@@ -137,6 +138,50 @@ class CreateSpec extends ObjectBehavior
         $this->setConsumerId(8);
         $this->setCustomerEmail(null);
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_invalid_reminders_channel()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('addReminder', ['test', 1]);
+    }
+
+    public function it_should_fail_when_invalid_reminders_after()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('addReminder', [
+            Create::REMINDERS_CHANNEL_SMS,
+            Create::MIN_ALLOWED_REMINDER_MINUTES - 1
+        ]);
+        $this->shouldThrow()->during('addReminder', [
+            Create::REMINDERS_CHANNEL_SMS,
+            Create::MAX_ALLOWED_REMINDER_DAYS * 24 * 60 + 1
+        ]);
+    }
+
+    public function it_should_fail_when_adding_more_than_three_reminders()
+    {
+        $this->setRequestParameters();
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->shouldThrow()->during('addReminder', [
+            Create::REMINDERS_CHANNEL_SMS,
+            5
+        ]);
+    }
+
+    public function it_should_clear_reminders()
+    {
+        $this->setRequestParameters();
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, 1);
+        $this->clearReminders();
+        $this->shouldNotThrow()->during('addReminder', [
+            Create::REMINDERS_CHANNEL_SMS,
+            5
+        ]);
     }
 
     protected function setRequestParameters()
