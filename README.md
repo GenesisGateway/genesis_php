@@ -198,6 +198,7 @@ Financial\Cards\Argencard
 Financial\Cards\Aura
 Financial\Cards\Authorize
 Financial\Cards\Authorize3D
+Financial\Cards\Bancontact
 Financial\Cards\Cabal
 Financial\Cards\Cencosud
 Financial\Cards\Credit
@@ -250,13 +251,17 @@ Financial\OnlineBankingPayments\BancoDoBrasil
 Financial\OnlineBankingPayments\Bancomer
 Financial\OnlineBankingPayments\Bradesco
 Financial\OnlineBankingPayments\Entercash
+Financial\OnlineBankingPayments\Eps
+Financial\OnlineBankingPayments\GiroPay
+Financial\OnlineBankingPayments\Ideal
+Financial\OnlineBankingPayments\iDebit\Payin
+Financial\OnlineBankingPayments\iDebit\Payout
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
 Financial\OnlineBankingPayments\InstantTransfer
-Financial\OnlineBankingPayments\iDebit\Payin
-Financial\OnlineBankingPayments\iDebit\Payout
 Financial\OnlineBankingPayments\Itau
 Financial\OnlineBankingPayments\Multibanco
+Financial\OnlineBankingPayments\MyBank
 Financial\OnlineBankingPayments\PaySec\Payin
 Financial\OnlineBankingPayments\PaySec\Payout
 Financial\OnlineBankingPayments\PayU
@@ -275,6 +280,7 @@ Financial\Vouchers\Paysafecard
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
 Financial\Wallets\Neteller
+Financial\Wallets\Qiwi
 Financial\Wallets\WebMoney
 Financial\Wallets\Zimpler
 
