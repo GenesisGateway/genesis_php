@@ -155,6 +155,11 @@ class Types
     const PPRO = 'ppro';
 
     /**
+     * TrustPay is a real-time bank transfer payment service, which is widely used in the Czech Republic and Slovakia.
+     */
+    const TRUSTPAY = 'trustpay';
+
+    /**
      * My Bank is an overlay banking system
      */
     const MY_BANK = 'my_bank';
@@ -697,6 +702,7 @@ class Types
             self::RAPIPAGO                => 'OnlineBankingPayments\Rapipago',
             self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
             self::SANTANDER               => 'OnlineBankingPayments\Santander',
+            self::TRUSTPAY                => 'OnlineBankingPayments\TrustPay',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
@@ -819,6 +825,7 @@ class Types
             self::ASTROPAY_CARD,
             self::RAPIPAGO,
             self::PSE,
+            self::TRUSTPAY,
             self::MY_BANK,
             self::BANCONTACT,
             self::QIWI,

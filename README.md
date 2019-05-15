@@ -53,8 +53,8 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint('<set_your_endpoint>');
-\Genesis\Config::setEnvironment('<set_your_environment>');
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -160,12 +160,12 @@ For example:
 
 - You can set the Endpoint to ```E-ComProcessing```, thus all the requests will go to ```E-ComProcessing```s Genesis instance:
 ```php
-\Genesis\Config::setEndpoint('e-comprocessing');
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::ECOMPROCESSING);
 ```
 
 - You can set the Endpoint to ```emerchantpay```, thus all the requests will go to ```emerchantpay```s Genesis instance:
 ```php
-\Genesis\Config::setEndpoint('emerchantpay');
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
 ```
 
 Request types
@@ -269,6 +269,7 @@ Financial\OnlineBankingPayments\Pse
 Financial\OnlineBankingPayments\Rapipago
 Financial\OnlineBankingPayments\SafetyPay
 Financial\OnlineBankingPayments\Santander
+Financial\OnlineBankingPayments\TrustPay
 Financial\OnlineBankingPayments\WeChat
 
 // Vouchers
