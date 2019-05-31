@@ -272,6 +272,9 @@ Financial\OnlineBankingPayments\Santander
 Financial\OnlineBankingPayments\TrustPay
 Financial\OnlineBankingPayments\WeChat
 
+Financial\Preauthorization\IncrementalAuthorize
+Financial\Preauthorization\PartialReversal
+
 // Vouchers
 Financial\Vouchers\AstropayCard
 Financial\Vouchers\CashU

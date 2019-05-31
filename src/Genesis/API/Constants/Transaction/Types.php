@@ -621,6 +621,19 @@ class Types
     const PSE = 'pse';
 
     /**
+     * Incremental authorizations are used in preauthorization workflow to extend the preauthorization amount,
+     * extend the preauthorization time-frame
+     */
+    const INCREMENTAL_AUTHORIZE = 'incremental_authorize';
+
+    /**
+     * Partial reversal transactions are used in preauthorization workflow to release a part of the
+     * total authorized amount before a partial capture to be submitted. A transaction of this type
+     * should refer the preauthorization directly.
+     */
+    const PARTIAL_REVERSAL = 'partial_reversal';
+
+    /**
      * @param $type
      *
      * @return bool|string

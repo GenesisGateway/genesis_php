@@ -25,6 +25,7 @@ namespace Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
+use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
@@ -42,7 +43,8 @@ use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 class Authorize extends \Genesis\API\Request\Base\Financial
 {
     use GamingAttributes, MotoAttributes, PaymentAttributes, CreditCardAttributes,
-        AddressInfoAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes;
+        AddressInfoAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
+        PreauthorizationAttributes;
 
     /**
      * Returns the Request transaction type
@@ -91,6 +93,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial
         return [
             'gaming'                    => $this->gaming,
             'moto'                      => $this->moto,
+            'preauthorization'          => var_export($this->preauthorization, true),
             'amount'                    => $this->transformAmount($this->amount, $this->currency),
             'currency'                  => $this->currency,
             'card_holder'               => $this->card_holder,

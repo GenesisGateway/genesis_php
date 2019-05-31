@@ -25,6 +25,7 @@ namespace Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
+use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
@@ -46,7 +47,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
 {
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
-        MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes;
+        MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
+        PreauthorizationAttributes;
 
     /**
      * Returns the Request transaction type
@@ -110,6 +112,7 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
         return [
             'gaming'                    => $this->gaming,
             'moto'                      => $this->moto,
+            'preauthorization'          => var_export($this->preauthorization, true),
             'notification_url'          => $this->notification_url,
             'return_success_url'        => $this->return_success_url,
             'return_failure_url'        => $this->return_failure_url,
