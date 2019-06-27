@@ -62,6 +62,11 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     const PATTERN_DE_IBAN = '/DE[0-9]{20}/';
 
     /**
+     * Numeric value - 4 digits only; It cannot start with 0;
+     */
+    const PATTERN_KYC_CALL_SECURITY_CODE = '/^[1-9][0-9]{3}$/';
+
+    /**
      * Regex expression
      *
      * @var string

@@ -20,57 +20,56 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Interfaces;
+
+namespace Genesis\API\Request\NonFinancial\KYC\IdentityDocument;
+
+use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 
 /**
- * An interface for every network abstraction (cURL, Stream etc.).
+ * Class Download
  *
- * @package    Genesis
- * @subpackage Network
+ * Uploaded documents will be stored by legal provisions and they can be requested for review. Just post a JSON body
+ * with the identity document id of the given document and a response with the filename and the base64 encoded
+ * content of that file would be returned.
+ *
+ * @package Genesis\API\Request\NonFinancial\KYC\IdentityDocument
  */
-interface Network
+class Download extends BaseRequest
 {
     /**
-     * Get HTTP Status code
-     *
-     * @return mixed
+     * @var string
      */
-    public function getStatus();
+    protected $identity_document_id;
 
     /**
-     * Get the full response (headers/body)
-     *
-     * @return mixed
+     * Create constructor.
      */
-    public function getResponse();
+    public function __construct()
+    {
+        parent::__construct('download_document');
+    }
 
     /**
-     * Get response headers
+     * Set the required fields
      *
-     * @return mixed
+     * @return void
      */
-    public function getResponseHeaders();
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'identity_document_id'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
 
     /**
-     * Get response body
-     *
-     * @return mixed
+     * @return array
      */
-    public function getResponseBody();
-
-    /**
-     * Set the request parameters
-     *
-     * @param $requestData
-     *
-     * @return mixed
-     */
-    public function prepareRequestBody($requestData);
-
-    /**
-     * Execute pre-set request
-     *
-     * @return mixed
-     */
-    public function execute();
+    protected function getConsumerRequestStructure()
+    {
+        return [
+            'identity_document_id' => $this->identity_document_id
+        ];
+    }
 }

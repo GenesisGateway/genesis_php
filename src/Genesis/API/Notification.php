@@ -96,6 +96,10 @@ class Notification
             $this->unique_id = (string)$this->notificationObj->wpf_unique_id;
         }
 
+        if ($this->isKYCNotification()) {
+            $this->unique_id = (string)$this->notificationObj->reference_id;
+        }
+
         if ($authenticate && !$this->isAuthentic()) {
             throw new \Genesis\Exceptions\InvalidArgument('Invalid Genesis Notification!');
         }
@@ -171,7 +175,7 @@ class Notification
      */
     public function isAPINotification()
     {
-        return (bool)(isset($this->notificationObj->unique_id) && !empty($this->notificationObj->unique_id));
+        return !empty($this->notificationObj->unique_id);
     }
 
     /**
@@ -181,7 +185,17 @@ class Notification
      */
     public function isWPFNotification()
     {
-        return (bool)(isset($this->notificationObj->wpf_unique_id) && !empty($this->notificationObj->wpf_unique_id));
+        return !empty($this->notificationObj->wpf_unique_id);
+    }
+
+    /**
+     * Is this KYC Notification?
+     *
+     * @return bool
+     */
+    public function isKYCNotification()
+    {
+        return !empty($this->notificationObj->reference_id);
     }
 
     /**
@@ -212,11 +226,9 @@ class Notification
      */
     public function generateResponse()
     {
-        $uniqueId = $this->isWPFNotification() ? 'wpf_unique_id' : 'unique_id';
-
         $structure = [
             'notification_echo' => [
-                $uniqueId => $this->unique_id
+                $this->getResponseIdField() => $this->unique_id
             ]
         ];
 
@@ -224,6 +236,23 @@ class Notification
         $builder->parseStructure($structure);
 
         return $builder->getDocument();
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseIdField()
+    {
+        switch (true) {
+            case $this->isWPFNotification():
+                return 'wpf_unique_id';
+            case $this->isAPINotification():
+                return 'unique_id';
+            case $this->isKYCNotification():
+                return 'reference_id';
+            default:
+                throw new \LogicException('Unknown notification type');
+        }
     }
 
     /**

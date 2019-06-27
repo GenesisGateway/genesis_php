@@ -30,7 +30,7 @@ namespace Genesis\Network;
  * @subpackage Network
  */
 // @codingStandardsIgnoreStart
-class cURL implements \Genesis\Interfaces\Network
+class cURL extends Base
 // @codingStandardsIgnoreEnd
 {
     /**
@@ -39,27 +39,6 @@ class cURL implements \Genesis\Interfaces\Network
      * @var resource
      */
     private $curlHandle;
-
-    /**
-     * Storing the full incoming response
-     *
-     * @var string
-     */
-    private $response;
-
-    /**
-     * Storing body from an incoming response
-     *
-     * @var string
-     */
-    private $responseBody;
-
-    /**
-     * Storing headers from an incoming response
-     *
-     * @var string
-     */
-    private $responseHeaders;
 
     /**
      * Initialize cURL
@@ -80,41 +59,12 @@ class cURL implements \Genesis\Interfaces\Network
     }
 
     /**
-     * Get Body/Headers from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * Get Headers from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponseHeaders()
-    {
-        return $this->responseHeaders;
-    }
-
-    /**
-     * Get Body from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponseBody()
-    {
-        return $this->responseBody;
-    }
-
-    /**
      * Set cURL headers/options, based on the request data
      *
      * @param array $requestData
      *
      * @return void
+     * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function prepareRequestBody($requestData)
     {
@@ -126,7 +76,7 @@ class cURL implements \Genesis\Interfaces\Network
             CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_ENCODING       => 'gzip',
             CURLOPT_HTTPHEADER     => [
-                'Content-Type: text/xml',
+                'Content-Type: ' . $this->getRequestContentType($requestData['format']),
                 // Workaround to prevent cURL from parsing HTTP 100 as separate request
                 'Expect:'
             ],

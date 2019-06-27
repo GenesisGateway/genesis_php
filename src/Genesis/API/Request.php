@@ -25,6 +25,7 @@ namespace Genesis\API;
 
 use Genesis\API\Traits\MagicAccessors;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
+use Genesis\Builder;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -107,10 +108,21 @@ abstract class Request
     protected $builderContext;
 
     /**
-     * Bootstrap per-request configuration
+     * Interface for request builder
+     *
+     * @var string
      */
-    public function __construct()
+    protected $builderInterface;
+
+    /**
+     * Bootstrap per-request configuration
+     *
+     * @param string $builderInterface Defaults to XML
+     */
+    public function __construct($builderInterface = Builder::XML)
     {
+        $this->builderInterface = $builderInterface;
+
         $this->initConfiguration();
 
         // A request might not always feature 'required' fields
@@ -129,7 +141,7 @@ abstract class Request
         $this->processRequestParameters();
 
         if ($this->treeStructure instanceof \ArrayObject) {
-            $this->builderContext = new \Genesis\Builder();
+            $this->builderContext = new \Genesis\Builder($this->builderInterface);
             $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
             return $this->builderContext->getDocument();
@@ -157,7 +169,6 @@ abstract class Request
         // Step 3
         $this->checkRequirements();
     }
-
 
     /**
      * Remove empty keys/values from the structure
@@ -507,7 +518,24 @@ abstract class Request
                 'protocol' => 'https',
                 'port'     => 443,
                 'type'     => 'POST',
-                'format'   => 'xml'
+                'format'   => Builder::XML
+            ]
+        );
+    }
+
+    /**
+     * Configures a Secured Post Request with Json body
+     *
+     * @return void
+     */
+    protected function initJsonConfiguration()
+    {
+        $this->config = CommonUtils::createArrayObject(
+            [
+                'protocol' => 'https',
+                'port'     => 443,
+                'type'     => 'POST',
+                'format'   => Builder::JSON
             ]
         );
     }

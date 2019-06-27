@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment_response>
+    <transaction_type>cashu</transaction_type>
+    <status>pending_async</status>
+    <unique_id>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</unique_id>
+    <transaction_id>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</transaction_id>
+    <technical_message>Transaction successful!</technical_message>
+    <message>Transaction successful!</message>
+    <redirect_url>
+        https://staging.gate.x.net/redirect/to_acquirer/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    </redirect_url>
+    <mode>live</mode>
+    <timestamp>2015-02-16T17:56:53Z</timestamp>
+    <descriptor>descriptor one</descriptor>
+    <amount>50000</amount>
+    <currency>EUR</currency>
+    <sent_to_acquirer>true</sent_to_acquirer>
+</payment_response>

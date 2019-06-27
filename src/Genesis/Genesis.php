@@ -224,7 +224,7 @@ class Genesis
 
         // Parse the response
         $this->responseCtx->parseResponse(
-            $this->networkCtx->getResponseBody()
+            $this->networkCtx
         );
     }
 }

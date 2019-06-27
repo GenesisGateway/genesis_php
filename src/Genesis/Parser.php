@@ -22,6 +22,9 @@
  */
 namespace Genesis;
 
+use Genesis\Parsers\JSON;
+use Genesis\Parsers\XML;
+
 /**
  * Parser handler
  *
@@ -29,6 +32,8 @@ namespace Genesis;
  */
 class Parser
 {
+    const JSON_INTERFACE = 'json';
+    const XML_INTERFACE  = 'xml';
     /**
      * Instance of the selected builder wrapper
      *
@@ -48,10 +53,11 @@ class Parser
 
         switch ($interface) {
             default:
-            case 'xml':
-                $this->context = new Parsers\XML();
+            case self::XML_INTERFACE:
+                $this->context = new XML();
                 break;
-            case 'json':
+            case self::JSON_INTERFACE:
+                $this->context = new JSON();
                 break;
         }
     }

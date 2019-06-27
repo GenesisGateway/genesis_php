@@ -2,8 +2,8 @@
 
 namespace spec\Genesis\Network;
 
+use Genesis\Builder;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Genesis\Config;
 
 // @codingStandardsIgnoreStart
@@ -107,6 +107,7 @@ class cURLSpec extends ObjectBehavior
             'ca_bundle'  => Config::getCertificateBundle(),
             'user_login' => Config::getUsername() . ':' . Config::getPassword(),
             'user_agent' => $faker->userAgent,
+            'format'     => Builder::XML
         );
 
         $this->prepareRequestBody($options);

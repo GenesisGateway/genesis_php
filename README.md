@@ -311,6 +311,16 @@ NonFinancial\Fraud\Reports\Transaction
 NonFinancial\Fraud\Retrieval\DateRange
 NonFinancial\Fraud\Retrieval\Transaction
 
+// KYC requests
+NonFinancial\KYC\Call\Create
+NonFinancial\KYC\Call\Update
+NonFinancial\KYC\ConsumerRegistration\Create
+NonFinancial\KYC\ConsumerRegistration\Update
+NonFinancial\KYC\IdentityDocument\Download
+NonFinancial\KYC\IdentityDocument\Upload
+NonFinancial\KYC\Transaction\Create
+NonFinancial\KYC\Transaction\Update
+
 // Reconcile requests
 NonFinancial\Reconcile\DateRange
 NonFinancial\Reconcile\Transaction

@@ -28,7 +28,7 @@ namespace Genesis\Network;
  * @package    Genesis
  * @subpackage Network
  */
-class Stream implements \Genesis\Interfaces\Network
+class Stream extends Base
 {
     /**
      * Keep per-request data as other methods need it
@@ -42,22 +42,6 @@ class Stream implements \Genesis\Interfaces\Network
     private $streamContext;
 
     /**
-     * Storing the full incoming response
-     * @var string
-     */
-    private $response;
-    /**
-     * Storing body from an incoming response
-     * @var string
-     */
-    private $responseBody;
-    /**
-     * Storing headers from an incoming response
-     * @var string
-     */
-    private $responseHeaders;
-
-    /**
      * Get HTTP Status Code from an incoming response
      *
      * @return mixed
@@ -68,41 +52,12 @@ class Stream implements \Genesis\Interfaces\Network
     }
 
     /**
-     * Get Body/Headers from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * Get Headers from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponseHeaders()
-    {
-        return $this->responseHeaders;
-    }
-
-    /**
-     * Get Body from an incoming response
-     *
-     * @return mixed
-     */
-    public function getResponseBody()
-    {
-        return $this->responseBody;
-    }
-
-    /**
      * Set Stream parameters: url, data, auth etc.
      *
      * @param array $requestData
      *
      * @return void
+     * @throws \Genesis\Exceptions\InvalidArgument
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
@@ -111,7 +66,7 @@ class Stream implements \Genesis\Interfaces\Network
         $url = parse_url($requestData['url']);
 
         $headers = [
-            'Content-Type: text/xml',
+            'Content-Type: ' . $this->getRequestContentType($requestData['format']),
             sprintf('Authorization: Basic %s', base64_encode($requestData['user_login'])),
             sprintf('Content-Length: %s', strlen($requestData['body'])),
             sprintf('User-Agent: %s', $requestData['user_agent']),

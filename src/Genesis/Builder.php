@@ -30,6 +30,8 @@ namespace Genesis;
  */
 class Builder
 {
+    const XML  = 'xml';
+    const JSON = 'json';
     /**
      * Instance of the selected builder wrapper
      *
@@ -49,10 +51,10 @@ class Builder
 
         switch ($interface) {
             default:
-            case 'xml':
+            case self::XML:
                 $this->context = new Builders\XML();
                 break;
-            case 'json':
+            case self::JSON:
                 $this->context = new Builders\JSON();
                 break;
         }

@@ -22,6 +22,9 @@
  */
 namespace Genesis\API;
 
+use Genesis\Network;
+use Genesis\Parser;
+
 /**
  * Response - process/format an incoming Genesis response
  *
@@ -32,6 +35,8 @@ namespace Genesis\API;
  */
 class Response
 {
+    const HEADER_CONTENT_TYPE_JSON = 'Content-Type: application/json';
+
     /**
      * Store parsed, response object
      *
@@ -63,7 +68,7 @@ class Response
     public function __construct($networkContext = null)
     {
         if (!is_null($networkContext) && is_a($networkContext, '\Genesis\Network')) {
-            $this->parseResponse($networkContext->getResponseBody());
+            $this->parseResponse($networkContext);
         }
     }
 
@@ -71,20 +76,18 @@ class Response
      * Parse Genesis response to stdClass and
      * apply transformation to known fields
      *
-     * @param string $response
+     * @param Network $network
      *
      * @throws \Genesis\Exceptions\ErrorAPI
      * @throws \Genesis\Exceptions\InvalidArgument
      * @throws \Genesis\Exceptions\InvalidResponse
      */
-    public function parseResponse($response)
+    public function parseResponse(Network $network)
     {
-        $this->responseRaw = $response;
+        $this->responseRaw = $network->getResponseBody();
 
         try {
-            $parser = new \Genesis\Parser('xml');
-            $parser->skipRootNode();
-            $parser->parseDocument($response);
+            $parser = $this->getParser($network);
 
             $this->responseObj = $parser->getObject();
         } catch (\Exception $e) {
@@ -114,6 +117,32 @@ class Response
                 );
             }
         }
+    }
+
+    protected function getParser(Network $network)
+    {
+        if ($this->isResponseTypeJson($network->getResponseHeaders())) {
+            $parser = new Parser(Parser::JSON_INTERFACE);
+            $parser->parseDocument($network->getResponseBody());
+
+            return $parser;
+        }
+
+        $parser = new Parser(Parser::XML_INTERFACE);
+        $parser->skipRootNode();
+        $parser->parseDocument($network->getResponseBody());
+
+        return $parser;
+    }
+
+    /**
+     * @param string $headers
+     *
+     * @return bool
+     */
+    protected function isResponseTypeJson($headers)
+    {
+        return strpos($headers, self::HEADER_CONTENT_TYPE_JSON) !== false;
     }
 
     /**
