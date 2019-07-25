@@ -5,37 +5,25 @@ namespace spec\Genesis\API\Request\Financial\Alternatives\Klarna;
 use PhpSpec\ObjectBehavior;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Items as KlarnaItems;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Item as KlarnaItem;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class CaptureSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(\Genesis\API\Request\Financial\Alternatives\Klarna\Capture::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_remote_ip_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setRemoteIp(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'remote_ip',
+            'amount',
+            'currency',
+            'reference_id'
+        ]);
     }
 
     public function it_should_fail_when_missing_required_items_param()
@@ -45,22 +33,9 @@ class CaptureSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_required_reference_id_param()
-    {
-        $this->setRequestParameters();
-        $this->setReferenceId(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $item  = new KlarnaItem(
             $faker->name,
@@ -82,14 +57,5 @@ class CaptureSpec extends ObjectBehavior
         $this->setCurrency('EUR');
 
         $this->setItems($items);
-    }
-
-    public function getMatchers()
-    {
-        return [
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        ];
     }
 }

@@ -2,59 +2,35 @@
 
 namespace spec\Genesis\API\Request\Financial\Preauthorization;
 
+use Genesis\API\Request\Financial\Preauthorization\PartialReversal;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PartialReversalSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Preauthorization\PartialReversal');
+        $this->shouldHaveType(PartialReversal::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setReferenceId(null);
-        $this->shouldThrow()->during('getDocument');
-
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'reference_id',
+            'amount',
+            'currency'
+        ]);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setAmount(100);
         $this->setCurrency('EUR');
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            }
-        );
     }
 }

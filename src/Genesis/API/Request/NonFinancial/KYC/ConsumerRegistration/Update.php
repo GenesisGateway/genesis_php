@@ -75,7 +75,7 @@ class Update extends BaseRequest
      */
     public function setProfileCurrentStatus($status)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'profile_current_status',
             [
                 self::PROFILE_CURRENT_STATUS_UNDEFINED,
@@ -116,7 +116,7 @@ class Update extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'reference_id'           => $this->reference_id,

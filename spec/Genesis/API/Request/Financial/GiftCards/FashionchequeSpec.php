@@ -2,31 +2,26 @@
 
 namespace spec\Genesis\API\Request\Financial\GiftCards;
 
+use Genesis\API\Request\Financial\GiftCards\Fashioncheque;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class FashionchequeSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\GiftCards\Fashioncheque');
+        $this->shouldHaveType(Fashioncheque::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_fails_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_fails_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCardNumber(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'card_number'
+        ]);
     }
 
     public function it_fails_when_card_number_is_not_only_digits()
@@ -65,10 +60,7 @@ class FashionchequeSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency('EUR');
@@ -77,21 +69,5 @@ class FashionchequeSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setCardNumber('6046425117120757123');
         $this->setCvv(sprintf("%06s", $faker->numberBetween(100000, 999999)));
-    }
-
-    protected function getExpectedFieldValueException($field)
-    {
-        return new \Genesis\Exceptions\InvalidArgument(
-            "Please check input data for errors. '{$field}' has invalid format"
-        );
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

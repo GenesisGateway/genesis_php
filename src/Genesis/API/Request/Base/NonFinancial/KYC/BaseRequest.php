@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Base\NonFinancial\KYC;
 
+use Genesis\API\Request;
 use Genesis\Builder;
 
 /**
@@ -32,9 +33,9 @@ use Genesis\Builder;
  * Based on the returned consumer score we can decide whether we want to reject/approve a given transaction
  * or perform another action for this consumer.
  *
- * @package Genesis\API\Request\Base\NonFinancial\Consumers
+ * @package Genesis\API\Request\Base\NonFinancial\KYC
  */
-abstract class BaseRequest extends \Genesis\API\Request
+abstract class BaseRequest extends Request
 {
     const DEVICE_FINGERPRINT_TYPE_CUSTOM       = 1;
     const DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE  = 2;
@@ -112,9 +113,8 @@ abstract class BaseRequest extends \Genesis\API\Request
      * @var string
      */
     private $requestPath;
-
     /**
-     * Consumer constructor.
+     * KYC constructor.
      *
      * @param string $requestPath
      */
@@ -125,7 +125,7 @@ abstract class BaseRequest extends \Genesis\API\Request
         parent::__construct(Builder::JSON);
     }
 
-    abstract protected function getConsumerRequestStructure();
+    abstract protected function getRequestStructure();
 
     /**
      * Set the per-request configuration
@@ -135,10 +135,8 @@ abstract class BaseRequest extends \Genesis\API\Request
     protected function initConfiguration()
     {
         $this->initJsonConfiguration();
-
         $this->initApiGatewayConfiguration('kyc_service/' . $this->requestPath, false);
     }
-
     /**
      * Create the request's Tree structure
      *
@@ -147,7 +145,7 @@ abstract class BaseRequest extends \Genesis\API\Request
     protected function populateStructure()
     {
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            $this->getConsumerRequestStructure()
+            $this->getRequestStructure()
         );
     }
 }

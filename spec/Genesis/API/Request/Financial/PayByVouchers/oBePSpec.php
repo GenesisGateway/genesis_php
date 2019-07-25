@@ -2,45 +2,31 @@
 
 namespace spec\Genesis\API\Request\Financial\PayByVouchers;
 
+use Genesis\API\Request\Financial\PayByVouchers\oBeP;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 // @codingStandardsIgnoreStart
 class oBePSpec extends ObjectBehavior
 // @codingStandardsIgnoreEnd
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\PayByVouchers\oBeP');
+        $this->shouldHaveType(oBeP::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCustomerName(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'customer_name'
+        ]);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -59,14 +45,5 @@ class oBePSpec extends ObjectBehavior
         $this->setCustomerIdNumber($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerBankId(\Genesis\API\Constants\Banks::BOCO);
         $this->setBankAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

@@ -2,54 +2,31 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\Consumers;
 
+use Genesis\API\Request\NonFinancial\Consumers\Retrieve;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class RetrieveSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Consumers\Retrieve');
+        $this->shouldHaveType(Retrieve::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_should_fail_build_request_when_no_email()
-    {
-        $this->setRequestParameters();
         $this->setEmail(null);
-        $this->shouldNotThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_build_request_when_no_consumer_id()
-    {
-        $this->setRequestParameters();
         $this->setConsumerId(null);
-        $this->shouldNotThrow()->during('getDocument');
+        $this->shouldThrow()->during('getDocument');
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $faker = $this->getFaker();
 
         $this->setEmail($faker->email);
         $this->setConsumerId(rand(1000, 9999));
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

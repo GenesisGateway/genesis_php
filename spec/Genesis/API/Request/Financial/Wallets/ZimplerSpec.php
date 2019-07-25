@@ -2,45 +2,27 @@
 
 namespace spec\Genesis\API\Request\Financial\Wallets;
 
+use Genesis\API\Request\Financial\Wallets\Zimpler;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class ZimplerSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\Zimpler');
+        $this->shouldHaveType(Zimpler::class);
     }
 
-    public function it_can_build_structure()
+        public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_success_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_failure_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'return_success_url',
+            'return_failure_url',
+            'amount',
+            'billing_country'
+        ]);
     }
 
     public function it_should_fail_when_invalid_currency()
@@ -98,27 +80,5 @@ class ZimplerSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setBillingCountry('FI');
-    }
-
-    protected function getFaker()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        return $faker;
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            }
-        );
     }
 }

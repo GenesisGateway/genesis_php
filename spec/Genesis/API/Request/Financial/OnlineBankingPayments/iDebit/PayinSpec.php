@@ -2,70 +2,33 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\iDebit;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\iDebit\Payin;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayinSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\iDebit\Payin');
+        $this->shouldHaveType(Payin::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_customer_account_id_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setCustomerAccountId(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'billing_country',
+            'return_url',
+            'customer_account_id'
+        ]);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -82,14 +45,5 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry('CA');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

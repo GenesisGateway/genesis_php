@@ -3,44 +3,26 @@
 namespace spec\Genesis\API\Request\Base\Financial;
 
 use PhpSpec\ObjectBehavior;
+use spec\Genesis\API\Stubs\Base\Request\Financial\SouthAmericanPaymentStub;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SouthAmericanPaymentSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function let()
     {
-        $this->beAnInstanceOf('spec\Genesis\API\Stubs\Base\Request\Financial\SouthAmericanPaymentStub');
+        $this->beAnInstanceOf(SouthAmericanPaymentStub::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_success_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_failure_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'return_success_url',
+            'return_failure_url',
+            'amount',
+            'currency'
+        ]);
     }
 
     public function it_should_set_consumer_reference_correctly()
@@ -93,40 +75,11 @@ class SouthAmericanPaymentSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $this->setDefaultRequestParameters();
 
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency('USD');
         $this->setConsumerReference('1234');
         $this->setNationalId('1234');
-        $this->setCustomerEmail($faker->email);
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
+        $this->setCurrency('USD');
         $this->setBillingCountry('CO');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

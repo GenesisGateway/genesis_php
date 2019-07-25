@@ -3,12 +3,13 @@
 namespace spec\Genesis\API\Request\Base\NonFinancial\Consumers;
 
 use PhpSpec\ObjectBehavior;
+use spec\Genesis\API\Stubs\Base\Request\NonFinancial\Consumers\BaseRequestStub;
 
 class ConsumerSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beAnInstanceOf('spec\Genesis\API\Stubs\Base\Request\NonFinancial\Consumers\BaseRequestStub');
+        $this->beAnInstanceOf(BaseRequestStub::class);
     }
 
     public function it_should_set_version_correctly()

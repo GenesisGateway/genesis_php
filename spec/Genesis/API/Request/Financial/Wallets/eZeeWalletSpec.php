@@ -2,34 +2,26 @@
 
 namespace spec\Genesis\API\Request\Financial\Wallets;
 
+use Genesis\API\Request\Financial\Wallets\eZeeWallet;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 // @codingStandardsIgnoreStart
 class eZeeWalletSpec extends ObjectBehavior
 // @codingStandardsIgnoreEnd
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\eZeeWallet');
+        $this->shouldHaveType(eZeeWallet::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setSourceWalletId(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'source_wallet_id'
+        ]);
     }
 
     public function it_should_encode_password_correctly()
@@ -58,13 +50,7 @@ class eZeeWalletSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 

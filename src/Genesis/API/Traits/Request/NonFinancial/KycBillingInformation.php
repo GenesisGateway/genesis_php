@@ -106,7 +106,7 @@ trait KycBillingInformation
      */
     public function setKycBillingGender($gender)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'kyc_billing_gender',
             [
                 BaseRequest::GENDER_MALE,

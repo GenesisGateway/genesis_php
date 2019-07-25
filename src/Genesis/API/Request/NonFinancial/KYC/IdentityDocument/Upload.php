@@ -91,7 +91,7 @@ class Upload extends BaseRequest
      */
     public function setMethod($method)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'method',
             [
                 self::IDENTITY_DOCUMENT_METHOD_MANUAL,
@@ -128,7 +128,7 @@ class Upload extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'customer_username'     => $this->customer_username,

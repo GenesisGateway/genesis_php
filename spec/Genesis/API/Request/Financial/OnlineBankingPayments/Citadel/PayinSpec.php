@@ -2,60 +2,31 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\Citadel;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\Citadel\Payin;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayinSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\Citadel\Payin');
+        $this->shouldHaveType(Payin::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_first_name_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingFirstName(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_last_name_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingLastName(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'billing_country',
+            'billing_first_name',
+            'billing_last_name',
+            'notification_url',
+            'merchant_customer_id'
+        ]);
     }
 
     public function it_should_fail_when_wrong_billing_country_parameter()
@@ -63,20 +34,6 @@ class PayinSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setBillingCountry('RU');
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_notification_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setNotificationUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_merchant_customer_id_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setMerchantCustomerId(null);
-        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_missing_customer_email_parameter()
@@ -87,13 +44,7 @@ class PayinSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -116,14 +67,5 @@ class PayinSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry('DE');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

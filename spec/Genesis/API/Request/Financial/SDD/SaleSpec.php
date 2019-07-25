@@ -2,58 +2,32 @@
 
 namespace spec\Genesis\API\Request\Financial\SDD;
 
+use Genesis\API\Request\Financial\SDD\Sale;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SaleSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\SDD\Sale');
+        $this->shouldHaveType(Sale::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'billing_country',
+            'iban'
+        ]);
     }
 
     public function it_should_fail_when_missing_sdd_bank_parameters()
     {
         $this->setBaseRequestParameters();
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_iban_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setIban(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_currency_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_amount_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -80,6 +54,7 @@ class SaleSpec extends ObjectBehavior
     {
         $faker = $this->getFaker();
 
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setIban($faker->iban('DE'));
         $this->setBic('PBNKDEFFXXX');
     }
@@ -88,6 +63,7 @@ class SaleSpec extends ObjectBehavior
     {
         $faker = $this->getFaker();
 
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setBillingFirstName($faker->firstName);
         $this->setBillingLastName($faker->lastName);
         $this->setBillingCountry('DE');
@@ -98,32 +74,5 @@ class SaleSpec extends ObjectBehavior
         $this->setBaseRequestParameters();
         $this->setSDDRequestParameters();
         $this->setBillingInfoRequestParams();
-    }
-
-    protected function getFaker()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        return $faker;
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty'       => function ($subject) {
-                return empty($subject);
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
-            },
-        );
     }
 }

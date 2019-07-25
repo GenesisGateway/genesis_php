@@ -2,14 +2,17 @@
 
 namespace spec\Genesis\API\Request\Financial\Alternatives;
 
+use Genesis\API\Request\Financial\Alternatives\INPay;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class INPaySpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\INPay');
+        $this->shouldHaveType(INPay::class);
     }
 
     public function it_should_fail_when_no_auth_or_payout_params_supplied()
@@ -18,41 +21,19 @@ class INPaySpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_can_build_auth_transaction_structure()
+    public function it_can_build_structure()
     {
         $this->setRequestParameters(false);
         $this->getDocument()->shouldNotBeEmpty();
-    }
 
-    public function it_can_build_payout_transaction_structure()
-    {
         $this->setRequestParameters(true);
         $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_missing_email_parameters()
     {
         $this->setRequestParameters(false);
         $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
-    }
-
-    public function it_should_fail_when_missing_currency_parameters()
-    {
-        $this->setRequestParameters(false);
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameters()
-    {
-        $this->setRequestParameters(false);
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_unsupported_billing_country_parameter()
@@ -67,20 +48,6 @@ class INPaySpec extends ObjectBehavior
         $this->setRequestParameters(false);
         $this->setCurrency('ABC');
 
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_auth_transaction_without_customer_bank_id()
-    {
-        $this->setRequestParameters(false);
-        $this->setCustomerBankId(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_auth_transaction_without_order_description()
-    {
-        $this->setRequestParameters(false);
-        $this->setOrderDescription(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -206,30 +173,5 @@ class INPaySpec extends ObjectBehavior
         } else {
             $this->setAuthTransactionParameters();
         }
-    }
-
-    protected function getFaker()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        return $faker;
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty'       => function ($subject) {
-                return empty($subject);
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
-            },
-        );
     }
 }

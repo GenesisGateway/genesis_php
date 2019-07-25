@@ -2,25 +2,17 @@
 
 namespace spec\Genesis\API\Request\Financial\Wallets;
 
+use Genesis\API\Request\Financial\Wallets\WebMoney;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class WebMoneySpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Wallets\WebMoney');
-    }
-
-    public function it_can_build_structure()
-    {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldHaveType(WebMoney::class);
     }
 
     public function it_should_fail_when_payout_transaction_without_cust_account_id()
@@ -72,31 +64,6 @@ class WebMoneySpec extends ObjectBehavior
             $faker->randomElement(
                 \Genesis\Utils\Country::getList()
             )
-        );
-    }
-
-    protected function getFaker()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        return $faker;
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty'       => function ($subject) {
-                return empty($subject);
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
-            },
         );
     }
 }

@@ -2,24 +2,25 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\Eps;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class EpsSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\Eps');
+        $this->shouldHaveType(Eps::class);
     }
 
-    public function it_can_build_structure()
+    protected function setRequestParameters()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
+        $this->setDefaultRequestParameters();
 
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
+        $this->setCurrency('EUR');
+        $this->setBillingCountry('AT');
     }
 
     public function it_should_fail_when_unsupported_billing_country_parameter()
@@ -35,41 +36,5 @@ class EpsSpec extends ObjectBehavior
         $this->setCurrency('ABC');
 
         $this->shouldThrow()->during('getDocument');
-    }
-
-    protected function setRequestParameters()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
-        $this->setCurrency('EUR');
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
-        $this->setBillingCountry('AT');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            }
-        );
     }
 }

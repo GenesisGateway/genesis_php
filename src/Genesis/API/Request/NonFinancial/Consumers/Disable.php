@@ -74,7 +74,7 @@ class Disable extends ConsumerBaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'consumer_id' => $this->consumer_id,

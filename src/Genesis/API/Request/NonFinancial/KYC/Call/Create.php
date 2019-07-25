@@ -133,7 +133,7 @@ class Create extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'customer_username'     => $this->customer_username,

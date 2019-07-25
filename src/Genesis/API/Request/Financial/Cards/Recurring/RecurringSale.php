@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+
 /**
  * Class RecurringSale
  *
@@ -32,6 +34,8 @@ namespace Genesis\API\Request\Financial\Cards\Recurring;
  */
 class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
 {
+    use TravelDataAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -39,5 +43,18 @@ class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::RECURRING_SALE;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            [
+                'travel' => $this->getTravelData()
+            ]
+        );
     }
 }

@@ -2,25 +2,17 @@
 
 namespace spec\Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Request\Financial\Cards\Sale;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SaleSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Sale');
-    }
-
-    public function it_can_build_structure()
-    {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
+        $this->shouldHaveType(Sale::class);
     }
 
     public function it_should_fail_when_missing_required_parameters()
@@ -40,13 +32,7 @@ class SaleSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency(
@@ -70,14 +56,5 @@ class SaleSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingCountry($faker->countryCode);
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

@@ -2,46 +2,26 @@
 
 namespace spec\Genesis\API\Request\Financial\SDD;
 
+use Genesis\API\Request\Financial\SDD\Refund;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class RefundSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\SDD\Refund');
+        $this->shouldHaveType(Refund::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_reference_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setReferenceId(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_amount_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_currency_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'reference_id'
+        ]);
     }
 
     protected function setRequestParameters()
@@ -60,14 +40,5 @@ class RefundSpec extends ObjectBehavior
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

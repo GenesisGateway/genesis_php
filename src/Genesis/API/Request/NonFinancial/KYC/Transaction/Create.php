@@ -279,7 +279,7 @@ class Create extends BaseRequest
      */
     public function setDeviceFingerprintType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'device_fingerprint_type',
             [
                 self::DEVICE_FINGERPRINT_TYPE_CUSTOM,
@@ -299,7 +299,7 @@ class Create extends BaseRequest
      */
     public function setIndustryType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'industry_type',
             [
                 self::INDUSTRY_TYPE_FINANCE,
@@ -373,7 +373,7 @@ class Create extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'session_id'                       => $this->session_id,

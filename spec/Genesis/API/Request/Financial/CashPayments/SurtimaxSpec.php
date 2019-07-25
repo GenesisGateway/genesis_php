@@ -2,13 +2,17 @@
 
 namespace spec\Genesis\API\Request\Financial\CashPayments;
 
+use Genesis\API\Request\Financial\CashPayments\Surtimax;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SurtimaxSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\CashPayments\Surtimax');
+        $this->shouldHaveType(Surtimax::class);
     }
 
     public function it_should_fail_when_country_invalid()
@@ -18,49 +22,13 @@ class SurtimaxSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_set_country_correctly()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry('CO');
-        $this->shouldNotThrow()->during('getDocument');
-    }
-
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $this->setDefaultRequestParameters();
 
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency('USD');
         $this->setConsumerReference('1234');
         $this->setNationalId('1234');
-        $this->setCustomerEmail($faker->email);
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
+        $this->setCurrency('USD');
         $this->setBillingCountry('CO');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

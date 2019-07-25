@@ -191,7 +191,7 @@ class Create extends BaseRequest
      */
     public function setDeviceFingerprintType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'device_fingerprint_type',
             [
                 self::DEVICE_FINGERPRINT_TYPE_CUSTOM,
@@ -211,7 +211,7 @@ class Create extends BaseRequest
      */
     public function setProfileActionType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'profile_action_type',
             [
                 self::PROFILE_ACTION_TYPE_REGISTRATION,
@@ -230,7 +230,7 @@ class Create extends BaseRequest
      */
     public function setProfileCurrentStatus($status)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'profile_current_status',
             [
                 self::PROFILE_CURRENT_STATUS_UNDEFINED,
@@ -251,7 +251,7 @@ class Create extends BaseRequest
      */
     public function setIndustryType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'industry_type',
             [
                 self::INDUSTRY_TYPE_FINANCE,
@@ -296,7 +296,7 @@ class Create extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'session_id'                       => $this->session_id,

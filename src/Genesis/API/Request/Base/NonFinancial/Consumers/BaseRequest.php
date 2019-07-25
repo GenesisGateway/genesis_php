@@ -22,7 +22,8 @@
  */
 namespace Genesis\API\Request\Base\NonFinancial\Consumers;
 
-use Genesis\Exceptions\InvalidArgument;
+use Genesis\API\Request\Base\BaseVersionedRequest;
+use Genesis\Builder;
 
 /**
  * Class BaseRequest
@@ -35,18 +36,8 @@ use Genesis\Exceptions\InvalidArgument;
  *
  * @package Genesis\API\Request\Base\NonFinancial\Consumers
  */
-abstract class BaseRequest extends \Genesis\API\Request
+abstract class BaseRequest extends BaseVersionedRequest
 {
-    /**
-     * @var string
-     */
-    private $version = 'v1';
-
-    /**
-     * @var string
-     */
-    private $requestPath;
-
     /**
      * Consumer constructor.
      *
@@ -54,46 +45,7 @@ abstract class BaseRequest extends \Genesis\API\Request
      */
     public function __construct($requestPath)
     {
-        $this->requestPath = $requestPath;
-
-        parent::__construct();
-    }
-
-    /**
-     * @param $version
-     *
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setVersion($version)
-    {
-        $availableVersions = ['v1'];
-
-        if (in_array($version, $availableVersions)) {
-            $this->version = $version;
-
-            $this->initConfiguration();
-
-            return $this;
-        }
-
-        throw new InvalidArgument(
-            'Invalid Consumer API version, available versions are: ' . implode(', ', $availableVersions)
-        );
-    }
-
-    abstract protected function getConsumerRequestStructure();
-
-    /**
-     * Set the per-request configuration
-     *
-     * @return void
-     */
-    protected function initConfiguration()
-    {
-        $this->initXmlConfiguration();
-
-        $this->initApiGatewayConfiguration($this->version . '/' . $this->requestPath, false);
+        parent::__construct($requestPath, Builder::XML, ['v1']);
     }
 
     /**
@@ -104,7 +56,7 @@ abstract class BaseRequest extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = [
-            $this->requestPath . '_request' => $this->getConsumerRequestStructure()
+            $this->getRequestPath() . '_request' => $this->getRequestStructure()
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);

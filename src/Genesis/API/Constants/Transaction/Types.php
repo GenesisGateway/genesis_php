@@ -608,10 +608,10 @@ class Types
     const ASTROPAY_CARD = 'astropay_card';
 
     /**
-     * Rapipago from Argentina is an offline payment method used for online purchases.
-     * Shoppers buy their goods and services online and pay offline at one of the 6,000+ Rapipago payment locations.
+     * RapiPago from Argentina is an offline payment method used for online purchases.
+     * Shoppers buy their goods and services online and pay offline at one of the 6,000+ RapiPago payment locations.
      */
-    const RAPIPAGO = 'rapipago';
+    const RAPI_PAGO = 'rapi_pago';
 
     /**
      * PSE (Pagos Seguros en Linea) is the preferred alternative payment solution in Colombia.
@@ -712,7 +712,7 @@ class Types
             self::ONLINE_BANKING_PAYOUT   => 'OnlineBankingPayments\OnlineBanking\Payout',
             self::PAYU                    => 'OnlineBankingPayments\PayU',
             self::PSE                     => 'OnlineBankingPayments\Pse',
-            self::RAPIPAGO                => 'OnlineBankingPayments\Rapipago',
+            self::RAPI_PAGO               => 'OnlineBankingPayments\RapiPago',
             self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
             self::SANTANDER               => 'OnlineBankingPayments\Santander',
             self::TRUSTPAY                => 'OnlineBankingPayments\TrustPay',
@@ -836,7 +836,7 @@ class Types
             self::BANCOMER,
             self::BRADESCO,
             self::ASTROPAY_CARD,
-            self::RAPIPAGO,
+            self::RAPI_PAGO,
             self::PSE,
             self::TRUSTPAY,
             self::MY_BANK,

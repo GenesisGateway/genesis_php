@@ -130,7 +130,7 @@ trait CustomerInformation
      */
     public function setDocumentType($type)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'document_type',
             [
                 BaseRequest::DOCUMENT_TYPE_SSN,
@@ -158,7 +158,7 @@ trait CustomerInformation
      */
     public function setGender($gender)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'gender',
             [
                 BaseRequest::GENDER_MALE,

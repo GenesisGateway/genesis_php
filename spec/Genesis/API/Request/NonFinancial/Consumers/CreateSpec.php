@@ -2,46 +2,30 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\Consumers;
 
+use Genesis\API\Request\NonFinancial\Consumers\Create;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class CreateSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Consumers\Create');
+        $this->shouldHaveType(Create::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setEmail(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'email'
+        ]);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $faker = $this->getFaker();
 
         $this->setEmail($faker->email);
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

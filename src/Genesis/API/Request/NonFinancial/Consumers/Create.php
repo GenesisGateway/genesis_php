@@ -71,7 +71,7 @@ class Create extends ConsumerBaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'email'            => $this->email,

@@ -97,7 +97,7 @@ class Update extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'reference_id'        => $this->reference_id,

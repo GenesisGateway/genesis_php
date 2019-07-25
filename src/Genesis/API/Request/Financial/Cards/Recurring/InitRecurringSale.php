@@ -30,6 +30,7 @@ use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 
 /**
  * Class InitRecurringSale
@@ -42,7 +43,7 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial
 {
     use MotoAttributes, PaymentAttributes, CreditCardAttributes,
         AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
-        DocumentAttributes;
+        DocumentAttributes, TravelDataAttributes;
 
     /**
      * Returns the Request transaction type
@@ -104,7 +105,8 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'travel'                    => $this->getTravelData()
         ];
     }
 }

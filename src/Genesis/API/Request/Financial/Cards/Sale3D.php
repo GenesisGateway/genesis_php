@@ -35,6 +35,7 @@ use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
+use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 
 /**
  * Class Sale3D
@@ -49,7 +50,7 @@ class Sale3D extends \Genesis\API\Request\Base\Financial
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
         MpiAttributes, RiskAttributes, DescriptorAttributes, ReferenceAttributes,
-        DocumentAttributes;
+        DocumentAttributes, TravelDataAttributes;
 
     /**
      * Returns the Request transaction type
@@ -132,7 +133,8 @@ class Sale3D extends \Genesis\API\Request\Base\Financial
             'mpi_params'                => $this->getMpiParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'reference_id'              => $this->reference_id
+            'reference_id'              => $this->reference_id,
+            'travel'                    => $this->getTravelData()
         ];
     }
 }

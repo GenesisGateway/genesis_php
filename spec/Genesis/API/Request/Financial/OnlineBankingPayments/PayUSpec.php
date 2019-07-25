@@ -2,55 +2,31 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\PayU;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayUSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\PayU');
+        $this->shouldHaveType(PayU::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency',
+            'billing_country',
+            'return_success_url',
+            'return_failure_url'
+        ]);
     }
 
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_success_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_failure_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_invalid_currency()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency('USD');
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_invalid_country()
+    public function it_should_fail_when_country_not_valid_param()
     {
         $this->setRequestParameters();
         $this->setBillingCountry('BG');
@@ -59,37 +35,9 @@ class PayUSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $this->setDefaultRequestParameters();
 
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency('PLN');
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingAddress1($faker->streetAddress);
-        $this->setBillingZipCode($faker->postcode);
-        $this->setBillingCity($faker->city);
-        $this->setBillingState($faker->state);
         $this->setBillingCountry('PL');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

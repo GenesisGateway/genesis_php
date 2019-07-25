@@ -67,7 +67,7 @@ trait DepositLimits
      */
     public function setPaymentMethod($method)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'payment_method',
             [
                 BaseRequest::PAYMENT_METHOD_CREDIT_CARD,

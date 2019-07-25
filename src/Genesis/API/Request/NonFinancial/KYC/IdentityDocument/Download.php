@@ -66,7 +66,7 @@ class Download extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'identity_document_id' => $this->identity_document_id

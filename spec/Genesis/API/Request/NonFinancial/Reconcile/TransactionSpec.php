@@ -1,67 +1,55 @@
 <?php
 
-namespace spec\Genesis\API\Request\Reconcile;
+namespace spec\Genesis\API\Request\NonFinancial\Reconcile;
 
+use Genesis\API\Request\NonFinancial\Reconcile\Transaction;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class TransactionSpec extends ObjectBehavior
 {
-    protected $faker;
-
-    public function __construct()
-    {
-        $this->faker = \Faker\Factory::create();
-
-        $this->faker->addProvider(new \Faker\Provider\Uuid($this->faker));
-    }
+    use RequestExamples;
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Reconcile\Transaction');
+        $this->shouldHaveType(Transaction::class);
+    }
+
+    public function it_should_fail_when_missing_required_params()
+    {
+        $this->setTransactionId(null);
+        $this->setArn(null);
+        $this->setUniqueId(null);
+        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_validate_with_arn()
     {
-        $this->setArn($this->faker->uuid);
+        $this->setArn($this->getFaker()->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
     public function it_should_validate_with_transaction_id()
     {
-        $this->setTransactionId($this->faker->uuid);
+        $this->setTransactionId($this->getFaker()->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
     public function it_should_validate_with_unique_id()
     {
-        $this->setUniqueId($this->faker->uuid);
+        $this->setUniqueId($this->getFaker()->uuid);
         $this->getDocument()->shouldNotBeEmpty();
         $this->shouldNotThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
     }
 
-    public function it_should_fail_when_no_parameters()
+    protected function setRequestParameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
+        $faker = $this->getFaker();
 
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setArn(null);
-        $this->setTransactionId(null);
-        $this->setUniqueId(null);
-
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
+        $this->setTransactionId($faker->uuid);
+        $this->setArn($faker->uuid);
+        $this->setUniqueId($faker->uuid);
     }
 }

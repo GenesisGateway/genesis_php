@@ -6,50 +6,35 @@ use Genesis\API\Request\Financial\Alternatives\Klarna\Authorize;
 use PhpSpec\ObjectBehavior;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Items as KlarnaItems;
 use \Genesis\API\Request\Financial\Alternatives\Klarna\Item as KlarnaItem;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class AuthorizeSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(\Genesis\API\Request\Financial\Alternatives\Klarna\Authorize::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'remote_ip',
+            'amount',
+            'currency',
+            'billing_country',
+            'shipping_country',
+            'return_success_url',
+            'return_failure_url',
+            'payment_method_category'
+        ]);
     }
 
     public function it_should_fail_when_wrong_billing_country_parameter()
     {
         $this->setRequestParameters();
         $this->setBillingCountry('TR');
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_shipping_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setShippingCountry(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -60,38 +45,10 @@ class AuthorizeSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_return_success_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_failure_url_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_remote_ip_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setRemoteIp(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
     public function it_should_fail_when_missing_required_items_param()
     {
         $this->setRequestParameters();
         $this->setItems(new KlarnaItems('EUR'));
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_payment_method_category_param()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentMethodCategory(null);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -104,13 +61,7 @@ class AuthorizeSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $item  = new KlarnaItem(
             $faker->name,
@@ -150,14 +101,5 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setShippingCountry('NL');
 
         $this->setItems($items);
-    }
-
-    public function getMatchers()
-    {
-        return [
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        ];
     }
 }

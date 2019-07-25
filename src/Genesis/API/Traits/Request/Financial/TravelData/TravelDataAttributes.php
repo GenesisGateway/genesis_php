@@ -21,32 +21,26 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\OnlineBankingPayments;
+namespace Genesis\API\Traits\Request\Financial\TravelData;
+
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
- * Class Rapipago
- *
- * Rapipago from Argentina is an offline payment method used for online purchases.
- * Shoppers buy their goods and services online and pay offline at one of the 6,000+ Rapipago payment locations.
- *
- * @package Genesis\API\Request\Financial\OnlineBankingPayments
+ * Trait TravelDataAttributes
+ * @package Genesis\API\Traits\Request\Financial\TravelData
  */
-class Rapipago extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
+trait TravelDataAttributes
 {
-    /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::RAPIPAGO;
-    }
+    use RestrictedSetter, AirlineItineraryAttributes, CarRentalAttributes,
+        HotelRentalAttributes, AncillaryChargesAttributes;
 
-    /**
-     * @return array
-     */
-    public function getAllowedBillingCountries()
+    public function getTravelData()
     {
-        return ['AR'];
+        return array_merge(
+            $this->getAirlineItineraryStructure(),
+            $this->getCarRentalStructure(),
+            $this->getHotelRentalStructure(),
+            $this->getAncillaryChargesStructure()
+        );
     }
 }

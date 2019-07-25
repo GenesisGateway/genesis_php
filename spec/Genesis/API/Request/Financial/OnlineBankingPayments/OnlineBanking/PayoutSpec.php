@@ -2,102 +2,61 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout');
+        $this->shouldHaveType(Payout::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
+        $this->testMissingRequiredParameters([
+            'remote_ip',
+            'amount',
+            'currency',
+            'return_success_url',
+            'return_failure_url',
+            'bank_account_name',
+            'bank_account_number',
+            'billing_first_name',
+            'billing_last_name',
+            'billing_state',
+            'billing_country'
+        ]);
     }
 
-    public function it_should_fail_when_no_parameters()
+    protected function setRequestParameters()
     {
-        $this->shouldThrow()->during('getDocument');
-    }
+        $faker = $this->getFaker();
 
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_success_url_param()
-    {
-        $this->setRequestParameters();
-        $this->setReturnSuccessUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_return_failure_url_param()
-    {
-        $this->setRequestParameters();
-        $this->setReturnFailureUrl(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_remote_ip_param()
-    {
-        $this->setRequestParameters();
-        $this->setRemoteIp(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_bank_account_name_param()
-    {
-        $this->setRequestParameters();
-        $this->setBankAccountName(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_bank_account_number_param()
-    {
-        $this->setRequestParameters();
-        $this->setBankAccountNumber(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_first_name_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingFirstName(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_last_name_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingLastName(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_state_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingState(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_param()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
+        $this->setRemoteIp($faker->ipv4);
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCurrency($faker->randomElement([
+            'CNY', 'THB', 'IDR'
+        ]));
+        $this->setBankAccountName($faker->name);
+        // Bank account number should be exactly 19 digits
+        $this->setBankAccountNumber($this->generateBankAccountNumber());
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingState($faker->state);
+        $this->setBillingCountry($faker->countryCode);
+        $this->setBankName($faker->text(10));
+        $this->setBankBranch($faker->text(20));
+        $this->setBankCode($faker->text(10));
     }
 
     public function it_should_fail_when_wrong_currency_param()
@@ -150,45 +109,5 @@ class PayoutSpec extends ObjectBehavior
     private function generateBankAccountNumber ($length = 19)
     {
         return substr(str_shuffle(str_repeat('0123456789', 5)), 1, $length);
-    }
-
-    protected function setRequestParameters()
-    {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
-
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setReturnSuccessUrl($faker->url);
-        $this->setReturnFailureUrl($faker->url);
-        $this->setRemoteIp($faker->ipv4);
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setCurrency($faker->randomElement([
-            'CNY', 'THB', 'IDR'
-        ]));
-        $this->setBankAccountName($faker->name);
-        $this->setBankAccountNumber($this->generateBankAccountNumber()); // Bank account number should be exactly 19 digits
-        $this->setBillingFirstName($faker->firstName);
-        $this->setBillingLastName($faker->lastName);
-        $this->setBillingState($faker->state);
-        $this->setBillingCountry($faker->countryCode);
-        $this->setBankName($faker->text(10));
-        $this->setBankBranch($faker->text(20));
-        $this->setBankCode($faker->text(10));
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

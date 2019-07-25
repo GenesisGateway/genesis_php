@@ -21,7 +21,7 @@ class BaseRequestStub extends ConsumerBaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [];
     }

@@ -146,7 +146,7 @@ trait PaymentDetails
      */
     public function setCvvPresent($cvvPresent)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'cvv_present',
             [
                 BaseRequest::CVV_PRESENT_YES,

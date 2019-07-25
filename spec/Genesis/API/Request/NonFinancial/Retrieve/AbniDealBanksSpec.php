@@ -2,24 +2,14 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\Retrieve;
 
+use Genesis\API\Request\NonFinancial\Retrieve\AbniDealBanks;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AbniDealBanksSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Retrieve\AbniDealBanks');
-    }
-
-    public function it_should_build_without_parameters()
-    {
-        $this->shouldNotThrow()->during('getDocument');
-    }
-
-    public function it_should_build_empty_body()
-    {
-        $this->getDocument()->shouldBeNull();
+        $this->shouldHaveType(AbniDealBanks::class);
     }
 
     public function it_should_build_correct_url_for_ecp_endpoint()

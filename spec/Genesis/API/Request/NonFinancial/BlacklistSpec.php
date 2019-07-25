@@ -4,38 +4,26 @@ namespace spec\Genesis\API\Request\NonFinancial;
 
 use Genesis\API as API;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class BlacklistSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\NonFinancial\Blacklist');
+        $this->shouldHaveType(API\Request\NonFinancial\Blacklist::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setCardNumber('4200000000000000');
-        $this->getDocument()->shouldNotBeEmpty();
+        $this->testMissingRequiredParameters([
+            'card_number'
+        ]);
     }
 
-    public function it_should_fail_when_no_parameters()
+    protected function setRequestParameters()
     {
-        $this->shouldThrow('\Genesis\Exceptions\ErrorParameter')->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setCardNumber(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
+        $this->setCardNumber($this->getFaker()->creditCardNumber);
     }
 }

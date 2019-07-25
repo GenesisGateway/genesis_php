@@ -33,6 +33,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 
 /**
  * Class InitRecurringSale3D
@@ -45,7 +46,8 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial
 {
     use MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
-        MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes;
+        MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
+        TravelDataAttributes;
 
     /**
      * Returns the Request transaction type
@@ -126,7 +128,8 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'mpi_params'                => $this->getMpiParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'travel'                    => $this->getTravelData()
         ];
     }
 }

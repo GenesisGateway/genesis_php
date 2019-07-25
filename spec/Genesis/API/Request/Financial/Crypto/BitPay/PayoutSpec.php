@@ -4,37 +4,23 @@ namespace spec\Genesis\API\Request\Financial\Crypto\BitPay;
 
 use Genesis\API\Request\Financial\Crypto\BitPay\Payout;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Crypto\BitPay\Payout');
+        $this->shouldHaveType(Payout::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_amount_param()
-    {
-        $this->setRequestParameters();
-        $this->setAmount(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'amount',
+            'currency'
+        ]);
     }
 
     public function it_should_fail_when_missing_required_crypto_address_param()
@@ -80,8 +66,7 @@ class PayoutSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setReturnSuccessUrl($faker->url);
@@ -95,14 +80,5 @@ class PayoutSpec extends ObjectBehavior
         $this->setCustomerEmail($faker->email);
         $this->setCryptoAddress('1FTgzPJCbpCWYfF6VxPdmCMPUDBfygut2h');
         $this->setCryptoWalletProvider(Payout::WALLET_PROVIDER_GDAX);
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

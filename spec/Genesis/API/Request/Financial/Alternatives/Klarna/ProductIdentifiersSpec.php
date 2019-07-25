@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 
 class ProductIdentifiersSpec extends ObjectBehavior
 {
-
     public function it_is_initializable()
     {
         $this->shouldHaveType(\Genesis\API\Request\Financial\Alternatives\Klarna\ProductIdentifiers::class);

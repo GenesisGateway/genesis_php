@@ -2,33 +2,26 @@
 
 namespace spec\Genesis\API\Request\Financial\Alternatives;
 
+use Genesis\API\Request\Financial\Alternatives\Earthport;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class EarthportSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\Earthport');
+        $this->shouldHaveType(Earthport::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setAccountName(null);
-        $this->setBankName(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'account_name',
+            'bank_name',
+            'billing_country'
+        ]);
     }
 
     public function it_should_fail_when_missing_bic_for_andorra()
@@ -136,13 +129,7 @@ class EarthportSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -171,14 +158,5 @@ class EarthportSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry('AD');
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

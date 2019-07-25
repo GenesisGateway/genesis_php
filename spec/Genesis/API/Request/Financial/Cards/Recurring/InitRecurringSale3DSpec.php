@@ -2,36 +2,22 @@
 
 namespace spec\Genesis\API\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class InitRecurringSale3DSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D');
-    }
-
-    public function it_can_build_structure()
-    {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
+        $this->shouldHaveType(InitRecurringSale3D::class);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency(
@@ -59,14 +45,5 @@ class InitRecurringSale3DSpec extends ObjectBehavior
         $this->setNotificationUrl($faker->url);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

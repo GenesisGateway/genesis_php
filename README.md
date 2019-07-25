@@ -266,7 +266,7 @@ Financial\OnlineBankingPayments\PaySec\Payin
 Financial\OnlineBankingPayments\PaySec\Payout
 Financial\OnlineBankingPayments\PayU
 Financial\OnlineBankingPayments\Pse
-Financial\OnlineBankingPayments\Rapipago
+Financial\OnlineBankingPayments\RapiPago
 Financial\OnlineBankingPayments\SafetyPay
 Financial\OnlineBankingPayments\Santander
 Financial\OnlineBankingPayments\TrustPay
@@ -310,6 +310,13 @@ NonFinancial\Fraud\Reports\Transaction
 // Retrieval request
 NonFinancial\Fraud\Retrieval\DateRange
 NonFinancial\Fraud\Retrieval\Transaction
+
+// Fx requests
+NonFinancial\Fx\GetTiers
+NonFinancial\Fx\GetTier
+NonFinancial\Fx\GetRates
+NonFinancial\Fx\GetRate
+NonFinancial\Fx\SearchRate
 
 // KYC requests
 NonFinancial\KYC\Call\Create

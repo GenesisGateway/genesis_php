@@ -2,45 +2,30 @@
 
 namespace spec\Genesis\API\Request\Financial\Crypto\BitPay;
 
+use Genesis\API\Request\Financial\Crypto\BitPay\Refund;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class RefundSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Crypto\BitPay\Refund');
+        $this->shouldHaveType(Refund::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_currency_param()
-    {
-        $this->setRequestParameters();
-        $this->setCurrency(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_reference_id_param()
-    {
-        $this->setRequestParameters();
-        $this->setReferenceId(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'currency',
+            'reference_id'
+        ]);
     }
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
@@ -49,14 +34,5 @@ class RefundSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency('EUR');
-    }
-
-    public function getMatchers()
-    {
-        return [
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        ];
     }
 }

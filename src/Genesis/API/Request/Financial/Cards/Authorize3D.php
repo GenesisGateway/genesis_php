@@ -35,6 +35,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 
 /**
  * Class Authorize3D
@@ -48,7 +49,7 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
         MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
-        PreauthorizationAttributes;
+        PreauthorizationAttributes, TravelDataAttributes;
 
     /**
      * Returns the Request transaction type
@@ -131,7 +132,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'mpi_params'                => $this->getMpiParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'travel'                    => $this->getTravelData()
         ];
     }
 }

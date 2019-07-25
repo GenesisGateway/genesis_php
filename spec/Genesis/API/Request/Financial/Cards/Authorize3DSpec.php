@@ -2,32 +2,25 @@
 
 namespace spec\Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Request\Financial\Cards\Authorize3D;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class Authorize3DSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Cards\Authorize3D');
+        $this->shouldHaveType(Authorize3D::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCardNumber(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'card_holder',
+            'card_number'
+        ]);
     }
 
     public function it_should_fail_when_missing_cc_holder_last_name_parameter()
@@ -68,13 +61,7 @@ class Authorize3DSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency(
@@ -102,21 +89,5 @@ class Authorize3DSpec extends ObjectBehavior
         $this->setNotificationUrl($faker->url);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-    }
-
-    protected function getExpectedFieldValueException($field)
-    {
-        return new \Genesis\Exceptions\InvalidArgument(
-            "Please check input data for errors. '{$field}' has invalid format"
-        );
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty' => function ($subject) {
-                return empty($subject);
-            },
-        );
     }
 }

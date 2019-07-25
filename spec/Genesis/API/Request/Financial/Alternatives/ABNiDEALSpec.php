@@ -2,45 +2,31 @@
 
 namespace spec\Genesis\API\Request\Financial\Alternatives;
 
+use Genesis\API\Request\Financial\Alternatives\ABNiDEAL;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class ABNiDEALSpec extends ObjectBehavior
 {
+    use RequestExamples;
+
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Genesis\API\Request\Financial\Alternatives\ABNiDEAL');
+        $this->shouldHaveType(ABNiDEAL::class);
     }
 
-    public function it_can_build_structure()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_no_parameters()
-    {
-        $this->shouldThrow()->during('getDocument');
+        $this->testMissingRequiredParameters([
+            'customer_bank_id',
+            'billing_country'
+        ]);
     }
 
     public function it_should_fail_when_missing_email_parameters()
     {
         $this->setRequestParameters();
         $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
-    }
-
-    public function it_should_fail_when_missing_bank_id_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setCustomerBankId(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_missing_billing_country_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setBillingCountry(null);
-        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_unsupported_billing_country_parameter()
@@ -60,13 +46,7 @@ class ABNiDEALSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
-
-        $faker->addProvider(new \Faker\Provider\en_US\Person($faker));
-        $faker->addProvider(new \Faker\Provider\Payment($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
+        $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
@@ -93,17 +73,5 @@ class ABNiDEALSpec extends ObjectBehavior
 
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-    }
-
-    public function getMatchers()
-    {
-        return array(
-            'beEmpty'       => function ($subject) {
-                return empty($subject);
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
-            },
-        );
     }
 }

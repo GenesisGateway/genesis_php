@@ -32,7 +32,7 @@ use Genesis\API\Traits\RestrictedSetter;
  * Utilize this method to update a particular transaction status so we can continue improving the data models
  * and provide the best scores and recommendations.
  *
- * @package Genesis\API\Request\NonFinancial\KYC\Transactio
+ * @package Genesis\API\Request\NonFinancial\KYC\Transaction
  */
 class Update extends BaseRequest
 {
@@ -112,7 +112,7 @@ class Update extends BaseRequest
      */
     public function setTransactionStatus($status)
     {
-        return $this->restrictedSetter(
+        return $this->allowedOptionsSetter(
             'transaction_status',
             [
                 self::TRANSACTION_STATUS_APPROVED,
@@ -165,7 +165,7 @@ class Update extends BaseRequest
     /**
      * @return array
      */
-    protected function getConsumerRequestStructure()
+    protected function getRequestStructure()
     {
         return [
             'session_id'            => $this->session_id,
