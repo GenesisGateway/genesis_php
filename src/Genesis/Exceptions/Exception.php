@@ -20,21 +20,30 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\Exceptions;
 
 /**
- * Class DeprecatedMethod
+ * Class Exception
+ *
+ * Base exception class, which can be used to catch all SDK exceptions
  *
  * @package Genesis\Exceptions
  */
-class DeprecatedMethod extends Exception
+class Exception extends \Exception
 {
     /**
      * @return string
      */
     protected function getCustomMessage()
     {
-        return 'You\'re trying to call a deprecated method!' . PHP_EOL .
-               'For proper usage, please refer to the documentation!';
+        return $this->getMessage();
+    }
+
+    public function __construct($message = '', $code = 0, $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+
+        $this->message = $this->getCustomMessage();
     }
 }

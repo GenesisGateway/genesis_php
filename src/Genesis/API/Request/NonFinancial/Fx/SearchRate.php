@@ -23,6 +23,7 @@
 namespace Genesis\API\Request\NonFinancial\Fx;
 
 use Genesis\API\Request\Base\NonFinancial\Fx\BaseRequest;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
 
 /**
@@ -67,6 +68,48 @@ class SearchRate extends BaseRequest
         );
 
         return $this;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setSourceCurrency($currency)
+    {
+        if ($this->target_currency === $currency) {
+            $this->throwExceptionTargetEqualsSourceCurrency();
+        }
+
+        $this->source_currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setTargetCurrency($currency)
+    {
+        if ($this->source_currency === $currency) {
+            $this->throwExceptionTargetEqualsSourceCurrency();
+        }
+
+        $this->target_currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @throws InvalidArgument
+     */
+    private function throwExceptionTargetEqualsSourceCurrency()
+    {
+        throw new InvalidArgument('Source currency must be different from target currency');
     }
 
     protected function setRequiredFields()

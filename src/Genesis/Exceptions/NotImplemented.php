@@ -27,21 +27,13 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class NotImplemented extends \Exception
+class NotImplemented extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        if (empty($message)) {
-            $message = 'This feature is not implemented yet!';
-        }
-
-        parent::__construct($message, $code, $previous);
+        return 'This feature is not implemented yet!';
     }
 }

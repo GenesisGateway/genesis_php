@@ -29,20 +29,13 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class ErrorParameter extends \Exception
+class ErrorParameter extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param bool   $code
-     * @param null   $previous
+     * @return string
      */
-    public function __construct($message = '', $code = false, $previous = null)
+    protected function getCustomMessage()
     {
-        $message = 'Please verify the following transaction parameters:' . PHP_EOL .
-                    $message;
-
-        parent::__construct($message, $code, $previous);
+        return 'Please verify the following transaction parameters:' . PHP_EOL . $this->getMessage();
     }
 }

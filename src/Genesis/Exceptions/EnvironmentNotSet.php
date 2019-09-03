@@ -27,21 +27,13 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class EnvironmentNotSet extends \Exception
+class EnvironmentNotSet extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        if (empty($message)) {
-            $message = "No working enviorment has been set, please choose between test/live environment!";
-        }
-
-        parent::__construct($message, $code, $previous);
+        return 'No working environment has been set, please choose between test/live environment!';
     }
 }

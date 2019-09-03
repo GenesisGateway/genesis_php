@@ -1163,4 +1163,17 @@ final class Currency
     {
         return \Genesis\Utils\Common::getArrayKeys(self::$iso4217);
     }
+
+    /**
+     * Retrieve a random currency from the currencies list
+     *
+     * @return string
+     */
+    public static function getRandomCurrency()
+    {
+        $currencies = static::getList();
+        $lastIndex  = count($currencies) - 1;
+
+        return $currencies[mt_rand(0, $lastIndex)];
+    }
 }

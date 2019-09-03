@@ -31,21 +31,13 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class ErrorNetwork extends \Exception
+class ErrorNetwork extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        if (empty($message)) {
-            $message = 'Unknown error during network request!';
-        }
-
-        parent::__construct($message, $code, $previous);
+        return 'Unknown error during network request!';
     }
 }

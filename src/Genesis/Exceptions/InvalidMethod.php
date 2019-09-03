@@ -27,23 +27,14 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class InvalidMethod extends \Exception
+class InvalidMethod extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        if (empty($message)) {
-            $message =
-                'You\'re trying to call a non-existent method!' . PHP_EOL .
-                'For proper usage, please refer to the documentation!';
-        }
-
-        parent::__construct($message, $code, $previous);
+        return 'You\'re trying to call a non-existent method!' . PHP_EOL .
+               'For proper usage, please refer to the documentation!';
     }
 }

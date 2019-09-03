@@ -30,21 +30,13 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class InvalidResponse extends \Exception
+class InvalidResponse extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        if (empty($message)) {
-            $message = 'Invalid/Unexpected format!';
-        }
-
-        parent::__construct($message, $code, $previous);
+        return 'Invalid/Unexpected format!';
     }
 }

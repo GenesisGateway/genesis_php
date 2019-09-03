@@ -4,6 +4,7 @@ namespace spec\Genesis\API\Request\NonFinancial\Fx;
 
 use Genesis\API\Request\NonFinancial\Fx\SearchRate;
 use Genesis\Builder;
+use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
@@ -45,12 +46,32 @@ class SearchRateSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_should_fail_when_target_and_source_currency_are_equal()
+    {
+        $this->setSourceCurrency('USD');
+        $this->shouldThrow()->during('setTargetCurrency', ['USD']);
+        $this->setTargetCurrency('EUR');
+        $this->shouldThrow()->during('setSourceCurrency', ['EUR']);
+    }
+
     protected function setRequestParameters()
     {
-        $faker = $this->getFaker();
+        $currenciesPair = $this->getCurrencyPair();
 
         $this->setTierId(88);
-        $this->setSourceCurrency($faker->currencyCode);
-        $this->setTargetCurrency($faker->currencyCode);
+        $this->setSourceCurrency($currenciesPair[0]);
+        $this->setTargetCurrency($currenciesPair[1]);
+    }
+
+    private function getCurrencyPair()
+    {
+        $source = Currency::getRandomCurrency();
+        $target = Currency::getRandomCurrency();
+
+        if ($source === $target) {
+            return $this->getCurrencyPair();
+        }
+
+        return [$source, $target];
     }
 }

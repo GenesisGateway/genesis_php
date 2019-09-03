@@ -31,23 +31,16 @@ namespace Genesis\Exceptions;
  *
  * @package Genesis\Exceptions
  */
-class ErrorAPI extends \Exception
+class ErrorAPI extends Exception
 {
     /**
-     * Construct
-     *
-     * @param string $message
-     * @param int $code
-     * @param null $previous
+     * @return string
      */
-    public function __construct($message = '', $code = 0, $previous = null)
+    protected function getCustomMessage()
     {
-        $error          = empty($message) ? 'Unknown error' : $message;
-        $description    = \Genesis\API\Constants\Errors::getErrorDescription($code);
+        $message = $this->getMessage();
 
-        $message = 'Message: ' . $error . PHP_EOL .
-                   'Details: ' . $description;
-
-        parent::__construct($message, $code, $previous);
+        return 'Message: ' . (empty($message) ? 'Unknown error' : $message) . PHP_EOL .
+               'Details: ' . \Genesis\API\Constants\Errors::getErrorDescription($this->getCode());
     }
 }
