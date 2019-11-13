@@ -20,21 +20,50 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Exceptions;
+
+namespace Genesis\API\Constants\Transaction\Parameters;
+
+use Genesis\Utils\Common;
 
 /**
- * Class InvalidArgument
- *
- * @package Genesis\Exceptions
+ * Class ScaExemptions
+ * @package Genesis\API\Constants\Transaction\Parameters
  */
-class InvalidArgument extends Exception
+class ScaExemptions
 {
     /**
-     * @return string
+     * Exemption Low Value
      */
-    protected function getCustomMessage()
+    const EXEMPTION_LOW_VALUE = 'low_value';
+
+    /**
+     * Exemption Low Risk
+     */
+    const EXEMPTION_LOW_RISK = 'low_risk';
+
+    /**
+     * Exemption Trusted Merchant
+     */
+    const EXEMPTION_TRUSTED_MERCHANT = 'trusted_merchant';
+
+    /**
+     * Exemption Corporate Payment
+     */
+    const EXEMPTION_CORPORATE_PAYMENT = 'corporate_payment';
+
+    /**
+     * Exemption Delegated Authentication
+     */
+    const EXEMPTION_DELEGATED_AUTHENTICATION = 'delegated_authentication';
+
+    public static function getAll()
     {
-        return ($this->getMessage()) ?
-            $this->getMessage() : 'The supplied argument is invalid for this method!';
+        return [
+            self::EXEMPTION_LOW_VALUE,
+            self::EXEMPTION_LOW_RISK,
+            self::EXEMPTION_TRUSTED_MERCHANT,
+            self::EXEMPTION_CORPORATE_PAYMENT,
+            self::EXEMPTION_DELEGATED_AUTHENTICATION
+        ];
     }
 }

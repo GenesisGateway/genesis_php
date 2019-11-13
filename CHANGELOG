@@ -1,3 +1,148 @@
+1.17.2
+-----
+* Added additional MPI params for the synchronous 3D transaction types (Authorize3D, Sale3D & InitRecurringSale3D)
+    - Protocol Version
+    - Directory Server ID
+* Added new languages support in Web Payment Form request
+    - Indonesian (ID)
+    - Malay (MS)
+    - Thai (TH)
+    - Czech (CS)
+    - Croatian (HR)
+    - Slovenian (SL)
+* Updated Error Messages and codes
+* Fixed i18n constants. All language code constants are in ISO-639-1 and can be used in that way Genesis\API\Constants\i18n::EN
+* Fixed magic setter, removed trim causing problem when unsetting request attributes after initialisation of the genesis object
+
+1.17.1
+-----
+* Improved the error handling capabilities of the SDK
+* Fixed issue with Genesis Fx Services’ automated tests
+
+1.17.0
+-----
+* Added support for Genesis Fx Services
+* Added support for Level 3 Travel Data
+* Improved and refactored automation tests
+* Fixed RapiPago transaction type
+
+1.16.0
+-----
+* Added support for Genesis KYC Services
+
+1.15.2
+-----
+* Added support for Preauthorizations
+
+1.15.1
+-----
+* Added transaction types
+    - Financial\OnlineBankingPayments\TrustPay
+* Improved config examples in README
+
+1.15.0
+-----
+* Added transaction types
+    - Financial\Cards\Bancontact
+    - Financial\OnlineBankingPayments\Eps
+    - Financial\OnlineBankingPayments\GiroPay
+    - Financial\OnlineBankingPayments\Ideal
+    - Financial\OnlineBankingPayments\MyBank
+    - Financial\Wallets\Qiwi
+
+1.14.1
+-----
+* Added Pay Later functionality for Web Payment Form
+
+1.14.0
+-----
+* Added support for Consumers API
+* Added support for Document ID Parameter
+* Updated OnlineBanking payment method
+    - Added payment_type field
+    - Fixed issue when the chosen currency is INR
+
+1.13.0
+-----
+* Added transaction types
+    - Astropay Card
+    - Bancomer
+    - Bradesco
+    - Itau
+    - Neosurf
+    - PSE (Pagos Seguros en Linea)
+    - Rapipago
+    - Safetypay
+    - Santander
+* Moved payment methods to Vouchers section
+    - CashU
+    - Paysafecard
+* Updated Trustly payment method's supported countries
+
+1.12.0
+-----
+* Added tokenization support for Web Payment Form
+* Rebranded Paysec to OnlineBanking
+* Added transaction types
+    - Argencard
+    - Astropay Direct
+    - Aura
+    - Baloto
+    - Banamex
+    - Banco de Occidente
+    - Boleto
+    - Cabal
+    - Carulla
+    - Cencosud
+    - Efecty
+    - Elo
+    - Empresse de Energia
+    - Hipercard
+    - Nativa
+    - Naranja
+    - OXXO
+    - Redpagos
+    - Pago Facil
+    - Surtimax
+    - Santander Cash
+    - Tarjeta Shopping
+
+1.11.0
+-----
+* Added transaction types
+    - BitPay
+    - Entercash
+    - Multibanco
+    - InstantTransfer
+    - PayU
+    - Banco do Brasil
+    - Zimpler
+* Deprecated transaction types
+    - Citadel
+* Extension of transaction parameters' validations
+
+1.10.3
+-----
+* Extended handling of API errors
+
+1.10.2
+-----
+* Refactored Klarna code to improve parameters structure
+* Added restriction to allow only supported countries for Klarna payment method
+* Added Lifetime parameter for Web Payment Form request
+* Improved error handling
+* SDK installation steps in readme have been extended
+
+1.10.1
+-----
+* Implemented additional features for Klarna payment method
+    - New request field
+    - New item types
+
+1.10.0
+-----
+* Rebranding
+
 1.9.3
 -----
 * Small fixes for Klarna Transaction Type

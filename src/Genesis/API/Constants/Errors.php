@@ -35,365 +35,440 @@ final class Errors
     /**
      * Successfully completed request
      */
-    const SUCCESS                           = 000;
+    const SUCCESS                                       = 000;
 
     /**
      * Undefined error
      */
-    const ERROR                             = 001;
+    const ERROR                                         = 001;
 
     /**
      * A general system error occurred
      */
-    const SYSTEM_ERROR                      = 100;
+    const SYSTEM_ERROR                                  = 100;
 
     /**
      * System is undergoing maintenance, request could not be handled
      */
-    const MAINTENANCE_ERROR                 = 101;
+    const MAINTENANCE_ERROR                             = 101;
 
     /**
      * Login failed. Check your API credentials.
      */
-    const AUTHENTICATION_ERROR              = 110;
+    const AUTHENTICATION_ERROR                          = 110;
 
     /**
      * Config error occurred, e.g. terminal not configured properly.
      *
      * Check terminal settings
      */
-    const CONFIGURATION_ERROR               = 120;
+    const CONFIGURATION_ERROR                           = 120;
 
     /**
      * Communication with issuer failed, please contact support.
      */
-    const COMMUNICATION_ERROR               = 200;
+    const COMMUNICATION_ERROR                           = 200;
 
     /**
      * Connection to issuer could not be established, please contact support
      */
-    const CONNECTION_ERROR                  = 210;
+    const CONNECTION_ERROR                              = 210;
 
     /**
      * Issuer account data invalid, please contact support
      */
-    const ACCOUNT_ERROR                     = 220;
+    const ACCOUNT_ERROR                                 = 220;
 
     /**
      * Issuer does not respond within given time-frame - please reconcile
      */
-    const TIMEOUT_ERROR                     = 230;
+    const TIMEOUT_ERROR                                 = 230;
 
     /**
      * Issuer returned invalid response - please reconcile and contact support
      */
-    const RESPONSE_ERROR                    = 240;
+    const RESPONSE_ERROR                                = 240;
 
     /**
      * Issuer response could not be parsed - please reconcile and contact support
      */
-    const PARSING_ERROR                     = 250;
+    const PARSING_ERROR                                 = 250;
 
     /**
      * Invalid were data sent to the API.
      */
-    const INPUT_DATA_ERROR                  = 300;
+    const INPUT_DATA_ERROR                              = 300;
 
     /**
      * Invalid transaction type was passed to API
      */
-    const INVALID_TRANSACTION_TYPE_ERROR    = 310;
+    const INVALID_TRANSACTION_TYPE_ERROR                = 310;
 
     /**
      * Required argument is missing
      */
-    const INPUT_DATA_MISSING_ERROR          = 320;
+    const INPUT_DATA_MISSING_ERROR                      = 320;
 
     /**
      * Argument passed in invalid format
      */
-    const INPUT_DATA_FORMAT_ERROR           = 330;
+    const INPUT_DATA_FORMAT_ERROR                       = 330;
 
     /**
      * This is a format error stopped by MasterCard due to invalid formatting in certain fields.
      */
-    const MASTERCARD_FORMAT_ERROR           = 331;
+    const MASTERCARD_FORMAT_ERROR                       = 331;
 
     /**
      * Argument passed in valid format but makes no sense (e.g. incorrect country code or currency)
      */
-    const INPUT_DATA_INVALID_ERROR          = 340;
+    const INPUT_DATA_INVALID_ERROR                      = 340;
 
     /**
      * The input Builder could not be parsed due to invalid code
      */
-    const INVALID_XML_ERROR                 = 350;
+    const INVALID_XML_ERROR                             = 350;
 
     /**
      * Invalid value for HTTP header - Content-Type
      */
-    const INVALID_CONTENT_TYPE_ERROR        = 360;
+    const INVALID_CONTENT_TYPE_ERROR                    = 360;
 
     /**
      * A transaction was triggered that is not possible at this time in the workflow,
      * e.g. a refund on a declined transaction.
      */
-    const WORKFLOW_ERROR                    = 400;
+    const WORKFLOW_ERROR                                = 400;
 
     /**
      * Reference transaction was not found.
      */
-    const REFERENCE_NOT_FOUND_ERROR         = 410;
+    const REFERENCE_NOT_FOUND_ERROR                     = 410;
 
     /**
      * Wrong Workflow specified
      */
-    const REFERENCE_WORKFLOW_ERROR          = 420;
+    const REFERENCE_WORKFLOW_ERROR                      = 420;
 
     /**
      * Reference transaction already invalidated
      */
-    const REFERENCE_INVALIDATED_ERROR       = 430;
+    const REFERENCE_INVALIDATED_ERROR                   = 430;
 
     /**
      * Data mismatch with reference, e.g. amount exceeds reference
      */
-    const REFERENCE_MISMATCH_ERROR          = 440;
+    const REFERENCE_MISMATCH_ERROR                      = 440;
 
     /**
      * Transaction doublet was detected, transaction was blocked
      */
-    const DOUBLE_TRANSACTION_ERROR          = 450;
+    const DOUBLE_TRANSACTION_ERROR                      = 450;
 
     /**
      * The referenced transaction could not be found
      */
-    const TRANSACTION_NOT_FOUND_ERROR       = 460;
+    const TRANSACTION_NOT_FOUND_ERROR                   = 460;
 
     /**
      * Chargeback not found!
      */
-    const CHARGEBACK_NOT_FOUND_ERROR        = 470;
+    const CHARGEBACK_NOT_FOUND_ERROR                    = 470;
 
     /**
      * Retrieval Request not found!
      */
-    const RETRIEVAL_REQUEST_NOT_FOUND_ERROR = 480;
+    const RETRIEVAL_REQUEST_NOT_FOUND_ERROR             = 480;
 
     /**
      * Fraud Report not found!
      */
-    const FRAUD_REPORT_NOT_FOUND_ERROR      = 490;
+    const FRAUD_REPORT_NOT_FOUND_ERROR                  = 490;
 
     /**
      * Transaction declined by issuer
      */
-    const PROCESSING_ERROR                  = 500;
+    const PROCESSING_ERROR                              = 500;
 
     /**
      * Transaction declined, Credit card number is invalid
      */
-    const INVALID_CARD_ERROR                = 510;
+    const INVALID_CARD_ERROR                            = 510;
 
     /**
      * OCT not enabled error.
      */
-    const ISSUER_OCT_NOT_ENABLED_ERROR      = 511;
+    const ISSUER_OCT_NOT_ENABLED_ERROR                  = 511;
 
     /**
      * Transaction declined, expiration date not in the future or date invalid
      */
-    const EXPIRED_CARD_ERROR                = 520;
+    const EXPIRED_CARD_ERROR                            = 520;
 
     /**
      * Transaction pending
      */
-    const TRANSACTION_PENDING_ERROR         = 530;
+    const TRANSACTION_PENDING_ERROR                     = 530;
 
     /**
      * Amount exceeds credit card limit
      */
-    const CREDIT_EXCEEDED_ERROR             = 540;
+    const CREDIT_EXCEEDED_ERROR                         = 540;
 
     /**
      * The voucher could not be issued!
      */
-    const ISSUING_ERROR                     = 550;
+    const ISSUING_ERROR                                 = 550;
 
     /**
      * Transaction declined by risk management
      */
-    const RISK_ERROR                       = 600;
+    const RISK_ERROR                                    = 600;
 
     /**
      * Interchange reject received for transaction!
      */
-    const INTERCHANGE_REJECT_ERROR         = 601;
+    const INTERCHANGE_REJECT_ERROR                      = 601;
 
     /**
      * Transaction declined by frontend reject!
      */
-    const FRONT_END_REJECT_ERROR           = 602;
+    const FRONT_END_REJECT_ERROR                        = 602;
 
     /**
      * Card bin does not match billing country
      */
-    const BIN_COUNTRY_CHECK_ERROR          = 609;
+    const BIN_COUNTRY_CHECK_ERROR                       = 609;
 
     /**
      * Card is blacklisted
      */
-    const CARD_BLACKLIST_ERROR             = 610;
+    const CARD_BLACKLIST_ERROR                          = 610;
 
     /**
      * BIN blacklisted
      */
-    const BIN_BLACKLIST_ERROR              = 611;
+    const BIN_BLACKLIST_ERROR                           = 611;
 
     /**
      * Country blacklisted
      */
-    const COUNTRY_BLACKLIST_ERROR          = 612;
+    const COUNTRY_BLACKLIST_ERROR                       = 612;
 
     /**
      * IP address blacklisted
      */
-    const IP_BLACKLIST_ERROR               = 613;
+    const IP_BLACKLIST_ERROR                            = 613;
 
     /**
      * Value from the Transaction Request or Risk Parameters is blacklisted
      */
-    const BLACKLIST_ERROR                  = 614;
+    const BLACKLIST_ERROR                               = 614;
 
     /**
      * PAN Whitelist Filter blocked the transaction
      */
-    const CARD_WHITELIST_ERROR             = 615;
+    const CARD_WHITELIST_ERROR                          = 615;
 
     /**
      * Card limit exceeded configured limits
      */
-    const CARD_LIMIT_EXCEEDED_ERROR        = 620;
+    const CARD_LIMIT_EXCEEDED_ERROR                     = 620;
 
     /**
      * Terminal limits exceeded.
      */
-    const TERMINAL_LIMIT_EXCEEDED_ERROR    = 621;
+    const TERMINAL_LIMIT_EXCEEDED_ERROR                 = 621;
 
     /**
      * MID limits exceeded
      */
-    const CONTRACT_LIMIT_EXCEEDED_ERROR    = 622;
+    const CONTRACT_LIMIT_EXCEEDED_ERROR                 = 622;
 
     /**
      * Velocity by unknown card exceeded
      */
-    const CARD_VELOCITY_EXCEEDED_ERROR     = 623;
+    const CARD_VELOCITY_EXCEEDED_ERROR                  = 623;
 
     /**
      * Ticket size by unknown card exceeded
      */
-    const CARD_TICKET_SIZE_EXCEEDED_ERROR  = 624;
+    const CARD_TICKET_SIZE_EXCEEDED_ERROR               = 624;
 
     /**
      * User limit exceeded configured limits
      */
-    const USER_LIMIT_EXCEEDED_ERROR        = 625;
+    const USER_LIMIT_EXCEEDED_ERROR                     = 625;
 
     /**
      * Found user transaction declined by issuer
      */
-    const MULTIPLE_FAILURE_DETECTION_ERROR = 626;
+    const MULTIPLE_FAILURE_DETECTION_ERROR              = 626;
 
     /**
      * CrossSelling Error!
      */
-    const CS_DETECTION_ERROR               = 627;
+    const CS_DETECTION_ERROR                            = 627;
 
     /**
      * Amount/count by recurring subscription exceeded
      */
-    const RECURRING_LIMIT_EXCEEDED_ERROR   = 628;
+    const RECURRING_LIMIT_EXCEEDED_ERROR                = 628;
 
     /**
      * Transaction declined by risk management.
      */
-    const IRIS_FILTER_DECLINED_ERROR       = 629;
+    const IRIS_FILTER_DECLINED_ERROR                    = 629;
 
     /**
      * Transaction on hold, a manual review will be done
      */
-    const IRIS_FILTER_ON_HOLD_ERROR        = 630;
+    const IRIS_FILTER_ON_HOLD_ERROR                     = 630;
 
     /**
      * Address Verification failed
      */
-    const AVS_ERROR                        = 690;
+    const AVS_ERROR                                     = 690;
 
     /**
      * MaxMind High Risk Error
      */
-    const MAX_MIND_RISK_ERROR              = 691;
+    const MAX_MIND_RISK_ERROR                           = 691;
 
     /**
      * ThreatMetrix High Risk Error
      */
-    const THREAT_METRIX_RISK_ERROR         = 692;
+    const THREAT_METRIX_RISK_ERROR                      = 692;
 
     /**
      * Transaction declined by risk management, IP is NOT whitelisted!
      */
-    const IP_NOT_WHITELISTED_ERROR         = 693;
+    const IP_NOT_WHITELISTED_ERROR                      = 693;
 
     /**
      * Transaction declined by risk management, domain is blacklisted!
      */
-    const DOMAIN_BLACKLISTED_ERROR         = 694;
+    const DOMAIN_BLACKLISTED_ERROR                      = 694;
 
     /**
      * Risk Error: Please contact the risk team!
      */
-    const FRAUD_ERROR                      = 695;
+    const FRAUD_ERROR                                   = 695;
 
     /**
      * Transaction declined by risk management, iban blacklisted!
      */
-    const IBAN_BLACKLIST_ERROR             = 696;
+    const IBAN_BLACKLIST_ERROR                          = 696;
+
+    /**
+     * Consumer with this consumer_id, email combination already exists!
+     */
+    const CONSUMER_UNIQUENESS_ERROR                     = 701;
+
+    /**
+     * Consumer not found!
+     */
+    const INVALID_CONSUMER_ERROR                        = 702;
+
+    /**
+     * Consumer is disabled!
+     */
+    const DISABLED_CONSUMER_ERROR                       = 703;
+
+    /**
+     * General tokenization error.
+     */
+    const TOKENIZATION_ERROR                            = 700;
+
+    /**
+     * Tokenization is not enabled for the merchant or the terminal! Contact support.
+     */
+    const TOKENIZATION_NOT_ENABLED_ERROR                = 710;
+
+    /**
+     * Unsupported token type!
+     */
+    const INVALID_TOKEN_TYPE_ERROR                      = 720;
+
+    /**
+     * Invalid token!
+     */
+    const INVALID_TOKEN_ERROR                           = 730;
+
+    /**
+     * Detokenize action is forbidden!
+     */
+    const DETOKENIZE_FORBIDDEN_ERROR                    = 740;
+
+    /**
+     * General KYC Service Error
+     */
+    const KYC_SERVICE_ERROR                             = 800;
+
+    /**
+     *  Uploaded document MIME type is not supported by KYC provider
+     */
+    const DOCUMENT_MIME_TYPE_UNSUPPORTED_ERROR          = 801;
+
+    /**
+     * Passed attributes are invalid!
+     */
+    const INVALID_REQUEST_ATTRIBUTES_ERROR              = 802;
+
+    /**
+     * KYC Services not configured for Merchant!
+     */
+    const KYC_SERVICE_NOT_CONFIGURED_ERROR              = 803;
+
+    /**
+     * KYC Service provider Error!
+     */
+    const KYC_SERVICE_PROVIDER_ERROR                    = 804;
+
+    /**
+     * Notification already received
+     */
+    const KYC_SERVICE_NOTIFICATION_ERROR                = 805;
+
+    /**
+     * Merchant state does not allow using KYC Service API!
+     */
+    const KYC_SERVICE_UNACCEPTABLE_MERCHANT_STATE_ERROR = 806;
 
     /**
      * Some error occurred on the issuer side
      */
-    const REMOTE_ERROR                      = 900;
+    const REMOTE_ERROR                                  = 900;
 
     /**
      * Some error occurred on the issuer side
      */
-    const REMOTE_SYSTEM_ERROR               = 910;
+    const REMOTE_SYSTEM_ERROR                           = 910;
 
     /**
      * Issuer configuration error
      */
-    const REMOTE_CONFIGURATION_ERROR        = 920;
+    const REMOTE_CONFIGURATION_ERROR                    = 920;
 
     /**
      * Some passed data caused an error on the issuer
      */
-    const REMOTE_DATA_ERROR                 = 930;
+    const REMOTE_DATA_ERROR                             = 930;
 
     /**
      * Remote workflow error
      */
-    const REMOTE_WORKFLOW_ERROR             = 940;
+    const REMOTE_WORKFLOW_ERROR                         = 940;
 
     /**
      * Issuer has time-out with clearing network
      */
-    const REMOTE_TIMEOUT_ERROR              = 950;
+    const REMOTE_TIMEOUT_ERROR                          = 950;
 
     /**
      * Issuer could not reach clearing network
      */
-    const REMOTE_CONNECTION_ERROR           = 960;
+    const REMOTE_CONNECTION_ERROR                       = 960;
 
     /**
      * Get Genesis Error Code
@@ -564,6 +639,36 @@ final class Errors
                 return 'Issuer has time-out with clearing network.';
             case self::REMOTE_CONNECTION_ERROR:
                 return 'Issuer could not reach clearing network.';
+            case self::CONSUMER_UNIQUENESS_ERROR:
+                return 'Consumer with this consumer_id, email combination already exists!';
+            case self::INVALID_CONSUMER_ERROR:
+                return 'Consumer not found!';
+            case self::DISABLED_CONSUMER_ERROR:
+                return 'Consumer is disabled!';
+            case self::TOKENIZATION_ERROR:
+                return 'General tokenization error.';
+            case self::TOKENIZATION_NOT_ENABLED_ERROR:
+                return 'Tokenization is not enabled for the merchant or the terminal! Contact support.';
+            case self::INVALID_TOKEN_TYPE_ERROR:
+                return 'Unsupported token type!';
+            case self::INVALID_TOKEN_ERROR:
+                return 'Invalid token!';
+            case self::DETOKENIZE_FORBIDDEN_ERROR:
+                return 'Detokenize action is forbidden!';
+            case self::KYC_SERVICE_ERROR:
+                return 'General KYC Service Error';
+            case self::DOCUMENT_MIME_TYPE_UNSUPPORTED_ERROR:
+                return 'Uploaded document MIME type is not supported by KYC provider';
+            case self::INVALID_REQUEST_ATTRIBUTES_ERROR:
+                return 'Passed attributes are invalid!';
+            case self::KYC_SERVICE_NOT_CONFIGURED_ERROR:
+                return 'KYC Services not configured for Merchant!';
+            case self::KYC_SERVICE_PROVIDER_ERROR:
+                return 'KYC Service provider Error!';
+            case self::KYC_SERVICE_NOTIFICATION_ERROR:
+                return 'Notification already received';
+            case self::KYC_SERVICE_UNACCEPTABLE_MERCHANT_STATE_ERROR:
+                return 'Merchant state does not allow using KYC Service API!';
         }
     }
 
@@ -587,6 +692,7 @@ final class Errors
             case '03':
                 return 'Invalid merchant';
             case '04':
+                return 'Pick-up card';
             case '05':
                 return 'Do not honour';
             case '06':

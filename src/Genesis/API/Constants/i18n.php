@@ -22,10 +22,12 @@
  */
 namespace Genesis\API\Constants;
 
+use Genesis\Utils\Common;
+
 /**
  * Class i18n
  *
- * Get internationalisation (i18n) codes
+ * Get internationalisation (i18n) codes in ISO-639-1
  *
  * @package Genesis\API\Constants
  */
@@ -34,84 +36,114 @@ class i18n
 // @codingStandardsIgnoreEnd
 {
     /**
-     * Arabic locale and language
+     * Arabic
      */
-    const AR = 'Arabic';
+    const AR = 'ar';
 
     /**
-     * Bulgarian locale and language
+     * Bulgarian
      */
-    const BG = 'Bulgarian';
+    const BG = 'bg';
 
     /**
-     * German locale and language
+     * German
      */
-    const DE = 'German';
+    const DE = 'de';
 
     /**
-     * English locale and language settings (this is the default)
+     * English
      */
-    const EN = 'English';
+    const EN = 'en';
 
     /**
-     * Spanish locale and language settings
+     * Spanish
      */
-    const ES = 'Spanish';
+    const ES = 'es';
 
     /**
-     * French locale and language settings
+     * French
      */
-    const FR = 'French';
+    const FR = 'fr';
 
     /**
-     * Hindu locale and language
+     * Hindu
      */
-    const HI = 'Hindu';
+    const HI = 'hi';
 
     /**
-     * Japanese locale and language
+     * Japanese
      */
-    const JA = 'Japanese';
+    const JA = 'ja';
 
     /**
-     * Icelandic locale and language
+     * Icelandic
      */
-    const IS = 'Icelandic';
+    const IS = 'is';
 
     /**
-     * Italian locale and language settings
+     * Italian
      */
-    const IT = 'Italian';
+    const IT = 'it';
 
     /**
-     * Dutch locale and language
+     * Dutch
      */
-    const NL = 'Dutch';
+    const NL = 'nl';
 
     /**
-     * Portuguese locale and language
+     * Portuguese
      */
-    const PT = 'Portuguese';
+    const PT = 'pt';
 
     /**
-     * Polish locale and language
+     * Polish
      */
-    const PL = 'Polish';
+    const PL = 'pl';
 
     /**
-     * Russian locale and language
+     * Russian
      */
-    const RU = 'Russian';
+    const RU = 'ru';
 
     /**
-     * Turkish locale and language
+     * Turkish
      */
-    const TR = 'Turkish';
+    const TR = 'tr';
 
     /**
-     * Mandarin Chinese locale and language
+     * Mandarin Chinese
      */
-    const ZH = 'Chinese (Mandarin)';
+    const ZH = 'zh';
+
+    /**
+     * Indonesian
+     */
+    const ID = 'id';
+
+    /**
+     * Malay
+     */
+    const MS = 'ms';
+
+    /**
+     * Thai
+     */
+    const TH = 'th';
+
+    /**
+     * Czech
+     */
+    const CS = 'cs';
+
+    /**
+     * Croatian
+     */
+    const HR = 'hr';
+
+    /**
+     * Slovenian
+     */
+    const SL = 'sl';
 
     /**
      * Check if a language code is supported
@@ -126,5 +158,15 @@ class i18n
         }
 
         return false;
+    }
+
+    /**
+     * Retrieve all languages
+     *
+     * @return array
+     */
+    public static function getAll()
+    {
+        return Common::getClassConstants(__CLASS__);
     }
 }

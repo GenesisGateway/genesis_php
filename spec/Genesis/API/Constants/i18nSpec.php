@@ -17,7 +17,8 @@ class i18nSpec extends ObjectBehavior
     public function it_should_have_support_for_all_checkout_language()
     {
         $languages = array(
-            'en', 'it', 'es', 'fr', 'fr', 'de', 'ja', 'zh', 'ar', 'pt', 'tr', 'ru', 'hi', 'bg'
+            'en', 'it', 'es', 'fr', 'fr', 'de', 'ja', 'zh', 'ar', 'pt',
+            'tr', 'ru', 'hi', 'bg', 'id', 'ms', 'th', 'cs', 'hr', 'sl'
         );
 
         foreach ($languages as $iso_code) {
@@ -50,5 +51,10 @@ class i18nSpec extends ObjectBehavior
         $this::isValidLanguageCode("\x00")->shouldBe(false);
 
         $this::isValidLanguageCode(' ')->shouldBe(false);
+    }
+
+    public function it_should_be_getall_array()
+    {
+        $this::getAll()->shouldBeArray();
     }
 }

@@ -184,6 +184,20 @@ class CreateSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_should_not_fail_when_valid_reminder_language()
+    {
+        $this->setRequestParameters();
+        foreach($this->getLanguages() as $value) {
+            $this->shouldNotThrow()->duringSetReminderLanguage($value);
+        }
+    }
+
+    public function it_should_fail_when_invalid_reminder_language()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->duringSetReminderLanguage('qqqqq');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -244,5 +258,12 @@ class CreateSpec extends ObjectBehavior
                 return (stripos($haystack, $needle) !== false);
             }
         );
+    }
+
+    private function getLanguages()
+    {
+        return [
+            'en', 'it', 'es', 'fr', 'de', 'ja', 'zh', 'ar', 'pt', 'tr', 'ru', 'hi', 'bg'
+        ];
     }
 }

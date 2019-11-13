@@ -416,4 +416,15 @@ final class Common
     {
         return stripos($str, $suffix) === strlen($str) - strlen($suffix);
     }
+
+    /**
+     * Filter language input value
+     *
+     * @param $language
+     * @return string
+     */
+    public static function filterLanguageCode($language)
+    {
+        return (string) substr(strtolower($language), 0, 2);
+    }
 }

@@ -20,21 +20,35 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Exceptions;
+
+namespace Genesis\API\Constants\Transaction\Parameters;
 
 /**
- * Class InvalidArgument
+ * Class MpiProtocolVersions
  *
- * @package Genesis\Exceptions
+ * Constants for 3DS MPI parameters Transaction
+ *
+ * @package Genesis\API\Constants\Transaction\Parameters
  */
-class InvalidArgument extends Exception
+class MpiProtocolVersions
 {
     /**
-     * @return string
+     * 3DSv1, Type of Protocol Version - 1
      */
-    protected function getCustomMessage()
+    const PROTOCOL_VERSION_1 = '1';
+
+    /**
+     * 3DSv2, Type of Protocol Version - 2
+     */
+    const PROTOCOL_VERSION_2 = '2';
+
+    /**
+     * Get protocol versions array
+     *
+     * @return array
+     */
+    public static function getAll()
     {
-        return ($this->getMessage()) ?
-            $this->getMessage() : 'The supplied argument is invalid for this method!';
+        return [self::PROTOCOL_VERSION_1, self::PROTOCOL_VERSION_2];
     }
 }

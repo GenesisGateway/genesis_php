@@ -23,6 +23,9 @@
 
 namespace Genesis\API\Traits\Request\Financial;
 
+use Genesis\Exceptions\ErrorParameter;
+use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
+
 /**
  * Trait MpiAttributes
  * @package Genesis\API\Traits\Request\Financial
@@ -30,6 +33,7 @@ namespace Genesis\API\Traits\Request\Financial;
  * @method $this setMpiCavv($value) Set the Verification Id of the authentication.
  * @method $this setMpiEci($value) Set Electric Commerce Indicator as returned from the MPI.
  * @method $this setMpiXid($value) Set Transaction ID that uniquely identifies a 3D Secure check request
+ * @method $this setMpiDirectoryServerId($value) Set the directory server ID used during 3DS authentication
  */
 trait MpiAttributes
 {
@@ -58,16 +62,101 @@ trait MpiAttributes
     protected $mpi_xid;
 
     /**
+     * The used 3DS protocol version. Default is 1 if not supplied.
+     *
+     * @var string
+     */
+    protected $mpi_protocol_version;
+
+    /**
+     * The directory server ID used during 3DS authentication.
+     *
+     * @var string
+     */
+    protected $mpi_directory_server_id;
+
+    /**
+     * Validate Protocol Version
+     *
+     * @param $value
+     * @return MpiAttributes
+     * @throws ErrorParameter
+     */
+    public function setMpiProtocolVersion($value)
+    {
+        $protocolVersions = MpiProtocolVersions::getAll();
+
+        if (!in_array($value, $protocolVersions)) {
+            throw new ErrorParameter(
+                sprintf(
+                    'Protocol version (%s) is not valid. Valid Protocol versions are: %s ',
+                    $value,
+                    implode(', ', $protocolVersions)
+                )
+            );
+        }
+
+        $this->mpi_protocol_version = (string)$value;
+
+        return $this;
+    }
+
+    /**
      * Builds an array list with all Params
      *
      * @return array
      */
     protected function getMpiParamsStructure()
     {
+        return $this->is3DSv2() ?
+            $this->get3DSv2ParamsStructure() : $this->get3DSv1ParamsStructure();
+    }
+
+    /**
+     * Check which protocol version is used.
+     *
+     * @return bool
+     */
+    protected function is3DSv2()
+    {
+        return $this->mpi_protocol_version === MpiProtocolVersions::PROTOCOL_VERSION_2;
+    }
+
+    /**
+     * Get 3DSv1 parameters structure
+     *
+     * @return array
+     */
+    protected function get3DSv1ParamsStructure()
+    {
         return [
             'cavv' => $this->mpi_cavv,
             'eci'  => $this->mpi_eci,
-            'xid'  => $this->mpi_xid,
+            'xid'  => $this->mpi_xid
+        ];
+    }
+
+    /**
+     * Get 3DSv2 parameters structure
+     *
+     * @return array
+     */
+    protected function get3DSv2ParamsStructure()
+    {
+        return [
+            'cavv'                => $this->mpi_cavv,
+            'eci'                 => $this->mpi_eci,
+            'protocol_version'    => $this->mpi_protocol_version,
+            'directory_server_id' => $this->mpi_directory_server_id
+        ];
+    }
+
+    protected function requiredMpiFieldsConditional()
+    {
+        return [
+            'mpi_protocol_version' => [
+                MpiProtocolVersions::PROTOCOL_VERSION_2 => ['mpi_directory_server_id']
+            ]
         ];
     }
 }

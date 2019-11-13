@@ -29,7 +29,7 @@ class ErrorsSpec extends ObjectBehavior
 
     public function it_should_return_correct_issuer_code()
     {
-        $this::getIssuerResponseCode(04)->shouldBe('Do not honour');
+        $this::getIssuerResponseCode(04)->shouldBe('Pick-up card');
         $this::getIssuerResponseCode(05)->shouldBe('Do not honour');
     }
 }

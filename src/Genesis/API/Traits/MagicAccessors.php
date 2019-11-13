@@ -56,7 +56,7 @@ trait MagicAccessors
                 break;
             case 'set':
                 if (property_exists($this, $target)) {
-                    $this->$target = trim(reset($args));
+                    $this->$target = reset($args);
                     return $this;
                 }
                 break;
