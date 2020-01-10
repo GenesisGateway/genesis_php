@@ -101,4 +101,49 @@ class RefundSpec extends ObjectBehavior
         $this->setRemoteIp($faker->ipv4);
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
     }
+
+    public function it_should_not_fail_with_beneficiary_attributes()
+    {
+        $this->setRequestParameters();
+        $this->setBeneficiaryAttributes();
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_return_the_proper_beneficiary_name_attribute_value()
+    {
+        $this->setBeneficiaryName('name');
+
+        $this->getBeneficiaryName()->shouldReturn('name');
+    }
+
+    public function it_should_return_the_proper_beneficiary_bank_code_attribute_value()
+    {
+        $this->setBeneficiaryBankCode('bank_code');
+
+        $this->getBeneficiaryBankCode()->shouldReturn('bank_code');
+    }
+
+    public function it_should_return_the_proper_beneficiary_account_number_attribute_value()
+    {
+        $this->setBeneficiaryAccountNumber('account_number');
+
+        $this->getBeneficiaryAccountNumber()->shouldReturn('account_number');
+    }
+
+    public function it_should_not_fail_when_currency_MYR_with_beneficiary_attributes()
+    {
+        $this->setRequestParameters();
+        $this->setCurrency('MYR');
+        $this->setBeneficiaryAttributes();
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    private function setBeneficiaryAttributes()
+    {
+        $this->setBeneficiaryAccountNumber('beneficiary_account_number');
+        $this->setBeneficiaryBankCode('beneficiary_bank_code');
+        $this->setBeneficiaryName('beneficiary_name');
+    }
 }

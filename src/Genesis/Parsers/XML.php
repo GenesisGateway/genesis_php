@@ -22,6 +22,8 @@
  */
 namespace Genesis\Parsers;
 
+use Genesis\Parser;
+
 /**
  * Class XML
  *
@@ -82,25 +84,34 @@ final class XML implements \Genesis\Interfaces\Parser
      */
     public function parseDocument($xmlDocument)
     {
+        $hasAttributes = false;
+
         $reader = new \XMLReader();
         $reader->open('data:text/plain;base64,' . base64_encode($xmlDocument));
 
         if ($this->skipRootNode) {
-            $reader->read();
+            if ($reader->read() && $reader->hasAttributes) {
+                $hasAttributes = true;
+            }
         }
 
-        $this->stdClassObj = self::readerLoop($reader);
+        $this->stdClassObj = self::readerLoop($reader, $hasAttributes);
     }
 
     /**
      * Read through the entire document
      *
      * @param \XMLReader $reader
+     * @param bool $processRootAttributes
      * @return mixed
      */
-    public function readerLoop($reader)
+    public function readerLoop($reader, $processRootAttributes = false)
     {
         $tree = new \stdClass();
+
+        if ($processRootAttributes === true) {
+            $this->processNodeAttributes($reader, $tree);
+        }
 
         while ($reader->read()) {
             switch ($reader->nodeType) {
@@ -172,7 +183,7 @@ final class XML implements \Genesis\Interfaces\Parser
         $node->attr = new \stdClass();
 
         while ($reader->moveToNextAttribute()) {
-            $node->attr->$name = $reader->value;
+            $node->attr->{$reader->name} = $reader->value;
         }
 
         if (isset($tree->$name) && is_a($tree->$name, 'ArrayObject')) {
@@ -185,5 +196,23 @@ final class XML implements \Genesis\Interfaces\Parser
 
             $tree->$name = $node;
         }
+    }
+
+    /**
+     * Process Attributes of node and add them
+     * Attributes are added under Parser::SUMMARY_TREE_NODE
+     *
+     * @param \XMLReader $reader
+     * @param \stdClass $tree
+     */
+    public function processNodeAttributes(&$reader, &$tree)
+    {
+        $node = new \stdClass();
+
+        while ($reader->moveToNextAttribute()) {
+            $node->{$reader->name} = $reader->value;
+        }
+
+        $tree->{Parser::SUMMARY_TREE_NODE} = $node;
     }
 }

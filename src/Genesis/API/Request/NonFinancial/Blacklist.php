@@ -53,7 +53,7 @@ class Blacklist extends \Genesis\API\Request
     {
         $this->initXmlConfiguration();
 
-        $this->initApiGatewayConfiguration('blacklists');
+        $this->initApiGatewayConfiguration('blacklists', false);
     }
 
     /**

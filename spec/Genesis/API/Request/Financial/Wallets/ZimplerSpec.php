@@ -2,6 +2,8 @@
 
 namespace spec\Genesis\API\Request\Financial\Wallets;
 
+use Faker\Factory;
+use Faker\Generator;
 use Genesis\API\Request\Financial\Wallets\Zimpler;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
@@ -67,18 +69,47 @@ class ZimplerSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_fail_when_customer_phone_is_not_set()
+    {
+        $this->setRequestParameters();
+        $this->setCustomerPhone(null);
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
 
+        $this->setRequestBaseParameters($faker);
+        $this->setRequestCurrencyParameters($faker);
+        $this->setRequestCustomerParameters($faker);
+        $this->setRequestReturnUrlParameters($faker);
+
+        $this->setBillingCountry('FI');
+    }
+
+    protected function setRequestBaseParameters(Generator $faker)
+    {
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis Automated PHP Request');
+    }
+
+    protected function setRequestCurrencyParameters(Generator $faker)
+    {
         $this->setCurrency('EUR');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+    }
+
+    protected function setRequestCustomerParameters(Generator $faker)
+    {
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
+    }
+
+    protected function setRequestReturnUrlParameters(Generator $faker)
+    {
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
-        $this->setBillingCountry('FI');
     }
 }

@@ -22,6 +22,7 @@
  */
 namespace Genesis\API\Request\NonFinancial\Fx;
 
+use Genesis\API\Request;
 use Genesis\API\Request\Base\NonFinancial\Fx\BaseRequest;
 use Genesis\Builder;
 use Genesis\Utils\Common;
@@ -114,9 +115,9 @@ class GetRate extends BaseRequest
     {
         $this->config = Common::createArrayObject(
             [
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'GET',
+                'protocol' => Request::PROTOCOL_HTTPS,
+                'port'     => Request::PORT_HTTPS,
+                'type'     => Request::METHOD_GET,
                 'format'   => Builder::JSON
             ]
         );

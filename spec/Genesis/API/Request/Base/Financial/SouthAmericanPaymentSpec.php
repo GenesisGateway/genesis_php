@@ -18,10 +18,15 @@ class SouthAmericanPaymentSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
+            'transaction_id',
             'return_success_url',
             'return_failure_url',
             'amount',
-            'currency'
+            'currency',
+            'consumer_reference',
+            'national_id',
+            'customer_email',
+            'billing_country'
         ]);
     }
 

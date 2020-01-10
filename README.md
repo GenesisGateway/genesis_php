@@ -185,12 +185,15 @@ Financial\Alternatives\P24
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
 Financial\Alternatives\Sofort
+Financial\Alternatives\Klarna\Authorize
+Financial\Alternatives\Klarna\Capture
+Financial\Alternatives\Klarna\Refund
+Financial\Alternatives\TransferTo\Payout
 Financial\Alternatives\Trustly\Sale
 Financial\Alternatives\Trustly\Withdrawal
 Financial\Alternatives\PaypalExpress
 
 // PayByVouchers transactions
-Financial\PayByVouchers\oBeP
 Financial\PayByVouchers\Sale
 
 // Credit Cards transactions
@@ -203,6 +206,7 @@ Financial\Cards\Cabal
 Financial\Cards\Cencosud
 Financial\Cards\Credit
 Financial\Cards\Elo
+Financial\Cards\EzeeCardPayout
 Financial\Cards\Hipercard
 Financial\Cards\Naranja
 Financial\Cards\Nativa
@@ -216,7 +220,6 @@ Financial\Cards\Recurring\RecurringSale
 
 // Cash Payments transactions
 Financial\CashPayments\Baloto
-Financial\CashPayments\Banamex
 Financial\CashPayments\BancoDeOccidente
 Financial\CashPayments\Boleto
 Financial\CashPayments\Carulla
@@ -247,10 +250,11 @@ Financial\SDD\Recurring\RecurringSale
 
 //Online Banking Payments
 Financial\OnlineBankingPayments\Alipay
+Financial\OnlineBankingPayments\AstropayDirect
 Financial\OnlineBankingPayments\BancoDoBrasil
 Financial\OnlineBankingPayments\Bancomer
 Financial\OnlineBankingPayments\Bradesco
-Financial\OnlineBankingPayments\Entercash
+Financial\OnlineBankingPayments\Davivienda
 Financial\OnlineBankingPayments\Eps
 Financial\OnlineBankingPayments\GiroPay
 Financial\OnlineBankingPayments\Ideal
@@ -262,6 +266,8 @@ Financial\OnlineBankingPayments\InstantTransfer
 Financial\OnlineBankingPayments\Itau
 Financial\OnlineBankingPayments\Multibanco
 Financial\OnlineBankingPayments\MyBank
+Financial\OnlineBankingPayments\OnlineBanking\Payin
+Financial\OnlineBankingPayments\OnlineBanking\Payout
 Financial\OnlineBankingPayments\PaySec\Payin
 Financial\OnlineBankingPayments\PaySec\Payout
 Financial\OnlineBankingPayments\PayU
@@ -270,6 +276,7 @@ Financial\OnlineBankingPayments\RapiPago
 Financial\OnlineBankingPayments\SafetyPay
 Financial\OnlineBankingPayments\Santander
 Financial\OnlineBankingPayments\TrustPay
+Financial\OnlineBankingPayments\Webpay
 Financial\OnlineBankingPayments\WeChat
 
 Financial\Preauthorization\IncrementalAuthorize
@@ -334,6 +341,12 @@ NonFinancial\Reconcile\Transaction
 
 // Get ABN iDEAL supported banks
 NonFinancial\Retrieve\AbniDealBanks
+
+// SCA Checker API
+NonFinancial\Sca\Checker
+
+// TransferTo Payers API
+NonFinancial\Alternatives\TransferTo\Payers
 
 // Web Payment Form (Checkout) requests
 WPF\Create

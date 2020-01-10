@@ -46,6 +46,6 @@ class Santander extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
      */
     public function getAllowedBillingCountries()
     {
-        return ['AR', 'BR'];
+        return ['AR', 'BR', 'MX'];
     }
 }

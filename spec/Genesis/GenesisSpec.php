@@ -106,6 +106,55 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
     }
 
+    public function it_fails_on_deprecated_inpay_request()
+    {
+        $this->beConstructedWith('Financial\Alternatives\INPay');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_abnideal_request()
+    {
+        $this->beConstructedWith('Financial\Alternatives\ABNiDEAL');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_entercash_request()
+    {
+        $this->beConstructedWith('Financial\OnlineBanking\Entercash');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_banamex_request()
+    {
+        $this->beConstructedWith('Financial\CashPayments\Banamex');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_citadel_payin_request()
+    {
+        $this->beConstructedWith('Financial\OnlineBankingPayments\Citadel\Payin');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_citadel_payout_request()
+    {
+        $this->beConstructedWith('Financial\OnlinebankingPayments\Citadel\Payout');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecatd_pay_by_vouchers_obep_request()
+    {
+        $this->beConstructedWith('Financial\PayByVouchers\oBeP');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
     public function it_fails_on_non_existing_transaction_request()
     {
         $this->beConstructedWith('Non\Existing\Transaction');

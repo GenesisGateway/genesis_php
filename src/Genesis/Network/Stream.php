@@ -129,9 +129,9 @@ class Stream extends Base
 
         $this->responseBody = stream_get_contents($stream);
 
-        $this->responseHeaders = $http_response_header;
+        $this->responseHeaders = implode("\r\n", $http_response_header);
 
-        $this->response = implode("\r\n", $http_response_header) . "\r\n\r\n" . $this->responseBody;
+        $this->response = $this->responseHeaders . "\r\n\r\n" . $this->responseBody;
 
         restore_error_handler();
     }

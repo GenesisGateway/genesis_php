@@ -61,7 +61,8 @@ class Zimpler extends \Genesis\API\Request\Base\Financial
             'amount',
             'currency',
             'customer_email',
-            'billing_country'
+            'billing_country',
+            'customer_phone'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

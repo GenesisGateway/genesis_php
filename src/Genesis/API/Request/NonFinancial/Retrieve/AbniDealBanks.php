@@ -22,6 +22,8 @@
  */
 namespace Genesis\API\Request\NonFinancial\Retrieve;
 
+use Genesis\API\Request;
+
 /**
  * Class AbniDealBanks
  *
@@ -40,9 +42,9 @@ class AbniDealBanks extends \Genesis\API\Request
     {
         $this->config = \Genesis\Utils\Common::createArrayObject(
             [
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'GET',
+                'protocol' => Request::PROTOCOL_HTTPS,
+                'port'     => Request::PORT_HTTPS,
+                'type'     => Request::METHOD_GET,
                 'format'   => 'plain'
             ]
         );

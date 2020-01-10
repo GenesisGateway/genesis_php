@@ -20,7 +20,11 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\API\Request\Financial\Cards;
+
+use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Credit
@@ -31,6 +35,8 @@ namespace Genesis\API\Request\Financial\Cards;
  */
 class Credit extends \Genesis\API\Request\Base\Financial\Reference
 {
+    use RestrictedSetter, SourceOfFundsAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -38,5 +44,18 @@ class Credit extends \Genesis\API\Request\Base\Financial\Reference
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::CREDIT;
+    }
+
+    /**
+     * Return additional request attributes
+     *
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            $this->getSourceOfFundsStructure()
+        );
     }
 }

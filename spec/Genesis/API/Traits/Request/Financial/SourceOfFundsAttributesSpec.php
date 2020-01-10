@@ -1,0 +1,49 @@
+<?php
+
+namespace spec\Genesis\API\Traits\Request\Financial;
+
+use Genesis\API\Constants\Transaction\Parameters\SourceOfFunds;
+use Genesis\Exceptions\InvalidArgument;
+use spec\Genesis\API\Stubs\Traits\Request\Financial\SourceOfFundsStub;
+use PhpSpec\ObjectBehavior;
+
+class SourceOfFundsAttributesSpec extends ObjectBehavior
+{
+    public function let()
+    {
+        $this->beAnInstanceOf(SourceOfFundsStub::class);
+    }
+
+    public function it_should_be_array_get_source_of_funds_structure()
+    {
+        $this->returnSourceOfFundsStructure()->shouldBeArray();
+    }
+
+    public function it_should_contain_source_of_funds_parameter()
+    {
+        $this->returnSourceOfFundsStructure()->shouldHaveKey('source_of_funds');
+    }
+
+    public function it_should_fail_with_invalid_source_of_funds_paramater()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setSourceOfFunds', ['ttttt']);
+    }
+
+    public function it_should_not_fail_with_valid_source_of_funds_parameter()
+    {
+        $this->shouldNotThrow(InvalidArgument::class)->duringSetSourceOfFunds(
+            $this->getRandomSourceOfFundsParameter()
+        );
+    }
+
+    /*
+     * Helper methods
+     */
+
+    protected function getRandomSourceOfFundsParameter()
+    {
+        $sourceOfFunds = SourceOfFunds::getAll();
+
+        return $sourceOfFunds[array_rand($sourceOfFunds)];
+    }
+}

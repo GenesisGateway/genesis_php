@@ -634,6 +634,29 @@ class Types
     const PARTIAL_REVERSAL = 'partial_reversal';
 
     /**
+     * eZeeCard Payout is a sync based payout method.
+     * It's merchant initiated and can only reference specific transaction types
+     */
+    const EZEECARD_PAYOUT = 'ezeecard_payout';
+
+    /**
+     * TransferTo Payout is an APM which provides 3 different payment services:
+     * BankAccount, MobileWallet and CashPickup. Merchant sends money to a consumer.
+     */
+    const TRANSFER_TO_PAYOUT = 'transfer_to_payout';
+
+    /**
+     * Davivienda is offering the Bill pay service which is a fast, easy and secure way to pay and manage
+     * your bills online to anyone, anytime in Colombia.
+     */
+    const DAVIVIENDA = 'davivienda';
+
+    /**
+     * Webpay is a Chilean real-time bank transfer method.
+     */
+    const WEBPAY = 'webpay';
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -664,6 +687,7 @@ class Types
             self::CENCOSUD                => 'Cards\Cencosud',
             self::CREDIT                  => 'Cards\Credit',
             self::ELO                     => 'Cards\Elo',
+            self::EZEECARD_PAYOUT         => 'Cards\EzeeCardPayout',
             self::HIPERCARD               => 'Cards\Hipercard',
             self::NARANJA                 => 'Cards\Naranja',
             self::NATIVA                  => 'Cards\Nativa',
@@ -696,6 +720,7 @@ class Types
             self::BRADESCO                => 'OnlineBankingPayments\Bradesco',
             self::CITADEL_PAYIN           => 'OnlineBankingPayments\Citadel\Payin',
             self::CITADEL_PAYOUT          => 'OnlineBankingPayments\Citadel\Payout',
+            self::DAVIVIENDA              => 'OnlineBankingPayments\Davivienda',
             self::ENTERCASH               => 'OnlineBankingPayments\Entercash',
             self::EPS                     => 'OnlineBankingPayments\Eps',
             self::GIROPAY                 => 'OnlineBankingPayments\Giropay',
@@ -716,6 +741,7 @@ class Types
             self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
             self::SANTANDER               => 'OnlineBankingPayments\Santander',
             self::TRUSTPAY                => 'OnlineBankingPayments\TrustPay',
+            self::WEBPAY                  => 'OnlineBankingPayments\Webpay',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
@@ -733,7 +759,7 @@ class Types
             self::NETELLER                => 'Wallets\Neteller',
             self::QIWI                    => 'Wallets\Qiwi',
             self::WEBMONEY                => 'Wallets\WebMoney',
-            self::ZIMPLER                 => 'Wallets\Zimpler',
+            self::ZIMPLER                 => 'Wallets\Zimpler'
         ];
 
         return isset($map[$type]) ? 'Financial\\' . $map[$type] : false;
@@ -931,6 +957,7 @@ class Types
         $transactionTypesList = [
             self::CAPTURE,
             self::CASHU,
+            self::DAVIVIENDA,
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
             self::INPAY,
@@ -955,7 +982,8 @@ class Types
             self::QIWI,
             self::IDEAL,
             self::EPS,
-            self::GIROPAY
+            self::GIROPAY,
+            self::WEBPAY
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

@@ -68,6 +68,12 @@ class Create extends \Genesis\API\Request
     const MAX_ALLOWED_REMINDER_DAYS    = 31;
 
     /**
+     * Default Lifetime in minutes
+     * Used when lifetime is not set
+     */
+    const DEFAULT_LIFETIME             = 30;
+
+    /**
      * unique transaction id defined by merchant
      *
      * @var string
@@ -119,7 +125,7 @@ class Create extends \Genesis\API\Request
      *
      * @var int
      */
-    protected $lifetime;
+    protected $lifetime = self::DEFAULT_LIFETIME;
 
     /**
      * Signifies whether the ’Pay Later’ feature would be enabled on the WPF
@@ -544,6 +550,13 @@ class Create extends \Genesis\API\Request
         $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
+    protected function checkRequirements()
+    {
+        parent::checkRequirements();
+
+        $this->validateReminders();
+    }
+
     /**
      * Create the request's Tree structure
      *
@@ -585,5 +598,31 @@ class Create extends \Genesis\API\Request
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
+    }
+
+    /**
+     * Validates Reminders
+     *
+     * @throws ErrorParameter
+     */
+    protected function validateReminders()
+    {
+        $reminders = $this->getRemindersStructure();
+
+        if (empty($reminders)) {
+            return;
+        }
+
+        foreach ($reminders as $value) {
+            if ($value['reminder']['after'] >= $this->lifetime) {
+                throw new ErrorParameter(
+                    sprintf(
+                        'Reminder (%dmin) could not be greater than or equal to lifetime (%dmin).',
+                        $value['reminder']['after'],
+                        $this->lifetime
+                    )
+                );
+            }
+        }
     }
 }

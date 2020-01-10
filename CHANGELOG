@@ -1,3 +1,49 @@
+1.18.0
+-----
+**Features:**
+
+* Added support for reminder_language parameter in Web Payment Form request
+* Added additional supported parameters for Chargeback request:
+    - import_date
+    - per_page
+    - externally_processed
+* Added support for SCA Checker API
+* Added FX support for following transaction types:
+    - Authorize
+    - Authorize3D
+    - Payout
+    - InitRecurringSale
+    - InitRecurringSale3D
+    - Sale
+    - Sale3D
+* Added additional supported parameters for Refund request:
+    - beneficiary_bank_code
+    - beneficiary_name
+    - beneficiary_account_number
+* Added additional supported parameter source_of_funds for Credit and Payout transaction types
+* Added support for TransferTo API. Providing ability to retrieve an up-to-date list of TransferTo Payers
+* Added new validation in Web Payment Form Request based on lifetime and reminder value.
+* Added support of new transaction type TransferTo Payout
+* Added support of new transactions type:
+    - Davivienda
+    - eZeeCard payout
+    - TransferTo Payout
+    - Webpay
+* Deprecated Entercash and Banamex transaction types
+* Added additional Dynamic Descriptor attribute - sub_merchant_id
+* Updated Santader transaction type with additional Country support - Mexico
+
+**Fixes:**
+
+* Fixed the customer_phone parameter, it is now REQUIRED for Zimpler transaction type
+* Fixed Response with adding summary node in the response structure. Affected API Calls:
+    - Chargeback by Date Rage
+    - Retrieval by Date Range
+    - Processed Transaction by Date Range
+    - Reconcile by Date Range
+* Fixed Stream Network Interface for proper handling JSON responses
+* Removed the unnecessary terminal token from the endpoint URL of the Blacklist request
+
 1.17.2
 -----
 * Added additional MPI params for the synchronous 3D transaction types (Authorize3D, Sale3D & InitRecurringSale3D)

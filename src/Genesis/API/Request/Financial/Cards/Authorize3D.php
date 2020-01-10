@@ -26,6 +26,7 @@ namespace Genesis\API\Request\Financial\Cards;
 use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
 use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Traits\Request\DocumentAttributes;
+use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\API\Traits\Request\Financial\ScaAttributes;
@@ -52,7 +53,7 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
         PaymentAttributes, CreditCardAttributes, AddressInfoAttributes,
         MpiAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
-        PreauthorizationAttributes, TravelDataAttributes, ScaAttributes;
+        PreauthorizationAttributes, TravelDataAttributes, ScaAttributes, FxRateAttributes;
 
     /**
      * Returns the Request transaction type
@@ -141,7 +142,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial
             'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'travel'                    => $this->getTravelData(),
-            'sca_params'                => $this->getScaParamsStructure()
+            'sca_params'                => $this->getScaParamsStructure(),
+            'fx_rate_id'                => $this->fx_rate_id
         ];
     }
 }

@@ -42,6 +42,13 @@ abstract class Request
 {
     use MagicAccessors;
 
+    const PROTOCOL_HTTPS = 'https';
+    const PORT_HTTPS     = 443;
+
+    const METHOD_POST    = 'POST';
+    const METHOD_GET     = 'GET';
+    const METHOD_PUT     = 'PUT';
+
     /**
      * Store Request's configuration, like URL, Request Type, Transport Layer
      *
@@ -473,7 +480,7 @@ abstract class Request
 
         $domain   = \Genesis\Config::getEndpoint();
 
-        $port     = ($this->getApiConfig('port')) ? $this->getApiConfig('port') : 443;
+        $port     = ($this->getApiConfig('port')) ? $this->getApiConfig('port') : Request::PORT_HTTPS;
 
         $path     = ($token) ? sprintf('%s/%s/', $path, $token) : $path;
 
@@ -515,9 +522,9 @@ abstract class Request
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
+                'protocol' => Request::PROTOCOL_HTTPS,
+                'port'     => Request::PORT_HTTPS,
+                'type'     => Request::METHOD_POST,
                 'format'   => Builder::XML
             ]
         );
@@ -532,9 +539,9 @@ abstract class Request
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => 'https',
-                'port'     => 443,
-                'type'     => 'POST',
+                'protocol' => Request::PROTOCOL_HTTPS,
+                'port'     => Request::PORT_HTTPS,
+                'type'     => Request::METHOD_POST,
                 'format'   => Builder::JSON
             ]
         );

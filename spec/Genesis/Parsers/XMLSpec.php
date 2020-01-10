@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Parsers;
 
+use Genesis\Parser;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

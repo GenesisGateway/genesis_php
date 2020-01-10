@@ -32,6 +32,7 @@ namespace Genesis\API\Traits\Request\Financial;
  *
  * @method $this setDynamicMerchantName($value) Dynamically override the charge descriptor
  * @method $this setDynamicMerchantCity($value) Dynamically override the merchant phone number
+ * @method $this setDynamicSubMerchantId($value) Sub-merchant ID assigned by the Payment Facilitator
  */
 trait DescriptorAttributes
 {
@@ -50,6 +51,13 @@ trait DescriptorAttributes
     protected $dynamic_merchant_city;
 
     /**
+     * Sub-merchant ID assigned by the Payment Facilitator
+     *
+     * @var string $dynamic_sub_merchant_id
+     */
+    protected $dynamic_sub_merchant_id;
+
+    /**
      * Builds an array list with all Params
      *
      * @return array
@@ -57,8 +65,9 @@ trait DescriptorAttributes
     protected function getDynamicDescriptorParamsStructure()
     {
         return [
-            'merchant_name' => $this->dynamic_merchant_name,
-            'merchant_city' => $this->dynamic_merchant_city
+            'merchant_name'   => $this->dynamic_merchant_name,
+            'merchant_city'   => $this->dynamic_merchant_city,
+            'sub_merchant_id' => $this->dynamic_sub_merchant_id
         ];
     }
 }

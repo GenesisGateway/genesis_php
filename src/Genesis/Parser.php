@@ -32,8 +32,9 @@ use Genesis\Parsers\XML;
  */
 class Parser
 {
-    const JSON_INTERFACE = 'json';
-    const XML_INTERFACE  = 'xml';
+    const JSON_INTERFACE    = 'json';
+    const XML_INTERFACE     = 'xml';
+    const SUMMARY_TREE_NODE = 'summary';
     /**
      * Instance of the selected builder wrapper
      *

@@ -75,4 +75,26 @@ trait RestrictedSetter
 
         return $this;
     }
+
+    /**
+     * @param $field
+     * @param $format
+     * @param $value
+     * @param $errorMessage
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    protected function parseDate($field, $format, $value, $errorMessage)
+    {
+        $date = \DateTime::createFromFormat($format, $value);
+
+        if (!$date) {
+            throw new InvalidArgument($errorMessage . ' Allowed format is ' . $format);
+        }
+
+        $this->$field = $date;
+
+        return $this;
+    }
 }

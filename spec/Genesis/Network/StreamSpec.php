@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Network;
 
+use Genesis\API\Request;
 use Genesis\Builder;
 use PhpSpec\ObjectBehavior;
 use Genesis\Config;
@@ -101,7 +102,7 @@ class StreamSpec extends ObjectBehavior
 
         $options = array(
             'body'       => '',
-            'type'       => 'GET',
+            'type'       => Request::METHOD_GET,
             'url'        => $remote_url,
             'timeout'    => Config::getNetworkTimeout(),
             'ca_bundle'  => Config::getCertificateBundle(),

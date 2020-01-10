@@ -184,6 +184,15 @@ class CreateSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_should_fail_when_reminder_value_bigger_than_default_lifetime()
+    {
+        $this->setRequestParameters();
+        $this->setPayLater(true);
+        $this->addReminder(Create::REMINDERS_CHANNEL_EMAIL, Create::DEFAULT_LIFETIME + 1);
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_not_fail_when_valid_reminder_language()
     {
         $this->setRequestParameters();

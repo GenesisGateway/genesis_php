@@ -108,6 +108,8 @@ class Genesis
             case 'AVS':
             case 'INPay':
             case 'ABNiDEAL':
+            case 'Entercash':
+            case 'Banamex':
                 $this->throwDeprecatedTransactionType();
                 break;
             case 'Payin':
