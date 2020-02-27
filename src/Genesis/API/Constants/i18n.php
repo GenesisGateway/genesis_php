@@ -146,6 +146,11 @@ class i18n
     const SL = 'sl';
 
     /**
+     * Finnish
+     */
+    const FI = 'fi';
+
+    /**
      * Check if a language code is supported
      *
      * @param $languageCode

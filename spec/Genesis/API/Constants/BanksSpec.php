@@ -11,4 +11,9 @@ class BanksSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Genesis\API\Constants\Banks');
     }
+
+    public function it_should_be_array()
+    {
+        $this->getAll()->shouldBeArray();
+    }
 }

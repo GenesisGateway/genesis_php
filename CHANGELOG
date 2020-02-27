@@ -1,3 +1,14 @@
+1.18.1
+-----
+**Features:**
+
+* Added Finnish language support in Web Payment Form
+* Updated the card-holder validation rules
+
+**Fixes:**
+
+* Fixed the rendering of the notification xml response body
+
 1.18.0
 -----
 **Features:**

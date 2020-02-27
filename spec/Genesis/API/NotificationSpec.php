@@ -195,6 +195,8 @@ class NotificationSpec extends ObjectBehavior
 
         ob_start();
 
+        echo 'Non empty Buffer';
+
         $this->shouldNotThrow()->during('renderResponse');
 
         $this->generateResponse()->shouldBe(ob_get_clean());
@@ -205,6 +207,8 @@ class NotificationSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
 
         ob_start();
+
+        echo 'Non empty Buffer';
 
         $this->shouldNotThrow()->during('renderResponse');
 

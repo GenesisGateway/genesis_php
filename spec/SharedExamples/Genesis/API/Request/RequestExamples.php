@@ -3,6 +3,7 @@
 namespace spec\SharedExamples\Genesis\API\Request;
 
 use Genesis\Utils\Common;
+use spec\SharedExamples\Faker;
 
 /**
  * Trait RequestExamples
@@ -43,16 +44,7 @@ trait RequestExamples
      */
     protected function getFaker()
     {
-        if (!self::$faker) {
-            self::$faker = \Faker\Factory::create();
-
-            self::$faker->addProvider(new \Faker\Provider\en_US\Person(self::$faker));
-            self::$faker->addProvider(new \Faker\Provider\Payment(self::$faker));
-            self::$faker->addProvider(new \Faker\Provider\en_US\Address(self::$faker));
-            self::$faker->addProvider(new \Faker\Provider\en_US\PhoneNumber(self::$faker));
-            self::$faker->addProvider(new \Faker\Provider\Internet(self::$faker));
-            self::$faker->addProvider(new \Faker\Provider\DateTime(self::$faker));
-        }
+        self::$faker = Faker::getInstance();
 
         return self::$faker;
     }

@@ -31,19 +31,19 @@ class Authorize3DSpec extends ObjectBehavior
     public function it_should_fail_when_missing_cc_holder_last_name_parameter()
     {
         $this->setRequestParameters();
-        $this->setCardHolder('First');
+        $this->setCardHolder($this->getFaker()->firstName);
 
         $this->shouldThrow(
             $this->getExpectedFieldValueException('card_holder')
         )->during('getDocument');
     }
 
-    public function it_should_fail_when_invalid_cc_holder_parameter()
+    public function it_should_not_fail_with_special_chars_for_cc_holder_parameter()
     {
         $this->setRequestParameters();
-        $this->setCardHolder('First$% Last');
+        $this->setCardHolder($this->getFaker()->asciify('**** ***** ****'));
 
-        $this->shouldThrow(
+        $this->shouldNotThrow(
             $this->getExpectedFieldValueException('card_holder')
         )->during('getDocument');
     }
@@ -51,7 +51,7 @@ class Authorize3DSpec extends ObjectBehavior
     public function it_can_set_cc_holder_parameter_with_special_chars()
     {
         $this->setRequestParameters();
-        $this->setCardHolder('Müller O\'Conner');
+        $this->setCardHolder($this->getFaker()->asciify('**** ****'));
 
         $this->getDocument()->shouldNotBeEmpty();
     }

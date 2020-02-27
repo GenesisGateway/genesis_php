@@ -11,11 +11,15 @@ use Genesis\API\Response as Response;
 use Genesis\Parser;
 use PhpSpec\ObjectBehavior;
 use spec\fixtures\API\Stubs\Parser\ParserStub;
+use spec\SharedExamples\Genesis\API\Request\NonFinancial\DateRangeRequestSharedExample;
+use spec\SharedExamples\Genesis\API\Request\NonFinancial\ExternallyProcessedSharedExample;
+use spec\SharedExamples\Genesis\API\Request\NonFinancial\ProcessingTypeSharedExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class DateRangeSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, DateRangeRequestSharedExample, ExternallyProcessedSharedExample,
+        ProcessingTypeSharedExample;
 
     public function it_is_initializable()
     {
@@ -39,53 +43,13 @@ class DateRangeSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_set_start_date_with_invalid_format()
-    {
-        $this->shouldThrow(InvalidArgument::class)->during(
-            'setStartDate',
-            ['12.12.2012']
-        );
-    }
-
-    public function it_should_be_string_start_date()
-    {
-        $this->setStartDate('2012-12-12');
-        $this->getStartDate()->shouldBeString();
-    }
-
-    public function it_should_be_null_when_unset_start_date()
-    {
-        $this->setStartDate(null);
-        $this->getStartDate()->shouldBeNull();
-    }
-
-    public function it_should_have_type_date_range_when_use_set_start_date()
+    public function it_should_return_class_instance_after_set_start_date()
     {
         $this->setStartDate(null)->shouldBeAnInstanceOf(DateRange::class);
         $this->setStartDate('2012-12-12')->shouldBeAnInstanceOf(DateRange::class);
     }
 
-    public function it_should_fail_when_set_end_date_with_invalid_format()
-    {
-        $this->shouldThrow(InvalidArgument::class)->during(
-            'setEndDate',
-            ['12.12.2012']
-        );
-    }
-
-    public function it_should_be_string_end_date()
-    {
-        $this->setEndDate('2012-12-12');
-        $this->getEndDate()->shouldBeString();
-    }
-
-    public function it_should_be_null_when_unset_end_date()
-    {
-        $this->setEndDate(null);
-        $this->getEndDate()->shouldBeNull();
-    }
-
-    public function it_should_have_type_date_range_when_use_set_end_date()
+    public function it_should_return_class_instance_after_set_end_date()
     {
         $this->setEndDate(null)->shouldBeAnInstanceOf(DateRange::class);
         $this->setEndDate('2012-12-12')->shouldBeAnInstanceOf(DateRange::class);
@@ -125,157 +89,11 @@ class DateRangeSpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
-    public function it_should_be_int_get_page_parameter()
-    {
-        $this->setPage('1');
-        $this->getPage()->shouldBeInt();
-
-        $this->setPage(null);
-        $this->getPage()->shouldBeInt();
-    }
-
-    public function it_should_be_int_get_per_page_parameter()
-    {
-        $this->setPerPage('1');
-        $this->getPerPage()->shouldBeInt();
-
-        $this->setPerPage(null);
-        $this->getPerPage()->shouldBeInt();
-    }
-
-    public function it_should_not_fail_when_valid_externally_processed()
-    {
-        $this->shouldNotThrow()->during(
-            'setExternallyProcessed',
-            [
-                $this->getRandomExternallyProcessed()
-            ]
-        );
-    }
-
-    public function it_should_fail_when_invalid_externally_processed()
-    {
-        $this->shouldThrow()->during(
-            'setExternallyProcessed',
-            [
-                'ttt'
-            ]
-        );
-    }
-
-    public function it_should_not_fail_when_valid_processing_type()
-    {
-        $this->shouldNotThrow()->during(
-            'setProcessingType',
-            [
-                $this->getRandomProcessingType()
-            ]
-        );
-    }
-
-    public function it_should_fail_when_invalid_processing_type()
-    {
-        $this->shouldThrow()->during(
-            'setProcessingType',
-            [
-                'ttt'
-            ]
-        );
-    }
-
-    public function it_should_fail_when_startDate_bigger_than_endDate()
-    {
-        $faker = $this->getFaker();
-        $this->setRequestParameters();
-
-        $startDate = $faker->dateTimeBetween('-6 month', 'now')->format(DateRange::DATE_FORMAT);
-        $endDate = $faker->dateTimeBetween('-2 years', '-1 years')->format(DateRange::DATE_FORMAT);
-
-        $this->setStartDate($startDate);
-        $this->setEndDate($endDate);
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
-    public function it_should_not_fail_when_request_only_start_date()
-    {
-        $faker = $this->getFaker();
-        $this->setStartDate(
-            $faker->dateTimeBetween('-2 years', '-1 month')->format(DateRange::DATE_FORMAT)
-        );
-
-        $this->shouldNotThrow()->during('getDocument');
-    }
-
     protected function setRequestParameters()
     {
         $this->setRequestDateParameters();
         $this->setRequestPageParameters();
         $this->setRequestAdditionalParameters();
-    }
-
-    /*
-     * Helpers
-     */
-
-    /**
-     * Set Request Dates for Request
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    protected function setRequestDateParameters()
-    {
-        $faker = $this->getFaker();
-
-        $startDate = $faker->dateTimeBetween('-2 years', '-1 month')->format(DateRange::DATE_FORMAT);
-        $endDate = $faker->dateTimeBetween($startDate, 'now')->format(DateRange::DATE_FORMAT);
-
-        $this->setStartDate($startDate);
-        $this->setEndDate($endDate);
-    }
-
-    /**
-     * Set Request Page attributes for Request
-     */
-    protected function setRequestPageParameters()
-    {
-        $this->setPage(1);
-        $this->setPerPage(20);
-    }
-
-    /**
-     * Set Additional Parameters
-     *
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    protected function setRequestAdditionalParameters()
-    {
-        $this->setExternallyProcessed($this->getRandomExternallyProcessed());
-        $this->setProcessingType($this->getRandomProcessingType());
-    }
-
-    /**
-     * Random Externally Processed attribute value
-     *
-     * @return string
-     */
-    protected function getRandomExternallyProcessed()
-    {
-        $externallyProcessed = ExternallyProcessed::getAll();
-
-        return $externallyProcessed[array_rand($externallyProcessed)];
-    }
-
-    /**
-     * Random Processing Type
-     *
-     * @return string
-     */
-    protected function getRandomProcessingType()
-    {
-        $processingType = ProcessingTypes::getAll();
-
-        return $processingType[array_rand($processingType)];
     }
 
     public function it_should_have_the_proper_root_node_attributes_structure($response)
@@ -308,5 +126,20 @@ class DateRangeSpec extends ObjectBehavior
         );
 
         $this->response = $response;
+    }
+
+    /*
+     * Helpers
+     */
+
+    /**
+     * Set Additional Parameters
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    protected function setRequestAdditionalParameters()
+    {
+        $this->setExternallyProcessedParameters();
+        $this->setProcessingTypeParameters();
     }
 }

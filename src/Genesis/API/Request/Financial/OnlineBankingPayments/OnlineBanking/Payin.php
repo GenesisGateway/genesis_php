@@ -23,11 +23,14 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameters;
 
 /**
  * Class Payin
@@ -37,14 +40,23 @@ use Genesis\Exceptions\InvalidArgument;
  * @package Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
  *
  * @method string getPaymentType()
+ * @method setBankCode($value) Customer’s bank ode
+ * @method setVirtualPaymentAddress($value) Virtual Payment Address (VPA) of the customer format: someone@bank
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
-class Payin extends \Genesis\API\Request\Base\Financial
+class Payin extends Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes;
 
-    const PAYMENT_TYPE_ONLINE_BANKING = 'online_banking';
-    const PAYMENT_TYPE_QR_PAYMENT     = 'qr_payment';
-    const PAYMENT_TYPE_QUICK_PAYMENT  = 'quick_payment';
+    const PAYMENT_TYPE_ONLINE_BANKING     = 'online_banking';
+    const PAYMENT_TYPE_QR_PAYMENT         = 'qr_payment';
+    const PAYMENT_TYPE_QUICK_PAYMENT      = 'quick_payment';
+    const PAYMENT_TYPE_NETBANKING         = 'netbanking';
+    const PAYMENT_TYPE_UPI                = 'upi';
+
+    const PATTERN_VIRTUAL_PAYMENT_ADDRESS = '/^.+@.+$/';
 
     /**
      * Customer’s bank ode
@@ -61,6 +73,14 @@ class Payin extends \Genesis\API\Request\Base\Financial
     protected $payment_type;
 
     /**
+     * Virtual Payment Address (VPA) of the customer
+     * format: someone@bank
+     *
+     * @var string $virtual_payment_address
+     */
+    protected $virtual_payment_address;
+
+    /**
      * @param $paymentType
      *
      * @return $this
@@ -69,7 +89,8 @@ class Payin extends \Genesis\API\Request\Base\Financial
     public function setPaymentType($paymentType)
     {
         $allowedPaymentTypes = [
-            self::PAYMENT_TYPE_ONLINE_BANKING, self::PAYMENT_TYPE_QR_PAYMENT, self::PAYMENT_TYPE_QUICK_PAYMENT
+            self::PAYMENT_TYPE_ONLINE_BANKING, self::PAYMENT_TYPE_QR_PAYMENT, self::PAYMENT_TYPE_QUICK_PAYMENT,
+            self::PAYMENT_TYPE_NETBANKING, self::PAYMENT_TYPE_UPI
         ];
 
         if (in_array($paymentType, $allowedPaymentTypes)) {
@@ -112,9 +133,7 @@ class Payin extends \Genesis\API\Request\Base\Financial
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'currency' => [
-                'CNY', 'THB', 'IDR', 'MYR', 'INR'
-            ]
+            'currency' => BankCodeParameters::getAllowedCurrencies()
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
@@ -133,40 +152,59 @@ class Payin extends \Genesis\API\Request\Base\Financial
             'billing_country' => [
                 'US' => ['billing_state'],
                 'CA' => ['billing_state']
+            ],
+            'payment_type' => [
+                self::PAYMENT_TYPE_UPI => ['virtual_payment_address']
             ]
         ];
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldValuesConditional = [
+            'payment_type' => [
+                self::PAYMENT_TYPE_UPI => [
+                    ['virtual_payment_address' => $this->getVirtualPaymentAddressValidator()]
+                ]
+            ],
             'currency' => [
+                'ARS' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('ARS')]
+                ],
                 'CNY' => [
-                    [
-                        'bank_code' => ['CITIC', 'GDB', 'PSBC', 'BOC', 'ABC', 'CEB', 'CCB', 'ICBC', 'CMBC', 'QUICKPAY']
-                    ]
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CNY')]
+                ],
+                'CLP' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CLP')]
+                ],
+                'COP' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('COP')]
                 ],
                 'THB' => [
-                    [
-                        'bank_code' => ['SCB_THB', 'KTB_THB', 'BAY_THB', 'UOB_THB', 'KKB_THB', 'BBL_THB']
-                    ]
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('THB')]
                 ],
                 'MYR' => [
-                    [
-                        'bank_code' => ['CIMB_MYR', 'PBE_MYR', 'RHB_MYR', 'HLE_MYR', 'MAY_MYR']
-                    ]
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('MYR')]
+                ],
+                'PYG' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('PYG')]
                 ],
                 'IDR' => [
-                    [
-                        'bank_code' => [
-                            'MDR_IDR', 'BNI_IDR', 'BCA_IDR', 'BRI_IDR',
-                            'PMB_IDR', 'CIMB_IDR', 'DMN_IDR', 'BTN_IDR', 'VA'
-                        ]
-                    ]
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('IDR')]
                 ],
                 'INR' => [
-                    [
-                        'bank_code' => ['NB', 'UI']
-                    ]
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('INR')]
+                ],
+                'PHP' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('PHP')]
+                ],
+                'SGD' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('SGD')]
+                ],
+                'UYU' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('UYU')]
+                ],
+                'VND' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('VND')]
                 ]
             ]
         ];
@@ -183,17 +221,31 @@ class Payin extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'             => $this->transformAmount($this->amount, $this->currency),
-            'currency'           => $this->currency,
-            'bank_code'          => $this->bank_code,
-            'return_success_url' => $this->return_success_url,
-            'return_failure_url' => $this->return_failure_url,
-            'customer_email'     => $this->customer_email,
-            'customer_phone'     => $this->customer_phone,
-            'payment_type'       => $this->payment_type,
-            'document_id'        => $this->document_id,
-            'billing_address'    => $this->getBillingAddressParamsStructure(),
-            'shipping_address'   => $this->getShippingAddressParamsStructure()
+            'amount'                  => $this->transformAmount($this->amount, $this->currency),
+            'currency'                => $this->currency,
+            'bank_code'               => $this->bank_code,
+            'return_success_url'      => $this->return_success_url,
+            'return_failure_url'      => $this->return_failure_url,
+            'customer_email'          => $this->customer_email,
+            'customer_phone'          => $this->customer_phone,
+            'payment_type'            => $this->payment_type,
+            'document_id'             => $this->document_id,
+            'billing_address'         => $this->getBillingAddressParamsStructure(),
+            'shipping_address'        => $this->getShippingAddressParamsStructure(),
+            'virtual_payment_address' => $this->virtual_payment_address
         ];
+    }
+
+    /**
+     * Virtual Payment Address validation rules
+     *
+     * @return RegexValidator
+     */
+    public function getVirtualPaymentAddressValidator()
+    {
+        return new RegexValidator(
+            self::PATTERN_VIRTUAL_PAYMENT_ADDRESS,
+            'Invalid value for virtual_payment_address'
+        );
     }
 }

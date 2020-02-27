@@ -34,7 +34,7 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     /**
      * CC Regex Validation Patterns
      */
-    const PATTERN_CREDIT_CARD_HOLDER    = '/^[\p{L}\'\-,.]+[ ]+[\p{L}\'\-,. ]+$/u';
+    const PATTERN_CREDIT_CARD_HOLDER    = '/\A(?!\A[\d\s]*\Z).+\s+.+\Z/';
     const PATTERN_CREDIT_CARD_NUMBER    = '/\A[0-9]{13,19}\Z/';
     const PATTERN_CREDIT_CARD_CVV       = '/\A[0-9]{3,4}\Z/';
     const PATTERN_CREDIT_CART_EXP_MONTH = '/^(0?[1-9]|1[012])$/';

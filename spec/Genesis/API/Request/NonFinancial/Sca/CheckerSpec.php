@@ -8,7 +8,7 @@ use Genesis\API\Request\NonFinancial\Sca\Checker;
 use Genesis\Builder;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\FakerExample;
+use spec\SharedExamples\Faker;
 
 /**
  * Class CheckerSpec
@@ -218,8 +218,7 @@ class CheckerSpec extends ObjectBehavior
      */
     protected function getFaker()
     {
-        return FakerExample::initialize(FakerExample::getAllowedProviders())
-            ->getFaker();
+        return Faker::getInstance();
     }
 
     protected function setDefaultRequestParameters()

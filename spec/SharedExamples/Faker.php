@@ -6,10 +6,10 @@ use \Faker\Factory;
 use \Faker\Generator;
 
 /**
- * Class FakerExample
+ * Class Faker
  * @package spec\SharedExamples
  */
-class FakerExample
+class Faker
 {
     /**
      * Default Path for Providers
@@ -22,7 +22,7 @@ class FakerExample
     const DEFAULT_LOCALE = 'en_US';
 
     /**
-     * @var FakerExample
+     * @var Faker
      */
     private static $instance = null;
 
@@ -36,23 +36,27 @@ class FakerExample
      *
      * @var array
      */
-    protected static $providers = [];
+    private static $providers = [];
+
+    /**
+     * Locale used for Faker initialization
+     *
+     * @var string $locale
+     */
+    private static $locale = self::DEFAULT_LOCALE;
 
     /**
      * Initialize singleton object
      *
      * @param array $providers
-     * @return FakerExample
+     * @param string $locale
+     *
+     * @return void
      */
-    public static function initialize($providers = [])
+    public static function initialize($providers = [], $locale = self::DEFAULT_LOCALE)
     {
         self::$providers = $providers;
-
-        if (self::$instance === null) {
-            return self::$instance = new FakerExample();
-        }
-
-        return self::$instance;
+        self::$locale    = $locale;
     }
 
     /**
@@ -64,23 +68,26 @@ class FakerExample
     }
 
     /**
-     * FakerExample constructor.
+     * Faker constructor.
      */
     private function __construct()
     {
-        $this->faker = Factory::create();
-
+        $this->faker = Factory::create(self::$locale);
         $this->registerProviders(self::$providers);
     }
 
     /**
-     * Return FakerExample Instance
+     * Return Faker Instance
      *
-     * @return FakerExample
+     * @return Generator
      */
     public static function getInstance()
     {
-        return self::$instance;
+        if (self::$instance === null) {
+            self::$instance = new Faker();
+        }
+
+        return self::$instance->getFaker();
     }
 
     /**
@@ -94,14 +101,6 @@ class FakerExample
     }
 
     /**
-     * @return array
-     */
-    public static function getProviders()
-    {
-        return self::$providers;
-    }
-
-    /**
      * Register providers
      * By default Faker Register list of default providers
      *
@@ -109,17 +108,16 @@ class FakerExample
      */
     protected function registerProviders($providers)
     {
-        if (!is_array($providers)) {
-            return;
+        if (!is_array($providers) || empty($providers)) {
+            self::$providers = self::getAllowedProviders();
         }
 
-        foreach ($providers as $provider) {
+        foreach (self::$providers as $provider) {
             if (!in_array($provider, self::getAllowedProviders())) {
                 continue;
             }
 
-            $class = self::FAKER_PROVIDER_PREFIX_PATH . $provider;
-            $this->faker->addProvider(new $class($this->faker));
+            $this->faker->addProvider(new $provider($this->faker));
         }
     }
 
@@ -131,12 +129,12 @@ class FakerExample
     public static function getAllowedProviders()
     {
         return [
-            self::DEFAULT_LOCALE . '\Person',
-            'Payment',
-            self::DEFAULT_LOCALE . '\Address',
-            self::DEFAULT_LOCALE . '\PhoneNumber',
-            'Internet',
-            'DateTime'
+            self::FAKER_PROVIDER_PREFIX_PATH . self::DEFAULT_LOCALE . '\Person',
+            self::FAKER_PROVIDER_PREFIX_PATH . 'Payment',
+            self::FAKER_PROVIDER_PREFIX_PATH . self::DEFAULT_LOCALE . '\Address',
+            self::FAKER_PROVIDER_PREFIX_PATH . self::DEFAULT_LOCALE . '\PhoneNumber',
+            self::FAKER_PROVIDER_PREFIX_PATH . 'Internet',
+            self::FAKER_PROVIDER_PREFIX_PATH . 'DateTime'
         ];
     }
 }

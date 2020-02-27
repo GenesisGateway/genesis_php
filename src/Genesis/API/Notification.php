@@ -266,6 +266,9 @@ class Notification
             header('Content-type: application/xml', true);
         }
 
+        // Clean the buffer
+        ob_clean();
+
         echo $this->generateResponse();
     }
 }

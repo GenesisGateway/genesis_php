@@ -1,0 +1,117 @@
+<?php
+/*
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @license     http://opensource.org/licenses/MIT The MIT License
+ */
+
+namespace Genesis\API\Constants\Transaction\Parameters\OnlineBanking;
+
+use Genesis\API\Constants\Banks;
+use Genesis\Utils\Common;
+
+/**
+ * Class BankCodesConditionalValues
+ * @package Genesis\API\Constants\Transaction\Parameters\OnlineBanking
+ */
+class BankCodeParameters
+{
+    /**
+     * Available Currencies and Codes for OnlineBanking\Payin
+     *
+     * @var array $codes
+     */
+    private static $codes = [
+        'ARS' => [
+            Banks::DB
+        ],
+        'CNY' => [
+            Banks::ABC, Banks::BOB, Banks::BOC, Banks::BOCO, Banks::CCB,
+            Banks::CCD, Banks::CEB, Banks::CIB, Banks::CMB, Banks::CMBC,
+            Banks::CITIC, Banks::ICBC, Banks::GDB, Banks::HXB, Banks::PINGANBANK,
+            Banks::PSBC, Banks::QUICKPAY, Banks::SHB, Banks::SPABANK, Banks::SPDB,
+            Banks::YLB
+        ],
+        'CLP' => [
+            Banks::SP
+        ],
+        'COP' => [
+            Banks::PC
+        ],
+        'THB' => [
+            Banks::SCB_THB, Banks::KTB_THB, Banks::BAY_THB, Banks::UOB_THB, Banks::KKB_THB,
+            Banks::BBL_THB, Banks::TH_PB_BBLPN, Banks::TH_PB_BAYPN, Banks::TH_PB_KTBPN, Banks::OMISE_TL_PHP,
+            Banks::TH_PB_SCBPN
+        ],
+        'MYR' => [
+            Banks::CASH_711, Banks::FPX_ABB, Banks::AFFIN_EPG, Banks::FPX_ABMB, Banks::FPX_AMB,
+            Banks::AMB_W2W, Banks::FPX_BIMB, Banks::BANKISLAM, Banks::FPX_BMMB, Banks::FPX_BKRM,
+            Banks::FPX_BSN, Banks::CIMB_MYR, Banks::FPX_CIMBCLICKS, Banks::CIMB_CLICKS, Banks::FPX,
+            Banks::FPX_HLB, Banks::HLB_ONL, Banks::HLE_MYR, Banks::JOMPAY_PHP, Banks::FPX_KFN,
+            Banks::MAY_MYR, Banks::FPX_MB2U, Banks::MB2U, Banks::FPX_OCBC, Banks::FPX_PBB,
+            Banks::PUBLICKBANK, Banks::PBE_MYR, Banks::RHB_MYR, Banks::FPX_RHB, Banks::RHB_ONL,
+            Banks::FPX_SCB, Banks::FPX_UOB
+        ],
+        'PYG' => [
+            Banks::PE
+        ],
+        'IDR' => [
+            Banks::ATMVA, Banks::MDR_IDR, Banks::BNI_IDR, Banks::BCA_IDR, Banks::BRI_IDR,
+            Banks::PMB_IDR, Banks::CIMB_IDR, Banks::DMN_IDR, Banks::BTN_IDR, Banks::VA
+        ],
+        'INR' => [
+            Banks::NB, Banks::UI
+        ],
+        'PHP' => [
+            Banks::DRAGONPAY
+        ],
+        'SGD' => [
+            Banks::ENETS_D
+        ],
+        'UYU' => [
+            Banks::AI
+        ],
+        'VND' => [
+            Banks::VTCP_VPBANK, Banks::VTCP_ABBANK, Banks::VTCP_ACB, Banks::VTCP_AGRIBANK,
+            Banks::VTCP_BACABANK, Banks::VTCP_BIDV, Banks::VTCP_BVB, Banks::VTCP_DONGABANK,
+            Banks::VTCP_EXIMBANK, Banks::VTCP_GPBANK, Banks::VTCP_HDBANK, Banks::VTCP_LVPB,
+            Banks::VTCP_MB, Banks::VTCP_MARITIMEBANK, Banks::VTCP_NAMABANK, Banks::VTCP_NAVIBANK,
+            Banks::VTCP_OCEANBANK, Banks::VTCP_PGBANK, Banks::VTCP_PHUONGDONG, Banks::VTCP_SHB,
+            Banks::VTCP_SACOMBANK, Banks::VTCP_SAIGON_BANK, Banks::VTCP_SEAABANK, Banks::VTCP_TECHCOMBANK,
+            Banks::VTCP_TIENPHONGBANK, Banks::VTCP_VIB, Banks::VTCP_VIETABANK, Banks::VTCP_VIETCOMBANK,
+            Banks::VTCP_VIETINBANK
+        ]
+    ];
+
+    public static function getBankCodesPerCurrency($currency)
+    {
+        $currency = strtoupper($currency);
+
+        if (array_key_exists($currency, self::$codes)) {
+            return self::$codes[$currency];
+        }
+
+        return [];
+    }
+
+    public static function getAllowedCurrencies()
+    {
+        return Common::getArrayKeys(self::$codes);
+    }
+}

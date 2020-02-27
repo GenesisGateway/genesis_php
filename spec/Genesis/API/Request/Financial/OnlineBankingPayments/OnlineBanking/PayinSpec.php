@@ -2,8 +2,11 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\API\Constants\Banks;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameters;
 use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payin;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
@@ -19,11 +22,13 @@ class PayinSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
+            'transaction_id',
             'remote_ip',
+            'return_success_url',
+            'return_failure_url',
             'amount',
             'currency',
-            'return_success_url',
-            'return_failure_url'
+            'bank_code'
         ]);
     }
 
@@ -31,15 +36,23 @@ class PayinSpec extends ObjectBehavior
     {
         $this->setDefaultRequestParameters();
 
-        $this->setBankCode('GDB');
-        $this->setCurrency('CNY');
+        $allowedCurrencies = BankCodeParameters::getAllowedCurrencies();
+        $currency          = $allowedCurrencies[array_rand($allowedCurrencies)];
+        $allowedBanks      = BankCodeParameters::getBankCodesPerCurrency($currency);
+        $bankCode          = $allowedBanks[array_rand($allowedBanks)];
+
+        $this->setBankCode($bankCode);
+        $this->setCurrency($currency);
         $this->setBillingCountry($this->getFaker()->countryCode);
     }
 
     public function it_should_fail_when_wrong_currency_param()
     {
         $this->setRequestParameters();
-        $this->setCurrency('USD');
+
+        $wrongCurrencies = array_diff(Currency::getList(), BankCodeParameters::getAllowedCurrencies());
+
+        $this->setCurrency($wrongCurrencies[array_rand($wrongCurrencies)]);
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
@@ -47,6 +60,23 @@ class PayinSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->setBankCode('');
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_fail_with_allowed_currency_and_invalid_bank_code()
+    {
+        $this->setRequestParameters();
+
+        $allowedCurrencies = BankCodeParameters::getAllowedCurrencies();
+        $currency          = $allowedCurrencies[array_rand($allowedCurrencies)];
+
+        $allowedBanks      = BankCodeParameters::getBankCodesPerCurrency($currency);
+        $invalidBankCodes  = array_diff(Banks::getAll(), $allowedBanks);
+        $invalidBankCode   = $invalidBankCodes[array_rand($invalidBankCodes)];
+
+        $this->setCurrency($currency);
+        $this->setBankCode($invalidBankCode);
+
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
@@ -74,5 +104,70 @@ class PayinSpec extends ObjectBehavior
     public function it_should_succeed_when_valid_payment_type_param()
     {
         $this->shouldNotThrow()->during('setPaymentType', [Payin::PAYMENT_TYPE_QR_PAYMENT]);
+    }
+
+    public function it_should_fail_with_upi_payment_type_without_virtual_payment_address()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_not_fail_with_upi_payment_type_and_valid_virtual_payment_address()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
+        $this->setVirtualPaymentAddress('someone@bank');
+
+        $this->shouldNotThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_fail_with_upi_payment_type_and_invalid_virtual_payment_address()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
+        $this->setVirtualPaymentAddress(
+            $this->getFaker()->asciify('****')
+        );
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_have_proper_structure()
+    {
+        $faker = $this->getFaker();
+
+        $this->setRequestParameters();
+
+        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setPaymentType(Payin::PAYMENT_TYPE_NETBANKING);
+        $this->setCurrency('MYR');
+        $this->setBankCode(Banks::CASH_711);
+        $this->setDocumentId('ABCDE1234F');
+        $this->setShippingFirstName($faker->firstName);
+        $this->setVirtualPaymentAddress('someone@example');
+
+        $attributes = [
+            'transaction_id',
+            'usage',
+            'remote_ip',
+            'amount',
+            'currency',
+            'bank_code',
+            'return_success_url',
+            'return_failure_url',
+            'customer_email',
+            'customer_phone',
+            'payment_type',
+            'document_id',
+            'billing_address',
+            'shipping_address',
+            'virtual_payment_address'
+        ];
+
+        foreach ($attributes as $attribute) {
+            $this->getDocument()->shouldContain($attribute);
+        }
     }
 }
