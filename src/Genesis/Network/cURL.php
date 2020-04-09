@@ -85,7 +85,6 @@ class cURL extends Base
             CURLOPT_FRESH_CONNECT  => true,
             CURLOPT_RETURNTRANSFER => true,
             // SSL/TLS Configuration
-            CURLOPT_CAINFO         => $requestData['ca_bundle'],
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2
         ];

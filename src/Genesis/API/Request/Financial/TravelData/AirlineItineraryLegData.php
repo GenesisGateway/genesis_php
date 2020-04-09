@@ -24,21 +24,22 @@
 namespace Genesis\API\Request\Financial\TravelData;
 
 use Genesis\API\Traits\MagicAccessors;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
 
 /**
  * Class AirlineItineraryLegData
  * @package Genesis\API\Request\Financial\TravelData
  */
-class AirlineItineraryLegData
+class AirlineItineraryLegData extends AidAttributes
 {
     const DEPARTURE_TIME_SEGMENT_AM = 'A';
     const DEPARTURE_TIME_SEGMENT_PM = 'P';
     const STOPOVER_CODE_ALLOWED     = 1;
     const STOPOVER_CODE_DISALLOWED  = 0;
+    const DATE_FORMAT               = 'Y-m-d';
 
-    use MagicAccessors, RestrictedSetter;
+    use MagicAccessors;
 
     /**
      * @var string
@@ -91,6 +92,11 @@ class AirlineItineraryLegData
     protected $departureTimeSegment;
 
     /**
+     * @var string
+     */
+    protected $arrivalDate;
+
+    /**
      * AirlineItineraryLegData constructor.
      *
      * @param $departureDate
@@ -100,16 +106,20 @@ class AirlineItineraryLegData
      * @param $destinationCity
      * @param $stopoverCode
      *
+     * @param $fareBasisCode
+     * @param $arrivalDate
      * @throws InvalidArgument
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         $departureDate,
-        $carrierCode,
-        $serviceClass,
-        $originCity,
-        $destinationCity,
-        $stopoverCode
+        $carrierCode = null,
+        $serviceClass = null,
+        $originCity = null,
+        $destinationCity = null,
+        $stopoverCode = null,
+        $arrivalDate = null,
+        $fareBasisCode = null
     ) {
         $this->setDepartureDate($departureDate);
         $this->setCarrierCode($carrierCode);
@@ -117,6 +127,8 @@ class AirlineItineraryLegData
         $this->setOriginCity($originCity);
         $this->setDestinationCity($destinationCity);
         $this->setStopOverCode($stopoverCode);
+        $this->setArrivalDate($arrivalDate);
+        $this->setFareBasisCode($fareBasisCode);
     }
 
     /**
@@ -127,7 +139,24 @@ class AirlineItineraryLegData
      */
     public function setDepartureDate($value)
     {
-        return $this->setLimitedString('departureDate', $value, 1, 10);
+        if ($value === null) {
+            $this->departureDate = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'departureDate',
+            [self::DATE_FORMAT],
+            (string)$value,
+            'Invalid format for departure date'
+        );
+    }
+
+    public function getDepartureDate()
+    {
+        return empty($this->departureDate) ?
+            null : $this->departureDate->format(self::DATE_FORMAT);
     }
 
     /**
@@ -138,6 +167,12 @@ class AirlineItineraryLegData
      */
     public function setCarrierCode($value)
     {
+        if ($value === null) {
+            $this->carrierCode = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('carrierCode', $value, 1, 2);
     }
 
@@ -149,6 +184,12 @@ class AirlineItineraryLegData
      */
     public function setServiceClass($value)
     {
+        if ($value === null) {
+            $this->serviceClass = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('serviceClass', $value, 1, 1);
     }
 
@@ -160,6 +201,12 @@ class AirlineItineraryLegData
      */
     public function setOriginCity($value)
     {
+        if ($value === null) {
+            $this->originCity = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('originCity', $value, 1, 3);
     }
 
@@ -171,6 +218,12 @@ class AirlineItineraryLegData
      */
     public function setDestinationCity($value)
     {
+        if ($value === null) {
+            $this->destinationCity = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('destinationCity', $value, 1, 3);
     }
 
@@ -182,6 +235,12 @@ class AirlineItineraryLegData
      */
     public function setFareBasisCode($value)
     {
+        if ($value === null) {
+            $this->fareBasisCode = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('fareBasisCode', $value, null, 6);
     }
 
@@ -193,6 +252,12 @@ class AirlineItineraryLegData
      */
     public function setFlightNumber($value)
     {
+        if ($value === null) {
+            $this->flightNumber = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('flightNumber', $value, null, 5);
     }
 
@@ -204,6 +269,12 @@ class AirlineItineraryLegData
      */
     public function setDepartureTime($value)
     {
+        if ($value === null) {
+            $this->departureTime = null;
+
+            return $this;
+        }
+
         return $this->setLimitedString('departureTime', $value, null, 5);
     }
 
@@ -215,6 +286,12 @@ class AirlineItineraryLegData
      */
     public function setDepartureTimeSegment($value)
     {
+        if ($value === null) {
+            $this->departureTimeSegment = null;
+
+            return $this;
+        }
+        
         return $this->allowedOptionsSetter(
             'departureTimeSegment',
             [
@@ -227,22 +304,62 @@ class AirlineItineraryLegData
     }
 
     /**
-     * @param $stopoverCode
+     * @param $value
      *
      * @return AirlineItineraryLegData
      * @throws InvalidArgument
      */
-    public function setStopoverCode($stopoverCode)
+    public function setStopoverCode($value)
     {
+        if ($value === null) {
+            $this->stopoverCode = null;
+
+            return $this;
+        }
+
         return $this->allowedOptionsSetter(
             'stopoverCode',
             [
                 self::STOPOVER_CODE_ALLOWED,
                 self::STOPOVER_CODE_DISALLOWED
             ],
-            $stopoverCode,
+            $value,
             'Invalid stopover code.'
         );
+    }
+
+    /**
+     * @param $value
+     *
+     * @return AirlineItineraryLegData
+     * @throws InvalidArgument
+     */
+    public function setArrivalDate($value)
+    {
+        if ($value === null) {
+            $this->arrivalDate = null;
+
+            return $this;
+        }
+
+         return  $this->parseDate(
+             'arrivalDate',
+             [self::DATE_FORMAT],
+             $value,
+             'Invalid format for arrival date:'
+         );
+    }
+
+    public function getArrivalDate()
+    {
+        return empty($this->arrivalDate) ?
+            null : $this->arrivalDate->format(self::DATE_FORMAT);
+    }
+
+
+    public function getStructureName()
+    {
+        return 'legs';
     }
 
     /**
@@ -251,7 +368,7 @@ class AirlineItineraryLegData
     public function toArray()
     {
         return [
-            'departure_date'         => $this->departureDate,
+            'departure_date'         => $this->getDepartureDate(),
             'carrier_code'           => $this->carrierCode,
             'service_class'          => $this->serviceClass,
             'origin_city'            => $this->originCity,
@@ -260,7 +377,8 @@ class AirlineItineraryLegData
             'fare_basis_code'        => $this->fareBasisCode,
             'flight_number'          => $this->flightNumber,
             'departure_time'         => $this->departureTime,
-            'departure_time_segment' => $this->departureTimeSegment
+            'departure_time_segment' => $this->departureTimeSegment,
+            'arrival_date'           => $this->getArrivalDate()
         ];
     }
 }

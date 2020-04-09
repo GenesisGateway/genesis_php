@@ -2,13 +2,27 @@
 
 namespace spec\Genesis\API\Request\Financial;
 
+use Genesis\API\Constants\Transaction\Parameters\Refund\BankAccountTypeParameters;
 use Genesis\API\Request\Financial\Refund;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class RefundSpec extends ObjectBehavior
 {
     use RequestExamples;
+
+    private $creditIndicators = [
+        Refund::CREDIT_REASON_INDICATOR_OTHER,
+        Refund::CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET,
+        Refund::CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION,
+        Refund::CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT
+    ];
+
+    private $ticketIndicators = [
+        Refund::TICKET_CHANGE_INDICATOR_TO_EXISTING,
+        Refund::TICKET_CHANGE_INDICATOR_TO_NEW
+    ];
 
     public function it_is_initializable()
     {
@@ -18,7 +32,10 @@ class RefundSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
-            'reference_id'
+            'transaction_id',
+            'reference_id',
+            'amount',
+            'currency'
         ]);
     }
 
@@ -39,12 +56,7 @@ class RefundSpec extends ObjectBehavior
 
     public function it_should_work_when_credit_reason_indicator_1_is_valid()
     {
-        $allowed = [
-            Refund::CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION,
-            Refund::CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT,
-            Refund::CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET,
-            Refund::CREDIT_REASON_INDICATOR_OTHER
-        ];
+        $allowed = $this->creditIndicators;
 
         foreach ($allowed AS $value) {
             $this->shouldNotThrow()->during(
@@ -56,12 +68,7 @@ class RefundSpec extends ObjectBehavior
 
     public function it_should_work_when_credit_reason_indicator_2_is_valid()
     {
-        $allowed = [
-            Refund::CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION,
-            Refund::CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT,
-            Refund::CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET,
-            Refund::CREDIT_REASON_INDICATOR_OTHER
-        ];
+        $allowed = $this->creditIndicators;
 
         foreach ($allowed AS $value) {
             $this->shouldNotThrow()->during(
@@ -73,10 +80,7 @@ class RefundSpec extends ObjectBehavior
 
     public function it_should_work_when_ticket_change_indicator_is_valid()
     {
-        $allowed = [
-            Refund::TICKET_CHANGE_INDICATOR_TO_NEW,
-            Refund::TICKET_CHANGE_INDICATOR_TO_EXISTING
-        ];
+        $allowed = $this->ticketIndicators;
 
         foreach ($allowed AS $value) {
             $this->shouldNotThrow()->during(
@@ -140,10 +144,75 @@ class RefundSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_not_fail_with_bank_attributes()
+    {
+        $this->setRequestParameters();
+        $this->setBankAttributes();
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_contain_correct_structure()
+    {
+        $this->setRequestParameters();
+        $this->setBeneficiaryAttributes();
+        $this->setBankAttributes();
+        $this->setTicketAttributes();
+
+        $attributes = [
+            'transaction_id',
+            'usage',
+            'amount',
+            'currency',
+            'travel',
+            'ticket',
+            'credit_reason_indicator_1',
+            'credit_reason_indicator_2',
+            'ticket_change_indicator',
+            'beneficiary_account_number',
+            'beneficiary_bank_code',
+            'beneficiary_name',
+            'bank',
+            'bank_branch',
+            'bank_account',
+            'bank_account_type'
+        ];
+
+        foreach ($attributes as $attribute) {
+            $this->getDocument()->shouldContain($attribute);
+        }
+    }
+
     private function setBeneficiaryAttributes()
     {
         $this->setBeneficiaryAccountNumber('beneficiary_account_number');
         $this->setBeneficiaryBankCode('beneficiary_bank_code');
         $this->setBeneficiaryName('beneficiary_name');
+    }
+
+    private function setBankAttributes()
+    {
+        $faker = $this->getFaker();
+        $this->setBank($faker->sentence);
+        $this->setBankBranch($faker->sentence);
+        $this->setBankAccount($faker->uuid);
+        $this->setBankAccountType($faker->randomElement(BankAccountTypeParameters::getAll()));
+    }
+
+    private function setTicketAttributes()
+    {
+        $faker = $this->getFaker();
+
+        $this->setCreditReasonIndicator1(
+            $faker->randomElement(
+                $this->creditIndicators
+            )
+        );
+        $this->setCreditReasonIndicator2(
+            $faker->randomElement($this->creditIndicators)
+        );
+        $this->setTicketChangeIndicator(
+            $faker->randomElement($this->ticketIndicators)
+        );
     }
 }

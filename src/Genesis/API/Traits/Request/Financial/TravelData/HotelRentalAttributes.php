@@ -78,15 +78,13 @@ trait HotelRentalAttributes
     public function getHotelRentalStructure()
     {
         return [
-            'rentals' => [
-                'hotel_rental' => [
-                    'purchase_identifier' => $this->hotel_rental_purchase_identifier,
-                    'arrival_date'        => $this->hotel_rental_arrival_date,
-                    'departure_date'      => $this->hotel_rental_departure_date,
-                    'customer_code'       => $this->hotel_rental_customer_code,
-                    'extra_charges'       => $this->hotel_rental_extra_charges,
-                    'no_show_indicator'   => $this->hotel_rental_no_show_indicator
-                ]
+            'hotel_rental' => [
+                'purchase_identifier' => $this->hotel_rental_purchase_identifier,
+                'arrival_date'        => $this->hotel_rental_arrival_date,
+                'departure_date'      => $this->hotel_rental_departure_date,
+                'customer_code'       => $this->hotel_rental_customer_code,
+                'extra_charges'       => $this->hotel_rental_extra_charges,
+                'no_show_indicator'   => $this->hotel_rental_no_show_indicator
             ]
         ];
     }

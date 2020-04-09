@@ -128,7 +128,7 @@ class PayinSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
         $this->setVirtualPaymentAddress(
-            $this->getFaker()->asciify('****')
+            $this->getFaker()->word
         );
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');

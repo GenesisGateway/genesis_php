@@ -23,10 +23,14 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\Api\Constants\BankAccountTypes;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Validators\Request\RegexValidator;
+use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
 
 /**
  * Class Payout
@@ -40,10 +44,18 @@ use Genesis\API\Validators\Request\RegexValidator;
  * @method Payout setBankName($value) Set Customer’s bank name
  * @method Payout setBankCode($value) Set Customer’s bank code
  * @method Payout setBankBranch($value) Set Customer’s bank branch
+ * @method Payout setBankProvince($value) Set Name of the province that the bank is located
  */
 class Payout extends \Genesis\API\Request\Base\Financial
 {
-    use AddressInfoAttributes, AsyncAttributes, PaymentAttributes;
+    use RestrictedSetter, AddressInfoAttributes, AsyncAttributes, PaymentAttributes, NotificationAttributes;
+
+    const ID_CARD_NUMBER_MAX_LENGTH          = 30;
+    const PAYER_BANK_PHONE_NUMBER_MAX_LENGTH = 11;
+    const DOCUMENT_TYPE_MAX_LENGTH           = 10;
+    const ACCOUNT_ID_MAX_LENGTH              = 255;
+    const USER_ID_MAX_LENGTH                 = 255;
+    const BIRTH_DATE_FORMAT                  = 'd-m-Y';
 
     /**
      * Customer’s bank account name
@@ -84,9 +96,207 @@ class Payout extends \Genesis\API\Request\Base\Financial
      * Returns the Request transaction type
      * @return string
      */
+
+    /**
+     * Name of the province that the bank is located
+     *
+     * @var string $bank_province
+     */
+    protected $bank_province;
+
+    /**
+     * ID card number
+     *
+     * @var string $id_card_number
+     */
+    protected $id_card_number;
+
+    /**
+     * Payer bank phone number
+     *
+     * @var string $payer_bank_phone_number
+     */
+    protected $payer_bank_phone_number;
+
+    /**
+     * The type of account.
+     *     C: for Checking accounts
+     *     S: for Savings accounts
+     *     M: for Maestra accounts(Only Peru)
+     *
+     * @var string $bank_account_type
+     */
+    protected $bank_account_type;
+
+    /**
+     * ID card/document type
+     *
+     * @var string $document_type
+     */
+    protected $document_type;
+
+    /**
+     * Unique account identifier in Trustly's system
+     * You will receive this after Select
+     * Account call and after Trustly Sale on the notification URL
+     *
+     * @var string $account_id
+     */
+    protected $account_id;
+
+    /**
+     * Unique user identifier defined by merchant
+     *
+     * @var string $user_id
+     */
+    protected $user_id;
+
+    /**
+     * Required for Visa only when MCC is a Financial Services one (e.g. MCC 6012)
+     *
+     * @var \DateTime $birth_date
+     */
+    protected $birth_date;
+
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::ONLINE_BANKING_PAYOUT;
+    }
+
+    /**
+     * ID card number
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setIdCardNumber($value)
+    {
+        return $this->setLimitedString(
+            'id_card_number',
+            $value,
+            null,
+            self::ID_CARD_NUMBER_MAX_LENGTH
+        );
+    }
+
+    /**
+     * Payer bank phone number
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setPayerBankPhoneNumber($value)
+    {
+        return $this->setLimitedString(
+            'payer_bank_phone_number',
+            $value,
+            null,
+            self::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH
+        );
+    }
+
+    /**
+     * The type of account
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setBankAccountType($value)
+    {
+        return $this->allowedOptionsSetter(
+            'bank_account_type',
+            BankAccountTypes::getAll(),
+            $value,
+            'Invalid bank_account_type.'
+        );
+    }
+
+    /**
+     * ID card/document type
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setDocumentType($value)
+    {
+        return $this->setLimitedString(
+            'document_type',
+            $value,
+            null,
+            self::DOCUMENT_TYPE_MAX_LENGTH
+        );
+    }
+
+    /**
+     * Unique account identifier in Trustly's system
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setAccountId($value)
+    {
+        return $this->setLimitedString(
+            'account_id',
+            $value,
+            null,
+            self::ACCOUNT_ID_MAX_LENGTH
+        );
+    }
+
+    /**
+     * Unique user identifier defined by merchant
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setUserId($value)
+    {
+        return $this->setLimitedString(
+            'user_id',
+            $value,
+            null,
+            self::USER_ID_MAX_LENGTH
+        );
+    }
+
+    /**
+     * Setter Birth Date
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setBirthDate($value)
+    {
+        if (is_null($value)) {
+            $this->birth_date = null;
+            return $this;
+        }
+
+        return $this->parseDate(
+            'birth_date',
+            [self::BIRTH_DATE_FORMAT, 'Y-d-m'],
+            $value,
+            'Invalid birth_date format.'
+        );
+    }
+
+    /**
+     * Getter Birth Date
+     *
+     * @return string
+     */
+    public function getBirthDate()
+    {
+        return is_null($this->birth_date) ?
+            '' :
+            $this->birth_date->format(self::BIRTH_DATE_FORMAT);
     }
 
     /**
@@ -100,26 +310,23 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'transaction_id',
             'amount',
             'currency',
+            'notification_url',
             'return_success_url',
             'return_failure_url',
             'remote_ip',
-            'bank_account_name',
-            'bank_account_number',
             'billing_first_name',
             'billing_last_name',
             'billing_state',
             'billing_country'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'currency' => [
-                'CNY', 'THB', 'IDR'
-            ]
+            'currency' => PayoutBankParameters::getAllowedCurrencies()
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = Common::createArrayObject($requiredFieldValues);
 
         $this->setRequiredFieldsConditional();
     }
@@ -131,27 +338,48 @@ class Payout extends \Genesis\API\Request\Base\Financial
      */
     protected function setRequiredFieldsConditional()
     {
-        $requiredFieldsConditional = [
-            'currency' => [
-                'IDR' => ['bank_code'],
-                'CNY' => ['bank_branch', 'bank_name'],
-                'THB' => ['bank_name']
-            ]
-        ];
-
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
-
         $requiredFieldValuesConditional = [
             'currency' => [
+                'ARS' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('ARS')]
+                ],
+                'BRL' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('BRL')]
+                ],
+                'CLP' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('CLP')]
+                ],
                 'CNY' => [
-                    [
-                        'bank_account_number' => new RegexValidator('/^[0-9]{19}$/')
-                    ]
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('CNY')]
+                ],
+                'COP' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('COP')]
+                ],
+                'IDR' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('IDR')]
+                ],
+                'INR' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('INR')]
+                ],
+                'MYR' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('MYR')]
+                ],
+                'MXN' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('MXN')]
+                ],
+                'PEN' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('PEN')]
+                ],
+                'THB' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('THB')]
+                ],
+                'UYU' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('UYU')]
                 ]
             ]
         ];
 
-        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldValuesConditional);
+        $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
     }
 
     /**
@@ -161,19 +389,28 @@ class Payout extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'              => $this->transformAmount($this->amount, $this->currency),
-            'currency'            => $this->currency,
-            'customer_email'      => $this->customer_email,
-            'customer_phone'      => $this->customer_phone,
-            'return_success_url'  => $this->return_success_url,
-            'return_failure_url'  => $this->return_failure_url,
-            'bank_code'           => $this->bank_code,
-            'bank_name'           => $this->bank_name,
-            'bank_branch'         => $this->bank_branch,
-            'bank_account_name'   => $this->bank_account_name,
-            'bank_account_number' => $this->bank_account_number,
-            'billing_address'     => $this->getBillingAddressParamsStructure(),
-            'shipping_address'    => $this->getShippingAddressParamsStructure()
+            'amount'                    => $this->transformAmount($this->amount, $this->currency),
+            'currency'                  => $this->currency,
+            'customer_email'            => $this->customer_email,
+            'customer_phone'            => $this->customer_phone,
+            'notification_url'          => $this->notification_url,
+            'return_success_url'        => $this->return_success_url,
+            'return_failure_url'        => $this->return_failure_url,
+            'bank_code'                 => $this->bank_code,
+            'bank_name'                 => $this->bank_name,
+            'bank_branch'               => $this->bank_branch,
+            'bank_account_name'         => $this->bank_account_name,
+            'bank_account_number'       => $this->bank_account_number,
+            'bank_province'             => $this->bank_province,
+            'id_card_number'            => $this->id_card_number,
+            'payer_bank_account_number' => $this->payer_bank_phone_number,
+            'bank_account_type'         => $this->bank_account_type,
+            'document_type'             => $this->document_type,
+            'account_id'                => $this->account_id,
+            'user_id'                   => $this->user_id,
+            'birth_date'                => $this->getBirthDate(),
+            'billing_address'           => $this->getBillingAddressParamsStructure(),
+            'shipping_address'          => $this->getShippingAddressParamsStructure()
         ];
     }
 }

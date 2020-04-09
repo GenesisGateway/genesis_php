@@ -24,10 +24,10 @@
 namespace Genesis\API\Traits\Request\Financial\TravelData;
 
 /**
- * Trait AncillaryChargesAttributes
+ * Trait ReferenceTicketAttributes
  * @package Genesis\API\Traits\Request\Financial\TravelData
  */
-trait AncillaryChargesAttributes
+trait ReferenceTicketAttributes
 {
     /**
      * Unique id of the ticket transaction
@@ -73,14 +73,21 @@ trait AncillaryChargesAttributes
     /**
      * @return array
      */
-    public function getAncillaryChargesStructure()
+    public function getReferenceTicketStructure()
     {
         return [
-            'ticket'  => [
                 'ticket_reference_id'       => $this->ac_ticket_reference_id,
                 'ticket_document_number'    => $this->ac_ticket_document_number,
                 'issued_with_ticket_number' => $this->ac_issued_with_ticket_number
-            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getChargesStructure()
+    {
+        return [
             'charges' => [
                 'charge' => [
                     'type'     => $this->ac_type,

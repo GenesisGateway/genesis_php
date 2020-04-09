@@ -180,7 +180,6 @@ Financial\Refund
 Financial\Cancel
 
 // Alternative Payment Methods transactions
-Financial\Alternatives\Earthport
 Financial\Alternatives\P24
 Financial\Alternatives\POLi
 Financial\Alternatives\PPRO
@@ -193,9 +192,6 @@ Financial\Alternatives\Trustly\Sale
 Financial\Alternatives\Trustly\Withdrawal
 Financial\Alternatives\PaypalExpress
 
-// PayByVouchers transactions
-Financial\PayByVouchers\Sale
-
 // Credit Cards transactions
 Financial\Cards\Argencard
 Financial\Cards\Aura
@@ -207,7 +203,6 @@ Financial\Cards\Cencosud
 Financial\Cards\Credit
 Financial\Cards\Elo
 Financial\Cards\EzeeCardPayout
-Financial\Cards\Hipercard
 Financial\Cards\Naranja
 Financial\Cards\Nativa
 Financial\Cards\Payout
@@ -222,14 +217,11 @@ Financial\Cards\Recurring\RecurringSale
 Financial\CashPayments\Baloto
 Financial\CashPayments\BancoDeOccidente
 Financial\CashPayments\Boleto
-Financial\CashPayments\Carulla
 Financial\CashPayments\Efecty
-Financial\CashPayments\EmpreseDeEnergia
 Financial\CashPayments\Oxxo
 Financial\CashPayments\PagoFacil
 Financial\CashPayments\Redpagos
 Financial\CashPayments\SantanderCash
-Financial\CashPayments\Surtimax
 
 // Crypto transactions
 Financial\Crypto\BitPay\Sale
@@ -249,8 +241,6 @@ Financial\SDD\Recurring\InitRecurringSale
 Financial\SDD\Recurring\RecurringSale
 
 //Online Banking Payments
-Financial\OnlineBankingPayments\Alipay
-Financial\OnlineBankingPayments\AstropayDirect
 Financial\OnlineBankingPayments\BancoDoBrasil
 Financial\OnlineBankingPayments\Bancomer
 Financial\OnlineBankingPayments\Bradesco
@@ -268,8 +258,6 @@ Financial\OnlineBankingPayments\Multibanco
 Financial\OnlineBankingPayments\MyBank
 Financial\OnlineBankingPayments\OnlineBanking\Payin
 Financial\OnlineBankingPayments\OnlineBanking\Payout
-Financial\OnlineBankingPayments\PaySec\Payin
-Financial\OnlineBankingPayments\PaySec\Payout
 Financial\OnlineBankingPayments\PayU
 Financial\OnlineBankingPayments\Pse
 Financial\OnlineBankingPayments\RapiPago
@@ -279,11 +267,11 @@ Financial\OnlineBankingPayments\TrustPay
 Financial\OnlineBankingPayments\Webpay
 Financial\OnlineBankingPayments\WeChat
 
+// Preauthorization
 Financial\Preauthorization\IncrementalAuthorize
 Financial\Preauthorization\PartialReversal
 
 // Vouchers
-Financial\Vouchers\AstropayCard
 Financial\Vouchers\CashU
 Financial\Vouchers\Neosurf
 Financial\Vouchers\Paysafecard
@@ -339,11 +327,13 @@ NonFinancial\KYC\Transaction\Update
 NonFinancial\Reconcile\DateRange
 NonFinancial\Reconcile\Transaction
 
-// Get ABN iDEAL supported banks
-NonFinancial\Retrieve\AbniDealBanks
-
 // SCA Checker API
 NonFinancial\Sca\Checker
+
+// Processed Transactions API
+NonFinancial\ProcessedTransactions\Transaction
+NonFinancial\ProcessedTransactions\DateRange
+NonFinancial\ProcessedTransactions\PostDateRange
 
 // TransferTo Payers API
 NonFinancial\Alternatives\TransferTo\Payers

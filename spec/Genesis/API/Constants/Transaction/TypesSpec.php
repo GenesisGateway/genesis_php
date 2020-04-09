@@ -61,4 +61,19 @@ class TypesSpec extends ObjectBehavior
         $this->getCustomRequiredParameters(Types::CITADEL_PAYIN)->shouldNotBe(false);
         $this->getCustomRequiredParameters(Types::KLARNA_AUTHORIZE)->shouldNotBe(false);
     }
+
+    public function it_should_return_array_with_all_transaction_types()
+    {
+        $this->getAll()->shouldBeArray();
+    }
+
+    public function it_should_return_non_empty_array_with_all_transaction_types()
+    {
+        $this->getAll()->shouldNotBe([]);
+    }
+
+    public function it_should_return_array_with_deprecated_transaction_types()
+    {
+        $this->getDeprecatedRequests()->shouldBeArray();
+    }
 }

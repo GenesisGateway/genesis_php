@@ -3,6 +3,7 @@
 namespace spec\Genesis;
 
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\Exceptions\DeprecatedMethod;
 use PhpSpec\ObjectBehavior;
 
 class GenesisSpec extends ObjectBehavior
@@ -120,9 +121,16 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
     }
 
+    public function it_fails_on_deprecated_abnideal_api_request()
+    {
+        $this->beConstructedWith('NonFinancial\Retrieve\AbniDealBanks');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
     public function it_fails_on_deprecated_entercash_request()
     {
-        $this->beConstructedWith('Financial\OnlineBanking\Entercash');
+        $this->beConstructedWith('Financial\OnlineBankingPayments\Entercash');
 
         $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
     }
@@ -143,16 +151,79 @@ class GenesisSpec extends ObjectBehavior
 
     public function it_fails_on_deprecated_citadel_payout_request()
     {
-        $this->beConstructedWith('Financial\OnlinebankingPayments\Citadel\Payout');
+        $this->beConstructedWith('Financial\OnlineBankingPayments\Citadel\Payout');
 
         $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
     }
 
-    public function it_fails_on_deprecatd_pay_by_vouchers_obep_request()
+    public function it_fails_on_deprecated_pay_by_vouchers_obep_request()
     {
         $this->beConstructedWith('Financial\PayByVouchers\oBeP');
 
         $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_pay_by_vouchers_sale_request()
+    {
+        $this->beConstructedWith('Financial\PayByVouchers\Sale');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_astropay_direct_request()
+    {
+        $this->beConstructedWith('Financial\OnlineBankingPayments\AstropayDirect');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_astropay_card_request()
+    {
+        $this->beConstructedWith('Financial\Vouchers\AstropayCard');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_emprese_de_energia_request()
+    {
+        $this->beConstructedWith('Financial\CashPayments\EmpreseDeEnergia');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_carulla_request()
+    {
+        $this->beConstructedWith('Financial\CashPayments\Carulla');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_surtimax_request()
+    {
+        $this->beConstructedWith('Financial\CashPayments\Surtimax');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_hipercard_request()
+    {
+        $this->beConstructedWith('Financial\Cards\Hipercard');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_earthport_request()
+    {
+        $this->beConstructedWith('Financial\Alternatives\Earthport');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_alipay_request()
+    {
+        $this->beConstructedWith('Financial\OnlineBankingPayments\Alipay');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
     }
 
     public function it_fails_on_non_existing_transaction_request()

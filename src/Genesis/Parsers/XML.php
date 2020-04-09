@@ -87,7 +87,7 @@ final class XML implements \Genesis\Interfaces\Parser
         $hasAttributes = false;
 
         $reader = new \XMLReader();
-        $reader->open('data:text/plain;base64,' . base64_encode($xmlDocument));
+        $reader->XML($xmlDocument);
 
         if ($this->skipRootNode) {
             if ($reader->read() && $reader->hasAttributes) {

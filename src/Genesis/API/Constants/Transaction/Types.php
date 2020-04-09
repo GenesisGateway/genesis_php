@@ -22,6 +22,7 @@
  */
 namespace Genesis\API\Constants\Transaction;
 
+use Genesis\API\Constants\NonFinancial\Services;
 use Genesis\Utils\Common;
 
 /**
@@ -33,11 +34,6 @@ use Genesis\Utils\Common;
  */
 class Types
 {
-    /**
-     * Address Verification
-     */
-    const AVS = 'avs';
-
     /**
      * Account Verification
      */
@@ -105,6 +101,8 @@ class Types
 
     /**
      * Bank transfer, popular in Netherlands (via ABN)
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ABNIDEAL = 'abn_ideal';
 
@@ -141,6 +139,8 @@ class Types
 
     /**
      * PayByVouchers via Credit/Debit Cards
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const PAYBYVOUCHER_SALE = 'paybyvoucher_sale';
 
@@ -202,6 +202,8 @@ class Types
 
     /**
      * Global payment system, that makes instant cross-border payments more secure, regulated by Danish and Swiss FSA
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const INPAY = 'inpay';
 
@@ -331,6 +333,8 @@ class Types
      * Alipay is an oBeP-style alternative payment method that allows you to pay directly with your ebank account.
      * After initiating a transaction Alipay will redirect you to their page. There you will see a picture of a QR code,
      * which you will have to scan with your Alipay mobile application.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ALIPAY = 'alipay';
 
@@ -412,6 +416,8 @@ class Types
 
     /**
      * Entercash is a payment method provider across Europe
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ENTERCASH = 'entercash';
 
@@ -462,6 +468,8 @@ class Types
 
     /**
      * Banamex is local card payment in Mexico
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const BANAMEX = 'banamex';
 
@@ -474,17 +482,23 @@ class Types
      * Astropay Direct is Online Banking ePayment which allows the customers to pay with their bank accounts
      * in their local currency. Customers go straight from the merchant checkout page to a payment interface,
      * which connects the customer with their bank of preference.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ASTROPAY_DIRECT = 'astropay_direct';
 
     /**
      * Emprese De Energia is a cash payment in Colombia
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const EMPRESE_DE_ENERGIA = 'emprese_de_energia';
 
     /**
      * Carulla is a payment service in Columbia that allows its users to send money,
      * top up their cell phone and payments.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const CARULLA = 'carulla';
 
@@ -511,7 +525,9 @@ class Types
     const SANTANDER_CASH = 'santander_cash';
 
     /**
-     * Surtimax is a cash payment method in Columbia.
+     * Surtimax is a cash payment method in Columbia
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const SURTIMAX = 'surtimax';
 
@@ -542,7 +558,9 @@ class Types
     const ELO = 'elo';
 
     /**
-     * Hipercard is a local credit card in Brazil.
+     * Hipercard is a local credit card in Brazil
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const HIPERCARD = 'hipercard';
 
@@ -604,6 +622,8 @@ class Types
      * Astropay Card is the most popular virtual pre-paid card for making deposits and withdrawals. It is accepted
      * at hundreds of online sites all around the globe. It is the preferred option by users because of its
      * instantaneity, flexibility, confidentiality and safety.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ASTROPAY_CARD = 'astropay_card';
 
@@ -657,6 +677,16 @@ class Types
     const WEBPAY = 'webpay';
 
     /**
+     * Retrieve all available transaction Types
+     *
+     * @return array
+     */
+    public static function getAll()
+    {
+        return Common::getClassConstants(__CLASS__);
+    }
+
+    /**
      * @param $type
      *
      * @return bool|string
@@ -664,17 +694,23 @@ class Types
     public static function getFinancialRequestClassForTrxType($type)
     {
         $map = [
+            self::VOID                    => 'Cancel',
+            self::CAPTURE                 => 'Capture',
+            self::REFUND                  => 'Refund',
             self::ABNIDEAL                => 'Alternatives\ABNiDEAL',
             self::EARTHPORT               => 'Alternatives\Earthport',
             self::INPAY                   => 'Alternatives\INPay',
+            self::KLARNA_AUTHORIZE        => 'Alternatives\Klarna\Authorize',
+            self::KLARNA_CAPTURE          => 'Alternatives\Klarna\Capture',
+            self::KLARNA_REFUND           => 'Alternatives\Klarna\Refund',
             self::P24                     => 'Alternatives\P24',
             self::PAYPAL_EXPRESS          => 'Alternatives\PaypalExpress',
             self::POLI                    => 'Alternatives\POLi',
             self::PPRO                    => 'Alternatives\PPRO',
             self::SOFORT                  => 'Alternatives\Sofort',
+            self::TRANSFER_TO_PAYOUT      => 'Alternatives\TransferTo\Payout',
             self::TRUSTLY_SALE            => 'Alternatives\Trustly\Sale',
             self::TRUSTLY_WITHDRAWAL      => 'Alternatives\Trustly\Withdrawal',
-            self::KLARNA_AUTHORIZE        => 'Alternatives\Klarna\Authorize',
             self::INIT_RECURRING_SALE     => 'Cards\Recurring\InitRecurringSale',
             self::INIT_RECURRING_SALE_3D  => 'Cards\Recurring\InitRecurringSale3D',
             self::RECURRING_SALE          => 'Cards\Recurring\RecurringSale',
@@ -745,8 +781,9 @@ class Types
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
+            self::INCREMENTAL_AUTHORIZE   => 'Preauthorization\IncrementalAuthorize',
+            self::PARTIAL_REVERSAL        => 'Preauthorization\PartialReversal',
             self::SCT_PAYOUT              => 'SCT\Payout',
-            self::SDD_SALE                => 'SDD\Sale',
             self::SDD_INIT_RECURRING_SALE => 'SDD\Recurring\InitRecurringSale',
             self::SDD_RECURRING_SALE      => 'SDD\Recurring\RecurringSale',
             self::SDD_REFUND              => 'SDD\Refund',
@@ -787,90 +824,75 @@ class Types
     public static function getWPFTransactionTypes()
     {
         return [
-            self::AUTHORIZE,
-            self::AUTHORIZE_3D,
-            self::SALE,
-            self::SALE_3D,
-            self::INIT_RECURRING_SALE,
-            self::INIT_RECURRING_SALE_3D,
-            self::CASHU,
-            self::PAYSAFECARD,
-            self::EZEEWALLET,
-            self::PAYBYVOUCHER_YEEPAY,
-            self::PPRO,
-            self::SOFORT,
-            self::NETELLER,
-            self::ABNIDEAL,
-            self::WEBMONEY,
-            self::POLI,
-            self::PAYBYVOUCHER_SALE,
-            self::INPAY,
-            self::SDD_SALE,
-            self::SDD_INIT_RECURRING_SALE,
-            self::P24,
-            self::TRUSTLY_SALE,
-            self::TRUSTLY_WITHDRAWAL,
-            self::PAYPAL_EXPRESS,
-            self::CITADEL_PAYIN,
-            self::INSTA_DEBIT_PAYIN,
-            self::WECHAT,
-            self::ALIPAY,
-            self::ONLINE_BANKING_PAYIN,
-            self::ONLINE_BANKING_PAYOUT,
-            self::IDEBIT_PAYIN,
-            self::TCS,
-            self::FASHIONCHEQUE,
-            self::INTERSOLVE,
-            self::KLARNA_AUTHORIZE,
-            self::ZIMPLER,
-            self::BANCO_DO_BRASIL,
-            self::ENTERCASH,
-            self::INSTANT_TRANSFER,
-            self::PAYU,
-            self::MULTIBANCO,
-            self::BITPAY_SALE,
-            self::BITPAY_PAYOUT,
-            self::BANCO_DE_OCCIDENTE,
-            self::BALOTO,
-            self::CARULLA,
-            self::BANAMEX,
-            self::CARULLA,
-            self::BOLETO,
-            self::CARULLA,
-            self::CARULLA,
-            self::OXXO,
-            self::PAGO_FACIL,
-            self::REDPAGOS,
-            self::SANTANDER_CASH,
-            self::SURTIMAX,
-            self::EFECTY,
-            self::ASTROPAY_DIRECT,
-            self::EMPRESE_DE_ENERGIA,
+            self::ACCOUNT_VERIFICATION,
             self::ARGENCARD,
             self::AURA,
-            self::CENCOSUD,
-            self::ELO,
-            self::HIPERCARD,
+            self::AUTHORIZE,
+            self::AUTHORIZE_3D,
+            self::BALOTO,
+            self::BANCOMER,
+            self::BANCONTACT,
+            self::BANCO_DE_OCCIDENTE,
+            self::BANCO_DO_BRASIL,
+            self::BITPAY_PAYOUT,
+            self::BITPAY_SALE,
+            self::BOLETO,
+            self::BRADESCO,
             self::CABAL,
+            self::CASHU,
+            self::CENCOSUD,
+            self::DAVIVIENDA,
+            self::EFECTY,
+            self::ELO,
+            self::EPS,
+            self::EZEEWALLET,
+            self::FASHIONCHEQUE,
+            self::GIROPAY,
+            self::IDEAL,
+            self::IDEBIT_PAYIN,
+            self::INIT_RECURRING_SALE,
+            self::INIT_RECURRING_SALE_3D,
+            self::INSTANT_TRANSFER,
+            self::INSTA_DEBIT_PAYIN,
+            self::INTERSOLVE,
+            self::ITAU,
+            self::KLARNA_AUTHORIZE,
+            self::MULTIBANCO,
+            self::MY_BANK,
             self::NARANJA,
             self::NATIVA,
-            self::TARJETA_SHOPPING,
             self::NEOSURF,
-            self::SAFETYPAY,
-            self::ITAU,
-            self::SANTANDER,
-            self::BANCOMER,
-            self::BRADESCO,
-            self::ASTROPAY_CARD,
-            self::RAPI_PAGO,
+            self::NETELLER,
+            self::ONLINE_BANKING_PAYIN,
+            self::OXXO,
+            self::P24,
+            self::PAGO_FACIL,
+            self::PAYPAL_EXPRESS,
+            self::PAYSAFECARD,
+            self::PAYU,
+            self::POLI,
+            self::PPRO,
             self::PSE,
-            self::TRUSTPAY,
-            self::MY_BANK,
-            self::BANCONTACT,
             self::QIWI,
-            self::IDEAL,
-            self::EPS,
-            self::GIROPAY
+            self::RAPI_PAGO,
+            self::REDPAGOS,
+            self::SAFETYPAY,
+            self::SALE,
+            self::SALE_3D,
+            self::SANTANDER,
+            self::SANTANDER_CASH,
+            self::SDD_INIT_RECURRING_SALE,
+            self::SDD_SALE,
+            self::SOFORT,
+            self::TARJETA_SHOPPING,
+            self::TCS,
+            self::TRUSTLY_SALE,
+            self::TRUSTLY_WITHDRAWAL,
+            self::TRUSTPAY,
+            self::WEBMONEY,
+            self::WEBPAY,
+            self::WECHAT,
+            self::ZIMPLER
         ];
     }
 
@@ -955,35 +977,56 @@ class Types
     public static function canRefund($type)
     {
         $transactionTypesList = [
+            self::BALOTO,
+            self::BANCOMER,
+            self::BANCONTACT,
+            self::BANCO_DE_OCCIDENTE,
+            self::BANCO_DO_BRASIL,
+            self::BITPAY_SALE,
+            self::BOLETO,
+            self::BRADESCO,
             self::CAPTURE,
             self::CASHU,
             self::DAVIVIENDA,
+            self::EFECTY,
+            self::EPS,
+            self::FASHIONCHEQUE,
+            self::GIROPAY,
+            self::IDEAL,
+            self::IDEBIT_PAYIN,
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
-            self::INPAY,
+            self::INSTANT_TRANSFER,
+            self::ITAU,
+            self::KLARNA_CAPTURE,
+            self::MY_BANK,
+            self::MY_BANK,
+            self::NEOSURF,
+            self::OXXO,
             self::P24,
+            self::PAGO_FACIL,
+            self::PARTIAL_REVERSAL,
             self::PAYPAL_EXPRESS,
+            self::PAYU,
             self::PPRO,
+            self::PSE,
+            self::QIWI,
+            self::RAPI_PAGO,
+            self::REDPAGOS,
+            self::SAFETYPAY,
             self::SALE,
             self::SALE_3D,
+            self::SANTANDER,
+            self::SDD_INIT_RECURRING_SALE,
+            self::SDD_RECURRING_SALE,
+            self::SDD_SALE,
             self::SOFORT,
             self::TRUSTLY_SALE,
-            self::FASHIONCHEQUE,
-            self::KLARNA_CAPTURE,
+            self::TRUSTLY_SALE,
+            self::WEBPAY,
+            self::WECHAT,
             self::ZIMPLER,
-            self::ENTERCASH,
-            self::INSTANT_TRANSFER,
-            self::PAYU,
-            self::BITPAY_SALE,
-            self::NEOSURF,
-            self::SAFETYPAY,
-            self::MY_BANK,
-            self::BANCONTACT,
-            self::QIWI,
-            self::IDEAL,
-            self::EPS,
-            self::GIROPAY,
-            self::WEBPAY
+            self::ZIMPLER
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1002,7 +1045,9 @@ class Types
             self::TRUSTLY_SALE,
             self::TCS,
             self::FASHIONCHEQUE,
-            self::INTERSOLVE
+            self::INTERSOLVE,
+            self::REFUND,
+            self::CAPTURE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1075,10 +1120,10 @@ class Types
     public static function getCaptureTransactionClass($authorizeType)
     {
         switch ($authorizeType) {
-            case self::AUTHORIZE:
-                return 'Financial\Capture';
             case self::KLARNA_AUTHORIZE:
                 return 'Financial\Alternatives\Klarna\Capture';
+            default:
+                return 'Financial\Capture';
             break;
         }
     }
@@ -1092,12 +1137,17 @@ class Types
     public static function getRefundTransactionClass($captureType)
     {
         switch ($captureType) {
-            case self::CAPTURE:
-                return 'Financial\Refund';
             case self::KLARNA_CAPTURE:
                 return 'Financial\Alternatives\Klarna\Refund';
             case self::BITPAY_SALE:
                 return 'Financial\Crypto\BitPay\Refund';
+            case self::SDD_SALE:
+            case self::SDD_RECURRING_SALE:
+            case self::SDD_INIT_RECURRING_SALE:
+                return 'Financial\SDD\Refund';
+                break;
+            default:
+                return 'Financial\Refund';
                 break;
         }
     }
@@ -1116,5 +1166,53 @@ class Types
         }
 
         return CustomRequiredParameters::$method();
+    }
+
+    /**
+     * Get Deprecated Processing Requests
+     *
+     * @return array
+     */
+    public static function getFinancialDeprecatedRequests()
+    {
+        $data = array();
+
+        $transactions = [
+            self::ABNIDEAL,
+            self::ALIPAY,
+            self::ASTROPAY_CARD,
+            self::ASTROPAY_DIRECT,
+            self::BANAMEX,
+            self::CARULLA,
+            self::CITADEL_PAYIN,
+            self::CITADEL_PAYOUT,
+            self::EARTHPORT,
+            self::EMPRESE_DE_ENERGIA,
+            self::ENTERCASH,
+            self::HIPERCARD,
+            self::INPAY,
+            self::PAYBYVOUCHER_SALE,
+            self::PAYBYVOUCHER_YEEPAY,
+            self::SURTIMAX
+        ];
+
+        foreach ($transactions as $transaction) {
+            $data[$transaction] = self::getFinancialRequestClassForTrxType($transaction);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get deprecated Request
+     *
+     * @return array
+     */
+    public static function getDeprecatedRequests()
+    {
+        return array_merge(
+            self::getFinancialDeprecatedRequests(),
+            Services::getServiceDeprecatedRequests()
+        );
     }
 }

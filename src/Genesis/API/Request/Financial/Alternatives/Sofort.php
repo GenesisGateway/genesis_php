@@ -84,7 +84,7 @@ class Sofort extends \Genesis\API\Request\Base\Financial
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => ['AT', 'BE', 'DE', 'ES', 'FR', 'GB', 'IT', 'NL'],
+            'billing_country' => ['AT', 'BE', 'DE', 'ES', 'IT', 'NL', 'CH', 'PL'],
             'currency'        => \Genesis\Utils\Currency::getList()
         ];
 

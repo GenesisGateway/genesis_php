@@ -28,19 +28,36 @@ use Genesis\API\Traits\RestrictedSetter;
 /**
  * Trait TravelDataAttributes
  * @package Genesis\API\Traits\Request\Financial\TravelData
+ *
  */
 trait TravelDataAttributes
 {
     use RestrictedSetter, AirlineItineraryAttributes, CarRentalAttributes,
-        HotelRentalAttributes, AncillaryChargesAttributes;
+        HotelRentalAttributes, ReferenceTicketAttributes;
 
+    /**
+     * Get Level 3 data structure
+     *
+     * @return array
+     */
     public function getTravelData()
     {
         return array_merge(
-            $this->getAirlineItineraryStructure(),
-            $this->getCarRentalStructure(),
-            $this->getHotelRentalStructure(),
-            $this->getAncillaryChargesStructure()
+            [
+                'ticket' => array_merge(
+                    $this->getAirlineItineraryStructure(),
+                    $this->getReferenceTicketStructure()
+                ),
+                'legs'   => $this->getLegsStructure(),
+                'taxes'  => $this->getTaxesStructure()
+            ],
+            [
+                 'rentals' => array_merge(
+                     $this->getHotelRentalStructure(),
+                     $this->getCarRentalStructure()
+                 )
+            ],
+            $this->getChargesStructure()
         );
     }
 }

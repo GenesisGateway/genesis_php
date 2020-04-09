@@ -1,9 +1,68 @@
+1.18.2
+-----
+**Features:**
+
+* Updated the list with supported billing countries for Trustly Sale. Removed countries:
+    * Bulgaria
+    * Hungary
+    * Ireland
+    * Italy
+    * Portugal
+    * Romania
+    * Slovenia
+* Updated the list with supported billing countries for Paysafecard. Added countries:
+    * Australia
+    * Bulgaria
+    * Georgia
+    * Gibraltar
+    * Iceland
+    * Kuwait
+    * Latvia
+    * Liechtenstein
+    * Lithuania
+    * Montenegro
+    * New Zealand
+    * Paraguay
+    * Peru
+    * Saudi Arabia
+    * Uruguay
+* Updated the list with supported billing countries for Sofort. Removed countries:
+    * France
+    * United Kingdom
+* Updated list with the supported transaction types for the Web Payment Form (WPF)
+* Added helper methods for retrieving the transaction name by transaction type
+* Extended the list with the Level 3 Data attributes. Added attributes:
+    * Taxes - fee_amount and fee_type
+    * Airline Itinerary - confirmation_information, date_of_issue
+    * Airline Leg - arrival_date
+* Added new attributes to the Refund transaction request. Added attributes:
+    * bank
+    * bank_branch
+    * bank_account
+    * bank_account_type
+* Updated the list with supported currencies for Bank Payout transaction type. Added currencies:
+    * Argentine peso
+    * Brazilian real
+    * Chilean peso
+    * Colombian peso
+    * Mexican peso
+    * Peruvian sol
+    * Uruguayan peso
+
+**Fixes:**
+
+* Removed usage of internal SSL Certificates for peer verification. The verification of the peer remains required.
+* Fixed the method parsing XML response. No longer the parser fails when the php.ini setting **allow_url_fopen** is Off.
+* Fixed a minor problem with the core validations
+
 1.18.1
 -----
 **Features:**
 
 * Added Finnish language support in Web Payment Form
 * Updated the card-holder validation rules
+* Updated OnlineBanking PayIn Request with the latest currency support and UPI payment type
+* Added support of Processed Transactions API
 
 **Fixes:**
 

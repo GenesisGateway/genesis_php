@@ -20,12 +20,16 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis;
 
 use Genesis\API\Constants\Transaction\Types;
-use Genesis\API\Request;
+use Genesis\API\Response;
+use Genesis\Exceptions\DeprecatedMethod;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Common;
+use Genesis\Utils\Requirements;
 
 /**
  * Base class of Genesis
@@ -34,6 +38,8 @@ use Genesis\Utils\Common;
  */
 class Genesis
 {
+    const REQUEST_NAMESPACE = '\Genesis\API\Request\\';
+
     /**
      * Store the Network Request Instance
      *
@@ -44,14 +50,14 @@ class Genesis
     /**
      * Store the Network Response Instance
      *
-     * @var \Genesis\API\Response
+     * @var Response
      */
     protected $responseCtx;
 
     /**
      * Store the Network Request Instance
      *
-     * @var \Genesis\Network
+     * @var Network
      */
     protected $networkCtx;
 
@@ -60,41 +66,35 @@ class Genesis
      *
      * @param $request - API Request name, please consult the README for a list of all requests
      *
-     * @throws Exceptions\InvalidMethod()
+     * @throws InvalidMethod
+     * @throws DeprecatedMethod
+     * @throws InvalidArgument
      */
     public function __construct($request)
     {
         // Verify system requirements
-        \Genesis\Utils\Requirements::verify();
+        Requirements::verify();
 
-        // Initialize the request
+        // Retrieve the library from request
         $request = $this->getRequestClass($request);
 
-        if (!class_exists($request)) {
-            throw new \Genesis\Exceptions\InvalidMethod(
-                'The selected transaction type is invalid!'
-            );
-        }
+        // Validate the requested library
+        $this->validate($request);
 
-        if (\Genesis\Utils\Common::isClassAbstract($request)) {
-            throw new \Genesis\Exceptions\InvalidMethod(
-                'The selected transaction type is invalid, because it is abstract!'
-            );
-        }
-        $this->requestCtx = new $request;
+        // Initialize the Request library
+        $this->requestCtx = new $request();
 
         // Initialize the Network
-        $this->networkCtx = new \Genesis\Network();
+        $this->networkCtx = new Network();
 
         // Initialize Response Object
-        $this->responseCtx = new \Genesis\API\Response();
+        $this->responseCtx = new Response();
     }
 
     /**
      * @param string $request
      *
      * @return string
-     * @throws \Genesis\Exceptions\DeprecatedMethod
      */
     protected function getRequestClass($request)
     {
@@ -105,58 +105,56 @@ class Genesis
             case 'Void':
                 $parts[$lastIndex] = 'Cancel';
                 break;
-            case 'AVS':
-            case 'INPay':
-            case 'ABNiDEAL':
-            case 'Entercash':
-            case 'Banamex':
-                $this->throwDeprecatedTransactionType();
-                break;
-            case 'Payin':
-            case 'Payout':
-                if ($this->getParentClass($parts, $lastIndex) === 'Citadel') {
-                    $this->throwDeprecatedTransactionType();
-                }
-                break;
-            case 'oBeP':
-                if ($this->getParentClass($parts, $lastIndex) === 'PayByVouchers') {
-                    $this->throwDeprecatedTransactionType();
-                }
-                break;
         }
 
         return sprintf(
-            '\Genesis\API\Request\%s',
+            self::REQUEST_NAMESPACE . '%s',
             implode('\\', $parts)
         );
     }
 
     /**
-     * @param array $classParts
-     * @param int $lastIndex Index of the last element in the array
+     * Validation of the request library request
      *
-     * @return string Returns empty string, if there is no parent class
+     * @param $request
+     * @throws DeprecatedMethod
+     * @throws InvalidMethod
      */
-    protected function getParentClass($classParts, $lastIndex)
+    protected function validate($request)
     {
-        return isset($classParts[$lastIndex - 1]) ? $classParts[$lastIndex - 1] : '';
-    }
-
-    /**
-     * @throws \Genesis\Exceptions\DeprecatedMethod
-     */
-    protected function throwDeprecatedTransactionType()
-    {
-        throw new \Genesis\Exceptions\DeprecatedMethod(
-            'The selected transaction type is deprecated!'
+        $deprecatedRequests = array_map(
+            function ($request) {
+                return self::REQUEST_NAMESPACE . $request;
+            },
+            Types::getDeprecatedRequests()
         );
+
+        if (in_array($request, $deprecatedRequests)) {
+            throw new DeprecatedMethod(
+                'The selected transaction type is deprecated!'
+            );
+        }
+
+        if (!class_exists($request)) {
+            throw new InvalidMethod(
+                'The selected transaction type is invalid!'
+            );
+        }
+
+        if (Common::isClassAbstract($request)) {
+            throw new InvalidMethod(
+                'The selected transaction type is invalid, because it is abstract!'
+            );
+        }
     }
 
     /**
      * @param string $trxType
      * @param array $params
-     * @throws \Genesis\Exceptions\InvalidArgument
      * @return Genesis
+     * @throws DeprecatedMethod
+     * @throws InvalidArgument
+     * @throws InvalidMethod
      */
     public static function financialFactory($trxType, $params = [])
     {
@@ -195,7 +193,7 @@ class Genesis
     /**
      * Get Response instance
      *
-     * @return \Genesis\API\Response
+     * @return Response
      */
     public function response()
     {

@@ -82,8 +82,6 @@ class Stream extends Base
             'ssl'  => [
                 // DO NOT allow self-signed certificates
                 'allow_self_signed' => false,
-                // Path to certificate/s PEM files used to validate the server authenticity
-                'cafile'            => $requestData['ca_bundle'],
                 // Validate Certificates
                 'verify_peer'       => true,
                 // Abort if the certificate-chain is longer than 5 nodes

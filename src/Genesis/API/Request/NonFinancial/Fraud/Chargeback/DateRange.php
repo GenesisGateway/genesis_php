@@ -115,7 +115,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'start_date',
-            self::DATE_FORMAT,
+            [self::DATE_FORMAT],
             (string) $value,
             'Invalid format for start_date.'
         );
@@ -138,7 +138,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'end_date',
-            self::DATE_FORMAT,
+            [self::DATE_FORMAT],
             (string) $value,
             'Invalid format for end_date.'
         );
@@ -159,7 +159,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'import_date',
-            self::DATE_FORMAT,
+            [self::DATE_FORMAT],
             (string) $value,
             'Invalid format for import_date.'
         );

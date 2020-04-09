@@ -24,6 +24,7 @@
 namespace Genesis\API\Traits;
 
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common;
 
 /**
  * Trait RestrictedSetter
@@ -78,19 +79,27 @@ trait RestrictedSetter
 
     /**
      * @param $field
-     * @param $format
+     * @param array $formats
      * @param $value
      * @param $errorMessage
      *
      * @return $this
      * @throws InvalidArgument
      */
-    protected function parseDate($field, $format, $value, $errorMessage)
+    protected function parseDate($field, $formats, $value, $errorMessage)
     {
-        $date = \DateTime::createFromFormat($format, $value);
+        $date = false;
+
+        foreach ($formats as $format) {
+            $date = \DateTime::createFromFormat($format, $value);
+
+            if ($date instanceof \DateTime) {
+                break;
+            }
+        }
 
         if (!$date) {
-            throw new InvalidArgument($errorMessage . ' Allowed format is ' . $format);
+            throw new InvalidArgument($errorMessage . ' Allowed format is ' . implode(' or ', $formats));
         }
 
         $this->$field = $date;

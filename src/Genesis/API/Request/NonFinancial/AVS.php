@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\NonFinancial;
 
+use Genesis\API\Constants\NonFinancial\Services;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\BaseAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
@@ -85,7 +86,7 @@ class AVS extends \Genesis\API\Request
     {
         $treeStructure = [
             'payment_transaction' => [
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::AVS,
+                'transaction_type' => Services::AVS,
                 'transaction_id'   => $this->transaction_id,
                 'usage'            => $this->usage,
                 'moto'             => $this->moto,

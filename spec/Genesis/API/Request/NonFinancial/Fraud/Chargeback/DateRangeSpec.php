@@ -49,7 +49,35 @@ class DateRangeSpec extends ObjectBehavior
         $this->setStartDate('2012-12-12')->shouldBeAnInstanceOf(DateRange::class);
     }
 
-    public function it_should_return_class_instance_after_set_end_date()
+    public function it_should_fail_when_set_end_date_with_invalid_format()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setEndDate',
+            ['12.12.2012']
+        );
+    }
+
+    public function it_should_be_string_end_date()
+    {
+        $this->setEndDate('2012-12-12');
+        $this->getEndDate()->shouldBeString();
+    }
+
+    public function it_should_be_null_when_unset_end_date()
+    {
+        $this->setEndDate(null);
+        $this->getEndDate()->shouldBeNull();
+    }
+
+    public function it_should_throw_when_start_date_and_import_date_are_not_set()
+    {
+        $this->setStartDate(null);
+        $this->setImportDate(null);
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_have_type_date_range_when_use_set_end_date()
     {
         $this->setEndDate(null)->shouldBeAnInstanceOf(DateRange::class);
         $this->setEndDate('2012-12-12')->shouldBeAnInstanceOf(DateRange::class);

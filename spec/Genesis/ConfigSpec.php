@@ -203,15 +203,6 @@ class ConfigSpec extends ObjectBehavior
         $this::setInterface('network', 'curl');
     }
 
-    public function it_should_have_valid_ca()
-    {
-        $this::getCertificateBundle()->shouldExist();
-
-        $this::getCertificateBundle()->shouldBeReadable();
-
-        $this::getCertificateBundle()->shouldNotBeEmpty();
-    }
-
     public function getMatchers()
     {
         return array(

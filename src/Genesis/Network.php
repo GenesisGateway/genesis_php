@@ -103,7 +103,6 @@ class Network
                 'protocol'   => $apiContext->getApiConfig('protocol'),
                 'format'     => $apiContext->getApiConfig('format'),
                 'timeout'    => \Genesis\Config::getNetworkTimeout(),
-                'ca_bundle'  => \Genesis\Config::getCertificateBundle(),
                 'user_agent' => sprintf('Genesis PHP Client v%s', \Genesis\Config::getVersion()),
                 'user_login' => sprintf('%s:%s', \Genesis\Config::getUsername(), \Genesis\Config::getPassword())
             ]

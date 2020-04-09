@@ -23,15 +23,17 @@
 
 namespace Genesis\API\Traits\Request\Financial\TravelData;
 
-use Genesis\API\Request\Financial\TravelData\AirlineItineraryLegData;
+use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait AirlineItineraryAttributes
  * @package Genesis\API\Traits\Request\Financial\TravelData
+ *
  */
 trait AirlineItineraryAttributes
 {
+
     /**
      * @var string The number on the ticket.
      */
@@ -74,41 +76,48 @@ trait AirlineItineraryAttributes
     protected $aid_agency_code;
 
     /**
+     * @var string An entry should be supplied if a travel agency issued the ticket.
+     */
+    protected $aid_confirmation_information;
+
+    /**
+     * @var string An entry should be supplied if a travel agency issued the ticket.
+     */
+    protected $aid_date_of_issue;
+
+    /**
      * @var array
      */
     protected $legs = [];
 
     /**
-     * @return int
+     * @var array
      */
-    public static function getMaxLegsCount()
-    {
-        return 10;
-    }
+    protected $taxes = [];
 
     /**
      * @return array
      */
     public function getAirlineItineraryStructure()
     {
-        return [
-            'ticket' => [
-                'ticket_number'               => $this->aid_ticket_number,
-                'passenger_name'              => $this->aid_passenger_name,
-                'customer_code'               => $this->aid_customer_code,
-                'restricted_ticket_indicator' => $this->aid_restricted_ticket_indicator,
-                'issuing_carrier'             => $this->aid_issuing_carrier,
-                'total_fare'                  => $this->aid_total_fare,
-                'agency_name'                 => $this->aid_agency_name,
-                'agency_code'                 => $this->aid_agency_code
-            ],
-            'legs'   => $this->getLegsStructure()
+        return  [
+            'ticket_number'               => $this->aid_ticket_number,
+            'passenger_name'              => $this->aid_passenger_name,
+            'customer_code'               => $this->aid_customer_code,
+            'restricted_ticket_indicator' => $this->aid_restricted_ticket_indicator,
+            'issuing_carrier'             => $this->aid_issuing_carrier,
+            'total_fare'                  => $this->transformAmount($this->aid_total_fare, $this->currency),
+            'agency_name'                 => $this->aid_agency_name,
+            'agency_code'                 => $this->aid_agency_code,
+            'confirmation_information'    => $this->aid_confirmation_information,
+            'date_of_issue'               => $this->aid_date_of_issue
         ];
     }
 
     public function getLegsStructure()
     {
         $legs = [];
+
         foreach ($this->legs as $leg) {
             $legs[] = ['leg' => $leg->toArray()];
         }
@@ -116,18 +125,30 @@ trait AirlineItineraryAttributes
         return $legs;
     }
 
+    public function getTaxesStructure()
+    {
+        $taxes = [];
+
+        foreach ($this->taxes as $tax) {
+            $taxes[] = ['tax' => $tax->toArray()];
+        }
+
+        return $taxes;
+    }
+
     /**
-     * @param AirlineItineraryLegData $leg
-     *
+     * @param AidAttributes $item
      * @return $this
      * @throws InvalidArgument
      */
-    public function addLeg(AirlineItineraryLegData $leg)
+    public function addAdditionalAidAttributes(AidAttributes $item)
     {
-        if (count($this->legs) === $this->getMaxLegsCount()) {
-            throw new InvalidArgument('Max legs count of ' . $this->getMaxLegsCount() . ' reached.');
+
+        $structureName = $item->getStructureName();
+        if (count($this->{$structureName}) === $item->getMaxCount()) {
+            throw new InvalidArgument('Max '. $structureName .' count of ' . $item->getMaxCount() . ' reached.');
         }
-        $this->legs[] = $leg;
+        $this->{$structureName}[] = $item;
 
         return $this;
     }
@@ -138,6 +159,11 @@ trait AirlineItineraryAttributes
     public function clearLegs()
     {
         $this->legs = [];
+    }
+
+    public function clearTaxes()
+    {
+        $this->taxes = [];
     }
 
     public function setAidRestrictedTicketIndicator($value)

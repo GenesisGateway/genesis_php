@@ -39,13 +39,6 @@ abstract class Financial extends \Genesis\API\Request
     use BaseAttributes;
 
     /**
-     * Store the names of "conditionally" Required fields with expected values.
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFieldValuesConditional;
-
-    /**
      * Returns the Request transaction type
      * @return string
      */
@@ -70,92 +63,16 @@ abstract class Financial extends \Genesis\API\Request
     /**
      * Perform field validation
      *
-     * @throws \Genesis\Exceptions\ErrorParameter
      * @return void
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
      */
     protected function checkRequirements()
     {
         parent::checkRequirements();
 
-        $this->verifyConditionalValuesRequirements();
-    }
-
-    /**
-     * Verify that all fields (who depend on previously populated fields)
-     * are populated with expected values
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    protected function verifyConditionalValuesRequirements()
-    {
-        if (!isset($this->requiredFieldValuesConditional)) {
-            return;
-        }
-
-        $fields = $this->requiredFieldValuesConditional->getArrayCopy();
-
-        foreach ($fields as $parentFieldName => $parentFieldDependencies) {
-            if (!isset($this->$parentFieldName)) {
-                continue;
-            }
-
-            foreach ($parentFieldDependencies as $parentFieldValue => $childFieldsDependency) {
-                if ($this->$parentFieldName !== $parentFieldValue) {
-                    continue;
-                }
-
-                $childFieldGroupValuesValidated = false;
-
-                foreach ($childFieldsDependency as $childFieldDependency) {
-                    $childFieldValuesValidated = true;
-
-                    foreach ($childFieldDependency as $childFieldName => $childFieldValues) {
-                        if ($childFieldValues instanceof RequestValidator) {
-                            try {
-                                $childFieldValues->run($this, $childFieldName);
-                            } catch (\Genesis\Exceptions\InvalidArgument $e) {
-                                $childFieldValuesValidated = false;
-                            }
-
-                            continue;
-                        }
-
-                        if (CommonUtils::isValidArray($childFieldValues)) {
-                            if (!in_array($this->$childFieldName, $childFieldValues)) {
-                                $childFieldValuesValidated = false;
-                            }
-
-                            continue;
-                        }
-
-                        if ($this->$childFieldName !== $childFieldValues) {
-                            $childFieldValuesValidated = false;
-                        }
-                    }
-
-                    if ($childFieldValuesValidated) {
-                        $childFieldGroupValuesValidated = true;
-
-                        break;
-                    }
-                }
-
-                if (!$childFieldGroupValuesValidated) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
-                        sprintf(
-                            '%s with value %s is depending on group of params with specific values. ' .
-                            'Please, refer to the official API documentation for %s transaction type.',
-                            $parentFieldName,
-                            $parentFieldValue,
-                            $this->getTransactionType()
-                        )
-                    );
-                }
-            }
-        }
+        $this->validateConditionalValuesRequirements();
     }
 
     /**

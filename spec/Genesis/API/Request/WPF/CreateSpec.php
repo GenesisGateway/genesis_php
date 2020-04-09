@@ -96,24 +96,34 @@ class CreateSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_custom_parameters()
     {
         $this->shouldThrow()
-             ->during('addTransactionType', [
-                 Types::CITADEL_PAYIN
-             ]);
+             ->during(
+                 'addTransactionType',
+                 [
+                     Types::IDEBIT_PAYIN
+                 ]
+             );
     }
 
     public function it_should_fail_when_missing_value_for_required_custom_parameters()
     {
         $this->shouldThrow()
-             ->during('addTransactionType', [
-                 Types::CITADEL_PAYIN, [ 'merchant_customer_id' => null ]
-             ]);
+             ->during(
+                 'addTransactionType',
+                 [
+                     Types::IDEBIT_PAYIN,
+                     [ 'customer_account_id' => null ]
+                 ]
+             );
     }
 
     public function it_should_validate_required_custom_parameters()
     {
-        $this->addTransactionType(
-            Types::CITADEL_PAYIN,
-            [ 'merchant_customer_id' => 8 ]
+        $this->shouldNotThrow()->during(
+            'addTransactionType',
+            [
+                Types::IDEBIT_PAYIN,
+                [ 'customer_account_id' => 8 ]
+            ]
         );
     }
 
@@ -246,13 +256,6 @@ class CreateSpec extends ObjectBehavior
             array(
                 'wallet_id'   => 'john@example.com',
                 'wallet_pass' => 'password'
-            )
-        );
-        $this->addTransactionType(
-            Types::PAYBYVOUCHER_SALE,
-            array(
-                'card_type' => 'virtual',
-                'redeem_type' => 'instant'
             )
         );
     }

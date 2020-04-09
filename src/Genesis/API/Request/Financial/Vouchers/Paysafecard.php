@@ -61,9 +61,11 @@ class Paysafecard extends \Genesis\API\Request\Base\Financial
 
         $requiredFieldValues = [
             'billing_country' => [
-                'AE', 'AR', 'AT', 'BE', 'CY', 'CZ', 'DK', 'FI', 'FR', 'DE', 'GR',
-                'IE', 'IT', 'KW', 'LU', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI',
-                'ES', 'SE', 'CH', 'UK', 'HU', 'HR', 'MT', 'US', 'CA', 'MX', 'TR'
+                  'AU', 'AT', 'BE', 'BG', 'CA', 'HR', 'CY', 'CZ', 'DK', 'FI', 'FR',
+                  'GE', 'DE', 'GI', 'GR', 'HU', 'IS', 'IE', 'IT', 'KW', 'LV', 'LI',
+                  'LT', 'LU', 'MT', 'MX', 'ME', 'NL', 'NZ', 'NO', 'PY', 'PE', 'PL',
+                  'PT', 'RO', 'SA', 'SK', 'SI', 'ES', 'SE', 'CH', 'TR', 'AE', 'GB',
+                  'US', 'UY'
             ],
             'currency'        => \Genesis\Utils\Currency::getList()
         ];

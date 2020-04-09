@@ -35,7 +35,6 @@ class TransactionSpec extends ObjectBehavior
     {
         $faker = $this->getFaker();
 
-        $this->setUniqueId($faker->uuid);
         $this->setArn($faker->uuid);
     }
 }

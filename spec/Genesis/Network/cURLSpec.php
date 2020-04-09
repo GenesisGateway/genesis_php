@@ -105,7 +105,6 @@ class cURLSpec extends ObjectBehavior
             'type'       => Request::METHOD_GET,
             'url'        => $remote_url,
             'timeout'    => Config::getNetworkTimeout(),
-            'ca_bundle'  => Config::getCertificateBundle(),
             'user_login' => Config::getUsername() . ':' . Config::getPassword(),
             'user_agent' => $faker->userAgent,
             'format'     => Builder::XML

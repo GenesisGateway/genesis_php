@@ -103,21 +103,19 @@ trait CarRentalAttributes
     public function getCarRentalStructure()
     {
         return [
-            'rentals' => [
-                'car_rental' => [
-                    'purchase_identifier'       => $this->car_rental_purchase_identifier,
-                    'class_id'                  => $this->car_rental_class_id,
-                    'pickup_date'               => $this->car_rental_pickup_date,
-                    'renter_name'               => $this->car_rental_renter_name,
-                    'return_city'               => $this->car_rental_return_city,
-                    'return_state'              => $this->car_rental_return_city,
-                    'return_country'            => $this->car_rental_return_country,
-                    'return_date'               => $this->car_rental_return_date,
-                    'renter_return_location_id' => $this->car_rental_renter_return_location_id,
-                    'customer_code'             => $this->car_rental_customer_code,
-                    'extra_charges'             => $this->car_rental_extra_charges,
-                    'no_show_indicator'         => $this->car_rental_no_show_indicator,
-                ]
+            'car_rental' => [
+                'purchase_identifier'       => $this->car_rental_purchase_identifier,
+                'class_id'                  => $this->car_rental_class_id,
+                'pickup_date'               => $this->car_rental_pickup_date,
+                'renter_name'               => $this->car_rental_renter_name,
+                'return_city'               => $this->car_rental_return_city,
+                'return_state'              => $this->car_rental_return_city,
+                'return_country'            => $this->car_rental_return_country,
+                'return_date'               => $this->car_rental_return_date,
+                'renter_return_location_id' => $this->car_rental_renter_return_location_id,
+                'customer_code'             => $this->car_rental_customer_code,
+                'extra_charges'             => $this->car_rental_extra_charges,
+                'no_show_indicator'         => $this->car_rental_no_show_indicator,
             ]
         ];
     }

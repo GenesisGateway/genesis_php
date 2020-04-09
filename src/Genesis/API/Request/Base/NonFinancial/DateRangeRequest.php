@@ -85,7 +85,7 @@ abstract class DateRangeRequest extends Request
 
         return $this->parseDate(
             'start_date',
-            self::DATE_FORMAT,
+            [self::DATE_FORMAT],
             (string)$value,
             'Invalid format for start_date'
         );
@@ -108,7 +108,7 @@ abstract class DateRangeRequest extends Request
 
         return $this->parseDate(
             'end_date',
-            self::DATE_FORMAT,
+            [self::DATE_FORMAT],
             (string)$value,
             'Invalid format for end_date'
         );

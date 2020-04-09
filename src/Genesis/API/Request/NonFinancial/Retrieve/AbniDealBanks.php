@@ -45,7 +45,7 @@ class AbniDealBanks extends \Genesis\API\Request
                 'protocol' => Request::PROTOCOL_HTTPS,
                 'port'     => Request::PORT_HTTPS,
                 'type'     => Request::METHOD_GET,
-                'format'   => 'plain'
+                'format'   => 'xml'
             ]
         );
 

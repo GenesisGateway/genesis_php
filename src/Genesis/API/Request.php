@@ -24,6 +24,7 @@
 namespace Genesis\API;
 
 use Genesis\API\Traits\MagicAccessors;
+use Genesis\API\Traits\Validations\Request\Validations;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\Builder;
 use Genesis\Utils\Common as CommonUtils;
@@ -40,7 +41,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 abstract class Request
 {
-    use MagicAccessors;
+    use MagicAccessors, Validations;
 
     const PROTOCOL_HTTPS = 'https';
     const PORT_HTTPS     = 443;
@@ -69,43 +70,6 @@ abstract class Request
      * @var \ArrayObject
      */
     protected $treeStructure;
-
-    /**
-     * Store the names of the fields that are Required
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFields;
-
-    /**
-     * Store the names of the field values that are Required
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFieldValues;
-
-    /**
-     * Store the names of "conditionally" Required fields.
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFieldsConditional;
-
-    /**
-     * Store group name/fields where at least on the fields
-     * is required
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFieldsGroups;
-
-    /**
-     * Store a OR relationship between fields, whether at
-     * least of of them has to be filled in.
-     *
-     * @var \ArrayObject
-     */
-    protected $requiredFieldsOR;
 
     /**
      * Store the generated Builder Body
@@ -142,6 +106,9 @@ abstract class Request
      * Generate the XML output
      *
      * @return string - XML Document with request data
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
      */
     public function getDocument()
     {
@@ -166,6 +133,9 @@ abstract class Request
      * Step 4: Check for Required Fields
      *
      * @return void
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     * @throws \Genesis\Exceptions\ErrorParameter
      */
     protected function processRequestParameters()
     {
@@ -196,216 +166,13 @@ abstract class Request
     /**
      * Perform field validation
      *
+     * @throws \Genesis\Exceptions\InvalidArgument
      * @throws \Genesis\Exceptions\ErrorParameter
-     * @return void
+     * @throws \Genesis\Exceptions\InvalidClassMethod
      */
     protected function checkRequirements()
     {
-        $this->verifyFieldRequirements();
-
-        $this->verifyFieldValuesRequirements();
-
-        $this->verifyGroupRequirements();
-
-        $this->verifyConditionalRequirements();
-
-        $this->verifyConditionalFields();
-    }
-
-    /**
-     * Verify that all required fields are populated
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyFieldRequirements()
-    {
-        if (isset($this->requiredFields)) {
-            $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
-
-            $iterator = new \RecursiveIteratorIterator($this->requiredFields->getIterator());
-
-            foreach ($iterator as $fieldName) {
-                if (empty($this->$fieldName)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
-                        sprintf('Empty (null) required parameter: %s', $fieldName)
-                    );
-                }
-            }
-        }
-    }
-
-    /**
-     * Verify that all required fields are populated with expected values
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyFieldValuesRequirements()
-    {
-        if (!isset($this->requiredFieldValues)) {
-            return;
-        }
-
-        $iterator = $this->requiredFieldValues->getArrayCopy();
-
-        foreach ($iterator as $fieldName => $validator) {
-            if ($validator instanceof RequestValidator) {
-                $validator->run($this, $fieldName);
-
-                continue;
-            }
-
-            if (CommonUtils::isValidArray($validator)) {
-                if (!in_array($this->$fieldName, $validator)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
-                        sprintf(
-                            'Required parameter %s is set to %s, but expected to be one of (%s)',
-                            $fieldName,
-                            $this->$fieldName,
-                            implode(
-                                ', ',
-                                CommonUtils::getSortedArrayByValue($validator)
-                            )
-                        )
-                    );
-                }
-
-                continue;
-            }
-
-            if ($this->$fieldName !== $validator) {
-                throw new \Genesis\Exceptions\ErrorParameter(
-                    sprintf(
-                        'Required parameter %s is set to %s, but expected to be %s',
-                        $fieldName,
-                        $this->$fieldName,
-                        $validator
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * Verify that the group fields in the request are populated
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyGroupRequirements()
-    {
-        if (isset($this->requiredFieldsGroups)) {
-            $fields = $this->requiredFieldsGroups->getArrayCopy();
-
-            $emptyFlag = false;
-            $groupsFormatted = [];
-
-            foreach ($fields as $group => $groupFields) {
-                $groupsFormatted[] = sprintf(
-                    '%s (%s)',
-                    ucfirst($group),
-                    implode(', ', $groupFields)
-                );
-
-                foreach ($groupFields as $field) {
-                    if (!empty($this->$field)) {
-                        $emptyFlag = true;
-                    }
-                }
-            }
-
-            if (!$emptyFlag) {
-                throw new \Genesis\Exceptions\ErrorParameter(
-                    sprintf(
-                        'One of the following group/s of field/s must be filled in: %s%s',
-                        PHP_EOL,
-                        implode(
-                            PHP_EOL,
-                            $groupsFormatted
-                        )
-                    ),
-                    true
-                );
-            }
-        }
-    }
-
-    /**
-     * Verify that all fields (who depend on previously populated fields) are populated
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     */
-    protected function verifyConditionalRequirements()
-    {
-        if (!isset($this->requiredFieldsConditional)) {
-            return;
-        }
-
-        $fields = $this->requiredFieldsConditional->getArrayCopy();
-
-        foreach ($fields as $fieldName => $fieldDependencies) {
-            if (!isset($this->$fieldName)) {
-                continue;
-            }
-
-            foreach ($fieldDependencies as $fieldValue => $fieldDependency) {
-                if (is_array($fieldDependency)) {
-                    if ($this->$fieldName != $fieldValue) {
-                        continue;
-                    }
-
-                    foreach ($fieldDependency as $field) {
-                        if (empty($this->$field)) {
-                            $fieldValue =
-                                is_bool($this->$fieldName)
-                                    ? var_export($this->$fieldName, true)
-                                    : $this->$fieldName;
-
-                            throw new \Genesis\Exceptions\ErrorParameter(
-                                sprintf(
-                                    '%s with value %s is depending on: %s, which is empty (null)!',
-                                    $fieldName,
-                                    $fieldValue,
-                                    $field
-                                )
-                            );
-                        }
-                    }
-                } elseif (empty($this->$fieldDependency)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
-                        sprintf(
-                            '%s is depending on: %s, which is empty (null)!',
-                            $fieldName,
-                            $fieldDependency
-                        )
-                    );
-                }
-            }
-        }
-    }
-
-    /**
-     * Verify conditional requirement, where either one of the fields are populated
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyConditionalFields()
-    {
-        if (isset($this->requiredFieldsOR)) {
-            $fields = $this->requiredFieldsOR->getArrayCopy();
-
-            $status = false;
-
-            foreach ($fields as $fieldName) {
-                if (isset($this->$fieldName) && !empty($this->$fieldName)) {
-                    $status = true;
-                }
-            }
-
-            if (!$status) {
-                throw new \Genesis\Exceptions\ErrorParameter(implode($fields));
-            }
-        }
+        $this->validate();
     }
 
     /**
@@ -471,6 +238,7 @@ abstract class Request
      * @param $token    String   - should we append the token to the end of the url
      *
      * @return string            - complete URL
+     * @throws \Genesis\Exceptions\EnvironmentNotSet
      */
     protected function buildRequestURL($sub = 'gateway', $path = '', $token = '')
     {
@@ -553,6 +321,7 @@ abstract class Request
      * @param string $requestPath
      * @param bool $includeToken
      * @return void
+     * @throws \Genesis\Exceptions\EnvironmentNotSet
      */
     protected function initApiGatewayConfiguration($requestPath = 'process', $includeToken = true)
     {

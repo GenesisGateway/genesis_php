@@ -5,10 +5,16 @@ namespace spec\Genesis\API\Request\Financial\Alternatives\Trustly;
 use Genesis\API\Request\Financial\Alternatives\Trustly\Sale;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use Genesis\Utils\Country;
 
 class SaleSpec extends ObjectBehavior
 {
     use RequestExamples;
+
+    public $allowed_country = [
+        'AT', 'BE', 'CZ', 'DK', 'EE', 'FI', 'DE', 'LV', 'LT', 'NL', 'NO', 'PL',
+        'SK', 'ES', 'SE', 'GB'
+    ];
 
     public function it_is_initializable()
     {
@@ -26,9 +32,29 @@ class SaleSpec extends ObjectBehavior
 
     public function it_should_fail_when_wrong_billing_country_parameter()
     {
+        $faker      = $this->getFaker();
+        $notAllowed = array_diff(
+            array_keys(Country::$countries),
+            $this->allowed_country
+        );
+
+        $randomCountry = $faker->randomElement($notAllowed);
+
         $this->setRequestParameters();
-        $this->setBillingCountry('TR');
+        $this->setBillingCountry($randomCountry);
+
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_not_fail_when_allowed_billing_country_parameter_is_pass()
+    {
+        $faker         = $this->getFaker();
+        $randomCountry = $faker->randomElement($this->allowed_country);
+
+        $this->setRequestParameters();
+        $this->setBillingCountry($randomCountry);
+
+        $this->shouldNotThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_missing_customer_email_parameter()
@@ -39,9 +65,12 @@ class SaleSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
+        $faker         = $this->getFaker();
+        $randomCountry = $faker->randomElement($this->allowed_country);
+
         $this->setDefaultRequestParameters();
 
         $this->setCurrency('EUR');
-        $this->setBillingCountry('NL');
+        $this->setBillingCountry($randomCountry);
     }
 }
