@@ -95,7 +95,7 @@ final class Errors
     const PARSING_ERROR                                 = 250;
 
     /**
-     * Invalid were data sent to the API.
+     * Invalid data were sent to the API.
      */
     const INPUT_DATA_ERROR                              = 300;
 
@@ -519,7 +519,7 @@ final class Errors
             case self::PARSING_ERROR:
                 return 'Issuer response could not be parsed - please reconcile and contact support.';
             case self::INPUT_DATA_ERROR:
-                return 'Invalid were data sent to the API.';
+                return 'Invalid data were sent to the API.';
             case self::INVALID_TRANSACTION_TYPE_ERROR:
                 return 'Invalid transaction type was passed to API.';
             case self::INPUT_DATA_MISSING_ERROR:

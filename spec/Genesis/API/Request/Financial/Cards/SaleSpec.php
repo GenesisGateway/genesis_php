@@ -4,13 +4,14 @@ namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Sale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample;
+    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample, CryptoAttributesExamples;
 
     public function it_is_initializable()
     {

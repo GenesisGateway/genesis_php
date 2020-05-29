@@ -24,6 +24,7 @@
 namespace Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
+use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
@@ -46,7 +47,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial
 {
     use GamingAttributes, MotoAttributes, PaymentAttributes, CreditCardAttributes,
         AddressInfoAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
-        PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes;
+        PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes;
 
     /**
      * Returns the Request transaction type
@@ -112,7 +113,8 @@ class Authorize extends \Genesis\API\Request\Base\Financial
             'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'travel'                    => $this->getTravelData(),
-            'fx_rate_id'                => $this->fx_rate_id
+            'fx_rate_id'                => $this->fx_rate_id,
+            'crypto'                    => $this->crypto
         ];
     }
 }

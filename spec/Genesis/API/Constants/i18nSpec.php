@@ -18,7 +18,8 @@ class i18nSpec extends ObjectBehavior
     {
         $languages = array(
             'en', 'it', 'es', 'fr', 'de', 'ja', 'zh', 'ar', 'pt', 'tr',
-            'ru', 'hi', 'bg', 'id', 'ms', 'th', 'cs', 'hr', 'sl', 'fi'
+            'ru', 'hi', 'bg', 'id', 'ms', 'th', 'cs', 'hr', 'sl', 'fi',
+            'no', 'da', 'sv', 'ja', 'is', 'nl'
         );
 
         foreach ($languages as $iso_code) {

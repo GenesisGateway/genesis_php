@@ -233,6 +233,9 @@ Financial\GiftCards\Intersolve
 Financial\GiftCards\Fashioncheque
 Financial\GiftCards\TCS
 
+// Mobile
+Financial\Mobile\ApplePay
+
 //Sepa Direct Debit transactions
 Financial\SCT\Payout
 Financial\SDD\Sale
@@ -341,6 +344,9 @@ NonFinancial\Alternatives\TransferTo\Payers
 // Web Payment Form (Checkout) requests
 WPF\Create
 WPF\Reconcile
+
+// Transaction API
+NonFinancial\TransactionApi\CardExpiryDateUpdate
 ```
 
 

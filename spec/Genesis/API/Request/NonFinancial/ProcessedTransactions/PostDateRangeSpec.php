@@ -31,6 +31,8 @@ class PostDateRangeSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('externally_processed');
         $this->getDocument()->shouldContain('processing_type');
         $this->getDocument()->shouldContain('batch_number');
+        $this->getDocument()->shouldContain('batch_slip_number');
+        $this->getDocument()->shouldContain('deposit_slip_number');
     }
 
     public function it_should_have_correct_endpoint_url()
@@ -51,6 +53,8 @@ class PostDateRangeSpec extends ObjectBehavior
         $this->setExternallyProcessedParameters();
         $this->setProcessingTypeParameters();
         $this->setBatchNumber('batch_number');
+        $this->setBatchSlipNumber('batch_slip_number');
+        $this->setDepositSlipNumber('deposit_slip_number');
     }
 
     public function setRequestParameters()

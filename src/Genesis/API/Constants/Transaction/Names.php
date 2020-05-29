@@ -144,7 +144,8 @@ class Names
         Types::EZEECARD_PAYOUT         => 'eZeeCard Payout',
         Types::TRANSFER_TO_PAYOUT      => 'TransferTo Payout',
         Types::DAVIVIENDA              => 'Davivienda',
-        Types::WEBPAY                  => 'Webpay'
+        Types::WEBPAY                  => 'Webpay',
+        Types::APPLE_PAY               => 'Apple pay'
     ];
 
     /**

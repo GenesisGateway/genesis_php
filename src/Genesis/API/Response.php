@@ -176,7 +176,7 @@ class Response
     public function isPartiallyApproved()
     {
         if (isset($this->responseObj->partial_approval)) {
-            return \Genesis\Utils\Common::stringToBoolean($this->responseObj->partial_approval);
+            return \Genesis\Utils\Common::filterBoolean($this->responseObj->partial_approval);
         }
 
         return null;

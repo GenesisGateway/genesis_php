@@ -1,3 +1,22 @@
+1.18.3
+-----
+**Features:**
+
+* Added a new crypto attribute to the following transactions:
+    * Authorize
+    * Authorize 3D
+    * Sale
+    * Sale 3D
+* Added Card Expiry Date Update functionality to the Transaction API
+* Added new languages support for the Web Payment Form:
+    * Norwegian
+    * Danish
+    * Swedish
+* Added a new ApplePay transaction type for the Processing API
+* Added the following filter attributes to the Processed Transaction API:
+    * deposit_slip_number
+    * batch_slip_number
+
 1.18.2
 -----
 **Features:**

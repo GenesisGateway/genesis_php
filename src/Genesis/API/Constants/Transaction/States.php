@@ -40,6 +40,7 @@ use Genesis\Exceptions\InvalidMethod;
  * @method bool isVoided()
  * @method bool isEnabled()
  * @method bool isDisabled()
+ * @method bool isSuccess()
  */
 class States
 {
@@ -137,6 +138,11 @@ class States
      * Status of the consumer from Consumer API
      */
     const DISABLED = 'disabled';
+
+    /**
+     * Transaction API success status
+     */
+    const SUCCESS = 'success';
 
     /**
      * Store the state of transaction for comparison

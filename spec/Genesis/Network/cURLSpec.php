@@ -94,6 +94,24 @@ class cURLSpec extends ObjectBehavior
         }
     }
 
+    public function it_should_return_correct_curl_http_post_method_option_by_type()
+    {
+        $this->getMethodOptionByType(Request::METHOD_POST)->shouldBe(
+            [
+                CURLOPT_POST => true
+            ]
+        );
+    }
+
+    public function it_should_return_correct_curl_http_put_method_option_by_type()
+    {
+        $this->getMethodOptionByType(Request::METHOD_PUT)->shouldBe(
+            [
+                CURLOPT_CUSTOMREQUEST => 'PUT'
+            ]
+        );
+    }
+
     protected function sendRemoteConnection($remote_url)
     {
         $faker = \Faker\Factory::create();

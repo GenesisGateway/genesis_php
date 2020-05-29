@@ -127,7 +127,7 @@ final class XML implements \Genesis\Interfaces\Parser
                     break;
                 case \XMLReader::TEXT:
                 case \XMLReader::CDATA:
-                    $tree = \Genesis\Utils\Common::stringToBoolean(
+                    $tree = \Genesis\Utils\Common::filterBoolean(
                         trim($reader->expand()->textContent)
                     );
                     break;

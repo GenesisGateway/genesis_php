@@ -43,6 +43,20 @@ class PostDateRange extends BaseDateRangeRequest
     protected $batch_number;
 
     /**
+     * Batch slip number of processed transactions
+     *
+     * @var string $batch_slip_number
+     */
+    protected $batch_slip_number;
+
+    /**
+     * Deposit slip number of processed transactions
+     *
+     * @var string $deposit_slip_number
+     */
+    protected $deposit_slip_number;
+
+    /**
      * Batch number of processed transactions
      *
      * @param $value
@@ -51,6 +65,32 @@ class PostDateRange extends BaseDateRangeRequest
     public function setBatchNumber($value)
     {
         $this->batch_number = (string) $value;
+
+        return $this;
+    }
+
+    /**
+     * Batch slip number of processed transactions
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setBatchSlipNumber($value)
+    {
+        $this->batch_slip_number = (string) $value;
+
+        return $this;
+    }
+
+    /**
+     * Deposit slip number of processed transactions
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setDepositSlipNumber($value)
+    {
+        $this->deposit_slip_number = (string) $value;
 
         return $this;
     }
@@ -64,7 +104,9 @@ class PostDateRange extends BaseDateRangeRequest
     {
         return array_merge(
             [
-                'batch_number' => $this->batch_number
+                'batch_number'        => $this->batch_number,
+                'batch_slip_number'   => $this->batch_slip_number,
+                'deposit_slip_number' => $this->deposit_slip_number
             ],
             $this->getExternallyProcessedStructure(),
             $this->getProcessingTypeStructure()

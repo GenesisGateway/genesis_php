@@ -677,6 +677,11 @@ class Types
     const WEBPAY = 'webpay';
 
     /**
+     * Apple pay is payment method working with apple devices
+     */
+    const APPLE_PAY = 'apple_pay';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -749,6 +754,7 @@ class Types
             self::TCS                     => 'GiftCards\Tcs',
             self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
             self::INTERSOLVE              => 'GiftCards\Intersolve',
+            self::APPLE_PAY               => 'Mobile\ApplePay',
             self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
             self::ASTROPAY_DIRECT         => 'OnlineBankingPayments\AstropayDirect',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
@@ -796,7 +802,8 @@ class Types
             self::NETELLER                => 'Wallets\Neteller',
             self::QIWI                    => 'Wallets\Qiwi',
             self::WEBMONEY                => 'Wallets\WebMoney',
-            self::ZIMPLER                 => 'Wallets\Zimpler'
+            self::ZIMPLER                 => 'Wallets\Zimpler',
+
         ];
 
         return isset($map[$type]) ? 'Financial\\' . $map[$type] : false;
@@ -963,7 +970,8 @@ class Types
         $transactionTypesList = [
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
-            self::KLARNA_AUTHORIZE
+            self::KLARNA_AUTHORIZE,
+            self::APPLE_PAY
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -977,6 +985,7 @@ class Types
     public static function canRefund($type)
     {
         $transactionTypesList = [
+            self::APPLE_PAY,
             self::BALOTO,
             self::BANCOMER,
             self::BANCONTACT,
@@ -1026,7 +1035,6 @@ class Types
             self::WEBPAY,
             self::WECHAT,
             self::ZIMPLER,
-            self::ZIMPLER
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1047,7 +1055,8 @@ class Types
             self::FASHIONCHEQUE,
             self::INTERSOLVE,
             self::REFUND,
-            self::CAPTURE
+            self::CAPTURE,
+            self::APPLE_PAY
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

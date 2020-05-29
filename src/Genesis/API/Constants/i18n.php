@@ -151,6 +151,21 @@ class i18n
     const FI = 'fi';
 
     /**
+     * Norwegian
+     */
+    const NO = 'no';
+
+    /**
+     * Danish
+     */
+    const DA = 'da';
+
+    /**
+     * Swedish
+     */
+    const SV = 'sv';
+
+    /**
      * Check if a language code is supported
      *
      * @param $languageCode

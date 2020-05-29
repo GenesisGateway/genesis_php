@@ -121,7 +121,7 @@ class Checker extends BaseVersionedRequest
      */
     public function setMoto($value)
     {
-        $this->moto = Common::stringToBoolean($value);
+        $this->moto = Common::toBoolean($value);
 
         return $this;
     }
@@ -134,7 +134,7 @@ class Checker extends BaseVersionedRequest
      */
     public function setMit($value)
     {
-        $this->mit = Common::stringToBoolean($value);
+        $this->mit = Common::toBoolean($value);
 
         return $this;
     }
@@ -147,7 +147,7 @@ class Checker extends BaseVersionedRequest
      */
     public function setRecurring($value)
     {
-        $this->recurring = Common::stringToBoolean($value);
+        $this->recurring = Common::toBoolean($value);
 
         return $this;
     }
