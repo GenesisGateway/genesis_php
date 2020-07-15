@@ -1,3 +1,10 @@
+1.18.4
+-----
+**Features:**
+
+* Added new transaction type UPI
+* Removed payment type UPI from Financial\OnlineBankingPayments\OnlineBanking\Payin
+
 1.18.3
 -----
 **Features:**

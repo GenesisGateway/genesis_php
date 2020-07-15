@@ -106,34 +106,6 @@ class PayinSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('setPaymentType', [Payin::PAYMENT_TYPE_QR_PAYMENT]);
     }
 
-    public function it_should_fail_with_upi_payment_type_without_virtual_payment_address()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
-    public function it_should_not_fail_with_upi_payment_type_and_valid_virtual_payment_address()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
-        $this->setVirtualPaymentAddress('someone@bank');
-
-        $this->shouldNotThrow(ErrorParameter::class)->during('getDocument');
-    }
-
-    public function it_should_fail_with_upi_payment_type_and_invalid_virtual_payment_address()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType(Payin::PAYMENT_TYPE_UPI);
-        $this->setVirtualPaymentAddress(
-            $this->getFaker()->word
-        );
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
     public function it_should_have_proper_structure()
     {
         $faker = $this->getFaker();

@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.18.3",
+  "version": "1.18.4",
   "license": "MIT",
   "keywords": [
     "genesis",
@@ -100,7 +100,8 @@
     "webpay",
     "wechat",
     "wpf",
-    "zimpler"
+    "zimpler",
+    "upi"
   ],
   "require": {
     "php": ">=5.5.9",

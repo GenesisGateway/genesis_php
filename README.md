@@ -267,6 +267,7 @@ Financial\OnlineBankingPayments\RapiPago
 Financial\OnlineBankingPayments\SafetyPay
 Financial\OnlineBankingPayments\Santander
 Financial\OnlineBankingPayments\TrustPay
+Financial\OnlineBankingPayments\Upi
 Financial\OnlineBankingPayments\Webpay
 Financial\OnlineBankingPayments\WeChat
 

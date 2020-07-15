@@ -326,6 +326,8 @@ class Types
      * Earthport’s service supports payouts from e-commerce companies. The workflow is synchronous, there
      * is no redirect to the Earthport’s website. There are different required fields per country, e.g. IBAN
      * or Account Number.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const EARTHPORT = 'earthport';
 
@@ -682,6 +684,12 @@ class Types
     const APPLE_PAY = 'apple_pay';
 
     /**
+     * UPI (Unified Payment Interface) transaction is an alternative payment method
+     * which allows users to transfer money between bank accounts.
+     */
+    const UPI = 'upi';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -783,6 +791,7 @@ class Types
             self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
             self::SANTANDER               => 'OnlineBankingPayments\Santander',
             self::TRUSTPAY                => 'OnlineBankingPayments\TrustPay',
+            self::UPI                     => 'OnlineBankingPayments\Upi',
             self::WEBPAY                  => 'OnlineBankingPayments\Webpay',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
@@ -896,6 +905,7 @@ class Types
             self::TRUSTLY_SALE,
             self::TRUSTLY_WITHDRAWAL,
             self::TRUSTPAY,
+            self::UPI,
             self::WEBMONEY,
             self::WEBPAY,
             self::WECHAT,
@@ -1031,10 +1041,10 @@ class Types
             self::SDD_SALE,
             self::SOFORT,
             self::TRUSTLY_SALE,
-            self::TRUSTLY_SALE,
+            self::UPI,
             self::WEBPAY,
             self::WECHAT,
-            self::ZIMPLER,
+            self::ZIMPLER
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

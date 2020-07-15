@@ -67,6 +67,11 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     const PATTERN_KYC_CALL_SECURITY_CODE = '/^[1-9][0-9]{3}$/';
 
     /**
+     * Virtual Payment Address (VPA) of the customer, format: someone@bank
+     */
+    const PATTERN_VIRTUAL_PAYMENT_ADDRESS = '/^.+@.+$/';
+
+    /**
      * Regex expression
      *
      * @var string
