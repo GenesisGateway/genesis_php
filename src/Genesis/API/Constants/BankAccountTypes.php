@@ -21,7 +21,7 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants;
+namespace Genesis\API\Constants;
 
 /**
  * Class BankAccountTypes
