@@ -21,41 +21,32 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request\Financial\TravelData;
+namespace Genesis\API\Traits\Request\Financial\Business;
 
 /**
- * Trait TravelDataAttributes
- * @package Genesis\API\Traits\Request\Financial\TravelData
+ * Trait BusinessAttributes
+ * @package Genesis\API\Traits\Request\Financial\Business
  *
  */
-trait TravelDataAttributes
+trait BusinessAttributes
 {
-    use AirlineItineraryAttributes, CarRentalAttributes,
-        HotelRentalAttributes, ReferenceTicketAttributes;
+    use AirlinesAirCarriersAttributes, EventManagementAttributes, FurnitureAttributes,
+        HotelsAndRealEstateRentalsAttributes, CarPlaneAndBoatRentalsAttributes,
+        CruiseLinesAttributes, TravelAgenciesAttributes;
 
     /**
-     * Get Level 3 data structure
-     *
      * @return array
      */
-    public function getTravelData()
+    public function getBusinessAttributesStructure()
     {
-        return array_merge(
-            [
-                'ticket' => array_merge(
-                    $this->getAirlineItineraryStructure(),
-                    $this->getReferenceTicketStructure()
-                ),
-                'legs'   => $this->getLegsStructure(),
-                'taxes'  => $this->getTaxesStructure()
-            ],
-            [
-                 'rentals' => array_merge(
-                     $this->getHotelRentalStructure(),
-                     $this->getCarRentalStructure()
-                 )
-            ],
-            $this->getChargesStructure()
-        );
+        return  array_merge(
+            $this->getAirlinesAirCarriersAttributesStructure(),
+            $this->getEventManagementAttributesStructure(),
+            $this->getFurnitureAttributesStructure(),
+            $this->getHotelsAndRealEstateRentalsAttributesStructure(),
+            $this->getCarPlaneAndBoatRentalsAttributesStructure(),
+            $this->getCruiseLinesAttributesStructure(),
+            $this->getTravelAgenciesAttributesStructure()
+        ) ;
     }
 }

@@ -20,42 +20,41 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+namespace Genesis\API\Constants;
 
-namespace Genesis\API\Traits\Request\Financial\TravelData;
+use Genesis\Utils\Common;
 
 /**
- * Trait TravelDataAttributes
- * @package Genesis\API\Traits\Request\Financial\TravelData
+ * Class DateTimeFormat
  *
+ * List of DateTime format
+ *
+ * @package Genesis\API\Constants
  */
-trait TravelDataAttributes
+class DateTimeFormat
 {
-    use AirlineItineraryAttributes, CarRentalAttributes,
-        HotelRentalAttributes, ReferenceTicketAttributes;
+    /**
+     * Little endian(day, month, year) system with hyphens in between
+     */
+    const DD_MM_YYYY_L_HYPHENS = 'd-m-Y';
 
     /**
-     * Get Level 3 data structure
+     * Little endian(day, month, year) system with dots in between
+     */
+    const DD_MM_YYYY_L_DOTS = 'd.m.Y';
+
+    /**
+     * Little endian(day, month, year) system with dots in between
+     */
+    const DD_MM_YYYY_L_SLASHES = 'd/m/Y';
+
+    /**
+     * Retrieve list of all DateTime formats
      *
      * @return array
      */
-    public function getTravelData()
+    public static function getAll()
     {
-        return array_merge(
-            [
-                'ticket' => array_merge(
-                    $this->getAirlineItineraryStructure(),
-                    $this->getReferenceTicketStructure()
-                ),
-                'legs'   => $this->getLegsStructure(),
-                'taxes'  => $this->getTaxesStructure()
-            ],
-            [
-                 'rentals' => array_merge(
-                     $this->getHotelRentalStructure(),
-                     $this->getCarRentalStructure()
-                 )
-            ],
-            $this->getChargesStructure()
-        );
+        return Common::getClassConstants(self::class);
     }
 }

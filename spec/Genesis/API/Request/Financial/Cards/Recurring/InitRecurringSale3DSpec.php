@@ -4,16 +4,18 @@ namespace spec\Genesis\API\Request\Financial\Cards\Recurring;
 
 use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class InitRecurringSale3DSpec extends ObjectBehavior
 {
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
-        DescriptorAttributesExample;
+        DescriptorAttributesExample, TokenizationAttributesExamples, BusinessAttributesExample;
 
     public function it_is_initializable()
     {

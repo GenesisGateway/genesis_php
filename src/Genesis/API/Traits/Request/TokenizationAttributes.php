@@ -21,41 +21,61 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request\Financial\TravelData;
+namespace Genesis\API\Traits\Request;
+
+use Genesis\Exceptions\InvalidArgument;
 
 /**
- * Trait TravelDataAttributes
- * @package Genesis\API\Traits\Request\Financial\TravelData
+ * Trait TokenizationAttributes
+ * @package Genesis\API\Traits\Request
  *
+ * @method string setConsumerId($value)
+ * @method bool getRememberCard()
+ * @method $this setToken($value) Set token of the card holder details
  */
-trait TravelDataAttributes
+trait TokenizationAttributes
 {
-    use AirlineItineraryAttributes, CarRentalAttributes,
-        HotelRentalAttributes, ReferenceTicketAttributes;
 
     /**
-     * Get Level 3 data structure
+     * Consumer unique reference
      *
-     * @return array
+     * @var string
      */
-    public function getTravelData()
+    protected $consumer_id;
+
+    /**
+     * Check documentation section Tokenize. Offer the user the option to save
+     * cardholder details for future use (tokenize).
+     *
+     * @var string
+     */
+    protected $remember_card = false;
+
+    /**
+     * Token of the card holder details
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
+     * @param bool $flag
+     *
+     * @return $this
+     */
+    public function setRememberCard($flag)
     {
-        return array_merge(
-            [
-                'ticket' => array_merge(
-                    $this->getAirlineItineraryStructure(),
-                    $this->getReferenceTicketStructure()
-                ),
-                'legs'   => $this->getLegsStructure(),
-                'taxes'  => $this->getTaxesStructure()
-            ],
-            [
-                 'rentals' => array_merge(
-                     $this->getHotelRentalStructure(),
-                     $this->getCarRentalStructure()
-                 )
-            ],
-            $this->getChargesStructure()
-        );
+        $this->remember_card = \Genesis\Utils\Common::toBoolean($flag);
+
+        return $this;
+    }
+
+    protected function getTokenizationStructure()
+    {
+        return [
+            'token'         => $this->token,
+            'consumer_id'   => $this->consumer_id,
+            'remember_card' =>  \Genesis\Utils\Common::toBoolean($this->remember_card)
+        ];
     }
 }

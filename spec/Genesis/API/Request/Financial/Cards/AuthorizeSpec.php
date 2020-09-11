@@ -3,15 +3,19 @@
 namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Authorize;
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class AuthorizeSpec extends ObjectBehavior
 {
-    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample, CryptoAttributesExamples;
+    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample, CryptoAttributesExamples,
+        TokenizationAttributesExamples, BusinessAttributesExample;
 
     public function it_is_initializable()
     {
@@ -53,36 +57,6 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setCardHolder($this->getFaker()->asciify('***** *****'));
 
         $this->getDocument()->shouldNotBeEmpty();
-    }
-
-    public function it_should_fail_when_invalid_credit_card_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setCardNumber('47123');
-
-        $this->shouldThrow(
-            $this->getExpectedFieldValueException('card_number')
-        )->during('getDocument');
-    }
-
-    public function it_should_fail_when_invalid_cc_exp_month_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setExpirationMonth('13');
-
-        $this->shouldThrow(
-            $this->getExpectedFieldValueException('expiration_month')
-        )->during('getDocument');
-    }
-
-    public function it_should_fail_when_invalid_cc_exp_year_parameter()
-    {
-        $this->setRequestParameters();
-        $this->setExpirationYear('201');
-
-        $this->shouldThrow(
-            $this->getExpectedFieldValueException('expiration_year')
-        )->during('getDocument');
     }
 
     public function it_should_fail_when_unsupported_currency_parameter()

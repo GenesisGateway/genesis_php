@@ -48,4 +48,12 @@ trait PaymentAttributes
      * @var string
      */
     protected $currency;
+
+    protected function getPaymentAttributesStructure()
+    {
+        return [
+            'amount'   => $this->transformAmount($this->amount, $this->currency),
+            'currency' => $this->currency
+        ];
+    }
 }

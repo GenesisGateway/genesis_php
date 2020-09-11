@@ -24,6 +24,7 @@ namespace Genesis\API\Request\WPF;
 
 use Genesis\API\Constants\i18n;
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
@@ -60,7 +61,7 @@ class Create extends \Genesis\API\Request
 {
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
-        RestrictedSetter;
+        RestrictedSetter, BusinessAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -593,7 +594,8 @@ class Create extends \Genesis\API\Request
                 'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
                 'pay_later'                 => var_export($this->pay_later, true),
                 'reminder_language'         => $this->reminder_language,
-                'reminders'                 => $this->getRemindersStructure()
+                'reminders'                 => $this->getRemindersStructure(),
+                'business_attributes'       => $this->getBusinessAttributesStructure()
             ]
         ];
 

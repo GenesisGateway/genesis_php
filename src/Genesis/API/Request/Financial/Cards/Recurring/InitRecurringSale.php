@@ -24,14 +24,14 @@
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
+use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class InitRecurringSale
@@ -40,11 +40,11 @@ use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
  *
  * @package Genesis\API\Request\Financial\Cards\Recurring
  */
-class InitRecurringSale extends \Genesis\API\Request\Base\Financial
+class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
 {
-    use MotoAttributes, PaymentAttributes, CreditCardAttributes,
-        AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
-        DocumentAttributes, TravelDataAttributes, FxRateAttributes;
+    use MotoAttributes, AddressInfoAttributes, RiskAttributes,
+        DescriptorAttributes, DocumentAttributes, TravelDataAttributes,
+        FxRateAttributes, BusinessAttributes, RestrictedSetter;
 
     /**
      * Returns the Request transaction type
@@ -62,53 +62,31 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial
      */
     protected function setRequiredFields()
     {
-        $requiredFields = [
-            'transaction_id',
-            'amount',
-            'currency',
-            'card_holder',
-            'card_number',
-            'expiration_month',
-            'expiration_year'
-        ];
+        parent::setRequiredFields();
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional();
 
-        $requiredFieldValues = array_merge(
-            [
-                'currency' => \Genesis\Utils\Currency::getList()
-            ],
-            $this->getCCFieldValueFormatValidators()
-        );
-
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
     }
 
     /**
      * Return additional request attributes
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    protected function getTransactionAttributes()
     {
         return [
             'moto'                      => $this->moto,
-            'amount'                    => $this->transformAmount($this->amount, $this->currency),
-            'currency'                  => $this->currency,
-            'card_holder'               => $this->card_holder,
-            'card_number'               => $this->card_number,
-            'cvv'                       => $this->cvv,
-            'expiration_month'          => $this->expiration_month,
-            'expiration_year'           => $this->expiration_year,
             'customer_email'            => $this->customer_email,
             'customer_phone'            => $this->customer_phone,
             'document_id'               => $this->document_id,
-            'birth_date'                => $this->birth_date,
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'travel'                    => $this->getTravelData(),
-            'fx_rate_id'                => $this->fx_rate_id
+            'fx_rate_id'                => $this->fx_rate_id,
+            'business_attributes'       => $this->getBusinessAttributesStructure()
         ];
     }
 }

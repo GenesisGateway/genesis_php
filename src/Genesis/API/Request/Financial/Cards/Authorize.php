@@ -24,17 +24,17 @@
 namespace Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
+use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Authorize
@@ -43,11 +43,12 @@ use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
  *
  * @package Genesis\API\Request\Financial\Cards
  */
-class Authorize extends \Genesis\API\Request\Base\Financial
+class Authorize extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
 {
-    use GamingAttributes, MotoAttributes, PaymentAttributes, CreditCardAttributes,
-        AddressInfoAttributes, RiskAttributes, DescriptorAttributes, DocumentAttributes,
-        PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes;
+    use GamingAttributes, MotoAttributes, AddressInfoAttributes,
+        RiskAttributes, DescriptorAttributes, DocumentAttributes,
+        PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes,
+        CryptoAttributes, BusinessAttributes, RestrictedSetter;
 
     /**
      * Returns the Request transaction type
@@ -65,56 +66,35 @@ class Authorize extends \Genesis\API\Request\Base\Financial
      */
     protected function setRequiredFields()
     {
-        $requiredFields = [
-            'transaction_id',
-            'amount',
-            'currency',
-            'card_holder',
-            'card_number',
-            'expiration_month',
-            'expiration_year'
-        ];
+        parent::setRequiredFields();
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional() +
+                                     $this->requiredCCFieldsConditional();
 
-        $requiredFieldValues = array_merge(
-            [
-                'currency' => \Genesis\Utils\Currency::getList()
-            ],
-            $this->getCCFieldValueFormatValidators()
-        );
-
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
     }
 
     /**
      * Return additional request attributes
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    protected function getTransactionAttributes()
     {
         return [
             'gaming'                    => $this->gaming,
             'moto'                      => $this->moto,
             'preauthorization'          => var_export($this->preauthorization, true),
-            'amount'                    => $this->transformAmount($this->amount, $this->currency),
-            'currency'                  => $this->currency,
-            'card_holder'               => $this->card_holder,
-            'card_number'               => $this->card_number,
-            'cvv'                       => $this->cvv,
-            'expiration_month'          => $this->expiration_month,
-            'expiration_year'           => $this->expiration_year,
             'customer_email'            => $this->customer_email,
             'customer_phone'            => $this->customer_phone,
             'document_id'               => $this->document_id,
-            'birth_date'                => $this->birth_date,
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'risk_params'               => $this->getRiskParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'travel'                    => $this->getTravelData(),
             'fx_rate_id'                => $this->fx_rate_id,
-            'crypto'                    => $this->crypto
+            'crypto'                    => $this->crypto,
+            'business_attributes'       => $this->getBusinessAttributesStructure()
         ];
     }
 }

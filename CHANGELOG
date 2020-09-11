@@ -1,3 +1,27 @@
+1.18.5
+-----
+**Features:**
+
+* Added Tokenization support for:
+    * Authorize
+    * Authorize (3D-Secure)
+    * Sale
+    * Sale (3D-Secure)
+    * Init Recurring Sale
+    * Init Recurring Sale (3D-Secure)
+    * Payout
+
+* Added Business Attributes support for:
+    * Authorize
+    * Authorize (3D-Secure)
+    * Capture
+    * Sale
+    * Sale (3D-Secure)
+    * Init Recurring Sale
+    * Init Recurring Sale (3D-Secure)
+    * Recurring Sale
+    * Web Payment Form
+
 1.18.4
 -----
 **Features:**

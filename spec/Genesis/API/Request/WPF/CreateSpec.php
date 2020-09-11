@@ -5,9 +5,12 @@ namespace spec\Genesis\API\Request\WPF;
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\WPF\Create;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 
 class CreateSpec extends ObjectBehavior
 {
+    use BusinessAttributesExample;
+
     public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Request\WPF\Create');

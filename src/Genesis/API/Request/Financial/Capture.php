@@ -23,6 +23,7 @@
 namespace Genesis\API\Request\Financial;
 
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 
 /**
  * Class Capture
@@ -33,7 +34,7 @@ use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
  */
 class Capture extends \Genesis\API\Request\Base\Financial\Reference
 {
-    use TravelDataAttributes;
+    use TravelDataAttributes, BusinessAttributes;
 
     /**
      * Returns the Request transaction type
@@ -52,7 +53,8 @@ class Capture extends \Genesis\API\Request\Base\Financial\Reference
         return array_merge(
             parent::getPaymentTransactionStructure(),
             [
-                'travel' => $this->getTravelData()
+                'travel'              => $this->getTravelData(),
+                'business_attributes' => $this->getBusinessAttributesStructure()
             ]
         );
     }

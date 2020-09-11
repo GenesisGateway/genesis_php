@@ -7,22 +7,17 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\SourceOfFundsAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
-    use RequestExamples, FxRateAttributesExamples, SourceOfFundsAttributesExamples, DescriptorAttributesExample;
+    use RequestExamples, FxRateAttributesExamples, SourceOfFundsAttributesExamples,
+        DescriptorAttributesExample, TokenizationAttributesExamples;
 
     public function it_is_initializable()
     {
         $this->shouldHaveType(Payout::class);
-    }
-
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setExpirationMonth(null);
-        $this->shouldThrow()->during('getDocument');
     }
 
     protected function setRequestParameters()

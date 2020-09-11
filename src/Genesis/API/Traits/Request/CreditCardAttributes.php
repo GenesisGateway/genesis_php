@@ -23,7 +23,11 @@
 
 namespace Genesis\API\Traits\Request;
 
+use Genesis\API\Traits\Request\CustomerAddress\CustomerInfoAttributes;
+use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\API\Validators\Request\RegexValidator;
+use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait CreditCardAttributes
@@ -32,8 +36,6 @@ use Genesis\API\Validators\Request\RegexValidator;
  * @method $this setCardHolder($value) Set Full name of customer as printed on credit card
  * @method $this setCardNumber($value) Set Complete CC number of customer
  * @method $this setCvv($value) Set CVV of CC, requirement is based on terminal configuration
- * @method $this setExpirationMonth($value) Set Expiration month as printed on credit card
- * @method $this setExpirationYear($value) Set Expiration year as printed on credit card
  * @method $this setBirthDate($value) Set Birth date of the customer
  */
 trait CreditCardAttributes
@@ -81,7 +83,28 @@ trait CreditCardAttributes
     protected $birth_date;
 
     /**
-     * Returns a list with all CC Validators
+     * @param $value
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+
+    public function setExpirationMonth($value)
+    {
+        $this->expiration_month = (int)$value;
+
+        return $this;
+    }
+
+    public function setExpirationYear($value)
+    {
+        $this->expiration_year = (int)$value;
+
+        return $this;
+    }
+
+    /**
+     * Returns a list with CC Card Number, Expiration Month, Expiration Year Validators
      *
      * @return array
      */
@@ -153,5 +176,27 @@ trait CreditCardAttributes
         return new RegexValidator(
             RegexValidator::PATTERN_CREDIT_CART_EXP_YEAR
         );
+    }
+
+    protected function requiredCCFieldsConditional()
+    {
+        return [
+            'card_number'   => [
+                'expiration_month',
+                'expiration_year'
+            ]
+        ];
+    }
+
+    protected function getCCAttributesStructure()
+    {
+        return [
+            'card_holder'      => $this->card_holder,
+            'card_number'      => $this->card_number,
+            'expiration_month' => $this->expiration_month,
+            'expiration_year'  => $this->expiration_year,
+            'cvv'              => $this->cvv,
+            'birth_date'       => $this->birth_date
+        ];
     }
 }

@@ -4,28 +4,24 @@ namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Sale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample, CryptoAttributesExamples;
+    use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample,
+        CryptoAttributesExamples, TokenizationAttributesExamples, BusinessAttributesExample;
 
     public function it_is_initializable()
     {
         $this->shouldHaveType(Sale::class);
     }
 
-    public function it_should_fail_when_missing_required_parameters()
-    {
-        $this->setRequestParameters();
-        $this->setExpirationYear(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
-    public function it_can_build_with_reference_id_parameter()
+     public function it_can_build_with_reference_id_parameter()
     {
         $this->setRequestParameters();
         $this->setReferenceId('transaction-reference-id');

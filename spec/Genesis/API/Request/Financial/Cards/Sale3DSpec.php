@@ -4,17 +4,20 @@ namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Sale3D;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class Sale3DSpec extends ObjectBehavior
 {
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
-        DescriptorAttributesExample, CryptoAttributesExamples;
+        DescriptorAttributesExample, CryptoAttributesExamples, TokenizationAttributesExamples,
+        BusinessAttributesExample;
 
     public function it_is_initializable()
     {
