@@ -40,7 +40,9 @@ use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\Request\Financial\Threeds\V2\CommonAttributes as ThreedsV2CommonAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
 
 /**
  * Class Authorize3D
@@ -48,6 +50,8 @@ use Genesis\API\Traits\RestrictedSetter;
  * Authorize 3D Request
  *
  * @package Genesis\API\Request\Financial\Cards
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
 {
@@ -55,7 +59,7 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCa
         AddressInfoAttributes, MpiAttributes, RiskAttributes,
         DescriptorAttributes, DocumentAttributes, PreauthorizationAttributes,
         TravelDataAttributes, ScaAttributes, FxRateAttributes,
-        CryptoAttributes, BusinessAttributes, RestrictedSetter;
+        CryptoAttributes, BusinessAttributes, RestrictedSetter, ThreedsV2CommonAttributes;
 
     /**
      * Returns the Request transaction type
@@ -84,7 +88,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCa
             $this->requiredMpiFieldsConditional(),
             $this->requiredScaFieldConditional(),
             $this->requiredTokenizationFieldsConditional(),
-            $this->requiredCCFieldsConditional()
+            $this->requiredCCFieldsConditional(),
+            $this->requiredThreedsV2DeviceTypeConditional()
         );
 
         $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
@@ -95,6 +100,22 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCa
         ];
 
         $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
+    }
+
+    /**
+     * Inject the requiredFieldsValuesConditional Validations
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
+
+        $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldsValuesConditional);
+
+        parent::checkRequirements();
     }
 
     /**
@@ -122,7 +143,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCa
             'sca_params'                => $this->getScaParamsStructure(),
             'fx_rate_id'                => $this->fx_rate_id,
             'crypto'                    => $this->crypto,
-            'business_attributes'       => $this->getBusinessAttributesStructure()
+            'business_attributes'       => $this->getBusinessAttributesStructure(),
+            'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
         ];
     }
 }

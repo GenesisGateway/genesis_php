@@ -1,8 +1,8 @@
 <?php
 
-
 namespace spec\fixtures\API\Stubs\Parser;
 
+use Genesis\API\Response;
 use Genesis\Builder;
 use Genesis\Parsers\XML;
 use Genesis\Parsers\JSON;
@@ -99,7 +99,11 @@ class ParserStub
             $this->getDocumentContent()
         );
 
-        return $this->parser->getObject();
+        $responseObj = $this->parser->getObject();
+
+        Response::transform([$responseObj]);
+
+        return $responseObj;
     }
 
     protected function getDocumentContent()

@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
-use Genesis\Api\Constants\BankAccountTypes;
+use Genesis\API\Constants\BankAccountTypes;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout;
 use Genesis\Exceptions\ErrorParameter;

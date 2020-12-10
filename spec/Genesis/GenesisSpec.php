@@ -3,8 +3,11 @@
 namespace spec\Genesis;
 
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Response;
 use Genesis\Exceptions\DeprecatedMethod;
+use Genesis\Network;
 use PhpSpec\ObjectBehavior;
+use spec\Genesis\API\Stubs\Base\RequestStub;
 
 class GenesisSpec extends ObjectBehavior
 {
@@ -98,6 +101,20 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow('\Genesis\Exceptions\ErrorNetwork')->during('execute');
 
         $this->response()->getResponseObject()->shouldBe(null);
+    }
+
+    public function it_should_assign_response_to_request_object(Response $response, Network $network, RequestStub $request)
+    {
+        $this->beAnInstanceOf(\spec\Genesis\API\Stubs\Base\GenesisStub::class);
+        $this->beConstructedWith('NonFinancial\Blacklist');
+
+        $this->setResponse($response);
+        $this->setNetwork($network);
+        $this->setRequest($request);
+
+        $request->setResponse($this->response())->shouldBeCalled();
+
+        $this->execute();
     }
 
     public function it_fails_on_deprecated_request()
@@ -222,6 +239,20 @@ class GenesisSpec extends ObjectBehavior
     public function it_fails_on_deprecated_alipay_request()
     {
         $this->beConstructedWith('Financial\OnlineBankingPayments\Alipay');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_zimpler_request()
+    {
+        $this->beConstructedWith('Financial\Wallets\Zimpler');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_santander_cash_request()
+    {
+        $this->beConstructedWith('Financial\CashPayments\SantanderCash');
 
         $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
     }

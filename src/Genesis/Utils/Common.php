@@ -440,4 +440,23 @@ final class Common
 
         return (is_bool($filterBoolean)) ? $filterBoolean : (bool) $filterBoolean;
     }
+
+    /**
+     * Generates the 3DSv2 Signature
+     *
+     * @param string $uniqueId
+     * @param float  $amount Amount in minor currency
+     * @param string $timestamp
+     * @param string $merchantPassword
+     *
+     * @return string
+     */
+    public static function generateThreedsSignature($uniqueId, $amount, $timestamp, $merchantPassword)
+    {
+        return hash(
+            'sha512',
+            $uniqueId . $amount . $timestamp . $merchantPassword,
+            false
+        );
+    }
 }

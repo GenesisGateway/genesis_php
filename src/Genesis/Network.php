@@ -91,6 +91,9 @@ class Network
      * Set Header/Body of the HTTP request
      *
      * @param \Genesis\API\Request $apiContext
+     * @throws Exceptions\ErrorParameter
+     * @throws Exceptions\InvalidArgument
+     * @throws Exceptions\InvalidClassMethod
      */
     public function setApiCtxData($apiContext)
     {

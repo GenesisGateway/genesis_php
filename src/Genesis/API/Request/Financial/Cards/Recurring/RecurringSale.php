@@ -23,9 +23,15 @@
 
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
+use Genesis\Utils\Currency;
 
 /**
  * Class RecurringSale
@@ -34,9 +40,10 @@ use Genesis\API\Traits\RestrictedSetter;
  *
  * @package Genesis\API\Request\Financial\Cards\Recurring
  */
-class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
+class RecurringSale extends Financial
 {
-    use TravelDataAttributes, BusinessAttributes,RestrictedSetter;
+    use RestrictedSetter, TravelDataAttributes, BusinessAttributes, RestrictedSetter, ReferenceAttributes,
+        PaymentAttributes, MotoAttributes;
 
     /**
      * Returns the Request transaction type
@@ -48,16 +55,56 @@ class RecurringSale extends \Genesis\API\Request\Base\Financial\Reference
     }
 
     /**
+     * Set the required fields
+     *
+     * @return void
+     */
+    protected function setRequiredFields()
+    {
+        $requiredFields = [
+            'transaction_id',
+            'reference_id',
+            'amount'
+        ];
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
+
+    /**
+     * Identify the Currency of the Transaction
+     *
+     * @param string $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setCurrency($value)
+    {
+        if (empty($value)) {
+            $this->currency = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'currency',
+            Currency::getList(),
+            $value,
+            'Invalid value given for currency parameter.'
+        );
+    }
+
+    /**
      * @return array
      */
     protected function getPaymentTransactionStructure()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            [
-                'travel'              => $this->getTravelData(),
-                'business_attributes' => $this->getBusinessAttributesStructure()
-            ]
-        );
+        return [
+            'reference_id'        => $this->reference_id,
+            'amount'              => !empty($this->currency) ?
+                $this->transformAmount($this->amount, $this->currency) : $this->amount,
+            'moto'                => Common::toBoolean($this->moto),
+            'travel'              => $this->getTravelData(),
+            'business_attributes' => $this->getBusinessAttributesStructure()
+        ];
     }
 }

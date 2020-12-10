@@ -24,6 +24,7 @@
 namespace Genesis;
 
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Request;
 use Genesis\API\Response;
 use Genesis\Exceptions\DeprecatedMethod;
 use Genesis\Exceptions\InvalidArgument;
@@ -204,8 +205,10 @@ class Genesis
      * Send the request
      *
      * @throws Exceptions\ErrorAPI
-     * @throws Exceptions\InvalidArgument
+     * @throws Exceptions\ErrorParameter
+     * @throws Exceptions\InvalidClassMethod
      * @throws Exceptions\InvalidResponse
+     * @throws InvalidArgument
      */
     public function execute()
     {
@@ -225,6 +228,12 @@ class Genesis
         // Parse the response
         $this->responseCtx->parseResponse(
             $this->networkCtx
+        );
+
+        // Store the Response Object into the Request
+        // The Transaction type request will have access to the response after execute
+        $this->request()->setResponse(
+            $this->response()
         );
     }
 }

@@ -220,6 +220,13 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->duringSetReminderLanguage('qqqqq');
     }
 
+    public function it_should_contain_pending_url_key()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldContain('<return_pending_url>');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -239,6 +246,7 @@ class CreateSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setReturnCancelUrl($faker->url);
+        $this->setReturnPendingUrl($faker->url);
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);

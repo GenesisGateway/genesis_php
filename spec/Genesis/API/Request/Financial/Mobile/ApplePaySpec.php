@@ -7,13 +7,14 @@ use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters;
 
 class ApplePaySpec extends ObjectBehavior
 {
-    use RequestExamples, ApplePayAttributes;
+    use RequestExamples, ApplePayAttributes, CryptoAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -78,7 +79,7 @@ class ApplePaySpec extends ObjectBehavior
     {
         $faker = $this->getFaker();
 
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setTransactionId($faker->uuid);
         $this->setPaymentType($faker->randomElement(
             ApplePayParameters::getAllowedPaymentTypes()
         ));
@@ -87,7 +88,7 @@ class ApplePaySpec extends ObjectBehavior
         $this->setTokenSignature($faker->sha256);
         $this->setTokenEphemeralPublicKey($faker->sha256);
         $this->setTokenPublicKeyHash($faker->sha256);
-        $this->setTokenTransactionId($faker->randomNumber());
+        $this->setTokenTransactionId($faker->uuid);
         $this->setTokenDisplayName($faker->name);
         $this->setTokenNetwork($faker->word);
         $this->setTokenType($faker->word);

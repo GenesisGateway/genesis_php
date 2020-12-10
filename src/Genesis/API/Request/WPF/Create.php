@@ -77,14 +77,14 @@ class Create extends \Genesis\API\Request
     /**
      * unique transaction id defined by merchant
      *
-     * @var string
+     * @var string $transaction_id
      */
     protected $transaction_id;
 
     /**
      * Statement, as it appears in the customer’s bank statement
      *
-     * @var string
+     * @var string $usage
      */
     protected $usage;
 
@@ -92,14 +92,14 @@ class Create extends \Genesis\API\Request
      * Check documentation section Tokenize. Offer the user the option to save
      * cardholder details for future use (tokenize).
      *
-     * @var string
+     * @var string $remember_card
      */
     protected $remember_card = false;
 
     /**
      * Check documentation section Consumers and Tokenization. Saved cards will be listed for user to select
      *
-     * @var string
+     * @var string $consumer_id
      */
     protected $consumer_id;
 
@@ -108,30 +108,37 @@ class Create extends \Genesis\API\Request
      *
      * e.g. "you’re buying concert tickets"
      *
-     * @var string
+     * @var string $description
      */
     protected $description;
 
     /**
      * URL where the customer is sent to after they cancel the payment
      *
-     * @var string
+     * @var string $return_cancel_url
      */
     protected $return_cancel_url;
+
+    /**
+     * URL where customer is sent to when asynchronous payment is pending confirmation
+     *
+     * @var string $return_pending_url
+     */
+    protected $return_pending_url;
 
     /**
      * Number of minutes determining how long the WPF will be valid.
      * Will be set to 30 minutes by default.
      * Valid value ranges between 1 minute and 31 days given in minutes
      *
-     * @var int
+     * @var int $lifetime
      */
     protected $lifetime = self::DEFAULT_LIFETIME;
 
     /**
      * Signifies whether the ’Pay Later’ feature would be enabled on the WPF
      *
-     * @var bool
+     * @var bool $pay_later
      */
     protected $pay_later = false;
 
@@ -143,14 +150,14 @@ class Create extends \Genesis\API\Request
     protected $reminder_language;
 
     /**
-     * @var array
+     * @var array $reminders
      */
     protected $reminders = [];
 
     /**
      * The transaction types that the merchant is willing to accept payments for
      *
-     * @var array
+     * @var array $transaction_types
      */
     protected $transaction_types = [];
 
@@ -585,6 +592,7 @@ class Create extends \Genesis\API\Request
                 'return_success_url'        => $this->return_success_url,
                 'return_failure_url'        => $this->return_failure_url,
                 'return_cancel_url'         => $this->return_cancel_url,
+                'return_pending_url'        => $this->return_pending_url,
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'remember_card'             => var_export($this->remember_card, true),

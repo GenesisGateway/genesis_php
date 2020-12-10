@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\API\Constants;
 
-use Genesis\Api\Constants\BankAccountTypes;
+use Genesis\API\Constants\BankAccountTypes;
 use PhpSpec\ObjectBehavior;
 
 /**

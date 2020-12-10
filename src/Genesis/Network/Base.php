@@ -96,6 +96,8 @@ abstract class Base
                 return 'text/xml';
             case Builder::JSON:
                 return 'application/json';
+            case Builder::FORM:
+                return 'application/x-www-form-urlencoded';
             default:
                 throw new InvalidArgument('Invalid request format type. Allowed are XML and JSON.');
         }

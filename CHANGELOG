@@ -1,3 +1,30 @@
+1.18.6
+-----
+**Features:**
+
+* Removed requests from the Precessing and Web Payment Form:
+    * Zimpler
+    * Santander Cash
+* Updated Recurring Sale transaction attributes
+    * Currency parameter is no longer required. It is an optional parameter used for an amount transformation to a minor currency format.
+        * if currency is SET the amount will be transformed into a minor currency format (keeps the existing behavior)
+        * if currency is NOT set the amount must be into a minor currency format
+    * Added moto attribute support
+* Added new optional attribute return_pending_url to the Web Payment Form.
+* Updated the PHPSpec library to version 3.4
+* Added new optional attribute crypto to the Apple Pay request
+* Added 3DSv2 attributes support to the following transaction requests:
+    * Authorize 3D
+    * Sale 3D
+    * Init Recurring Sale 3D
+* Added  MethodContinue request used for 3DSv2-Method Frictionless, Challenge and Fallback flows
+* Updated the README with usage examples for the 3DSv2 attributes
+
+**Fixes:**
+
+* Fixed the Warning produced by the XML Builder class when running on PHP version above 7.3
+* Fixed the namespace of the BankAccountTypes causing issues with Composer 2
+
 1.18.5
 -----
 **Features:**

@@ -10,6 +10,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
@@ -17,7 +18,7 @@ class Sale3DSpec extends ObjectBehavior
 {
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
         DescriptorAttributesExample, CryptoAttributesExamples, TokenizationAttributesExamples,
-        BusinessAttributesExample;
+        BusinessAttributesExample, ThreedsV2AttributesExamples;
 
     public function it_is_initializable()
     {

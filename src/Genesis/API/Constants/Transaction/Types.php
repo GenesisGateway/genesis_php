@@ -408,6 +408,8 @@ class Types
 
     /**
      * Zimpler is a Swedish payment method.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const ZIMPLER = 'zimpler';
 
@@ -523,6 +525,8 @@ class Types
 
     /**
      * Santander Cash is local card payment in Mexico
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const SANTANDER_CASH = 'santander_cash';
 
@@ -896,7 +900,6 @@ class Types
             self::SALE,
             self::SALE_3D,
             self::SANTANDER,
-            self::SANTANDER_CASH,
             self::SDD_INIT_RECURRING_SALE,
             self::SDD_SALE,
             self::SOFORT,
@@ -908,8 +911,7 @@ class Types
             self::UPI,
             self::WEBMONEY,
             self::WEBPAY,
-            self::WECHAT,
-            self::ZIMPLER
+            self::WECHAT
         ];
     }
 
@@ -1212,7 +1214,9 @@ class Types
             self::INPAY,
             self::PAYBYVOUCHER_SALE,
             self::PAYBYVOUCHER_YEEPAY,
-            self::SURTIMAX
+            self::SURTIMAX,
+            self::ZIMPLER,
+            self::SANTANDER_CASH
         ];
 
         foreach ($transactions as $transaction) {

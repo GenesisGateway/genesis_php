@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment_response>
+    <transaction_type>init_recurring_sale3d</transaction_type>
+    <status>pending_async</status>
+    <unique_id>de7e722035f04839bc30676cf3c4eae9</unique_id>
+    <transaction_id>5f7de7a774bb9</transaction_id>
+    <technical_message>TESTMODE: No real money will be transferred!</technical_message>
+    <message>TESTMODE: No real money will be transferred!</message>
+    <threeds_method_url>https://staging.gate.emerchantpay.net/threeds/threeds_method</threeds_method_url>
+    <threeds_method_continue_url>https://staging.gate.emerchantpay.net/threeds/threeds_method/de7e722035f04839bc30676cf3c4eae9</threeds_method_continue_url>
+    <mode>test</mode>
+    <timestamp>2020-10-07T16:07:33Z</timestamp>
+    <descriptor>test</descriptor>
+    <amount>1000</amount>
+    <currency>EUR</currency>
+    <sent_to_acquirer>false</sent_to_acquirer>
+</payment_response>

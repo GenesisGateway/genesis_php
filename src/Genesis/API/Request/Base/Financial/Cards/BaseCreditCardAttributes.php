@@ -26,7 +26,14 @@ namespace Genesis\API\Request\Base\Financial\Cards;
 use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\TokenizationAttributes;
+use Genesis\Utils\Common;
 
+/**
+ * Class BaseCreditCardAttributes
+ * @package Genesis\API\Request\Base\Financial\Cards
+ *
+ * @suppressWarnings(PHPMD.LongVariable)
+ */
 abstract class BaseCreditCardAttributes extends \Genesis\API\Request\Base\Financial
 {
     use CreditCardAttributes, TokenizationAttributes, PaymentAttributes;
@@ -63,16 +70,34 @@ abstract class BaseCreditCardAttributes extends \Genesis\API\Request\Base\Financ
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
 
+    /**
+     * Inject the requiredFieldValuesConditional Validations
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
     protected function checkRequirements()
     {
-        $this->setRequiredCCFieldsConditionalValues();
+        $requiredFieldValuesConditional = $this->setRequiredCCFieldsConditionalValues();
+
+        $this->requiredFieldValuesConditional = (empty($this->requiredFieldValuesConditional)) ?
+            $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional) :
+            Common::createArrayObject(
+                array_merge((array) $this->requiredFieldValuesConditional, $requiredFieldValuesConditional)
+            );
 
         parent::checkRequirements();
     }
 
+    /**
+     * Credit Card Validations
+     *
+     * @return array
+     */
     protected function setRequiredCCFieldsConditionalValues()
     {
-        $requiredFieldValuesConditional = [
+        return [
             'card_number' => [
                 $this->card_number => [
                     ['card_number' => $this->getCreditCardNumberValidator()]
@@ -89,19 +114,18 @@ abstract class BaseCreditCardAttributes extends \Genesis\API\Request\Base\Financ
                 ]
             ]
         ];
-
-        $this->requiredFieldValuesConditional =
-            \Genesis\Utils\Common::createArrayObject($requiredFieldValuesConditional);
     }
 
     protected function getPaymentTransactionStructure()
     {
-        return array_merge([
-                   $this->getCCAttributesStructure(),
-                   $this->getTokenizationStructure(),
-                   $this->getPaymentAttributesStructure(),
-                   $this->getTransactionAttributes()
-              ]);
+        return array_merge(
+            [
+               $this->getCCAttributesStructure(),
+               $this->getTokenizationStructure(),
+               $this->getPaymentAttributesStructure(),
+               $this->getTransactionAttributes()
+            ]
+        );
     }
 
     protected function requiredTokenizationFieldsConditional()

@@ -57,7 +57,7 @@ final class XML implements \Genesis\Interfaces\Builder
     public function __destruct()
     {
         if (isset($this->context)) {
-            $this->context->flush();
+            @$this->context->flush();
         }
     }
 

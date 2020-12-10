@@ -23,7 +23,7 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
-use Genesis\Api\Constants\BankAccountTypes;
+use Genesis\API\Constants\BankAccountTypes;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;

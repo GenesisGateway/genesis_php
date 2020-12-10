@@ -49,6 +49,11 @@ class DateTimeFormat
     const DD_MM_YYYY_L_SLASHES = 'd/m/Y';
 
     /**
+     * Zulu timestamp
+     */
+    const YYYY_MM_DD_H_I_S_ZULU = 'Y-m-d\TH:i:s\Z';
+
+    /**
      * Retrieve list of all DateTime formats
      *
      * @return array

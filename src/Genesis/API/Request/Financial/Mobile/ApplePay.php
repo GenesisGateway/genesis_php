@@ -25,6 +25,7 @@ namespace Genesis\API\Request\Financial\Mobile;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters;
@@ -40,7 +41,7 @@ use Genesis\API\Traits\RestrictedSetter;
 class ApplePay extends \Genesis\API\Request\Base\Financial
 {
     use AddressInfoAttributes, DocumentAttributes, PaymentAttributes,
-        ApplePayAttributes, RestrictedSetter;
+        ApplePayAttributes, RestrictedSetter, CryptoAttributes;
 
     const BIRTH_DATE_FORMAT = 'd-m-Y';
 
@@ -151,7 +152,8 @@ class ApplePay extends \Genesis\API\Request\Base\Financial
             'birth_date'       => $this->getBirthDate(),
             'billing_address'  => $this->getBillingAddressParamsStructure(),
             'shipping_address' => $this->getShippingAddressParamsStructure(),
-            'document_id'      => $this->document_id
+            'document_id'      => $this->document_id,
+            'crypto'           => $this->crypto
         ];
     }
 }

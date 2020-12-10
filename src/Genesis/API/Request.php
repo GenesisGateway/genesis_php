@@ -316,6 +316,23 @@ abstract class Request
     }
 
     /**
+     * Configures a Secure Post Request with Form body
+     *
+     * @return void
+     */
+    protected function initFormConfiguration()
+    {
+        $this->config = CommonUtils::createArrayObject(
+            [
+                'protocol' => Request::PROTOCOL_HTTPS,
+                'port'     => Request::PORT_HTTPS,
+                'type'     => Request::METHOD_POST,
+                'format'   => Builder::FORM
+            ]
+        );
+    }
+
+    /**
      * Initializes Api EndPoint Url with request path & terminal token
      *
      * @param string $requestPath

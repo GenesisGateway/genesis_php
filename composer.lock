@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "bbe5ea214c51233d90f748d46636c38b",
-    "content-hash": "6aee0e7f65095b2bfe9727277af4f430",
+    "content-hash": "dbd5e95be4da956580751684cbfe9e74",
     "packages": [],
     "packages-dev": [
         {
@@ -60,7 +59,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -108,7 +107,8 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29 12:21:54"
+            "abandoned": true,
+            "time": "2016-04-29T12:21:54+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -162,7 +162,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27 11:43:31"
+            "time": "2015-12-27T11:43:31+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -207,7 +207,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30 07:12:33"
+            "time": "2016-09-30T07:12:33+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -254,7 +254,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-11-25 06:54:22"
+            "time": "2016-11-25T06:54:22+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -283,48 +283,47 @@
             "authors": [
                 {
                     "name": "Chris Boulton",
-                    "homepage": "http://github.com/chrisboulton",
-                    "role": "Original developer"
+                    "homepage": "http://github.com/chrisboulton"
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
-            "time": "2013-11-01 13:02:21"
+            "time": "2013-11-01T13:02:21+00:00"
         },
         {
             "name": "phpspec/phpspec",
-            "version": "2.5.5",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "db395f435eb8e820448e8690de1a8db86d5dd8af"
+                "reference": "8e72ed3576f6e26baebb2c214a8dba344508e3bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/db395f435eb8e820448e8690de1a8db86d5dd8af",
-                "reference": "db395f435eb8e820448e8690de1a8db86d5dd8af",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/8e72ed3576f6e26baebb2c214a8dba344508e3bd",
+                "reference": "8e72ed3576f6e26baebb2c214a8dba344508e3bd",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.1",
                 "ext-tokenizer": "*",
-                "php": ">=5.3.3",
-                "phpspec/php-diff": "~1.0.0",
-                "phpspec/prophecy": "~1.4",
-                "sebastian/exporter": "~1.0",
-                "symfony/console": "~2.3|~3.0",
-                "symfony/event-dispatcher": "~2.1|~3.0",
-                "symfony/finder": "~2.1|~3.0",
-                "symfony/process": "^2.6|~3.0",
-                "symfony/yaml": "~2.1|~3.0"
+                "php": "^5.6 || ^7.0",
+                "phpspec/php-diff": "^1.0.0",
+                "phpspec/prophecy": "^1.5",
+                "sebastian/exporter": "^1.0 || ^2.0 || ^3.0",
+                "symfony/console": "^2.7 || ^3.0",
+                "symfony/event-dispatcher": "^2.7 || ^3.0",
+                "symfony/finder": "^2.7 || ^3.0",
+                "symfony/process": "^2.7 || ^3.0",
+                "symfony/yaml": "^2.7 || ^3.0"
             },
             "require-dev": {
-                "behat/behat": "^3.0.11",
+                "behat/behat": "^3.3",
                 "ciaranmcnulty/versionbasedtestskipper": "^0.2.1",
-                "phpunit/phpunit": "~4.4",
-                "symfony/filesystem": "~2.1|~3.0"
+                "phpunit/phpunit": "^5.5|^6.0",
+                "symfony/filesystem": "^3.0"
             },
             "suggest": {
-                "phpspec/nyan-formatters": "~1.0 – Adds Nyan formatters"
+                "phpspec/nyan-formatters": "Adds Nyan formatters"
             },
             "bin": [
                 "bin/phpspec"
@@ -332,7 +331,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -353,9 +352,13 @@
                 {
                     "name": "Marcello Duarte",
                     "homepage": "http://marcelloduarte.net/"
+                },
+                {
+                    "name": "Ciaran McNulty",
+                    "homepage": "https://ciaranmcnulty.com/"
                 }
             ],
-            "description": "Specification-oriented BDD framework for PHP 5.3+",
+            "description": "Specification-oriented BDD framework for PHP 5.6+",
             "homepage": "http://phpspec.net/",
             "keywords": [
                 "BDD",
@@ -366,7 +369,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2016-12-04 21:03:31"
+            "time": "2017-12-06T09:12:11+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -429,7 +432,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02 20:05:34"
+            "time": "2017-03-02T20:05:34+00:00"
         },
         {
             "name": "psr/log",
@@ -476,7 +479,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -540,7 +543,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29 09:50:25"
+            "time": "2017-01-29T09:50:25+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -592,7 +595,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08 07:14:41"
+            "time": "2015-12-08T07:14:41+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -659,7 +662,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-06-17 09:04:28"
+            "time": "2016-06-17T09:04:28+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -712,7 +715,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-10-03 07:41:43"
+            "time": "2016-10-03T07:41:43+00:00"
         },
         {
             "name": "symfony/console",
@@ -775,7 +778,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-04 14:33:42"
+            "time": "2017-04-04T14:33:42+00:00"
         },
         {
             "name": "symfony/debug",
@@ -832,7 +835,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-28 21:38:24"
+            "time": "2017-03-28T21:38:24+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -892,7 +895,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-04 07:26:27"
+            "time": "2017-04-04T07:26:27+00:00"
         },
         {
             "name": "symfony/finder",
@@ -941,7 +944,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-20 09:32:19"
+            "time": "2017-03-20T09:32:19+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1000,7 +1003,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/process",
@@ -1049,7 +1052,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-27 18:07:02"
+            "time": "2017-03-27T18:07:02+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -1104,7 +1107,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-20 09:45:15"
+            "time": "2017-03-20T09:45:15+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1154,7 +1157,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23 20:04:58"
+            "time": "2016-11-23T20:04:58+00:00"
         }
     ],
     "aliases": [],
