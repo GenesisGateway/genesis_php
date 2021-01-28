@@ -5,6 +5,7 @@ namespace spec\Genesis\API\Request\Financial\Cards\Recurring;
 use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
@@ -17,7 +18,7 @@ class InitRecurringSale3DSpec extends ObjectBehavior
 {
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
         DescriptorAttributesExample, TokenizationAttributesExamples, BusinessAttributesExample,
-        ThreedsV2AttributesExamples;
+        ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples;
 
     public function it_is_initializable()
     {

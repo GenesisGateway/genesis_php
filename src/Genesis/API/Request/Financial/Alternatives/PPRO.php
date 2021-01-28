@@ -155,9 +155,6 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                 ],
                 PaymentMethods::PRZELEWY24 => [
                     'customer_email'
-                ],
-                PaymentMethods::QIWI       => [
-                    'account_phone'
                 ]
             ]
         ];
@@ -187,7 +184,7 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                 PaymentMethods::SAFETY_PAY => [
                     [
                         'billing_country' => [
-                            'AT', 'BE', 'BR', 'CL', 'CO', 'CR', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR'
+                            'AT', 'BE', 'BR', 'CL', 'CO', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR'
                         ],
                         'currency'        => ['EUR', 'USD']
                     ]
@@ -214,12 +211,6 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                         'currency'        => 'EUR'
                     ]
                 ],
-                PaymentMethods::QIWI       => [
-                    [
-                        'billing_country' => 'RU',
-                        'currency'        => ['EUR', 'RUB']
-                    ]
-                ],
                 PaymentMethods::GIRO_PAY   => [
                     [
                         'billing_country' => 'DE',
@@ -234,7 +225,7 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                 ],
                 PaymentMethods::MYBANK     => [
                     [
-                        'billing_country' => ['BE', 'FR', 'IT', 'LU'],
+                        'billing_country' => ['IT'],
                         'currency'        => 'EUR'
                     ]
                 ]

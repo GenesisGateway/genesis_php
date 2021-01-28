@@ -67,7 +67,7 @@ class SafetyPay extends \Genesis\API\Request\Base\Financial
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => ['AT', 'BE', 'BR', 'CL', 'CO', 'CR', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR']
+            'billing_country' => ['AT', 'BE', 'BR', 'CL', 'CO', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR']
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);

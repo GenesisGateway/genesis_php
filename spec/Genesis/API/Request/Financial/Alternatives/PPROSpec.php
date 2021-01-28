@@ -45,14 +45,6 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
     }
 
-    public function it_should_fail_when_missing_account_phone_for_qiwi()
-    {
-        $this->setRequestParameters();
-        $this->setPaymentType('qiwi');
-        $this->setAccountPhone(null);
-        $this->shouldThrow()->during('getDocument');
-    }
-
     public function it_should_fail_when_wrong_country_code_for_safetypay()
     {
         $this->setRequestParameters();

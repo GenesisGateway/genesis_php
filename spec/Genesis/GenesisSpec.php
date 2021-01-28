@@ -257,6 +257,20 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
     }
 
+    public function it_fails_on_deprecated_qiwi_request()
+    {
+        $this->beConstructedWith('Financial\Wallets\Qiwi');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
+    public function it_fails_on_deprecated_instant_transfer_request()
+    {
+        $this->beConstructedWith('Financial\OnlineBankingPayments\InstantTransfer');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
     public function it_fails_on_non_existing_transaction_request()
     {
         $this->beConstructedWith('Non\Existing\Transaction');

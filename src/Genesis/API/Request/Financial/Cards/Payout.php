@@ -37,7 +37,7 @@ use Genesis\API\Traits\RestrictedSetter;
  *
  * @package Genesis\API\Request\Financial\Cards
  */
-class Payout extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
+class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use RestrictedSetter, AddressInfoAttributes, DocumentAttributes,
         SourceOfFundsAttributes, FxRateAttributes, DescriptorAttributes;

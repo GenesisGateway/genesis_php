@@ -4,16 +4,16 @@ namespace spec\Genesis\API\Request\Base\Financial\Cards;
 
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
-use spec\Genesis\API\Stubs\Base\Request\Financial\Cards\BaseCreditCardAttributesStub;
+use spec\Genesis\API\Stubs\Base\Request\Financial\Cards\CreditCardStub;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
-class BaseCreditCardAttributesSpec extends ObjectBehavior
+class CreditCardSpec extends ObjectBehavior
 {
     use RequestExamples;
 
     public function let()
     {
-        $this->beAnInstanceOf(BaseCreditCardAttributesStub::class);
+        $this->beAnInstanceOf(CreditCardStub::class);
     }
 
     public function it_should_fail_when_missing_required_params()

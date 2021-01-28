@@ -5,6 +5,7 @@ namespace spec\Genesis\API\Request\Financial\Alternatives;
 use Genesis\API\Request\Financial\Alternatives\Sofort;
 use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SofortSpec extends ObjectBehavior
@@ -24,8 +25,12 @@ class SofortSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
+            'transaction_id',
             'amount',
             'currency',
+            'return_success_url',
+            'return_failure_url',
+            'customer_email',
             'billing_country'
         ]);
     }
@@ -57,6 +62,49 @@ class SofortSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_be_alias_to_bic()
+    {
+        $bic = Faker::getInstance()->swiftBicNumber;
+
+        $this->setCustomerBankId($bic)->shouldReturn($this);
+        $this->getBic()->shouldBe($bic);
+    }
+
+    public function it_should_be_alias_to_iban()
+    {
+        $iban = Faker::getInstance()->iban('UK');
+
+        $this->setBankAccountNumber($iban)->shouldReturn($this);
+        $this->getIban()->shouldBe($iban);
+    }
+
+    public function it_should_have_correct_structure()
+    {
+        $this->setRequestParameters();
+
+        $parameters = [
+            'transaction_type',
+            'transaction_id',
+            'usage',
+            'remote_ip',
+            'transaction_id',
+            'return_success_url',
+            'return_failure_url',
+            'amount',
+            'currency',
+            'customer_email',
+            'customer_phone',
+            'bic',
+            'iban',
+            'billing_address',
+            'shipping_address',
+        ];
+
+        foreach($parameters as $parameter) {
+            $this->getDocument()->shouldContain("<$parameter>");
+        }
+    }
+
     protected function setRequestParameters()
     {
         $this->setDefaultRequestParameters();
@@ -67,5 +115,9 @@ class SofortSpec extends ObjectBehavior
             )
         );
         $this->setBillingCountry('DE');
+        $this->setBic(Faker::getInstance()->swiftBicNumber);
+        $this->setIban(Faker::getInstance()->iban('UK'));
+        $this->setCustomerPhone(Faker::getInstance()->phoneNumber);
+        $this->setShippingCountry(Faker::getInstance()->countryCode);
     }
 }

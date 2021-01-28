@@ -23,13 +23,13 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PaymentTypes;
 use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\VirtualPaymentAddressAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameters;
 
@@ -41,8 +41,9 @@ use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameter
  * @package Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
  *
  * @method string getPaymentType()
- * @method setBankCode($value) Customer’s bank ode
- * @method setVirtualPaymentAddress($value) Virtual Payment Address (VPA) of the customer format: someone@bank
+ * @method $this  setBankCode($value) Customer’s bank code
+ * @method string getConsumerReference()
+ * @method $this  setConsumerReference($value)
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
@@ -51,13 +52,8 @@ class Payin extends Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes, VirtualPaymentAddressAttributes;
 
-    const PAYMENT_TYPE_ONLINE_BANKING     = 'online_banking';
-    const PAYMENT_TYPE_QR_PAYMENT         = 'qr_payment';
-    const PAYMENT_TYPE_QUICK_PAYMENT      = 'quick_payment';
-    const PAYMENT_TYPE_NETBANKING         = 'netbanking';
-
     /**
-     * Customer’s bank ode
+     * Customer’s bank code
      *
      * @var string
      */
@@ -71,6 +67,13 @@ class Payin extends Financial
     protected $payment_type;
 
     /**
+     * Consumer Reference
+     *
+     * @var string $consumer_reference
+     */
+    protected $consumer_reference;
+
+    /**
      * @param $paymentType
      *
      * @return $this
@@ -78,10 +81,7 @@ class Payin extends Financial
      */
     public function setPaymentType($paymentType)
     {
-        $allowedPaymentTypes = [
-            self::PAYMENT_TYPE_ONLINE_BANKING, self::PAYMENT_TYPE_QR_PAYMENT, self::PAYMENT_TYPE_QUICK_PAYMENT,
-            self::PAYMENT_TYPE_NETBANKING
-        ];
+        $allowedPaymentTypes = PaymentTypes::getAll();
 
         if (in_array($paymentType, $allowedPaymentTypes)) {
             $this->payment_type = $paymentType;
@@ -149,17 +149,11 @@ class Payin extends Financial
 
         $requiredFieldValuesConditional = [
             'currency' => [
-                'ARS' => [
-                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('ARS')]
-                ],
                 'CNY' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CNY')]
                 ],
                 'CLP' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CLP')]
-                ],
-                'COP' => [
-                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('COP')]
                 ],
                 'THB' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('THB')]
@@ -187,6 +181,24 @@ class Payin extends Financial
                 ],
                 'VND' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('VND')]
+                ],
+                'PEN' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('PEN')]
+                ],
+                'EUR' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('EUR')]
+                ],
+                'USD' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('USD')]
+                ],
+                'MXN' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('MXN')]
+                ],
+                'BRL' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('BRL')]
+                ],
+                'CHF' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CHF')]
                 ]
             ]
         ];
@@ -214,7 +226,8 @@ class Payin extends Financial
             'document_id'             => $this->document_id,
             'billing_address'         => $this->getBillingAddressParamsStructure(),
             'shipping_address'        => $this->getShippingAddressParamsStructure(),
-            'virtual_payment_address' => $this->virtual_payment_address
+            'virtual_payment_address' => $this->virtual_payment_address,
+            'consumer_reference'      => $this->consumer_reference
         ];
     }
 }

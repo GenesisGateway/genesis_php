@@ -554,7 +554,6 @@ Financial\OnlineBankingPayments\iDebit\Payin
 Financial\OnlineBankingPayments\iDebit\Payout
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
-Financial\OnlineBankingPayments\InstantTransfer
 Financial\OnlineBankingPayments\Itau
 Financial\OnlineBankingPayments\Multibanco
 Financial\OnlineBankingPayments\MyBank
@@ -582,7 +581,6 @@ Financial\Vouchers\Paysafecard
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
 Financial\Wallets\Neteller
-Financial\Wallets\Qiwi
 Financial\Wallets\WebMoney
 
 // Generic (Non-Financial) requests

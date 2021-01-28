@@ -56,14 +56,18 @@ class ScaExemptions
      */
     const EXEMPTION_DELEGATED_AUTHENTICATION = 'delegated_authentication';
 
+    /**
+     * Exemption Auth Network Outage
+     */
+    const EXEMPTION_AUTH_NETWORK_OUTAGE = 'auth_network_outage';
+
+    /**
+     * Get all the available Exemption values
+     *
+     * @return array
+     */
     public static function getAll()
     {
-        return [
-            self::EXEMPTION_LOW_VALUE,
-            self::EXEMPTION_LOW_RISK,
-            self::EXEMPTION_TRUSTED_MERCHANT,
-            self::EXEMPTION_CORPORATE_PAYMENT,
-            self::EXEMPTION_DELEGATED_AUTHENTICATION
-        ];
+        return array_values(Common::getClassConstants(self::class));
     }
 }

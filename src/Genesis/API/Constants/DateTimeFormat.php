@@ -54,6 +54,11 @@ class DateTimeFormat
     const YYYY_MM_DD_H_I_S_ZULU = 'Y-m-d\TH:i:s\Z';
 
     /**
+     * Date Format ISO 8601
+     */
+    const YYYY_MM_DD_ISO_8601 = 'Y-m-d';
+
+    /**
      * Retrieve list of all DateTime formats
      *
      * @return array

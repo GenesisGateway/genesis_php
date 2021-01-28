@@ -34,8 +34,10 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
  *
  * @package Genesis\API\Request\Financial\Alternatives
  *
- * @method Sofort setCustomerBankId($value) Set the bank id of the bank where the customer resides
- * @method Sofort setBankAccountNumber($value) Set the Bank identification number of the customer
+ * @method string getBic()          Bank Identifier Code
+ * @method $this  setBic($value)    Bank Identifier Code
+ * @method string getIban()         International bank account number of the customer
+ * @method $this  setIban($value)   International bank account number of the customer
  */
 class Sofort extends \Genesis\API\Request\Base\Financial
 {
@@ -45,14 +47,81 @@ class Sofort extends \Genesis\API\Request\Base\Financial
      * The bank id of the bank where the customer resides
      *
      * @var string
+     * @deprecated
      */
     protected $customer_bank_id;
+
     /**
      * Bank identification number of the customer
      *
      * @var string
+     * @deprecated
      */
     protected $bank_account_number;
+
+    /**
+     * Bank Identifier Code
+     *
+     * @var string $bic
+     */
+    protected $bic;
+
+    /**
+     * International bank account number of the customer
+     *
+     * @var string $iban
+     */
+    protected $iban;
+
+    /**
+     * Alias of the bic
+     *
+     * @return string
+     * @deprecated Deprecated since 1.18.7. getBic() should used directly
+     */
+    public function getCustomerBankId()
+    {
+        return $this->bic;
+    }
+
+    /**
+     * Alias of the bic
+     *
+     * @param string $value
+     * @return $this
+     * @deprecated Deprecated since 1.18.7. setBic($value) should used directly
+     */
+    public function setCustomerBankId($value)
+    {
+        $this->bic = $value;
+
+        return $this;
+    }
+
+    /**
+     * Alias of the iban
+     *
+     * @return string
+     * @deprecated Deprecated since 1.18.7. getIban() should used directly
+     */
+    public function getBankAccountNumber()
+    {
+        return $this->iban;
+    }
+
+    /**
+     * Alias of the Iban
+     *
+     * @param string $value
+     * @return $this
+     * @deprecated Deprecated since 1.18.7. setIban($value) should used directly
+     */
+    public function setBankAccountNumber($value)
+    {
+        $this->iban = $value;
+
+        return $this;
+    }
 
     /**
      * Returns the Request transaction type
@@ -72,7 +141,6 @@ class Sofort extends \Genesis\API\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
-            'remote_ip',
             'amount',
             'currency',
             'return_success_url',
@@ -104,8 +172,8 @@ class Sofort extends \Genesis\API\Request\Base\Financial
             'currency'            => $this->currency,
             'customer_email'      => $this->customer_email,
             'customer_phone'      => $this->customer_phone,
-            'customer_bank_id'    => $this->customer_bank_id,
-            'bank_account_number' => $this->bank_account_number,
+            'bic'                 => $this->bic,
+            'iban'                => $this->iban,
             'billing_address'     => $this->getBillingAddressParamsStructure(),
             'shipping_address'    => $this->getShippingAddressParamsStructure()
         ];

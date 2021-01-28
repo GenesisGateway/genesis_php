@@ -12,7 +12,7 @@ use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Genesis;
-use Genesis\Utils\Common;
+use Genesis\Utils\Threeds\V2 as ThreedsV2Utils;
 use PhpSpec\ObjectBehavior;
 use spec\fixtures\API\Stubs\Parser\ParserStub;
 use spec\SharedExamples\Faker;
@@ -90,7 +90,7 @@ class MethodContinueSpec extends ObjectBehavior
         $this->setTransactionTimestamp($timestamp);
         $this->setTransactionUniqueId($uuid);
 
-        $signature = Common::generateThreedsSignature(
+        $signature = ThreedsV2Utils::generateSignature(
             $uuid,
             1000,
             $timestamp,

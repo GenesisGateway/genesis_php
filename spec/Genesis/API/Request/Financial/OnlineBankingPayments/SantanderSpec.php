@@ -18,6 +18,6 @@ class SantanderSpec extends ObjectBehavior
 
     protected function getExpectedValidCountryCodes()
     {
-        return ['AR', 'BR', 'MX'];
+        return ['AR', 'BR', 'MX', 'CL'];
     }
 }

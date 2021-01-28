@@ -25,9 +25,11 @@ namespace Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\API\Traits\Request\Financial\UcofAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
+use Genesis\API\Traits\Request\Financial\ScaAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
@@ -44,12 +46,12 @@ use Genesis\API\Traits\RestrictedSetter;
  * @package Genesis\API\Request\Financial\Cards
  *
  */
-class Sale extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
+class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use GamingAttributes, MotoAttributes, AddressInfoAttributes,
         RiskAttributes, DescriptorAttributes, ReferenceAttributes,
         DocumentAttributes, TravelDataAttributes, FxRateAttributes,
-        CryptoAttributes, BusinessAttributes, RestrictedSetter;
+        CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes;
 
     /**
      * Returns the Request transaction type
@@ -81,21 +83,25 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttri
      */
     protected function getTransactionAttributes()
     {
-        return [
-            'gaming'                    => $this->gaming,
-            'moto'                      => $this->moto,
-            'customer_email'            => $this->customer_email,
-            'customer_phone'            => $this->customer_phone,
-            'document_id'               => $this->document_id,
-            'billing_address'           => $this->getBillingAddressParamsStructure(),
-            'shipping_address'          => $this->getShippingAddressParamsStructure(),
-            'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'reference_id'              => $this->reference_id,
-            'travel'                    => $this->getTravelData(),
-            'fx_rate_id'                => $this->fx_rate_id,
-            'crypto'                    => $this->crypto,
-            'business_attributes'       => $this->getBusinessAttributesStructure()
-        ];
+        return array_merge(
+            [
+                'gaming'                    => $this->gaming,
+                'moto'                      => $this->moto,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'document_id'               => $this->document_id,
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'risk_params'               => $this->getRiskParamsStructure(),
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'reference_id'              => $this->reference_id,
+                'travel'                    => $this->getTravelData(),
+                'fx_rate_id'                => $this->fx_rate_id,
+                'crypto'                    => $this->crypto,
+                'business_attributes'       => $this->getBusinessAttributesStructure()
+            ],
+            $this->getScaAttributesStructure(),
+            $this->getUcofAttributesStructure()
+        );
     }
 }

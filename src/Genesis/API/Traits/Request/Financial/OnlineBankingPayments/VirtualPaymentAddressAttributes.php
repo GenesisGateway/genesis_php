@@ -23,7 +23,6 @@
 
 namespace Genesis\API\Traits\Request\Financial\OnlineBankingPayments;
 
-use Genesis\API\Request;
 use Genesis\API\Validators\Request\RegexValidator;
 
 /**

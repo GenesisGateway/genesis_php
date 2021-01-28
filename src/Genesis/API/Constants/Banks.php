@@ -35,6 +35,341 @@ use Genesis\Utils\Common;
 class Banks
 {
     /**
+     * Aditya Birla Idea Payments Bank
+     */
+    const ABPB = 'ABPB';
+
+    /**
+     * Airtel Payments Bank
+     */
+    const AIRP = 'AIRP';
+
+    /**
+     * Allahabad Bank
+     */
+    const ALLA = 'ALLA';
+
+    /**
+     * Andhra Bank
+     */
+    const ANDB = 'ANDB';
+
+    /**
+     * Bank of Baroda - Retail Banking
+     */
+    const BARB_R = 'BARB_R';
+
+    /**
+     * Bank of Bahrein and Kuwait
+     */
+    const BBKM = 'BBKM';
+
+    /**
+     * Dena Bank
+     */
+    const BKDN = 'BKDN';
+
+    /**
+     * Bank of India
+     */
+    const BKID = 'BKID';
+
+    /**
+     * Central Bank of India
+     */
+    const CBIN = 'CBIN';
+
+    /**
+     * City Union Bank
+     */
+    const CIUB = 'CIUB';
+
+    /**
+     * Canara Bank
+     */
+    const CNRB = 'CNRB';
+
+    /**
+     * Corporation Bank
+     */
+    const CORP = 'CORP';
+
+    /**
+     * Cosmos Co-operative Bank
+     */
+    const COSB = 'COSB';
+
+    /**
+     * Catholic Syrian Bank
+     */
+    const CSBK = 'CSBK';
+
+    /**
+     * Development Bank of Singapore
+     */
+    const DBSS = 'DBSS';
+
+    /**
+     * DCB Bank
+     */
+    const DCBL = 'DCBL';
+
+    /**
+     * Deutsche Bank
+     */
+    const DEUT = 'DEUT';
+
+    /**
+     * Dhanlaxmi Bank
+     */
+    const DLXB = 'DLXB';
+
+    /**
+     * Equitas Small Finance Bank
+     */
+    const ESFB = 'ESFB';
+
+    /**
+     * Federal Bank
+     */
+    const FDRL = 'FDRL';
+
+    /**
+     * HDFC Bank
+     */
+    const HDFC = 'HDFC';
+
+    /**
+     * IDBI
+     */
+    const IBKL = 'IBKL';
+
+    /**
+     * ICICI Bank
+     */
+    const ICIC = 'ICIC';
+
+    /**
+     * IDFC FIRST Bank
+     */
+    const IDFB = 'IDFB';
+
+    /**
+     * Indian Bank
+     */
+    const IDIB = 'IDIB';
+
+    /**
+     * Indusind Bank
+     */
+    const INDB = 'INDB';
+
+    /**
+     * Indian Overseas Bank
+     */
+    const IOBA = 'IOBA';
+
+    /**
+     * Jammu and Kashmir Bank
+     */
+    const JAKA = 'JAKA';
+
+    /**
+     * Janata Sahakari Bank (Pune)
+     */
+    const JSBP = 'JSBP';
+
+    /**
+     * Karnataka Bank
+     */
+    const KARB = 'KARB';
+
+    /**
+     * Kotak Mahindra Bank
+     */
+    const KKBK = 'KKBK';
+
+    /**
+     * Karur Vysya Bank
+     */
+    const KVBL = 'KVBL';
+
+    /**
+     * Lakshmi Vilas Bank - Corporate Banking
+     */
+    const LAVB_C = 'LAVB_C';
+
+    /**
+     * Lakshmi Vilas Bank - Retail Banking
+     */
+    const LAVB_R = 'LAVB_R';
+
+    /**
+     * Bank of Maharashtra
+     */
+    const MAHB = 'MAHB';
+
+    /**
+     * NKGSB Co-operative Bank
+     */
+    const NKGS = 'NKGS';
+
+    /**
+     * Oriental Bank of Commerce
+     */
+    const ORBC = 'ORBC';
+
+    /**
+     * Punjab & Maharashtra Co-operative Bank
+     */
+    const PMCB = 'PMCB';
+
+    /**
+     * Punjab & Sind Bank
+     */
+    const PSIB = 'PSIB';
+
+    /**
+     * Punjab National Bank - Retail Banking
+     */
+    const PUNB_R = 'PUNB_R';
+
+    /**
+     * RBL Bank
+     */
+    const RATN = 'RATN';
+
+    /**
+     * State Bank of Bikaner and Jaipur
+     */
+    const SBBJ = 'SBBJ';
+
+    /**
+     * State Bank of Hyderabad
+     */
+    const SBHY = 'SBHY';
+
+    /**
+     * State Bank of India
+     */
+    const SBIN = 'SBIN';
+
+    /**
+     * State Bank of Mysore
+     */
+    const SBMY = 'SBMY';
+
+    /**
+     * State Bank of Travancore
+     */
+    const SBTR = 'SBTR';
+
+    /**
+     * Standard Chartered Bank
+     */
+    const SCBL = 'SCBL';
+
+    /**
+     * South Indian Bank
+     */
+    const SIBL = 'SIBL';
+
+    /**
+     * State Bank of Patiala
+     */
+    const STBP = 'STBP';
+
+    /**
+     * Shamrao Vithal Co-operative Bank
+     */
+    const SVCB = 'SVCB';
+
+    /**
+     * Syndicate Bank
+     */
+    const SYNB = 'SYNB';
+
+    /**
+     * Tamilnadu Mercantile Bank
+     */
+    const TMBL = 'TMBL';
+
+    /**
+     * Tamilnadu State Apex Co-operative Bank
+     */
+    const TNSC = 'TNSC';
+
+    /**
+     * Union Bank of India
+     */
+    const UBIN = 'UBIN';
+
+    /**
+     * UCO Bank
+     */
+    const UCBA = 'UCBA';
+
+    /**
+     * United Bank of India
+     */
+    const UTBI = 'UTBI';
+
+    /**
+     * Axis Bank
+     */
+    const UTIB = 'UTIB';
+
+    /**
+     * Vijaya Bank
+     */
+    const VIJB = 'VIJB';
+
+    /**
+     * Yes Bank
+     */
+    const YESB = 'YESB';
+
+    /**
+     * Santander
+     */
+    const SN = 'SN';
+
+    /**
+     * Itau
+     */
+    const IT = 'IT';
+
+    /**
+     * Bradesco
+     */
+    const BR = 'BR';
+
+    /**
+     * Banco do Brasil
+     */
+    const BB = 'BB';
+
+    /**
+     * Webpay
+     */
+    const WP = 'WP';
+
+    /**
+     * Bancomer
+     */
+    const BN = 'BN';
+
+    /**
+     * PSE
+     */
+    const PS = 'PS';
+
+    /**
+     * Banco de Occidente
+     */
+    const BO = 'BO';
+
+    /**
      * Industrial and Commercial Bank of China
      */
     const ICBC = 'ICBC';
@@ -262,7 +597,7 @@ class Banks
     /**
      * Virtual Account Bank
      */
-    const VA = '';
+    const VA = 'VA';
 
     /**
      * Netbanking
@@ -432,6 +767,11 @@ class Banks
      * PagoExpress
      */
     const PE = 'PE';
+
+    /**
+     * Post Finance
+     */
+    const PF = 'PF';
 
     /**
      * Bangkok Bank

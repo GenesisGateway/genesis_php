@@ -73,19 +73,12 @@ trait ScaAttributes
         return $this;
     }
 
-    protected function getScaParamsStructure()
+    protected function getScaAttributesStructure()
     {
         return [
-            'exemption'        => $this->sca_exemption,
-            'visa_merchant_id' => $this->sca_visa_merchant_id
-        ];
-    }
-
-    protected function requiredScaFieldConditional()
-    {
-        return [
-            'sca_exemption' => [
-                ScaExemptions::EXEMPTION_TRUSTED_MERCHANT => ['sca_visa_merchant_id']
+            'sca_params' => [
+                'exemption'        => $this->sca_exemption,
+                'visa_merchant_id' => $this->sca_visa_merchant_id
             ]
         ];
     }

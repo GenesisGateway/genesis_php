@@ -53,7 +53,7 @@ use Genesis\Utils\Common;
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
+class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
         AddressInfoAttributes, MpiAttributes, RiskAttributes,
@@ -86,7 +86,6 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAtt
                 'return_failure_url' => ['notification_url', 'return_success_url']
             ],
             $this->requiredMpiFieldsConditional(),
-            $this->requiredScaFieldConditional(),
             $this->requiredTokenizationFieldsConditional(),
             $this->requiredCCFieldsConditional(),
             $this->requiredThreedsV2DeviceTypeConditional()
@@ -124,27 +123,29 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAtt
      */
     protected function getTransactionAttributes()
     {
-        return [
-            'gaming'                    => $this->gaming,
-            'moto'                      => $this->moto,
-            'notification_url'          => $this->notification_url,
-            'return_success_url'        => $this->return_success_url,
-            'return_failure_url'        => $this->return_failure_url,
-            'customer_email'            => $this->customer_email,
-            'customer_phone'            => $this->customer_phone,
-            'document_id'               => $this->document_id,
-            'billing_address'           => $this->getBillingAddressParamsStructure(),
-            'shipping_address'          => $this->getShippingAddressParamsStructure(),
-            'mpi_params'                => $this->getMpiParamsStructure(),
-            'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'reference_id'              => $this->reference_id,
-            'travel'                    => $this->getTravelData(),
-            'sca_params'                => $this->getScaParamsStructure(),
-            'fx_rate_id'                => $this->fx_rate_id,
-            'crypto'                    => $this->crypto,
-            'business_attributes'       => $this->getBusinessAttributesStructure(),
-            'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
-        ];
+        return array_merge(
+            [
+                'gaming'                    => $this->gaming,
+                'moto'                      => $this->moto,
+                'notification_url'          => $this->notification_url,
+                'return_success_url'        => $this->return_success_url,
+                'return_failure_url'        => $this->return_failure_url,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'document_id'               => $this->document_id,
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'mpi_params'                => $this->getMpiParamsStructure(),
+                'risk_params'               => $this->getRiskParamsStructure(),
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'reference_id'              => $this->reference_id,
+                'travel'                    => $this->getTravelData(),
+                'fx_rate_id'                => $this->fx_rate_id,
+                'crypto'                    => $this->crypto,
+                'business_attributes'       => $this->getBusinessAttributesStructure(),
+                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
+            ],
+            $this->getScaAttributesStructure()
+        );
     }
 }

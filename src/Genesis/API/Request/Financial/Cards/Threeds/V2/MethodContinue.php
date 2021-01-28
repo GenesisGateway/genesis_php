@@ -36,6 +36,7 @@ use Genesis\Exceptions\InvalidMethod;
 use Genesis\Genesis;
 use Genesis\Utils\Common;
 use Genesis\Utils\Currency;
+use Genesis\Utils\Threeds\V2 as ThreedsV2Utils;
 
 /**
  * Class MethodContinue
@@ -214,7 +215,7 @@ class MethodContinue extends Request
         if (empty($this->signature)) {
             $amount = !empty($this->currency) ? $this->transformAmount($this->amount, $this->currency) : $this->amount;
 
-            return Common::generateThreedsSignature(
+            return ThreedsV2Utils::generateSignature(
                 $this->getTransactionUniqueId(),
                 $amount,
                 $this->getTransactionTimestamp(),

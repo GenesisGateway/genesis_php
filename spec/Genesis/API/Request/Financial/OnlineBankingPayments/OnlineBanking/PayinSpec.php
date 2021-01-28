@@ -4,10 +4,12 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
 
 use Genesis\API\Constants\Banks;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameters;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PaymentTypes;
 use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payin;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PayinSpec extends ObjectBehavior
@@ -103,7 +105,8 @@ class PayinSpec extends ObjectBehavior
 
     public function it_should_succeed_when_valid_payment_type_param()
     {
-        $this->shouldNotThrow()->during('setPaymentType', [Payin::PAYMENT_TYPE_QR_PAYMENT]);
+        $paymentType = Faker::getInstance()->randomElement(PaymentTypes::getAll());
+        $this->shouldNotThrow()->during('setPaymentType', [$paymentType]);
     }
 
     public function it_should_have_proper_structure()
@@ -113,12 +116,13 @@ class PayinSpec extends ObjectBehavior
         $this->setRequestParameters();
 
         $this->setCustomerPhone($faker->phoneNumber);
-        $this->setPaymentType(Payin::PAYMENT_TYPE_NETBANKING);
+        $this->setPaymentType(PaymentTypes::NETBANKING);
         $this->setCurrency('MYR');
         $this->setBankCode(Banks::CASH_711);
         $this->setDocumentId('ABCDE1234F');
         $this->setShippingFirstName($faker->firstName);
         $this->setVirtualPaymentAddress('someone@example');
+        $this->setConsumerReference('someone@example');
 
         $attributes = [
             'transaction_id',
@@ -135,7 +139,8 @@ class PayinSpec extends ObjectBehavior
             'document_id',
             'billing_address',
             'shipping_address',
-            'virtual_payment_address'
+            'virtual_payment_address',
+            'consumer_reference'
         ];
 
         foreach ($attributes as $attribute) {

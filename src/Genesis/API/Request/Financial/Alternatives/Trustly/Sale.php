@@ -23,9 +23,13 @@
 
 namespace Genesis\API\Request\Financial\Alternatives\Trustly;
 
+use Genesis\API\Constants\Transaction\Parameters\IFrameTargets;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Class Sale
@@ -34,18 +38,51 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
  *
  * @package Genesis\API\Request\Financial\Alternatives\Trustly
  *
- * @method $this setBirthDate($value) Set Birth date of the customer
+ * @method string getReturnSuccessUrlTarget() URL target for successful payment in Trustly iFrame
+ * @method string getUserId()                 Unique user identifier defined by merchant
+ * @method $this  setUserId($value)           Unique user identifier defined by merchant
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, RestrictedSetter, BirthDateAttributes;
 
     /**
-     * Birth date of the customer
+     * URL target for successful payment in Trustly iFrame.
      *
-     * @var string
+     * @var string $return_success_url_target
      */
-    protected $birth_date;
+    protected $return_success_url_target;
+
+    /**
+     * Unique user identifier defined by merchant
+     *
+     * @var string $user_id
+     */
+    protected $user_id;
+
+    /**
+     * URL target for successful payment in Trustly iFrame.
+     * Possible values: self, parent, top.
+     *
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setReturnSuccessUrlTarget($value)
+    {
+        if (empty($value)) {
+            $this->return_success_url_target = $value;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'return_success_url_target',
+            IFrameTargets::getAll(),
+            $value,
+            'Invalid value given for Return Success URL Target'
+        );
+    }
 
     /**
      * Returns the Request transaction type
@@ -65,7 +102,6 @@ class Sale extends \Genesis\API\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
-            'remote_ip',
             'amount',
             'currency',
             'return_success_url',
@@ -93,16 +129,19 @@ class Sale extends \Genesis\API\Request\Base\Financial
      */
     protected function getPaymentTransactionStructure()
     {
-        return [
-            'return_success_url' => $this->return_success_url,
-            'return_failure_url' => $this->return_failure_url,
-            'amount'             => $this->transformAmount($this->amount, $this->currency),
-            'currency'           => $this->currency,
-            'customer_email'     => $this->customer_email,
-            'customer_phone'     => $this->customer_phone,
-            'birth_date'         => $this->birth_date,
-            'billing_address'    => $this->getBillingAddressParamsStructure(),
-            'shipping_address'   => $this->getShippingAddressParamsStructure()
-        ];
+        return array_merge(
+            $this->getPaymentAttributesStructure(),
+            [
+                'return_success_url'        => $this->return_success_url,
+                'return_failure_url'        => $this->return_failure_url,
+                'return_success_url_target' => $this->return_success_url_target,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'user_id'                   => $this->user_id,
+                'birth_date'                => $this->getBirthDate(),
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure()
+            ]
+        );
     }
 }

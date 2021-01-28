@@ -2,16 +2,16 @@
 
 namespace spec\Genesis\API\Stubs\Base\Request\Financial\Cards;
 
-use Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes;
+use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 
 /**
- * Class BaseCreditCardAttributesStub
+ * Class CreditCardStub
  *
- * Used to spec BaseCreditCardAttributes abstract class
+ * Used to spec CreditCard abstract class
  *
  * @package spec\Genesis\API\Base\Request\Financial\Cards
  */
-class BaseCreditCardAttributesStub extends BaseCreditCardAttributes
+class CreditCardStub extends CreditCard
 {
 
     protected function getTransactionAttributes()

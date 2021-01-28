@@ -60,13 +60,6 @@ class Methods
     const PRZELEWY24 = 'przelewy24';
 
     /**
-     * QIWI
-     *
-     * PPRO transaction
-     */
-    const QIWI = 'qiwi';
-
-    /**
      * SafetyPay
      *
      * PPRO transaction

@@ -1,3 +1,49 @@
+1.18.7
+-----
+**Features**:
+* Added support of optional attribute Credential On File to the following transaction requests:
+    * Account Verification
+    * Authorize
+    * Authorize3D
+    * Sale
+    * Sale3D
+    * InitRecurringSale
+    * InitRecurringSale3D
+    * Payout
+* Added support of Ucof attributes credential_on_file_transaction_identifier and credential_on_file_settlement_date to the following transaction requests:
+    * Authorize
+    * Sale
+* Deprecated QIWI and InstantTransfer transaction requests
+* Removed QIWI payment type for PPRO transaction type
+* Refactored the 3DSv2 helper methods and now the signature generation is done with the help of \Genesis\Genesis\Utils\Threeds\V2::generateSignature
+* Added support for optional SCA attributes to the following transaction requests:
+    * Authorize
+    * Sale
+* Added auth_network_outage to the list with supported exemptions
+* Added Alipay QR payment type support to the OnlineBanking\Payin transaction request
+* Added support for the following currencies and their available banks to the OnlineBanking\Payin transaction request:
+    * MXN
+    * PEN
+    * EUR
+    * BRL
+    * CHF
+    * USD
+* Added optional attributes document_reference_number and purpose_of_remittance to the TransferTo Payout transaction request
+* Deprecated `setIfsCode` and `getIfsCode` methods from the TransferTo Payout transaction request
+* Added optional attributes return_success_url_target and user_id to the Trustly Sale transaction request
+* Deprecated the setter and getter attributes methods for bank_account_number and customer_bank_id available in Sofort transaction request. Introduced new methods:
+    * `setBic`
+    * `getBic`
+    * `setIban`
+    * `getIban`
+* Added Spain (ES) as available billing country for MyBank transaction request
+* Removed Costa Rica (CR) as available billing country for SafetyPay transaction request
+* Added Chile (CL) as available billing country for Santander transaction request
+* Updated the supported billing countries for MyBank and SafetyPay payment types via PPRO transaction request
+
+**Fixes**:
+* Removed remote_ip from the list with required attributes for the Trustly Sale transaction request
+
 1.18.6
 -----
 **Features:**

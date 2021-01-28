@@ -40,7 +40,7 @@ use Genesis\API\Traits\RestrictedSetter;
  *
  * @package Genesis\API\Request\Financial\Cards\Recurring
  */
-class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
+class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use MotoAttributes, AddressInfoAttributes, RiskAttributes,
         DescriptorAttributes, DocumentAttributes, TravelDataAttributes,

@@ -38,8 +38,11 @@ class BankCodeParameters
      * @var array $codes
      */
     private static $codes = [
-        'ARS' => [
-            Banks::DB
+        'BRL' => [
+            Banks::CA
+        ],
+        'CHF' => [
+            Banks::PF
         ],
         'CNY' => [
             Banks::ABC, Banks::BOB, Banks::BOC, Banks::BOCO, Banks::CCB,
@@ -51,13 +54,16 @@ class BankCodeParameters
         'CLP' => [
             Banks::SP
         ],
-        'COP' => [
-            Banks::PC
+        'EUR' => [
+            Banks::PF
         ],
         'THB' => [
             Banks::SCB_THB, Banks::KTB_THB, Banks::BAY_THB, Banks::UOB_THB, Banks::KKB_THB,
             Banks::BBL_THB, Banks::TH_PB_BBLPN, Banks::TH_PB_BAYPN, Banks::TH_PB_KTBPN, Banks::OMISE_TL_PHP,
             Banks::TH_PB_SCBPN
+        ],
+        'USD' => [
+            Banks::SN, Banks::IT, Banks::BR, Banks::BB, Banks::WP, Banks::BN, Banks::PS, Banks::BO
         ],
         'MYR' => [
             Banks::CASH_711, Banks::FPX_ABB, Banks::AFFIN_EPG, Banks::FPX_ABMB, Banks::FPX_AMB,
@@ -68,6 +74,9 @@ class BankCodeParameters
             Banks::PUBLICKBANK, Banks::PBE_MYR, Banks::RHB_MYR, Banks::FPX_RHB, Banks::RHB_ONL,
             Banks::FPX_SCB, Banks::FPX_UOB
         ],
+        'PEN' => [
+            Banks::BC, Banks::IB, Banks::EF, Banks::BP
+        ],
         'PYG' => [
             Banks::PE
         ],
@@ -76,13 +85,23 @@ class BankCodeParameters
             Banks::PMB_IDR, Banks::CIMB_IDR, Banks::DMN_IDR, Banks::BTN_IDR, Banks::VA
         ],
         'INR' => [
-            Banks::NB, Banks::UI
+            Banks::ABPB, Banks::AIRP, Banks::ALLA, Banks::ANDB, Banks::BARB_R, Banks::BBKM, Banks::BKDN, Banks::BKID,
+            Banks::CBIN, Banks::CIUB, Banks::CNRB, Banks::CORP, Banks::COSB, Banks::CSBK, Banks::DBSS, Banks::DCBL,
+            Banks::DEUT, Banks::DLXB, Banks::ESFB, Banks::FDRL, Banks::HDFC, Banks::IBKL, Banks::ICIC, Banks::IDFB,
+            Banks::IDIB, Banks::INDB, Banks::IOBA, Banks::JAKA, Banks::JSBP, Banks::KARB, Banks::KKBK, Banks::KVBL,
+            Banks::LAVB_C, Banks::LAVB_R, Banks::MAHB, Banks::NKGS, Banks::ORBC, Banks::PMCB, Banks::PSIB,
+            Banks::PUNB_R, Banks::RATN, Banks::SBBJ, Banks::SBHY, Banks::SBIN, Banks::SBMY, Banks::SBTR, Banks::SCBL,
+            Banks::SIBL, Banks::SRCB, Banks::STBP, Banks::SVCB, Banks::SYNB, Banks::TMBL, Banks::TNSC, Banks::UBIN,
+            Banks::UCBA, Banks::UTBI, Banks::UTIB, Banks::VIJB, Banks::YESB
+        ],
+        'MXN' => [
+            Banks::SE, Banks::BQ
         ],
         'PHP' => [
             Banks::DRAGONPAY
         ],
         'SGD' => [
-            Banks::ENETS_D
+            Banks::ENETS_D, Banks::SINGPOST_PHP
         ],
         'UYU' => [
             Banks::AI

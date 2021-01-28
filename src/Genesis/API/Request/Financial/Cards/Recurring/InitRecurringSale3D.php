@@ -50,7 +50,7 @@ use Genesis\Utils\Common;
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\BaseCreditCardAttributes
+class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use MotoAttributes, NotificationAttributes, AsyncAttributes,
         AddressInfoAttributes, MpiAttributes, RiskAttributes,
@@ -82,7 +82,6 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Base
                 'return_failure_url' => ['notification_url', 'return_success_url']
             ],
             $this->requiredMpiFieldsConditional(),
-            $this->requiredScaFieldConditional(),
             $this->requiredTokenizationFieldsConditional(),
             $this->requiredThreedsV2DeviceTypeConditional()
         );
@@ -119,24 +118,26 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Base
      */
     protected function getTransactionAttributes()
     {
-        return [
-            'moto'                      => $this->moto,
-            'notification_url'          => $this->notification_url,
-            'return_success_url'        => $this->return_success_url,
-            'return_failure_url'        => $this->return_failure_url,
-            'customer_email'            => $this->customer_email,
-            'customer_phone'            => $this->customer_phone,
-            'document_id'               => $this->document_id,
-            'billing_address'           => $this->getBillingAddressParamsStructure(),
-            'shipping_address'          => $this->getShippingAddressParamsStructure(),
-            'mpi_params'                => $this->getMpiParamsStructure(),
-            'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'travel'                    => $this->getTravelData(),
-            'sca_params'                => $this->getScaParamsStructure(),
-            'fx_rate_id'                => $this->fx_rate_id,
-            'business_attributes'       => $this->getBusinessAttributesStructure(),
-            'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
-        ];
+        return array_merge(
+            [
+                'moto'                      => $this->moto,
+                'notification_url'          => $this->notification_url,
+                'return_success_url'        => $this->return_success_url,
+                'return_failure_url'        => $this->return_failure_url,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'document_id'               => $this->document_id,
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'mpi_params'                => $this->getMpiParamsStructure(),
+                'risk_params'               => $this->getRiskParamsStructure(),
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'travel'                    => $this->getTravelData(),
+                'fx_rate_id'                => $this->fx_rate_id,
+                'business_attributes'       => $this->getBusinessAttributesStructure(),
+                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
+            ],
+            $this->getScaAttributesStructure()
+        );
     }
 }

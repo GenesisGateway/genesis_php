@@ -24,19 +24,20 @@
 namespace Genesis\API\Request\Base\Financial\Cards;
 
 use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\TokenizationAttributes;
 use Genesis\Utils\Common;
 
 /**
- * Class BaseCreditCardAttributes
+ * Class CreditCard
  * @package Genesis\API\Request\Base\Financial\Cards
  *
  * @suppressWarnings(PHPMD.LongVariable)
  */
-abstract class BaseCreditCardAttributes extends \Genesis\API\Request\Base\Financial
+abstract class CreditCard extends \Genesis\API\Request\Base\Financial
 {
-    use CreditCardAttributes, TokenizationAttributes, PaymentAttributes;
+    use CreditCardAttributes, TokenizationAttributes, PaymentAttributes, CredentialOnFileAttributes;
 
     /**
      * Return additional request attributes
@@ -120,10 +121,11 @@ abstract class BaseCreditCardAttributes extends \Genesis\API\Request\Base\Financ
     {
         return array_merge(
             [
-               $this->getCCAttributesStructure(),
-               $this->getTokenizationStructure(),
-               $this->getPaymentAttributesStructure(),
-               $this->getTransactionAttributes()
+                $this->getCCAttributesStructure(),
+                $this->getTokenizationStructure(),
+                $this->getPaymentAttributesStructure(),
+                $this->getTransactionAttributes(),
+                $this->getCredentialOnFileAttributesStructure()
             ]
         );
     }

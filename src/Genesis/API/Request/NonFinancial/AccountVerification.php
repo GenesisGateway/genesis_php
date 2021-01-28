@@ -27,8 +27,10 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\BaseAttributes;
 use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
+use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Account Verification Request
@@ -38,7 +40,8 @@ use Genesis\API\Traits\Request\RiskAttributes;
  */
 class AccountVerification extends \Genesis\API\Request
 {
-    use BaseAttributes, MotoAttributes, CreditCardAttributes, AddressInfoAttributes, RiskAttributes, DocumentAttributes;
+    use BaseAttributes, MotoAttributes, CreditCardAttributes, AddressInfoAttributes, RiskAttributes,
+        DocumentAttributes, CredentialOnFileAttributes, RestrictedSetter;
 
     /**
      * Set the per-request configuration
@@ -85,25 +88,28 @@ class AccountVerification extends \Genesis\API\Request
     protected function populateStructure()
     {
         $treeStructure = [
-            'payment_transaction' => [
-                'transaction_type' => \Genesis\API\Constants\Transaction\Types::ACCOUNT_VERIFICATION,
-                'transaction_id'   => $this->transaction_id,
-                'usage'            => $this->usage,
-                'moto'             => $this->moto,
-                'remote_ip'        => $this->remote_ip,
-                'card_holder'      => $this->card_holder,
-                'card_number'      => $this->card_number,
-                'cvv'              => $this->cvv,
-                'expiration_month' => $this->expiration_month,
-                'expiration_year'  => $this->expiration_year,
-                'customer_email'   => $this->customer_email,
-                'customer_phone'   => $this->customer_phone,
-                'document_id'      => $this->document_id,
-                'birth_date'       => $this->birth_date,
-                'billing_address'  => $this->getBillingAddressParamsStructure(),
-                'shipping_address' => $this->getShippingAddressParamsStructure(),
-                'risk_params'      => $this->getRiskParamsStructure()
-            ]
+            'payment_transaction' => array_merge(
+                [
+                    'transaction_type' => \Genesis\API\Constants\Transaction\Types::ACCOUNT_VERIFICATION,
+                    'transaction_id'   => $this->transaction_id,
+                    'usage'            => $this->usage,
+                    'moto'             => $this->moto,
+                    'remote_ip'        => $this->remote_ip,
+                    'card_holder'      => $this->card_holder,
+                    'card_number'      => $this->card_number,
+                    'cvv'              => $this->cvv,
+                    'expiration_month' => $this->expiration_month,
+                    'expiration_year'  => $this->expiration_year,
+                    'customer_email'   => $this->customer_email,
+                    'customer_phone'   => $this->customer_phone,
+                    'document_id'      => $this->document_id,
+                    'birth_date'       => $this->birth_date,
+                    'billing_address'  => $this->getBillingAddressParamsStructure(),
+                    'shipping_address' => $this->getShippingAddressParamsStructure(),
+                    'risk_params'      => $this->getRiskParamsStructure()
+                ],
+                $this->getCredentialOnFileAttributesStructure()
+            )
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);

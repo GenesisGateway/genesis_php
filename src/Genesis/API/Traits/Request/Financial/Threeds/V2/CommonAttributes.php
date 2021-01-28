@@ -28,8 +28,8 @@ use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\DeviceTypes;
 use Genesis\API\Response;
 use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
-use Genesis\Utils\Common;
 use Genesis\Utils\Currency;
+use Genesis\Utils\Threeds\V2 as ThreedsV2Utils;
 
 /**
  * Trait CommonAttributes
@@ -76,7 +76,7 @@ trait CommonAttributes
 
         $responseObject = $response->getResponseObject();
 
-        return Common::generateThreedsSignature(
+        return ThreedsV2Utils::generateSignature(
             $responseObject->unique_id,
             Currency::amountToExponent($responseObject->amount, $responseObject->currency),
             $responseObject->timestamp->format(DateTimeFormat::YYYY_MM_DD_H_I_S_ZULU),

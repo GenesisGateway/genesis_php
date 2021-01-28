@@ -150,7 +150,7 @@ class Types
     const PAYSAFECARD = 'paysafecard';
 
     /**
-     * Supports payments via EPS, SafetyPay, TrustPay, ELV, Przelewy24, QIWI, and GiroPay
+     * Supports payments via EPS, SafetyPay, TrustPay, ELV, Przelewy24, and GiroPay
      */
     const PPRO = 'ppro';
 
@@ -171,6 +171,8 @@ class Types
 
     /**
      * QIWI Wallet is a very popular Eastern European e-wallet.
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const QIWI = 'qiwi';
 
@@ -427,6 +429,8 @@ class Types
 
     /**
      * InstantTransfer is a payment method in Germany
+     *
+     * @deprecated Payment method is deprecated and will be removed
      */
     const INSTANT_TRANSFER = 'instant_transfer';
 
@@ -872,7 +876,6 @@ class Types
             self::IDEBIT_PAYIN,
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
-            self::INSTANT_TRANSFER,
             self::INSTA_DEBIT_PAYIN,
             self::INTERSOLVE,
             self::ITAU,
@@ -893,7 +896,6 @@ class Types
             self::POLI,
             self::PPRO,
             self::PSE,
-            self::QIWI,
             self::RAPI_PAGO,
             self::REDPAGOS,
             self::SAFETYPAY,
@@ -1017,7 +1019,6 @@ class Types
             self::IDEBIT_PAYIN,
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
-            self::INSTANT_TRANSFER,
             self::ITAU,
             self::KLARNA_CAPTURE,
             self::MY_BANK,
@@ -1031,7 +1032,6 @@ class Types
             self::PAYU,
             self::PPRO,
             self::PSE,
-            self::QIWI,
             self::RAPI_PAGO,
             self::REDPAGOS,
             self::SAFETYPAY,
@@ -1216,7 +1216,9 @@ class Types
             self::PAYBYVOUCHER_YEEPAY,
             self::SURTIMAX,
             self::ZIMPLER,
-            self::SANTANDER_CASH
+            self::SANTANDER_CASH,
+            self::INSTANT_TRANSFER,
+            self::QIWI
         ];
 
         foreach ($transactions as $transaction) {

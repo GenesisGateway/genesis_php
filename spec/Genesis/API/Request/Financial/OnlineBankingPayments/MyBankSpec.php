@@ -10,6 +10,8 @@ class MyBankSpec extends ObjectBehavior
 {
     use RequestExamples;
 
+    private $allowedCountries = ['IT', 'ES'];
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(MyBank::class);
@@ -31,6 +33,17 @@ class MyBankSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setBillingCountry('BG');
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_not_fail_with_valid_country()
+    {
+        $this->setRequestParameters();
+
+        foreach ($this->allowedCountries as $country) {
+            $this->setBillingCountry($country);
+
+            $this->shouldNotThrow()->during('getDocument');
+        }
     }
 
     protected function setRequestParameters()
