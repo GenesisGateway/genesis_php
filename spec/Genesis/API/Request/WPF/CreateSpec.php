@@ -5,11 +5,12 @@ namespace spec\Genesis\API\Request\WPF;
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\WPF\Create;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 
 class CreateSpec extends ObjectBehavior
 {
-    use BusinessAttributesExample;
+    use BusinessAttributesExample, PendingPaymentAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -220,13 +221,6 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->duringSetReminderLanguage('qqqqq');
     }
 
-    public function it_should_contain_pending_url_key()
-    {
-        $this->setRequestParameters();
-
-        $this->getDocument()->shouldContain('<return_pending_url>');
-    }
-
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -246,7 +240,6 @@ class CreateSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setReturnCancelUrl($faker->url);
-        $this->setReturnPendingUrl($faker->url);
         $this->setCustomerEmail($faker->email);
         $this->setCustomerPhone($faker->phoneNumber);
         $this->setBillingFirstName($faker->firstName);

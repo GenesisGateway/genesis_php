@@ -76,4 +76,33 @@ class TypesSpec extends ObjectBehavior
     {
         $this->getDeprecatedRequests()->shouldBeArray();
     }
+
+    public function it_should_be_true_for_voidable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+        $voidableTypes = [
+            $typesObject::AUTHORIZE,
+            $typesObject::AUTHORIZE_3D,
+            $typesObject::TRUSTLY_SALE,
+            $typesObject::TCS,
+            $typesObject::FASHIONCHEQUE,
+            $typesObject::INTERSOLVE,
+            $typesObject::REFUND,
+            $typesObject::CAPTURE,
+            $typesObject::APPLE_PAY,
+            $typesObject::SALE,
+            $typesObject::SALE_3D
+        ];
+
+        foreach ($voidableTypes as $type) {
+            $this::canVoid($type)->shouldBe(true);
+        }
+    }
+
+    public function it_should_be_false_for_non_voidable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+
+        $this::canVoid($typesObject::BALOTO)->shouldBe(false);
+    }
 }

@@ -116,6 +116,7 @@ class Names
         Types::PAYSAFECARD             => 'Paysafecard',
         Types::PAYU                    => 'PayU',
         Types::POLI                    => 'POLi',
+        Types::POST_FINANCE            => 'PostFinance',
         Types::PPRO                    => 'PPRO',
         Types::PSE                     => 'Pagos Seguros en Linea',
         Types::QIWI                    => 'QIWI',

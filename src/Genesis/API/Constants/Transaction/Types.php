@@ -698,6 +698,11 @@ class Types
     const UPI = 'upi';
 
     /**
+     * PostFinance is an online banking provider in Switzerland
+     */
+    const POST_FINANCE = 'post_finance';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -794,6 +799,7 @@ class Types
             self::ONLINE_BANKING_PAYIN    => 'OnlineBankingPayments\OnlineBanking\Payin',
             self::ONLINE_BANKING_PAYOUT   => 'OnlineBankingPayments\OnlineBanking\Payout',
             self::PAYU                    => 'OnlineBankingPayments\PayU',
+            self::POST_FINANCE            => 'OnlineBankingPayments\PostFinance',
             self::PSE                     => 'OnlineBankingPayments\Pse',
             self::RAPI_PAGO               => 'OnlineBankingPayments\RapiPago',
             self::SAFETYPAY               => 'OnlineBankingPayments\SafetyPay',
@@ -894,6 +900,7 @@ class Types
             self::PAYSAFECARD,
             self::PAYU,
             self::POLI,
+            self::POST_FINANCE,
             self::PPRO,
             self::PSE,
             self::RAPI_PAGO,
@@ -1032,6 +1039,7 @@ class Types
             self::PAYU,
             self::PPRO,
             self::PSE,
+            self::POST_FINANCE,
             self::RAPI_PAGO,
             self::REDPAGOS,
             self::SAFETYPAY,
@@ -1068,7 +1076,9 @@ class Types
             self::INTERSOLVE,
             self::REFUND,
             self::CAPTURE,
-            self::APPLE_PAY
+            self::APPLE_PAY,
+            self::SALE,
+            self::SALE_3D
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

@@ -24,6 +24,7 @@ namespace Genesis\API\Request\WPF;
 
 use Genesis\API\Constants\i18n;
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
@@ -61,7 +62,7 @@ class Create extends \Genesis\API\Request
 {
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
-        RestrictedSetter, BusinessAttributes;
+        RestrictedSetter, BusinessAttributes, PendingPaymentAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -118,13 +119,6 @@ class Create extends \Genesis\API\Request
      * @var string $return_cancel_url
      */
     protected $return_cancel_url;
-
-    /**
-     * URL where customer is sent to when asynchronous payment is pending confirmation
-     *
-     * @var string $return_pending_url
-     */
-    protected $return_pending_url;
 
     /**
      * Number of minutes determining how long the WPF will be valid.

@@ -560,6 +560,7 @@ Financial\OnlineBankingPayments\MyBank
 Financial\OnlineBankingPayments\OnlineBanking\Payin
 Financial\OnlineBankingPayments\OnlineBanking\Payout
 Financial\OnlineBankingPayments\PayU
+Financial\OnlineBankingPayments\PostFinance
 Financial\OnlineBankingPayments\Pse
 Financial\OnlineBankingPayments\RapiPago
 Financial\OnlineBankingPayments\SafetyPay
