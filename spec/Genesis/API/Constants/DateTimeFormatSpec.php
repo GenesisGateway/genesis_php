@@ -15,4 +15,9 @@ class DateTimeFormatSpec extends ObjectBehavior
     {
         $this->getAll()->shouldBeArray();
     }
+
+    public function it_should_be_array_with_dates()
+    {
+        $this->getDateFormats()->shouldBeArray();
+    }
 }

@@ -71,7 +71,7 @@ trait FurnitureAttributes
 
         return $this->parseDate(
             'business_date_of_order',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_date_of_order.'
         );
@@ -94,7 +94,7 @@ trait FurnitureAttributes
 
         return $this->parseDate(
             'business_delivery_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_delivery_date.'
         );

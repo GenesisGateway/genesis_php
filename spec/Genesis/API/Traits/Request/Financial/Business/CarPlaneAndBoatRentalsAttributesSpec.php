@@ -2,11 +2,23 @@
 
 namespace spec\Genesis\API\Traits\Request\Financial\Business;
 
+use Genesis\API\Constants\DateTimeFormat;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\Business\BusinessAttributesStub;
+use spec\SharedExamples\Faker;
 
 class CarPlaneAndBoatRentalsAttributesSpec extends ObjectBehavior
 {
+    private static $validDates = [
+        '2020-10-17',
+        '17.10.2020',
+        '20/10/2020',
+        '22-11-2020'
+    ];
+
+    private static $invalidDate = '2021.01.19';
+
     public function let()
     {
         $this->beAnInstanceOf(BusinessAttributesStub::class);
@@ -14,45 +26,61 @@ class CarPlaneAndBoatRentalsAttributesSpec extends ObjectBehavior
 
     public function it_should_set_business_vehicle_pick_up_date_in_valid_format()
     {
-        $this->shouldNotThrow()->during(
-            'setBusinessVehiclePickUpDate',
-            ['12-11-2020', '06-01-2020','1-1-2020']
-        );
+        foreach (self::$validDates as $date) {
+            $this->shouldNotThrow()->during(
+                'setBusinessVehiclePickUpDate',
+                [$date]
+            );
+        }
     }
 
     public function it_should_fail_when_business_vehicle_pick_up_date_is_invalid_format()
     {
-        $this->shouldThrow()->during(
+        $this->shouldThrow(InvalidArgument::class)->during(
             'setBusinessVehiclePickUpDate',
-            ['2020-10-12', '10.10.2020','10/10/2020']
+            [self::$invalidDate]
         );
     }
 
     public function it_should_set_business_vehicle_return_date_in_valid_format()
     {
-        $this->shouldNotThrow()->during(
-            'setBusinessVehicleReturnDate',
-            ['12-11-2020', '04-05-2020', '1-1-2020']
-        );
+        foreach (self::$validDates as $date) {
+            $this->shouldNotThrow()->during(
+                'setBusinessVehicleReturnDate',
+                [$date]
+            );
+        }
     }
 
     public function it_should_fail_when_business_vehicle_return_date_is_invalid()
     {
-        $this->shouldThrow()->during(
+        $this->shouldThrow(InvalidArgument::class)->during(
             'setBusinessVehicleReturnDate',
-            ['2020-10-12', '10.10.2020','10/10/2020']
+            [self::$invalidDate]
         );
     }
 
     public function it_should_be_business_vehicle_pick_up_date()
     {
-        $this->setBusinessVehiclePickUpDate('12-12-2021');
+        $format = Faker::getInstance()->randomElement(DateTimeFormat::getDateFormats());
+        $date   = Faker::getInstance()->date($format);
+        $this->setBusinessVehiclePickUpDate($date);
+
         $this->getBusinessVehiclePickUpDate()->shouldBeString();
+        $this->getBusinessVehiclePickUpDate()->shouldBe(
+            \DateTime::createFromFormat($format, $date)->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS)
+        );
     }
 
     public function it_should_be_business_vehicle_return_date()
     {
-        $this->setBusinessVehicleReturnDate('12-12-2021');
+        $format = Faker::getInstance()->randomElement(DateTimeFormat::getDateFormats());
+        $date   = Faker::getInstance()->date($format);
+        $this->setBusinessVehicleReturnDate($date);
+
         $this->getBusinessVehicleReturnDate()->shouldBeString();
+        $this->getBusinessVehicleReturnDate()->shouldBe(
+            \DateTime::createFromFormat($format, $date)->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS)
+        );
     }
 }

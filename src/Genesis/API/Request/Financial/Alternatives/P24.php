@@ -23,15 +23,31 @@
 
 namespace Genesis\API\Request\Financial\Alternatives;
 
+use Genesis\API\Constants\Transaction\Parameters\Alternatives\P24\BankCodes;
+use Genesis\Utils\Common;
+
 /**
  * Class P24
  *
  * Alternative payment method
  *
  * @package Genesis\API\Request\Financial\Alternatives
+ *
+ * @method integer getBankCode()       The Bank Code
+ * @method $this   setBankCode($value) The Bank Code
+ * @suppressWarnings(PHPMD.LongVariable)
  */
 class P24 extends \Genesis\API\Request\Base\Financial\Alternative
 {
+    /**
+     * Bank codes may vary depending on the gateway configuration
+     *
+     * @var integer $bank_code
+     */
+    protected $bank_code;
+
+    private $bankCodeCurrencies = ['EUR', 'PLN'];
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -61,4 +77,36 @@ class P24 extends \Genesis\API\Request\Base\Financial\Alternative
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
     }
+
+    protected function checkRequirements()
+    {
+        $requiredFieldValuesConditional = [
+            'bank_code' => [
+                $this->bank_code => [
+                    [
+                        'bank_code' => BankCodes::getAll(),
+                        'currency' => $this->bankCodeCurrencies
+                    ]
+                ]
+            ]
+        ];
+
+        if (in_array($this->currency, $this->bankCodeCurrencies)) {
+            $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
+        }
+
+        parent::checkRequirements();
+    }
+
+
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            array(
+                'bank_code' => $this->bank_code
+            )
+        );
+    }
+
 }

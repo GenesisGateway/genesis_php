@@ -71,7 +71,7 @@ trait CarPlaneAndBoatRentalsAttributes
 
         return $this->parseDate(
             'business_vehicle_pick_up_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_vehicle_pick_up_date.'
         );
@@ -94,7 +94,7 @@ trait CarPlaneAndBoatRentalsAttributes
 
         return $this->parseDate(
             'business_vehicle_return_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_vehicle_return_date.'
         );

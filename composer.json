@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.18.8",
+  "version": "1.18.9",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -93,7 +93,6 @@
     "transfer_to",
     "trustly",
     "trustly_sale",
-    "trustly_withdrawal",
     "trustpay",
     "webmoney",
     "webpay",

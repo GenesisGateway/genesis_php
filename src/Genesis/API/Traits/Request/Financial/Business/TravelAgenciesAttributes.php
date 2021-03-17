@@ -139,7 +139,7 @@ trait TravelAgenciesAttributes
 
         return $this->parseDate(
             'business_arrival_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_arrival_date.'
         );
@@ -162,7 +162,7 @@ trait TravelAgenciesAttributes
 
         return $this->parseDate(
             'business_departure_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_departure_date.'
         );
@@ -185,7 +185,7 @@ trait TravelAgenciesAttributes
 
         return $this->parseDate(
             'business_pick_up_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_pick_up_date.'
         );
@@ -208,7 +208,7 @@ trait TravelAgenciesAttributes
 
         return $this->parseDate(
             'business_return_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_return_date.'
         );

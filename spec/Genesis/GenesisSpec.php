@@ -271,6 +271,13 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
     }
 
+    public function it_fails_on_deprecated_trustly_withdrawal_request()
+    {
+        $this->beConstructedWith('Financial\Alternatives\Trustly\Withdrawal');
+
+        $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
+    }
+
     public function it_fails_on_non_existing_transaction_request()
     {
         $this->beConstructedWith('Non\Existing\Transaction');

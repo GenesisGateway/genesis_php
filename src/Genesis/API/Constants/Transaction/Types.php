@@ -223,6 +223,8 @@ class Types
     /**
      * Trustly is an oBeP-style alternative payment method that allows you to
      * withdraw money directly from your online bank account using your bank credentials.
+     *
+     * @deprecated Since 1.18.9 Payment method is deprecated and will be removed
      */
     const TRUSTLY_WITHDRAWAL = 'trustly_withdrawal';
 
@@ -915,7 +917,6 @@ class Types
             self::TARJETA_SHOPPING,
             self::TCS,
             self::TRUSTLY_SALE,
-            self::TRUSTLY_WITHDRAWAL,
             self::TRUSTPAY,
             self::UPI,
             self::WEBMONEY,
@@ -1221,14 +1222,15 @@ class Types
             self::EMPRESE_DE_ENERGIA,
             self::ENTERCASH,
             self::HIPERCARD,
+            self::INSTANT_TRANSFER,
             self::INPAY,
             self::PAYBYVOUCHER_SALE,
             self::PAYBYVOUCHER_YEEPAY,
-            self::SURTIMAX,
-            self::ZIMPLER,
+            self::QIWI,
             self::SANTANDER_CASH,
-            self::INSTANT_TRANSFER,
-            self::QIWI
+            self::SURTIMAX,
+            self::TRUSTLY_WITHDRAWAL,
+            self::ZIMPLER
         ];
 
         foreach ($transactions as $transaction) {

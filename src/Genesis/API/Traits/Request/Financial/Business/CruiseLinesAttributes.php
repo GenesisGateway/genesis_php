@@ -62,7 +62,7 @@ trait CruiseLinesAttributes
 
         return $this->parseDate(
             'business_cruise_start_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_cruise_start_date.'
         );
@@ -85,7 +85,7 @@ trait CruiseLinesAttributes
 
         return $this->parseDate(
             'business_cruise_end_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_cruise_end_date.'
         );

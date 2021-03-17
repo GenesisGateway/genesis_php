@@ -489,7 +489,6 @@ Financial\Alternatives\Klarna\Capture
 Financial\Alternatives\Klarna\Refund
 Financial\Alternatives\TransferTo\Payout
 Financial\Alternatives\Trustly\Sale
-Financial\Alternatives\Trustly\Withdrawal
 Financial\Alternatives\PaypalExpress
 
 // Credit Cards transactions

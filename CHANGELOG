@@ -1,3 +1,12 @@
+1.18.9
+-----
+**Features**:
+* Added support to the Business Attributes with various date formats
+* Deprecated Trustly Withdrawal transaction request
+* Added support of optional Bank Code attribute to the P24 transaction request
+* Added allowed banks validation to the optional attributes BIC for the iDeal transaction request
+* Add support of optional attribute Return Pending URL for the iDeal transaction request
+
 1.18.8
 -----
 **Features**:

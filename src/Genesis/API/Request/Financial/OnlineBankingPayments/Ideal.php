@@ -23,11 +23,14 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\Ideal\AllowedBanks;
 use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BankAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Ideal
@@ -35,7 +38,32 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  */
 class Ideal extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BankAttributes;
+    use RestrictedSetter, AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BankAttributes,
+        PendingPaymentAttributes;
+
+    /**
+     * SWIFT/BIC code of the customer’s bank.
+     * If BIC is not provided, the consumer is redirected to a bank selection page
+     *
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setBic($value)
+    {
+        if (empty($value)) {
+            $this->bic = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'bic',
+            AllowedBanks::getAll(),
+            $value,
+            'Invalid value given for BIC.'
+        );
+    }
 
     /**
      * Returns the Request transaction type
@@ -83,6 +111,7 @@ class Ideal extends Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
+            'return_pending_url' => $this->return_pending_url,
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,

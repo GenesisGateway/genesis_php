@@ -20,66 +20,71 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants;
+
+namespace Genesis\API\Constants\Transaction\Parameters\Alternatives\P24;
 
 use Genesis\Utils\Common;
 
 /**
- * Class DateTimeFormat
+ * Available bank codes for the P24 transaction type
  *
- * List of DateTime format
- *
- * @package Genesis\API\Constants
+ * Class BankCodes
+ * @package Genesis\API\Constants\Transaction\Parameters\Alternatives\P24
  */
-class DateTimeFormat
+class BankCodes
 {
     /**
-     * Little endian(day, month, year) system with hyphens in between
+     * Bank Code for BLIK
      */
-    const DD_MM_YYYY_L_HYPHENS = 'd-m-Y';
+    const BLIK_PSP                   = 154;
 
     /**
-     * Little endian(day, month, year) system with dots in between
+     * Bank Code for EuroBank
      */
-    const DD_MM_YYYY_L_DOTS = 'd.m.Y';
+    const EURO_BANK                  = 94;
 
     /**
-     * Little endian(day, month, year) system with dots in between
+     * Bank Code for mBank-mTransfer
      */
-    const DD_MM_YYYY_L_SLASHES = 'd/m/Y';
+    const MBANK_MTRANSFER            = 25;
 
     /**
-     * Zulu timestamp
+     * Bank Code for Przekaz tradycyjny
      */
-    const YYYY_MM_DD_H_I_S_ZULU = 'Y-m-d\TH:i:s\Z';
+    const PRZEKAZ_TRADYCYJNY         = 178;
 
     /**
-     * Date Format ISO 8601
+     * Bank Code for Przekaz/Przelew tradycyjny
      */
-    const YYYY_MM_DD_ISO_8601 = 'Y-m-d';
+    const PRZEKAZ_PRZELEW_TRADYCYJNY = 1000;
 
     /**
-     * Retrieve list of all DateTime formats
+     * Bank Code for Płac ̨e z IKO
+     */
+    const PLACEZ_IKO                 = 135;
+
+    /**
+     * Bank Code for Płac ̨e z Orange
+     */
+    const PLACEZ_ORANGE              = 146;
+
+    /**
+     * Bank Code for Raiffeisen Bank PBL
+     */
+    const RAIFFEISEN_BANK_PBL        = 102;
+
+    /**
+     * Bank Code for U ̇zyj przedpłaty
+     */
+    const UZYJ_PRZEDPLATY            = 177;
+
+    /**
+     * Get All available Bank Codes
      *
      * @return array
      */
     public static function getAll()
     {
-        return Common::getClassConstants(self::class);
-    }
-
-    /**
-     * Get all Date Formats
-     *
-     * @return array
-     */
-    public static function getDateFormats()
-    {
-        return [
-            self::DD_MM_YYYY_L_HYPHENS,
-            self::DD_MM_YYYY_L_DOTS,
-            self::DD_MM_YYYY_L_SLASHES,
-            self::YYYY_MM_DD_ISO_8601
-        ];
+        return array_values(Common::getClassConstants(self::class));
     }
 }

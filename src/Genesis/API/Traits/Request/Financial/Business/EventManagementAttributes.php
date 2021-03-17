@@ -78,7 +78,7 @@ trait EventManagementAttributes
 
         return $this->parseDate(
             'business_event_start_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_event_start_date.'
         );
@@ -101,7 +101,7 @@ trait EventManagementAttributes
 
         return $this->parseDate(
             'business_event_end_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_event_end_date.'
         );

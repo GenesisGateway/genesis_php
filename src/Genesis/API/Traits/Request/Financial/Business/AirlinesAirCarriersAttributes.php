@@ -111,7 +111,7 @@ trait AirlinesAirCarriersAttributes
 
         return $this->parseDate(
             'business_flight_arrival_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_flight_arrival_date.'
         );
@@ -134,7 +134,7 @@ trait AirlinesAirCarriersAttributes
 
         return $this->parseDate(
             'business_flight_departure_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_flight_departure_date.'
         );

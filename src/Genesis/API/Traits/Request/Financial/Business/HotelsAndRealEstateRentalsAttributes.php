@@ -71,7 +71,7 @@ trait HotelsAndRealEstateRentalsAttributes
 
         return $this->parseDate(
             'business_check_in_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_check_in_date.'
         );
@@ -94,7 +94,7 @@ trait HotelsAndRealEstateRentalsAttributes
 
         return $this->parseDate(
             'business_check_out_date',
-            [DateTimeFormat::DD_MM_YYYY_L_HYPHENS],
+            DateTimeFormat::getDateFormats(),
             (string) $value,
             'Invalid format for business_check_out_date.'
         );
