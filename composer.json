@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.18.9",
+  "version": "1.19.0",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -22,7 +22,7 @@
     "refund",
     "void",
     "3d-secure",
-    "apple",
+    "apple_pay",
     "aura",
     "boleto",
     "baloto",

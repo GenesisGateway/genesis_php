@@ -30,6 +30,7 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
+use Genesis\API\Traits\Request\Financial\Threeds\V2\WpfAttributes as WpfThreedsV2Attributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\RestrictedSetter;
@@ -44,25 +45,30 @@ use Genesis\Utils\Common as CommonUtils;
  * @package    Genesis
  * @subpackage Request
  *
- * @method $this setTransactionId($value) Set a Unique Transaction id
- * @method $this setUsage($value) Set the description of the transaction for later use
- * @method $this setDescription($value) Set a text describing the reason of the payment
- * @method $this setReturnCancelUrl($value) Set the  URL where the customer is sent to after they cancel the payment
- * @method $this setConsumerId($value) Saved cards will be listed for user to select
- * @method string getTransactionId()
- * @method string getUsage()
- * @method string getDescription()
- * @method string getReturnCancelUrl()
- * @method bool getRememberCard()
- * @method string getConsumerId()
- * @method string getLifetime()
- * @method string getReminders()
+ * @codingStandardsIgnoreStart
+ * @method $this  setTransactionId($value)   Set a Unique Transaction id
+ * @method $this  setUsage($value)           Set the description of the transaction for later use
+ * @method $this  setDescription($value)     Set a text describing the reason of the payment
+ * @method $this  setReturnCancelUrl($value) Set the  URL where the customer is sent to after they cancel the payment
+ * @method $this  setConsumerId($value)      Saved cards will be listed for user to select
+ * @method string getTransactionId()         Identifier of the transaction
+ * @method string getUsage()                 Statement, as it appears in the customer’s bank statement
+ * @method string getDescription()           A text describing the reason of the payment
+ * @method string getReturnCancelUrl()       URL where the customer is sent to after they cancel the payment
+ * @method bool   getRememberCard()          Offer the user the option to save cardholder details for future use (tokenize)
+ * @method string getConsumerId()            Check documentation section Consumers and Tokenization. Saved cards will be listed for user to select
+ * @method string getLifetime()              Number of minutes determining how long the WPF will be valid
+ * @method string getReminders()             Settings for reminders sending when using the ’Pay Later’ feature
+ * @method bool   getScaPreference()         Signifies whether to perform SCA on the transaction
+ * @codingStandardsIgnoreEnd
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Create extends \Genesis\API\Request
 {
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
-        RestrictedSetter, BusinessAttributes, PendingPaymentAttributes;
+        RestrictedSetter, BusinessAttributes, PendingPaymentAttributes, WpfThreedsV2Attributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -144,6 +150,8 @@ class Create extends \Genesis\API\Request
     protected $reminder_language;
 
     /**
+     * Settings for reminders sending when using the ’Pay Later’ feature
+     *
      * @var array $reminders
      */
     protected $reminders = [];
@@ -161,6 +169,13 @@ class Create extends \Genesis\API\Request
      * @var $language
      */
     protected $language;
+
+    /**
+     * Signifies whether to perform SCA on the transaction. At least one 3DS transaction type has to be submitted.
+     *
+     * @var bool $sca_preference
+     */
+    protected $sca_preference;
 
     /**
      * @param bool $flag
@@ -304,6 +319,19 @@ class Create extends \Genesis\API\Request
         ];
 
         array_push($this->transaction_types, $structure);
+
+        return $this;
+    }
+
+    /**
+     * Signifies whether to perform SCA on the transaction
+     *
+     * @param mixed $value
+     * @return Create
+     */
+    public function setScaPreference($value)
+    {
+        $this->sca_preference = CommonUtils::toBoolean($value);
 
         return $this;
     }
@@ -518,6 +546,16 @@ class Create extends \Genesis\API\Request
     }
 
     /**
+     * Transaction Request with zero amount is allowed
+     *
+     * @return bool
+     */
+    protected function allowedZeroAmount()
+    {
+        return true;
+    }
+
+    /**
      * Set the required fields
      *
      * @return void
@@ -554,6 +592,10 @@ class Create extends \Genesis\API\Request
 
     protected function checkRequirements()
     {
+        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
+
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
+
         parent::checkRequirements();
 
         $this->validateReminders();
@@ -597,7 +639,9 @@ class Create extends \Genesis\API\Request
                 'pay_later'                 => var_export($this->pay_later, true),
                 'reminder_language'         => $this->reminder_language,
                 'reminders'                 => $this->getRemindersStructure(),
-                'business_attributes'       => $this->getBusinessAttributesStructure()
+                'business_attributes'       => $this->getBusinessAttributesStructure(),
+                'sca_preference'            => $this->sca_preference,
+                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
             ]
         ];
 

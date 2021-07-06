@@ -2,8 +2,11 @@
 
 namespace spec\Genesis\API\Traits\Request\Financial\Business;
 
+use Genesis\API\Constants\Transaction\Parameters\Business\PaymentTypes;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\Business\BusinessAttributesStub;
+use spec\SharedExamples\Faker;
 
 class BusinessAttributesSpec extends ObjectBehavior
 {
@@ -67,5 +70,30 @@ class BusinessAttributesSpec extends ObjectBehavior
         $this->getBusinessAttributesStructure()->shouldHaveKey('atol_certificate');
         $this->getBusinessAttributesStructure()->shouldHaveKey('pick_up_date');
         $this->getBusinessAttributesStructure()->shouldHaveKey('return_date');
+
+        $this->getBusinessAttributesStructure()->shouldHaveKey('payment_type');
+    }
+
+    public function it_should_allow_empty_payment_type()
+    {
+        $this->shouldNotThrow()->during('setBusinessPaymentType', ['']);
+
+        $this->getBusinessPaymentType()->shouldBeNull();
+    }
+
+    public function it_should_fail_with_invalid_payment_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setBusinessPaymentType',
+            ['invalid']
+        );
+    }
+
+    public function it_should_accept_any_payment_type()
+    {
+        $this->shouldNotThrow()->during(
+            'setBusinessPaymentType',
+            [Faker::getInstance()->randomElement(PaymentTypes::getAll())]
+        );
     }
 }

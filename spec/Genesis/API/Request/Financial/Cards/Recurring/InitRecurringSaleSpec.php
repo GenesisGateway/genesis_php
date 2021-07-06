@@ -4,6 +4,7 @@ namespace spec\Genesis\API\Request\Financial\Cards\Recurring;
 
 use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
@@ -14,7 +15,8 @@ use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 class InitRecurringSaleSpec extends ObjectBehavior
 {
     use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample,
-        TokenizationAttributesExamples, BusinessAttributesExample, CredentialOnFileAttributesExamples;
+        TokenizationAttributesExamples, BusinessAttributesExample, CredentialOnFileAttributesExamples,
+        AllowedZeroAmount;
 
     public function it_is_initializable()
     {

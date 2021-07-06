@@ -21,32 +21,36 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request\Financial\Threeds\V2;
+namespace Genesis\API\Constants\Transaction\Parameters\Business;
 
 /**
- * Trait AllAttributes
- * Includes All Common 3DSv2-Method Attributes with Recurring Attributes
+ * Define the type of payment
  *
- * @package Genesis\API\Traits\Request\Financial\Threeds\V2
+ * Class PaymentTypes
+ * @package Genesis\API\Constants\Transaction\Parameters\Business
  */
-trait AllAttributes
+class PaymentTypes
 {
-    use Recurring, CommonAttributes {
-        getThreedsV2ParamsStructure as getCommonStructure;
-    }
+    /**
+     * Deposit
+     */
+    const DEPOSIT = 'deposit';
 
     /**
-     * Get the 3DSv2 Attributes Structure
+     * Balance
+     */
+    const BALANCE = 'balance';
+
+    /**
+     * Get all available Payment Types
      *
      * @return array
      */
-    protected function getThreedsV2ParamsStructure()
+    public static function getAll()
     {
-        return array_merge(
-            $this->getCommonStructure(),
-            [
-                'recurring' => $this->getRecurringAttributes()
-            ]
-        );
+        return [
+            self::DEPOSIT,
+            self::BALANCE
+        ];
     }
 }

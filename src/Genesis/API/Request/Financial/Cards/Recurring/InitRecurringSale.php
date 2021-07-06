@@ -56,6 +56,16 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\Credit
     }
 
     /**
+     * Transaction Request with zero amount is allowed
+     *
+     * @return bool
+     */
+    protected function allowedZeroAmount()
+    {
+        return true;
+    }
+
+    /**
      * Set the required fields
      *
      * @return void

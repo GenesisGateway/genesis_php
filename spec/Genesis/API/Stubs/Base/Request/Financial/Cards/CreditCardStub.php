@@ -35,4 +35,9 @@ class CreditCardStub extends CreditCard
     {
         return [];
     }
+
+    public function getAllowedZeroAmount()
+    {
+        return $this->allowedZeroAmount();
+    }
 }

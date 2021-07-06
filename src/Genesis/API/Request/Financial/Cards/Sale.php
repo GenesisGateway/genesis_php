@@ -63,6 +63,16 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     }
 
     /**
+     * Transaction Request with zero amount is allowed
+     *
+     * @return bool
+     */
+    protected function allowedZeroAmount()
+    {
+        return true;
+    }
+
+    /**
      * Set the required fields
      *
      * @return void

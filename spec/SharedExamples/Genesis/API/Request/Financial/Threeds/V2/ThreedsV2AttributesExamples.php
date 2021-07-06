@@ -4,8 +4,10 @@ namespace spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2;
 
 use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes;
 use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D;
+use Genesis\API\Request\WPF\Create as WpfCreate;
 use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
+use PhpSpec\Exception\Example\SkippingException;
 use spec\fixtures\API\Stubs\Parser\ParserStub;
 use spec\SharedExamples\Faker;
 
@@ -33,6 +35,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_fail_without_browser_params()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setRequestParameters();
         $this->setThreedsV2Attributes();
         $this->setThreedsV2SdkAttributes();
@@ -44,6 +50,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_fail_without_sdk_params()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setRequestParameters();
         $this->setThreedsV2Attributes();
         $this->setThreedsV2BrowserAttributes();
@@ -71,6 +81,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_fail_with_invalid_device_type()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setFullThreedsV2Request();
         $this->setThreedsV2ControlDeviceType('invalid');
 
@@ -175,6 +189,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_fail_with_invalid_interface()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setFullThreedsV2Request();
         $this->setThreedsV2SdkInterface('invalid');
 
@@ -183,6 +201,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_have_valid_ui_types_xml_structure()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setFullThreedsV2Request();
 
         $type_1 = Faker::getInstance()->randomElement(UiTypes::getAll());
@@ -199,6 +221,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_fail_with_invalid_color_depth()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setFullThreedsV2Request();
         $this->setThreedsV2BrowserColorDepth('180000');
 
@@ -207,6 +233,10 @@ trait ThreedsV2AttributesExamples
 
     public function it_should_pass_correct_java_enabled_attribute_in_the_structure()
     {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
         $this->setFullThreedsV2Request();
 
         $this->setThreeDSV2BrowserJavaEnabled(false);
@@ -237,7 +267,11 @@ trait ThreedsV2AttributesExamples
     protected function setThreedsV2Attributes()
     {
         $this->setThreedsV2MethodCallbackUrl('https://www.example.com/threeds/threeds_method/callback');
-        $this->setThreedsV2ControlDeviceType('browser');
+
+        if (!($this->getWrappedObject() instanceof WpfCreate)) {
+            $this->setThreedsV2ControlDeviceType('browser');
+        }
+
         $this->setThreedsV2ControlChallengeWindowSize('full_screen');
         $this->setThreedsV2ControlChallengeIndicator('preference');
         $this->setThreedsV2PurchaseCategory('service');
@@ -263,7 +297,9 @@ trait ThreedsV2AttributesExamples
         $this->setThreedsV2CardHolderAccountRegistrationIndicator('30_to_60_days');
         $this->setThreedsV2CardHolderAccountRegistrationDate('16-09-2018');
 
-        if ($this->getWrappedObject() instanceof InitRecurringSale3D) {
+        if ($this->getWrappedObject() instanceof InitRecurringSale3D ||
+            $this->getWrappedObject() instanceof WpfCreate
+        ) {
             $this->setThreedsV2RecurringExpirationDate('12-12-2020');
             $this->setThreedsV2RecurringFrequency(2);
         }
@@ -271,6 +307,11 @@ trait ThreedsV2AttributesExamples
 
     protected function setThreedsV2BrowserAttributes()
     {
+        // WPF request doesn't support Browser Attributes
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            return;
+        }
+
         $this->setThreedsV2BrowserAcceptHeader('Exact content of the HTTP accept headers as sent to the 3DS Requester from the Cardholder browser');
         $this->setThreedsV2BrowserJavaEnabled('on');
         $this->setThreedsV2BrowserLanguage('en-GB');
@@ -283,6 +324,11 @@ trait ThreedsV2AttributesExamples
 
     protected function setThreedsV2SdkAttributes()
     {
+        // WPF request doesn't support SDK Attributes
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            return;
+        }
+
         $this->setThreedsV2SdkInterface('native');
         $this->setThreedsV2SdkUiTypes('multi_select');
         $this->setThreedsV2SdkApplicationId('fc1650c0-5778-0138-8205-2cbc32a32d65');

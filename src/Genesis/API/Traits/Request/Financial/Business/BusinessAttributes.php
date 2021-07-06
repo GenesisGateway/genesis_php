@@ -23,16 +23,48 @@
 
 namespace Genesis\API\Traits\Request\Financial\Business;
 
+use Genesis\API\Constants\Transaction\Parameters\Business\PaymentTypes;
+
 /**
  * Trait BusinessAttributes
  * @package Genesis\API\Traits\Request\Financial\Business
  *
+ * @method string getBusinessPaymentType() The type of payment - can be either deposit or balance
  */
 trait BusinessAttributes
 {
     use AirlinesAirCarriersAttributes, EventManagementAttributes, FurnitureAttributes,
         HotelsAndRealEstateRentalsAttributes, CarPlaneAndBoatRentalsAttributes,
         CruiseLinesAttributes, TravelAgenciesAttributes;
+
+    /**
+     * The type of payment - can be either deposit or balance
+     *
+     * @var string $business_payment_type
+     */
+    protected $business_payment_type;
+
+    /**
+     * The type of payment - can be either deposit or balance
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setBusinessPaymentType($value)
+    {
+        if (empty($value)) {
+            $this->business_payment_type = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'business_payment_type',
+            PaymentTypes::getAll(),
+            $value,
+            'Invalid Payment Type.'
+        );
+    }
 
     /**
      * @return array
@@ -46,7 +78,10 @@ trait BusinessAttributes
             $this->getHotelsAndRealEstateRentalsAttributesStructure(),
             $this->getCarPlaneAndBoatRentalsAttributesStructure(),
             $this->getCruiseLinesAttributesStructure(),
-            $this->getTravelAgenciesAttributesStructure()
+            $this->getTravelAgenciesAttributesStructure(),
+            [
+                'payment_type' => $this->business_payment_type
+            ]
         ) ;
     }
 }

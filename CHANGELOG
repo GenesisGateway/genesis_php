@@ -1,3 +1,18 @@
+1.19.0
+-----
+**Features**:
+* Added support for 3DSv2 attributes to the Web Payment Form transaction request
+* Added support for Business Payment Type attribute
+* Added support for Sca Preference attributes to the Web Payment Form transaction request
+* Added support for transaction with Zero Amount. Affected transaction requests:
+    * Authorize
+    * Authorize 3D
+    * Sale
+    * Sale 3D
+    * Init Recurring Sale
+    * Init Recurring Sale 3D
+    * Web Payment Form
+
 1.18.9
 -----
 **Features**:

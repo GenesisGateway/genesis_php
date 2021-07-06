@@ -39,11 +39,23 @@ abstract class CreditCard extends \Genesis\API\Request\Base\Financial
 {
     use CreditCardAttributes, TokenizationAttributes, PaymentAttributes, CredentialOnFileAttributes;
 
+    const REQUEST_KEY_AMOUNT = 'amount';
+
     /**
      * Return additional request attributes
      * @return array
      */
     abstract protected function getTransactionAttributes();
+
+    /**
+     * Indicated if Zero amounts will be passed through Required field the validations
+     *
+     * @return bool
+     */
+    protected function allowedZeroAmount()
+    {
+        return false;
+    }
 
     protected function setRequiredFields()
     {

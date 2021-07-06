@@ -50,6 +50,11 @@ class CreditCardSpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
+    public function it_should_return_false_allowed_zero_amount()
+    {
+        $this->getAllowedZeroAmount()->shouldBe(false);
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();

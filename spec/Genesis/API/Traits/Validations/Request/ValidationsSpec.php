@@ -350,6 +350,12 @@ class ValidationsSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_return_false_without_defined_allowed_zero_amount_method()
+    {
+        $this->getIsZeroAmountAllowed()->shouldBe(false);
+        $this->getIsNotNullZeroAmountAllowed('amount', '10')->shouldBe(false);
+    }
+
     public function unsetTestVars()
     {
         unset($this->test_field_1);

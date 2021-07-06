@@ -67,4 +67,14 @@ class ValidationsStub
     {
         return $this->test_field_1;
     }
+
+    public function getIsZeroAmountAllowed()
+    {
+        return $this->isZeroAmountAllowed();
+    }
+
+    public function getIsNotNullZeroAmountAllowed($fieldName, $fieldValue)
+    {
+        return $this->isNotNullZeroAmountAllowed($fieldName, $fieldValue);
+    }
 }

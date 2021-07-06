@@ -23,6 +23,7 @@
 
 namespace Genesis\API;
 
+use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 use Genesis\API\Traits\MagicAccessors;
 use Genesis\API\Traits\Validations\Request\Validations;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
@@ -157,7 +158,8 @@ abstract class Request
         if ($this->treeStructure instanceof \ArrayObject) {
             $this->treeStructure->exchangeArray(
                 CommonUtils::emptyValueRecursiveRemoval(
-                    $this->treeStructure->getArrayCopy()
+                    $this->treeStructure->getArrayCopy(),
+                    $this->getAllowedEmptyRequiredAttributes()
                 )
             );
         }
@@ -210,7 +212,7 @@ abstract class Request
      */
     protected function transformAmount($amount = '', $currency = '')
     {
-        if (!empty($amount) && !empty($currency)) {
+        if (is_numeric($amount) && !empty($currency)) {
             return \Genesis\Utils\Currency::amountToExponent($amount, $currency);
         }
 
@@ -365,5 +367,20 @@ abstract class Request
      */
     protected function populateStructure()
     {
+    }
+
+    /**
+     * Return the required parameters keys which values could evaluate as empty
+     *
+     * @return array
+     */
+    protected function getAllowedEmptyRequiredAttributes()
+    {
+        $allowedEmptyKeys = array();
+        if ($this->isZeroAmountAllowed()) {
+            array_push($allowedEmptyKeys, CreditCard::REQUEST_KEY_AMOUNT);
+        }
+
+        return $allowedEmptyKeys;
     }
 }

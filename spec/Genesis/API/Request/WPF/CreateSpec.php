@@ -5,12 +5,14 @@ namespace spec\Genesis\API\Request\WPF;
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\WPF\Create;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 
 class CreateSpec extends ObjectBehavior
 {
-    use BusinessAttributesExample, PendingPaymentAttributesExamples;
+    use BusinessAttributesExample, PendingPaymentAttributesExamples, ThreedsV2AttributesExamples, AllowedZeroAmount;
 
     public function it_is_initializable()
     {
@@ -221,6 +223,28 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->duringSetReminderLanguage('qqqqq');
     }
 
+    public function it_should_contain_sca_preference()
+    {
+        $this->setRequestParameters();
+        $this->getDocument()->shouldContain('<sca_preference>true</sca_preference>');
+    }
+
+    public function it_should_parse_sca_preference_to_boolean()
+    {
+        $this->setScaPreference('yes');
+
+        $this->getScaPreference()->shouldBeBool();
+        $this->getScaPreference()->shouldBe(true);
+    }
+
+    public function it_should_not_contain_sca_preference_with_false_value()
+    {
+        $this->setRequestParameters();
+        $this->setScaPreference(false);
+
+        $this->getDocument()->shouldNotContain('<sca_preference>false</sca_preference>');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -249,6 +273,7 @@ class CreateSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry($faker->countryCode);
+        $this->setScaPreference(true);
         $this->addTransactionType(
             Types::SALE
         );

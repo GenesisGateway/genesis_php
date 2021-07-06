@@ -2,6 +2,7 @@
 
 namespace Genesis\API\Traits\Validations\Request;
 
+use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -91,6 +92,10 @@ trait Validations
         $iterator = new \RecursiveIteratorIterator($this->requiredFields->getIterator());
 
         foreach ($iterator as $fieldName) {
+            if ($this->isNotNullZeroAmountAllowed($fieldName, $this->$fieldName)) {
+                continue;
+            }
+
             if (empty($this->$fieldName)) {
                 throw new \Genesis\Exceptions\ErrorParameter(
                     sprintf('Empty (null) required parameter: %s', $fieldName)
@@ -348,5 +353,29 @@ trait Validations
                 }
             }
         }
+    }
+
+    /**
+     * Check if the Zero Amount is allowed
+     *
+     * @return bool
+     */
+    protected function isZeroAmountAllowed()
+    {
+        return method_exists($this, 'allowedZeroAmount') && $this->allowedZeroAmount();
+    }
+
+    /**
+     * Check if the Amount attribute could be Zero and it is not null
+     *
+     * @param $fieldName
+     * @param $fieldValue
+     * @return bool
+     */
+    private function isNotNullZeroAmountAllowed($fieldName, $fieldValue)
+    {
+        return $this->isZeroAmountAllowed() &&
+            $fieldName === CreditCard::REQUEST_KEY_AMOUNT &&
+            !is_null($fieldValue);
     }
 }

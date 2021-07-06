@@ -96,9 +96,9 @@ try {
     echo $genesis->response()->getResponseObject()->unique_id;
 }
 // Log/handle API errors
-// Example: Declined transaction, Invalid data, Invalid configuration
+// Example: Invalid data, Invalid configuration
 catch (\Genesis\Exceptions\ErrorAPI $api) {
-    echo $genesis->response()->getResponseObject()->technical_message;
+    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -313,9 +313,9 @@ try {
     }    
 }
 // Log/handle API errors
-// Example: Declined transaction, Invalid data, Invalid configuration
+// Example: Invalid data, Invalid configuration
 catch (\Genesis\Exceptions\ErrorAPI $api) {
-    echo $genesis->response()->getResponseObject()->technical_message;
+    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -330,6 +330,131 @@ catch (\Genesis\Exceptions\ErrorNetwork $network) {
 ```
 
 </details>
+
+Example 3DSv2 Request via Web Payment Form
+
+<details>
+<summary>Details</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+
+try {   
+    // Create a new Genesis instance with desired API request
+    $genesis = new \Genesis\Genesis('WPF\Create');
+    
+    /** @var \Genesis\API\Request\WPF\Create $wpf_3ds_v2_request */
+    $wpf_3ds_v2_request = $genesis->request();
+
+    $wpf_3ds_v2_request
+        ->setTransactionId('43671')
+        ->setUsage('40208 concert tickets')
+        ->setAmount('50')
+        ->setCurrency('USD')
+
+        // Return URLS
+        ->setNotificationUrl('https://example.com/notification')
+        ->setReturnSuccessUrl('https://example.com/return?type=success')
+        ->setReturnFailureUrl('https://example.com/return?type=failure')
+        ->setReturnCancelUrl('https://example.com/return?type=cancel')
+        
+        // Optional Url used for specific cases
+        ->setReturnPendingUrl('https://example.com/return?type=pending')
+
+        // Customer Details
+        ->setCustomerEmail('jhon@example.com')
+        ->setCustomerPhone('1987987987987')
+        
+        // Billing/Invoice Details
+        ->setBillingFirstName('Jhon')
+        ->setBillingLastName('Smith')
+        ->setBillingAddress1('Muster Str. 12')
+        ->setBillingZipCode('10178')
+        ->setBillingCity('Los Angeles')
+        ->setBillingState('CA')
+        ->setBillingCountry('US')
+
+        // Optional Description
+        ->setDescription('Example Description')
+        
+        // Desired Transaction Type
+        ->addTransactionType('sale3d')
+
+        // 3DSv2 Control Attributes
+        ->setThreedsV2ControlChallengeWindowSize(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeWindowSizes::FULLSCREEN)
+        ->setThreedsV2ControlChallengeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators::PREFERENCE)
+ 
+        // 3DSv2 Purchase Attributes
+        ->setThreedsV2PurchaseCategory(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Purchase\Categories::SERVICE)
+        
+        // 3DSv2 Merchant Risk Attributes
+        ->setThreedsV2MerchantRiskShippingIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ShippingIndicators::VERIFIED_ADDRESS)
+        ->setThreedsV2MerchantRiskDeliveryTimeframe(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\DeliveryTimeframes::ELECTRONICS)
+        ->setThreedsV2MerchantRiskReorderItemsIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ReorderItemIndicators::REORDERED)
+        ->setThreedsV2MerchantRiskPreOrderPurchaseIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\PreOrderPurchaseIndicators::MERCHANDISE_AVAILABLE)
+        ->setThreedsV2MerchantRiskPreOrderDate('31-12-2030') // For a pre-ordered purchase, the expected date that the merchandise will be available.
+        ->setThreedsV2MerchantRiskGiftCard(true) // Boolean attribute. Accepts values like `on`, `off`, `yes`, `no`, `true`, `false`, etc...
+        ->setThreedsV2MerchantRiskGiftCardCount(99)
+        
+        // 3DSSv2 Card Holder Account Attributes
+        ->setThreedsV2CardHolderAccountCreationDate('31-12-2019')
+        ->setThreedsV2CardHolderAccountUpdateIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountLastChangeDate('31-12-2019')
+        ->setThreedsV2CardHolderAccountPasswordChangeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\PasswordChangeIndicators::NO_CHANGE)
+        ->setThreedsV2CardHolderAccountPasswordChangeDate('31-12-2019')
+        ->setThreedsV2CardHolderAccountShippingAddressUsageIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators::CURRENT_TRANSACTION)
+        ->setThreedsV2CardHolderAccountShippingAddressDateFirstUsed('31-12-2019')
+        ->setThreedsV2CardHolderAccountTransactionsActivityLast24Hours(2)
+        ->setThreedsV2CardHolderAccountTransactionsActivityPreviousYear(10)
+        ->setThreedsV2CardHolderAccountProvisionAttemptsLast24Hours(1)
+        ->setThreedsV2CardHolderAccountPurchasesCountLast6Months(5)
+        ->setThreedsV2CardHolderAccountSuspiciousActivityIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators::NO_SUSPICIOUS_OBSERVED)
+        ->setThreedsV2CardHolderAccountRegistrationIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\RegistrationIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountRegistrationDate('31-12-2019')
+
+        // 3DSv2 Recurring Attributes
+        // Available only for the Init Recurring Sale 3D Request
+        ->setThreedsV2RecurringExpirationDate('12-12-2030') // A future date indicating the end date for any further subsequent transactions.
+        ->setThreedsV2RecurringFrequency(2);
+
+    // Send the request
+    $genesis->execute();
+    
+    // Upon successful `$genesis->response()->getResponseObject()->status === 'new'`
+    // Redirect to the Web Payment Form
+    echo $genesis->response()->getResponseObject()->redirect_url;
+    
+    // ThreedsV2 Signature
+    echo $genesis->request()->generateThreedsV2Signature();  
+}
+// Log/handle API errors
+// Example: Invalid data, Invalid configuration
+catch (\Genesis\Exceptions\ErrorAPI $api) {
+    error_log($api->getMessage());
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle network (transport) errors
+// Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
+```
+</details>
+
 
 Standalone ThreedsV2 Method Continue Request.
 
@@ -398,9 +523,9 @@ try {
     }
 }
 // Log/handle API errors
-// Example: Declined transaction, Invalid data, Invalid configuration
+// Example: Invalid data, Invalid configuration
 catch (\Genesis\Exceptions\ErrorAPI $api) {
-    echo $genesis->response()->getResponseObject()->technical_message;
+    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -413,6 +538,86 @@ catch (\Genesis\Exceptions\ErrorNetwork $network) {
     error_log($network->getMessage());
 }
 
+```
+
+</details>
+
+Example Web Payment Form transaction request with Zero Amount
+-------------
+In certain cases, it is possible to submit a transaction with a zero-value amount in order not to charge the consumer with the initial recurring, but with the followed RecurringSale transactions only - ***Free Trial***.
+
+<details>
+<summary>Example WPF Request</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+try {
+    // Create a new Genesis instance with desired API request
+    $genesis = new \Genesis\Genesis('WPF\Create');
+
+    /** @var \Genesis\API\Request\WPF\Create $wpf_recurring_request */
+    $wpf_recurring_request = $genesis->request();
+    $wpf_recurring_request
+        ->setTransactionId('43671')
+        ->setUsage('40208 concert tickets')
+        ->setAmount('0')
+        ->setCurrency('USD')
+        // Return URLS
+        ->setNotificationUrl('https://example.com/notification')
+        ->setReturnSuccessUrl('https://example.com/return?type=success')
+        ->setReturnFailureUrl('https://example.com/return?type=failure')
+        ->setReturnCancelUrl('https://example.com/return?type=cancel')
+
+        // Optional Url used for specific cases
+        ->setReturnPendingUrl('https://example.com/return?type=pending')
+        // Customer Details
+        ->setCustomerEmail('jhon@example.com')
+        ->setCustomerPhone('1987987987987')
+
+        // Billing/Invoice Details
+        ->setBillingFirstName('Jhon')
+        ->setBillingLastName('Smith')
+        ->setBillingAddress1('Muster Str. 12')
+        ->setBillingZipCode('10178')
+        ->setBillingCity('Los Angeles')
+        ->setBillingState('CA')
+        ->setBillingCountry('US')
+        // Optional Description
+        ->setDescription('Example Description')
+
+        // Desired Transaction Type
+        ->addTransactionType('init_recurring_sale');
+
+    // Send the request
+    $genesis->execute();
+
+    // Upon successful `$genesis->response()->getResponseObject()->status === 'new'`
+    // Redirect to the Web Payment Form
+    echo $genesis->response()->getResponseObject()->redirect_url;
+}
+// Log/handle API errors
+// Example: Declined transaction, Invalid data, Invalid configuration
+catch (\Genesis\Exceptions\ErrorAPI $api) {
+    error_log($api->getMessage());
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle network (transport) errors
+// Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
 ```
 
 </details>

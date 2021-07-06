@@ -131,14 +131,19 @@ final class Common
      * remove every key with empty value
      *
      * @param array $haystack - input array
+     * @param array $skipEmptyKeys
      *
      * @return array
      */
-    public static function emptyValueRecursiveRemoval($haystack)
+    public static function emptyValueRecursiveRemoval($haystack, $skipEmptyKeys = array())
     {
         foreach ($haystack as $key => $value) {
             if (is_array($value)) {
-                $haystack[$key] = self::emptyValueRecursiveRemoval($haystack[$key]);
+                $haystack[$key] = self::emptyValueRecursiveRemoval($haystack[$key], $skipEmptyKeys);
+            }
+
+            if (in_array($key, $skipEmptyKeys, true) && !is_null($value)) {
+                continue;
             }
 
             if (empty($haystack[$key])) {
