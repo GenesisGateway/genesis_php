@@ -79,6 +79,11 @@ class AllowedBanks
     const REGIO_BANK            = 'RBRBNL21';
 
     /**
+     * Allowed BIC of issuer Revolut
+     */
+    const REVOLUT               = 'REVOLT21';
+
+    /**
      * Allowed BIC of issuer SNS Bank
      */
     const SNS_BANK              = 'SNSBNL2A';

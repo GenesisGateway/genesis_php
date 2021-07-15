@@ -39,6 +39,13 @@ final class XML implements \Genesis\Interfaces\Builder
     public $context;
 
     /**
+     * Store the Generated Document
+     *
+     * @var string
+     */
+    private $output;
+
+    /**
      * Set and instantiate new UTF-8 XML document
      */
     public function __construct()
@@ -49,16 +56,6 @@ final class XML implements \Genesis\Interfaces\Builder
         $this->context->startDocument('1.0', 'UTF-8');
         $this->context->setIndent(true);
         $this->context->setIndentString("\x20\x20");
-    }
-
-    /**
-     * Flush and destroy XMLWriter instance upon destruction
-     */
-    public function __destruct()
-    {
-        if (isset($this->context)) {
-            @$this->context->flush();
-        }
     }
 
     /**
@@ -84,6 +81,8 @@ final class XML implements \Genesis\Interfaces\Builder
 
         // Finish the document
         $this->context->endDocument();
+
+        $this->output = $this->context->outputMemory(true);
     }
 
     /**
@@ -93,7 +92,7 @@ final class XML implements \Genesis\Interfaces\Builder
      */
     public function getOutput()
     {
-        return $this->context->outputMemory(false);
+        return $this->output;
     }
 
     /**

@@ -105,4 +105,72 @@ class TypesSpec extends ObjectBehavior
 
         $this::canVoid($typesObject::BALOTO)->shouldBe(false);
     }
+
+    public function it_should_be_true_for_refundable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+        $refundableTypes = [
+            $typesObject::APPLE_PAY,
+            $typesObject::BALOTO,
+            $typesObject::BANCOMER,
+            $typesObject::BANCONTACT,
+            $typesObject::BANCO_DE_OCCIDENTE,
+            $typesObject::BANCO_DO_BRASIL,
+            $typesObject::BITPAY_SALE,
+            $typesObject::BOLETO,
+            $typesObject::BRADESCO,
+            $typesObject::CAPTURE,
+            $typesObject::CASHU,
+            $typesObject::DAVIVIENDA,
+            $typesObject::EFECTY,
+            $typesObject::EPS,
+            $typesObject::FASHIONCHEQUE,
+            $typesObject::GIROPAY,
+            $typesObject::IDEAL,
+            $typesObject::IDEBIT_PAYIN,
+            $typesObject::INIT_RECURRING_SALE,
+            $typesObject::INIT_RECURRING_SALE_3D,
+            $typesObject::ITAU,
+            $typesObject::KLARNA_CAPTURE,
+            $typesObject::MY_BANK,
+            $typesObject::MY_BANK,
+            $typesObject::NEOSURF,
+            $typesObject::OXXO,
+            $typesObject::P24,
+            $typesObject::PAGO_FACIL,
+            $typesObject::PARTIAL_REVERSAL,
+            $typesObject::PAYPAL_EXPRESS,
+            $typesObject::PAYU,
+            $typesObject::PPRO,
+            $typesObject::PSE,
+            $typesObject::POST_FINANCE,
+            $typesObject::RAPI_PAGO,
+            $typesObject::RECURRING_SALE,
+            $typesObject::REDPAGOS,
+            $typesObject::SAFETYPAY,
+            $typesObject::SALE,
+            $typesObject::SALE_3D,
+            $typesObject::SANTANDER,
+            $typesObject::SDD_INIT_RECURRING_SALE,
+            $typesObject::SDD_RECURRING_SALE,
+            $typesObject::SDD_SALE,
+            $typesObject::SOFORT,
+            $typesObject::TRUSTLY_SALE,
+            $typesObject::UPI,
+            $typesObject::WEBPAY,
+            $typesObject::WECHAT,
+            $typesObject::ZIMPLER
+        ];
+
+        foreach ($refundableTypes as $type) {
+            $this::canRefund($type)->shouldBe(true);
+        }
+    }
+
+    public function it_should_be_false_for_non_refundable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+
+        $this::canRefund($typesObject::CENCOSUD)->shouldBe(false);
+    }
 }

@@ -80,10 +80,15 @@ class Neosurf extends \Genesis\API\Request\Base\Financial
                 'AT', 'AU', 'BE', 'BF', 'BI', 'BJ', 'CA', 'CD', 'CF', 'CG', 'CH', 'CI', 'CM', 'CO',
                 'CV', 'CY', 'DE', 'DK', 'DZ', 'ES', 'FR', 'GA', 'GB', 'GH', 'GM', 'GN', 'GQ', 'GW',
                 'HK', 'IE', 'IT', 'KE', 'LU', 'MA', 'ML', 'MR', 'MW', 'MZ', 'NE', 'NG', 'NL', 'NO',
-                'PL', 'PT', 'RO', 'RS', 'RU', 'RW', 'SE', 'SL', 'SN', 'ST', 'TD', 'TG', 'TN', 'TR',
+                'NZ', 'PL', 'PT', 'RO', 'RS', 'RU', 'RW', 'SE', 'SL', 'SN', 'ST', 'TD', 'TG', 'TN', 'TR',
                 'TZ', 'UG', 'ZM', 'ZW'
             ],
-            'voucher_number'  => new RegexValidator(RegexValidator::PATTERN_NEOSURF_VOUCHER_NUMBER)
+            'voucher_number'  => new RegexValidator(RegexValidator::PATTERN_NEOSURF_VOUCHER_NUMBER),
+            'currency'        => [
+                'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS',
+                'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TRY',
+                'USD', 'XOF', 'ZAR'
+            ]
         ];
 
         $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);

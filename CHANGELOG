@@ -1,3 +1,20 @@
+1.19.1
+-----
+**Features**:
+* Added support for New Zeland Billing Country to the Neosurf transaction request
+* Added allowed currencies to the Neosurf transaction request:
+    Australian dollar, Bulgarian lev, Brazilian real, Canadian dollar, Swiss franc, Chinese yuan,
+    Czech koruna, Danish krone, Euro, Pound sterling, *Hong Kong dollar, Croatian kuna, Hungarian forint,
+    Indonesian rupiah, Israeli new shekel, Indian rupee, Japanese yen, South Korean won, Mexican peso,
+    Malaysian ringgit, Norwegian krone, New Zealand dollar, Philippine peso, Polish złoty, Romanian leu,
+    Russian ruble, Swedish kronor, Singapore dollar, Thai baht, Turkish lira, United States dollar,
+    CFA franc BCEAO, South African rand
+* Added support for Revolut BIC in iDeal transaction request
+* Removed Spain (ES) from the supported Billing Countries in MyBank transaction request
+
+**Fixes**:
+* Fixed XML Builder
+
 1.19.0
 -----
 **Features**:

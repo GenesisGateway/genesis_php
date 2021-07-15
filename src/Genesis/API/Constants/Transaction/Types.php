@@ -1042,6 +1042,7 @@ class Types
             self::PSE,
             self::POST_FINANCE,
             self::RAPI_PAGO,
+            self::RECURRING_SALE,
             self::REDPAGOS,
             self::SAFETYPAY,
             self::SALE,

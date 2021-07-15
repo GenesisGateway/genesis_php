@@ -66,7 +66,7 @@ class MyBank extends \Genesis\API\Request\Base\Financial
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => ['IT', 'ES'],
+            'billing_country' => ['IT'],
             'currency'        => 'EUR'
         ];
 

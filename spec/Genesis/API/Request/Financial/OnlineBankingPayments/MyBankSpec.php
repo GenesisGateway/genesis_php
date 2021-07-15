@@ -10,7 +10,7 @@ class MyBankSpec extends ObjectBehavior
 {
     use RequestExamples;
 
-    private $allowedCountries = ['IT', 'ES'];
+    private $allowedCountries = ['IT'];
 
     public function it_is_initializable()
     {

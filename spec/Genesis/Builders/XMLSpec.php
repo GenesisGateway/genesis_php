@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Builders;
 
+use Genesis\Builders\XML;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -55,6 +56,15 @@ class XMLSpec extends ObjectBehavior
         $this->getOutput()->shouldMatch('/&lt;/');
         $this->getOutput()->shouldMatch('/&amp;/');
         $this->getOutput()->shouldMatch('/&gt;/');
+    }
+
+    public function it_should_flush_memory_after_xml_document_generations(\XMLWriter $xmlWriter)
+    {
+        $this->context = $xmlWriter;
+
+        $this->populateNodes(array('root' => array('node' => 'value')));
+
+        $xmlWriter->outputMemory(true)->shouldHaveBeenCalled();
     }
 
     public function getMatchers()
