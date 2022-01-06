@@ -34,6 +34,7 @@ use Genesis\API\Traits\Request\Financial\Threeds\V2\WpfAttributes as WpfThreedsV
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
@@ -66,7 +67,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Create extends \Genesis\API\Request
 {
-    use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
+    use PaymentAttributes, AddressInfoAttributes, AsyncAttributes, MotoAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
         RestrictedSetter, BusinessAttributes, PendingPaymentAttributes, WpfThreedsV2Attributes;
 
@@ -317,6 +318,11 @@ class Create extends \Genesis\API\Request
                 $parameters
             ]
         ];
+        
+        if ($this->moto == true)
+        {
+            $structure['transaction_type']['@attributes']['moto'] = 'true';
+        }
 
         array_push($this->transaction_types, $structure);
 
