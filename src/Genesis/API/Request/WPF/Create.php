@@ -318,12 +318,7 @@ class Create extends \Genesis\API\Request
                 $parameters
             ]
         ];
-        
-        if ($this->moto == true)
-        {
-            $structure['transaction_type']['@attributes']['moto'] = 'true';
-        }
-
+       
         array_push($this->transaction_types, $structure);
 
         return $this;
