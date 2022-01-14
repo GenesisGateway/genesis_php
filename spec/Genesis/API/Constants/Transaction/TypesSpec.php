@@ -91,7 +91,8 @@ class TypesSpec extends ObjectBehavior
             $typesObject::CAPTURE,
             $typesObject::APPLE_PAY,
             $typesObject::SALE,
-            $typesObject::SALE_3D
+            $typesObject::SALE_3D,
+            $typesObject::GOOGLE_PAY
         ];
 
         foreach ($voidableTypes as $type) {
@@ -126,6 +127,7 @@ class TypesSpec extends ObjectBehavior
             $typesObject::EPS,
             $typesObject::FASHIONCHEQUE,
             $typesObject::GIROPAY,
+            $typesObject::GOOGLE_PAY,
             $typesObject::IDEAL,
             $typesObject::IDEBIT_PAYIN,
             $typesObject::INIT_RECURRING_SALE,

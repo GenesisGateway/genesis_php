@@ -22,6 +22,8 @@
  */
 namespace Genesis\Utils;
 
+use Genesis\Exceptions\Exception;
+
 /**
  * Various helper functions used across the project
  *
@@ -444,5 +446,27 @@ final class Common
         $filterBoolean = static::filterBoolean($string);
 
         return (is_bool($filterBoolean)) ? $filterBoolean : (bool) $filterBoolean;
+    }
+
+    /**
+     * Remove specific keys from given arrayObject
+     *
+     * @param array $arrayKeys
+     * @param \ArrayObject $arrayObject
+     * @return \ArrayObject
+     */
+    public static function removeMultipleKeys($arrayKeys, $arrayObject)
+    {
+        if (!self::isValidArray($arrayKeys) || !$arrayObject instanceof \ArrayObject) {
+            throw new Exception();
+        }
+
+        foreach ($arrayKeys as $key) {
+            if (array_key_exists($key, $arrayObject)) {
+                unset($arrayObject->{$key});
+            }
+        }
+
+        return $arrayObject;
     }
 }

@@ -108,5 +108,4 @@ class P24 extends \Genesis\API\Request\Base\Financial\Alternative
             )
         );
     }
-
 }

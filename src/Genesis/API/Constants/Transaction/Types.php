@@ -705,6 +705,11 @@ class Types
     const POST_FINANCE = 'post_finance';
 
     /**
+     * Google Pay allows shoppers to purchase with credit and debit cards linked to their Google account.
+     */
+    const GOOGLE_PAY = 'google_pay';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -778,6 +783,7 @@ class Types
             self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
             self::INTERSOLVE              => 'GiftCards\Intersolve',
             self::APPLE_PAY               => 'Mobile\ApplePay',
+            self::GOOGLE_PAY              => 'Mobile\GooglePay',
             self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
             self::ASTROPAY_DIRECT         => 'OnlineBankingPayments\AstropayDirect',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
@@ -828,7 +834,6 @@ class Types
             self::QIWI                    => 'Wallets\Qiwi',
             self::WEBMONEY                => 'Wallets\WebMoney',
             self::ZIMPLER                 => 'Wallets\Zimpler',
-
         ];
 
         return isset($map[$type]) ? 'Financial\\' . $map[$type] : false;
@@ -880,6 +885,7 @@ class Types
             self::EZEEWALLET,
             self::FASHIONCHEQUE,
             self::GIROPAY,
+            self::GOOGLE_PAY,
             self::IDEAL,
             self::IDEBIT_PAYIN,
             self::INIT_RECURRING_SALE,
@@ -993,7 +999,8 @@ class Types
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
             self::KLARNA_AUTHORIZE,
-            self::APPLE_PAY
+            self::APPLE_PAY,
+            self::GOOGLE_PAY
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1056,7 +1063,8 @@ class Types
             self::UPI,
             self::WEBPAY,
             self::WECHAT,
-            self::ZIMPLER
+            self::ZIMPLER,
+            self::GOOGLE_PAY,
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1080,7 +1088,8 @@ class Types
             self::CAPTURE,
             self::APPLE_PAY,
             self::SALE,
-            self::SALE_3D
+            self::SALE_3D,
+            self::GOOGLE_PAY,
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

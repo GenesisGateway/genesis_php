@@ -4,11 +4,12 @@ namespace spec\Genesis\API\Request\NonFinancial;
 
 use Genesis\API\Request\NonFinancial\AVS;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class AVSSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, CreditCardAttributesExamples;
 
     public function it_is_initializable()
     {

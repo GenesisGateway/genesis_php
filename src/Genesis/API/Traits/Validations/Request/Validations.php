@@ -299,7 +299,7 @@ trait Validations
             }
 
             foreach ($parentFieldDependencies as $parentFieldValue => $childFieldsDependency) {
-                if ($this->$parentFieldName !== $parentFieldValue) {
+                if ($this->$parentFieldName != $parentFieldValue) {
                     continue;
                 }
 

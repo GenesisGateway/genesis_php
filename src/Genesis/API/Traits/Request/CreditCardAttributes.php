@@ -23,11 +23,10 @@
 
 namespace Genesis\API\Traits\Request;
 
-use Genesis\API\Traits\Request\CustomerAddress\CustomerInfoAttributes;
-use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
 use Genesis\API\Validators\Request\RegexValidator;
-use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Trait CreditCardAttributes
@@ -37,6 +36,7 @@ use Genesis\Exceptions\InvalidArgument;
  * @method $this setCardNumber($value) Set Complete CC number of customer
  * @method $this setCvv($value) Set CVV of CC, requirement is based on terminal configuration
  * @method $this setBirthDate($value) Set Birth date of the customer
+ * @method bool getClientSideEncryption() Get Client-Side Encryption value
  */
 trait CreditCardAttributes
 {
@@ -83,22 +83,22 @@ trait CreditCardAttributes
     protected $birth_date;
 
     /**
+     * Internal attribute used for ignoring the Credit Card fields validations
+     *
+     * @var bool
+     */
+    protected $client_side_encryption = false;
+
+    /**
+     * Internal attribute used for ignoring the Credit Card fields validations
+     *
      * @param $value
      *
      * @return $this
-     * @throws InvalidArgument
      */
-
-    public function setExpirationMonth($value)
+    public function setClientSideEncryption($value)
     {
-        $this->expiration_month = (int)$value;
-
-        return $this;
-    }
-
-    public function setExpirationYear($value)
-    {
-        $this->expiration_year = (int)$value;
+        $this->client_side_encryption = Common::toBoolean($value);
 
         return $this;
     }
@@ -162,7 +162,7 @@ trait CreditCardAttributes
     protected function getCreditCardExpMonthValidator()
     {
         return new RegexValidator(
-            RegexValidator::PATTERN_CREDIT_CART_EXP_MONTH
+            RegexValidator::PATTERN_CREDIT_CARD_EXP_MONTH
         );
     }
 
@@ -174,14 +174,14 @@ trait CreditCardAttributes
     protected function getCreditCardExpYearValidator()
     {
         return new RegexValidator(
-            RegexValidator::PATTERN_CREDIT_CART_EXP_YEAR
+            RegexValidator::PATTERN_CREDIT_CARD_EXP_YEAR
         );
     }
 
     protected function requiredCCFieldsConditional()
     {
         return [
-            'card_number'   => [
+            'card_number' => [
                 'expiration_month',
                 'expiration_year'
             ]
@@ -198,5 +198,15 @@ trait CreditCardAttributes
             'cvv'              => $this->cvv,
             'birth_date'       => $this->birth_date
         ];
+    }
+
+    protected function removeCreditCardValidations()
+    {
+        if ($this->client_side_encryption) {
+            $this->requiredFieldValues = CommonUtils::removeMultipleKeys(
+                array_keys($this->getCCFieldValueFormatValidators()),
+                $this->requiredFieldValues
+            );
+        }
     }
 }

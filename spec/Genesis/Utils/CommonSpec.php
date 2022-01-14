@@ -3,7 +3,7 @@
 namespace spec\Genesis\Utils;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Genesis\Exceptions\Exception;
 
 /**
  * @mixin \Genesis\Utils\Common
@@ -97,6 +97,37 @@ class CommonSpec extends ObjectBehavior
         $array = array(null, null, null, null, null, 3, null);
 
         $this::emptyValueRecursiveRemoval($array)->shouldHaveASizeOf(1);
+    }
+
+    public function it_should_not_throw_with_valid_parameter()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+        $arrayObject = $this::createArrayObject($array);
+
+        $this->shouldNotThrow(Exception::class)->during(
+            'removeMultipleKeys', array(array_keys($array), $arrayObject)
+        );
+    }
+
+    public function it_should_throw_with_invalid_parameter()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+        $arrayObject = $this::createArrayObject($array);
+
+        $this->shouldThrow(Exception::class)->during(
+            'removeMultipleKeys', array('string', $arrayObject));
+        $this->shouldThrow(Exception::class)->during(
+            'removeMultipleKeys', array($array, 'string'));
+    }
+
+    public function it_should_return_array_object()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+        $arrayObject = $this::createArrayObject($array);
+
+        $this::removeMultipleKeys($array, $arrayObject)->shouldBeAnInstanceOf(
+            '\ArrayObject'
+        );
     }
 
     public function getMatchers()

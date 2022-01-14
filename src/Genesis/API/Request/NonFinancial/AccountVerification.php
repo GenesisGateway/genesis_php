@@ -31,6 +31,7 @@ use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Account Verification Request
@@ -113,5 +114,17 @@ class AccountVerification extends \Genesis\API\Request
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
+    }
+
+    /**
+     * Skip Credit Card validation if Client-Side Encryption is set
+     *
+     * @return void
+     */
+    protected function checkRequirements()
+    {
+        $this->removeCreditCardValidations();
+
+        parent::checkRequirements();
     }
 }

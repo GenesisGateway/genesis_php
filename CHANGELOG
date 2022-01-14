@@ -1,3 +1,17 @@
+1.19.2
+-----
+**Features**:
+* Added support for Google Pay
+* Added Client-Side Encryption support to the following transaction requests:
+    * Account Verification
+    * Authorize
+    * uthorize 3D
+    * Sale
+    * Sale 3D
+    * Init Recurring Sale
+    * Init Recurring Sale 3D
+    * Payout
+
 1.19.1
 -----
 **Features**:

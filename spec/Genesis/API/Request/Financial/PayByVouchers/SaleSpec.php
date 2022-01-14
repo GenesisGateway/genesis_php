@@ -4,12 +4,13 @@ namespace spec\Genesis\API\Request\Financial\PayByVouchers;
 
 use Genesis\API\Request\Financial\PayByVouchers\Sale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples, DescriptorAttributesExample;
+    use RequestExamples, DescriptorAttributesExample, CreditCardAttributesExamples;
 
     public function it_is_initializable()
     {

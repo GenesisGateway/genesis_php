@@ -23,11 +23,13 @@
 
 namespace Genesis\API\Request\Base\Financial\Cards;
 
+use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\CreditCardAttributes;
 use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\TokenizationAttributes;
-use Genesis\Utils\Common;
+use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\Currency;
 
 /**
  * Class CreditCard
@@ -35,7 +37,7 @@ use Genesis\Utils\Common;
  *
  * @suppressWarnings(PHPMD.LongVariable)
  */
-abstract class CreditCard extends \Genesis\API\Request\Base\Financial
+abstract class CreditCard extends Financial
 {
     use CreditCardAttributes, TokenizationAttributes, PaymentAttributes, CredentialOnFileAttributes;
 
@@ -66,25 +68,25 @@ abstract class CreditCard extends \Genesis\API\Request\Base\Financial
             'card_holder'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldsOR = [
             'card_number',
             'token'
         ];
 
-        $this->requiredFieldsOR = \Genesis\Utils\Common::createArrayObject($requiredFieldsOR);
+        $this->requiredFieldsOR = CommonUtils::createArrayObject($requiredFieldsOR);
 
         $requiredFieldValues = [
-             'currency'    => \Genesis\Utils\Currency::getList(),
-             'card_holder' => $this->getCreditCardHolderValidator()
+             'currency'    => Currency::getList(),
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
     }
 
     /**
      * Inject the requiredFieldValuesConditional Validations
+     * Enable CC holder name validation if Client-Side Encryption is not set
      *
      * @throws \Genesis\Exceptions\ErrorParameter
      * @throws \Genesis\Exceptions\InvalidArgument
@@ -92,11 +94,14 @@ abstract class CreditCard extends \Genesis\API\Request\Base\Financial
      */
     protected function checkRequirements()
     {
-        $requiredFieldValuesConditional = $this->setRequiredCCFieldsConditionalValues();
+        if (!$this->client_side_encryption) {
+            $this->requiredFieldValues->card_holder = $this->getCreditCardHolderValidator();
+        }
 
+        $requiredFieldValuesConditional = $this->setRequiredCCFieldsConditionalValues();
         $this->requiredFieldValuesConditional = (empty($this->requiredFieldValuesConditional)) ?
-            $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional) :
-            Common::createArrayObject(
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldValuesConditional) :
+            CommonUtils::createArrayObject(
                 array_merge((array) $this->requiredFieldValuesConditional, $requiredFieldValuesConditional)
             );
 
@@ -105,12 +110,14 @@ abstract class CreditCard extends \Genesis\API\Request\Base\Financial
 
     /**
      * Credit Card Validations
+     * Disable validation if Client-Side Encryption is used
      *
      * @return array
      */
     protected function setRequiredCCFieldsConditionalValues()
     {
-        return [
+        return $this->client_side_encryption ? [] :
+        [
             'card_number' => [
                 $this->card_number => [
                     ['card_number' => $this->getCreditCardNumberValidator()]

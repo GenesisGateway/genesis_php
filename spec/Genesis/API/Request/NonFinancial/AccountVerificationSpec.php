@@ -5,11 +5,12 @@ namespace spec\Genesis\API\Request\NonFinancial;
 use Genesis\API\Request\NonFinancial\AccountVerification;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class AccountVerificationSpec extends ObjectBehavior
 {
-    use RequestExamples, CredentialOnFileAttributesExamples;
+    use RequestExamples, CredentialOnFileAttributesExamples, CreditCardAttributesExamples;
 
     public function it_is_initializable()
     {
