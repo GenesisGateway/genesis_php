@@ -27,6 +27,7 @@ use Genesis\API\Constants\BankAccountTypes;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\RestrictedSetter;
@@ -48,14 +49,14 @@ use Genesis\Utils\Common;
  */
 class Payout extends \Genesis\API\Request\Base\Financial
 {
-    use RestrictedSetter, AddressInfoAttributes, AsyncAttributes, PaymentAttributes, NotificationAttributes;
+    use RestrictedSetter, AddressInfoAttributes, AsyncAttributes, PaymentAttributes,
+        NotificationAttributes, RestrictedSetter, BirthDateAttributes;
 
     const ID_CARD_NUMBER_MAX_LENGTH          = 30;
     const PAYER_BANK_PHONE_NUMBER_MAX_LENGTH = 11;
     const DOCUMENT_TYPE_MAX_LENGTH           = 10;
     const ACCOUNT_ID_MAX_LENGTH              = 255;
     const USER_ID_MAX_LENGTH                 = 255;
-    const BIRTH_DATE_FORMAT                  = 'd-m-Y';
 
     /**
      * Customer’s bank account name
@@ -150,13 +151,6 @@ class Payout extends \Genesis\API\Request\Base\Financial
      * @var string $user_id
      */
     protected $user_id;
-
-    /**
-     * Required for Visa only when MCC is a Financial Services one (e.g. MCC 6012)
-     *
-     * @var \DateTime $birth_date
-     */
-    protected $birth_date;
 
     protected function getTransactionType()
     {
@@ -263,40 +257,6 @@ class Payout extends \Genesis\API\Request\Base\Financial
             null,
             self::USER_ID_MAX_LENGTH
         );
-    }
-
-    /**
-     * Setter Birth Date
-     *
-     * @param $value
-     * @return Payout
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setBirthDate($value)
-    {
-        if (is_null($value)) {
-            $this->birth_date = null;
-            return $this;
-        }
-
-        return $this->parseDate(
-            'birth_date',
-            [self::BIRTH_DATE_FORMAT, 'Y-d-m'],
-            $value,
-            'Invalid birth_date format.'
-        );
-    }
-
-    /**
-     * Getter Birth Date
-     *
-     * @return string
-     */
-    public function getBirthDate()
-    {
-        return is_null($this->birth_date) ?
-            '' :
-            $this->birth_date->format(self::BIRTH_DATE_FORMAT);
     }
 
     /**

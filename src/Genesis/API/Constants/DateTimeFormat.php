@@ -59,6 +59,11 @@ class DateTimeFormat
     const YYYY_MM_DD_ISO_8601 = 'Y-m-d';
 
     /**
+     * Modified Zulu timestamp
+     */
+    const YYYY_MM_DD_H_I_S = 'Y-m-d H:i:s';
+
+    /**
      * Retrieve list of all DateTime formats
      *
      * @return array
@@ -80,6 +85,18 @@ class DateTimeFormat
             self::DD_MM_YYYY_L_DOTS,
             self::DD_MM_YYYY_L_SLASHES,
             self::YYYY_MM_DD_ISO_8601
+        ];
+    }
+
+    /**
+     * Get All DateTime formats
+     * @return array
+     */
+    public static function getDateTimeFormats()
+    {
+        return [
+            self::YYYY_MM_DD_H_I_S,
+            self::YYYY_MM_DD_H_I_S_ZULU
         ];
     }
 }

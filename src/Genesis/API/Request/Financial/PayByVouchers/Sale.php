@@ -104,7 +104,7 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'expiration_year'           => $this->expiration_year,
             'customer_email'            => $this->customer_email,
             'customer_phone'            => $this->customer_phone,
-            'birth_date'                => $this->birth_date,
+            'birth_date'                => $this->getBirthDate(),
             'billing_address'           => $this->getBillingAddressParamsStructure(),
             'shipping_address'          => $this->getShippingAddressParamsStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()

@@ -34,7 +34,6 @@ use Genesis\Exceptions\ErrorParameter;
  *
  * @method string getConsumerReference()
  * @method string getNationalId()
- * @method string getBirthDate()
  */
 trait PproAttributes
 {
@@ -55,14 +54,6 @@ trait PproAttributes
     }
 
     /**
-     * @return int
-     */
-    public function getBirthDateValidationRegex()
-    {
-        return '/^\d{2}-\d{2}-\d{4}$/';
-    }
-
-    /**
      * Consumer reference is a unique consumer identifier
      *
      * @var string
@@ -76,13 +67,6 @@ trait PproAttributes
      */
 
     protected $national_id;
-
-    /**
-     * Birth date of the customer
-     *
-     * @var string
-     */
-    protected $birth_date;
 
     /**
      * Unique consumer identifier
@@ -118,25 +102,6 @@ trait PproAttributes
         }
 
         $this->national_id = $value;
-
-        return $this;
-    }
-
-    /**
-     * Unique consumer identifier
-     *
-     * @param string $value
-     *
-     * @return $this
-     * @throws ErrorParameter
-     */
-    public function setBirthDate($value)
-    {
-        if (!preg_match($this->getBirthDateValidationRegex(), $value) || strtotime($value) === false) {
-            throw new ErrorParameter('Birth date has to be in format dd-mm-yyyy.');
-        }
-
-        $this->birth_date = $value;
 
         return $this;
     }

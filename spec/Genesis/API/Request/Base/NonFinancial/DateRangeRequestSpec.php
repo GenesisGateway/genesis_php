@@ -20,7 +20,7 @@ class DateRangeRequestSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'setStartDate',
             [
-                Faker::getInstance()->dateTimeThisYear()->format('m.d.Y')
+                Faker::getInstance()->dateTimeThisYear()->format('Ymd')
             ]
         );
     }
@@ -53,12 +53,21 @@ class DateRangeRequestSpec extends ObjectBehavior
         )->shouldBeAnInstanceOf(DateRangeRequest::class);
     }
 
+    public function it_should_not_fail_with_correct_date_set_start_date()
+    {
+        $this->shouldNotThrow()->during('setStartDate',
+            [
+                Faker::getInstance()->date('d.m.Y')
+            ]
+        );
+    }
+
     public function it_should_fail_when_set_end_date_with_invalid_format()
     {
         $this->shouldThrow(InvalidArgument::class)->during(
             'setEndDate',
             [
-                Faker::getInstance()->dateTimeThisYear()->format('d.m.Y')
+                Faker::getInstance()->dateTimeThisYear()->format('Ymd')
             ]
         );
     }
@@ -89,6 +98,14 @@ class DateRangeRequestSpec extends ObjectBehavior
         $this->setEndDate(
             Faker::getInstance()->dateTimeThisYear()->format('Y-m-d')
         )->shouldBeAnInstanceOf(DateRangeRequest::class);
+    }
+    public function it_should_not_fail_with_correct_date_set_end_date()
+    {
+        $this->shouldNotThrow()->during('setEndDate',
+            [
+                Faker::getInstance()->date('d.m.Y')
+            ]
+        );
     }
 
     public function it_should_be_int_get_page_parameter()

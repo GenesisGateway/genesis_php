@@ -4,6 +4,7 @@ namespace spec\Genesis\API\Traits\Request\Financial\TravelData;
 
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\TravelData\TravelDataAttributesStub;
+use spec\SharedExamples\Faker;
 
 class CarRentalAttributesSpec extends ObjectBehavior
 {
@@ -73,5 +74,51 @@ class CarRentalAttributesSpec extends ObjectBehavior
             'setCarRentalClassId',
             [7777]
         );
+    }
+
+    public function it_should_not_fail_when_set_correct_date_car_rental_pickup_date()
+    {
+        $this->shouldNotThrow()->during('setCarRentalPickupDate',
+            [Faker::getInstance()->date('Y-m-d')]
+        );
+        $this->shouldNotThrow()->during('setCarRentalPickupDate',
+            [Faker::getInstance()->date('d.m.Y')]
+        );
+    }
+
+    public function it_should_not_fail_when_set_correct_date_car_rental_return_date()
+    {
+        $this->shouldNotThrow()->during('setCarRentalReturnDate',
+            [Faker::getInstance()->date('Y-m-d')]
+        );
+        $this->shouldNotThrow()->during('setCarRentalReturnDate',
+            [Faker::getInstance()->date('d.m.Y')]
+        );
+    }
+
+    public function it_should_fail_when_set_invalid_date_car_rental_pickup_date()
+    {
+        $this->shouldThrow()->during('setCarRentalPickupDate',
+            [Faker::getInstance()->date('Ymd')]
+        );
+    }
+
+    public function it_should_fail_when_set_invalid_date_car_rental_return_date()
+    {
+        $this->shouldThrow()->during('setCarRentalReturnDate',
+            [Faker::getInstance()->date('Ymd')]
+        );
+    }
+
+    public function it_should_return_string_car_rental_pickup_date()
+    {
+        $this->setCarRentalPickupDate(Faker::getInstance()->date('Y-m-d'))
+            ->getCarRentalPickupDate()->shouldBeString();
+    }
+
+    public function it_should_return_string_car_rental_return_date()
+    {
+        $this->setCarRentalReturnDate(Faker::getInstance()->date('Y-m-d'))
+            ->getCarRentalReturnDate()->shouldBeString();
     }
 }

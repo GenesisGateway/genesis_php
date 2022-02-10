@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\CustomerInformation;
 use Genesis\API\Traits\RestrictedSetter;
@@ -65,7 +66,7 @@ class Create extends BaseRequest
      * Date in which the customer was registered in the system OR the date
      * in which the customer was created in the cashier Database yyyy-mm-dd
      *
-     * @var string
+     * @var \DateTime
      */
     protected $customer_registration_date;
 
@@ -128,7 +129,7 @@ class Create extends BaseRequest
     /**
      * optional
      *
-     * @var string
+     * @var \DateTime
      */
     protected $bonus_submission_date;
 
@@ -270,6 +271,63 @@ class Create extends BaseRequest
     }
 
     /**
+     * @param string $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setCustomerRegistrationDate($value)
+    {
+        if (empty($value)) {
+            $this->customer_registration_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'customer_registration_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for customer_registration_date.'
+        );
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setBonusSubmissionDate($value)
+    {
+        if (empty($value)) {
+            $this->bonus_submission_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'bonus_submission_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for bonus_submission_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBonusSubmissionDate()
+    {
+        return (empty($this->bonus_submission_date)) ? null :
+            $this->bonus_submission_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    public function getCustomerRegistrationDate()
+    {
+        return (empty($this->customer_registration_date)) ? null :
+            $this->customer_registration_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    /**
      * Set the required fields
      *
      * @return void
@@ -303,7 +361,7 @@ class Create extends BaseRequest
             'customer_information'             => $this->getCustomerInformationStructure(),
             'customer_username'                => $this->customer_username,
             'customer_unique_id'               => $this->customer_unique_id,
-            'customer_registration_date'       => $this->customer_registration_date,
+            'customer_registration_date'       => $this->getCustomerRegistrationDate(),
             'customer_registration_ip_address' => $this->customer_registration_ip_address,
             'customer_registration_device_id'  => $this->customer_registration_device_id,
             'third_party_device_id'            => $this->third_party_device_id,
@@ -312,7 +370,7 @@ class Create extends BaseRequest
             'profile_action_type'              => $this->profile_action_type,
             'profile_current_status'           => $this->profile_current_status,
             'bonus_code'                       => $this->bonus_code,
-            'bonus_submission_date'            => $this->bonus_submission_date,
+            'bonus_submission_date'            => $this->getBonusSubmissionDate(),
             'bonus_amount'                     => $this->bonus_amount,
             'merchant_website'                 => $this->merchant_website,
             'industry_type'                    => $this->industry_type,

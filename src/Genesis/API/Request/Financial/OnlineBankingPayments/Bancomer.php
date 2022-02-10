@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
+
 /**
  * Class Bancomer
  *
@@ -32,6 +34,8 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments;
  */
 class Bancomer extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
 {
+    use PendingPaymentAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -47,5 +51,18 @@ class Bancomer extends \Genesis\API\Request\Base\Financial\SouthAmericanPayment
     public function getAllowedBillingCountries()
     {
         return ['MX'];
+    }
+
+    /**
+     * Return additional request attributes
+     *
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            ['return_pending_url' => $this->getReturnPendingUrl()]
+        );
     }
 }

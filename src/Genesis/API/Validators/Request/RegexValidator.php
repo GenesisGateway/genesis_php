@@ -72,6 +72,11 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     const PATTERN_VIRTUAL_PAYMENT_ADDRESS = '/^.+@.+$/';
 
     /**
+     * Pattern to check if Date string has time part
+     */
+    const PATTERN_TIMESTAMP = '/(?:\d|[01]\d|2[0-3]):[0-5]\d:[0-5]\d/';
+
+    /**
      * Regex expression
      *
      * @var string

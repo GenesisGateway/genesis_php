@@ -41,6 +41,9 @@ class BankCodeParameters
         'BRL' => [
             Banks::CA
         ],
+        'CAD' => [
+            Banks::CPI
+        ],
         'CHF' => [
             Banks::PF
         ],

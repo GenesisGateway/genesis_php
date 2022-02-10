@@ -199,7 +199,10 @@ class Payin extends Financial
                 ],
                 'CHF' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CHF')]
-                ]
+                ],
+                'CAD' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CAD')]
+                ],
             ]
         ];
 

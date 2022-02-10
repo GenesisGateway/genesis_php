@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\NonFinancial\Fraud\Chargeback;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ExternallyProcessed;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ProcessingTypes;
 use Genesis\API\Traits\RestrictedSetter;
@@ -42,8 +43,6 @@ use Genesis\Exceptions\ErrorParameter;
 class DateRange extends \Genesis\API\Request
 {
     use RestrictedSetter;
-
-    const DATE_FORMAT = 'Y-m-d';
 
     /**
      * start of the requested date range
@@ -101,13 +100,13 @@ class DateRange extends \Genesis\API\Request
     /**
      * Start of requested date range
      *
-     * @param $value
+     * @param string $value
      * @return $this
      * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function setStartDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->start_date = null;
 
             return $this;
@@ -115,7 +114,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'start_date',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string) $value,
             'Invalid format for start_date.'
         );
@@ -124,13 +123,13 @@ class DateRange extends \Genesis\API\Request
     /**
      * End of requested date range
      *
-     * @param $value
-     * @return DateRange
+     * @param string $value
+     * @return $this
      * @throws \Genesis\Exceptions\InvalidArgument
      */
     public function setEndDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->end_date = null;
 
             return $this;
@@ -138,7 +137,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'end_date',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string) $value,
             'Invalid format for end_date.'
         );
@@ -151,7 +150,7 @@ class DateRange extends \Genesis\API\Request
      */
     public function setImportDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->import_date = null;
 
             return $this;
@@ -159,7 +158,7 @@ class DateRange extends \Genesis\API\Request
 
         return $this->parseDate(
             'import_date',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string) $value,
             'Invalid format for import_date.'
         );
@@ -243,7 +242,7 @@ class DateRange extends \Genesis\API\Request
     public function getStartDate()
     {
         return empty($this->start_date) ?
-            null : $this->start_date->format(self::DATE_FORMAT);
+            null : $this->start_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -252,7 +251,7 @@ class DateRange extends \Genesis\API\Request
     public function getEndDate()
     {
         return empty($this->end_date) ?
-            null : $this->end_date->format(self::DATE_FORMAT);
+            null : $this->end_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -261,7 +260,7 @@ class DateRange extends \Genesis\API\Request
     public function getImportDate()
     {
         return empty($this->import_date) ?
-            null : $this->import_date->format(self::DATE_FORMAT);
+            null : $this->import_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**

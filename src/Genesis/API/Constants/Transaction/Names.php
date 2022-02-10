@@ -113,6 +113,7 @@ class Names
         Types::PAYBYVOUCHER_SALE       => 'PayByVoucher Sale',
         Types::PAYBYVOUCHER_YEEPAY     => 'PayByVoucher Yeepay',
         Types::PAYOUT                  => 'Payout',
+        Types::PAY_PAL                 => 'PayPal',
         Types::PAYPAL_EXPRESS          => 'PayPal Express Checkout',
         Types::PAYSAFECARD             => 'Paysafecard',
         Types::PAYU                    => 'PayU',

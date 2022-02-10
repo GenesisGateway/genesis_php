@@ -29,6 +29,8 @@ namespace Genesis\API\Request\Financial\Alternatives;
  * Alternative payment method
  *
  * @package Genesis\API\Request\Financial\Alternatives
+ * @deprecated 1.19.2 Payment method is deprecated and will be removed
+ * @see PayPal
  */
 class PaypalExpress extends \Genesis\API\Request\Base\Financial\Alternative
 {

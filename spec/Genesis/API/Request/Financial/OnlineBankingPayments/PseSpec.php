@@ -4,11 +4,13 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Request\Financial\OnlineBankingPayments\Pse;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PseSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -88,7 +88,7 @@ class PostFinance extends Financial
             [
                 'return_success_url' => $this->return_success_url,
                 'return_failure_url' => $this->return_failure_url,
-                'return_pending_url' => $this->return_pending_url,
+                'return_pending_url' => $this->getReturnPendingUrl(),
                 'customer_email'     => $this->customer_email,
                 'customer_phone'     => $this->customer_phone,
                 'billing_address'    => $this->getBillingAddressParamsStructure(),

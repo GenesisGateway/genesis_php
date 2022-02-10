@@ -4,11 +4,13 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Request\Financial\OnlineBankingPayments\SafetyPay;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SafetyPaySpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     private $allowedCountries = ['AT', 'BE', 'BR', 'CL', 'CO', 'DE', 'EC', 'ES', 'MX', 'NL', 'PE', 'PR'];
 

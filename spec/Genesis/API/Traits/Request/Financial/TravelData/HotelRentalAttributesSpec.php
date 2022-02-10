@@ -4,6 +4,7 @@ namespace spec\Genesis\API\Traits\Request\Financial\TravelData;
 
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\TravelData\TravelDataAttributesStub;
+use spec\SharedExamples\Faker;
 
 class HotelRentalAttributesSpec extends ObjectBehavior
 {
@@ -50,5 +51,51 @@ class HotelRentalAttributesSpec extends ObjectBehavior
             'setHotelRentalExtraCharges',
             [88]
         );
+    }
+    
+    public function it_should_not_fail_when_set_correct_date_hotel_rental_arrival_date()
+    {
+        $this->shouldNotThrow()->during('setHotelRentalArrivalDate',
+            [Faker::getInstance()->date('Y-m-d')]
+        );
+        $this->shouldNotThrow()->during('setHotelRentalArrivalDate',
+            [Faker::getInstance()->date('d.m.Y')]
+        );
+    }
+
+    public function it_should_not_fail_when_set_correct_date_hotel_rental_departure_date()
+    {
+        $this->shouldNotThrow()->during('setHotelRentalDepartureDate',
+            [Faker::getInstance()->date('Y-m-d')]
+        );
+        $this->shouldNotThrow()->during('setHotelRentalDepartureDate',
+            [Faker::getInstance()->date('d.m.Y')]
+        );
+    }
+
+    public function it_should_fail_when_set_invalid_date_hotel_rental_arrival_date()
+    {
+        $this->shouldThrow()->during('setHotelRentalArrivalDate',
+            [Faker::getInstance()->date('Ymd')]
+        );
+    }
+
+    public function it_should_fail_when_set_invalid_date_hotel_rental_departure_date()
+    {
+        $this->shouldThrow()->during('setHotelRentalDepartureDate',
+            [Faker::getInstance()->date('Ymd')]
+        );
+    }
+
+    public function it_should_return_string_hotel_rental_arrival_date()
+    {
+        $this->setHotelRentalArrivalDate(Faker::getInstance()->date('Y-m-d'))
+            ->getHotelRentalArrivalDate()->shouldBeString();
+    }
+
+    public function it_should_return_string_hotel_rental_departure_date()
+    {
+        $this->setHotelRentalDepartureDate(Faker::getInstance()->date('Y-m-d'))
+            ->getHotelRentalDepartureDate()->shouldBeString();
     }
 }

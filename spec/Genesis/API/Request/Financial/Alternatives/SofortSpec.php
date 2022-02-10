@@ -6,16 +6,17 @@ use Genesis\API\Request\Financial\Alternatives\Sofort;
 use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class SofortSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     public $allowed_country = [
         'AT', 'BE', 'DE', 'ES', 'IT', 'NL', 'CH', 'PL'
     ];
-
 
     public function it_is_initializable()
     {

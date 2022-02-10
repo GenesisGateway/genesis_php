@@ -232,6 +232,8 @@ class Types
      * PayPal Express Checkout is a fast, easy way for buyers to pay with PayPal.
      * Express Checkout eliminates one of the major causes of checkout abandonment by giving buyers
      * all the transaction details at once, including order details, shipping options, insurance choices, and tax totals
+     *
+     * @deprecated 1.19.2 Payment method is deprecated and will be removed
      */
     const PAYPAL_EXPRESS = 'paypal_express';
 
@@ -710,6 +712,13 @@ class Types
     const GOOGLE_PAY = 'google_pay';
 
     /**
+     * PayPal trannsaction is a fast and easy way for buyers to pay with their PayPal account.
+     * It gives buyers all the transaction details at once, including order details, shipping options,
+     * insurance choices, and tax totals.
+     */
+    const PAY_PAL = 'pay_pal';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -832,6 +841,7 @@ class Types
             self::EZEEWALLET              => 'Wallets\eZeeWallet',
             self::NETELLER                => 'Wallets\Neteller',
             self::QIWI                    => 'Wallets\Qiwi',
+            self::PAY_PAL                 => 'Wallets\PayPal',
             self::WEBMONEY                => 'Wallets\WebMoney',
             self::ZIMPLER                 => 'Wallets\Zimpler',
         ];
@@ -904,7 +914,7 @@ class Types
             self::OXXO,
             self::P24,
             self::PAGO_FACIL,
-            self::PAYPAL_EXPRESS,
+            self::PAY_PAL,
             self::PAYSAFECARD,
             self::PAYU,
             self::POLI,
@@ -1043,7 +1053,7 @@ class Types
             self::P24,
             self::PAGO_FACIL,
             self::PARTIAL_REVERSAL,
-            self::PAYPAL_EXPRESS,
+            self::PAY_PAL,
             self::PAYU,
             self::PPRO,
             self::PSE,
@@ -1236,6 +1246,7 @@ class Types
             self::INPAY,
             self::PAYBYVOUCHER_SALE,
             self::PAYBYVOUCHER_YEEPAY,
+            self::PAYPAL_EXPRESS,
             self::QIWI,
             self::SANTANDER_CASH,
             self::SURTIMAX,

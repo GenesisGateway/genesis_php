@@ -38,8 +38,8 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Ideal extends Financial
 {
-    use RestrictedSetter, AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BankAttributes,
-        PendingPaymentAttributes;
+    use RestrictedSetter, AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
+        BankAttributes, PendingPaymentAttributes;
 
     /**
      * SWIFT/BIC code of the customer’s bank.
@@ -111,7 +111,7 @@ class Ideal extends Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
-            'return_pending_url' => $this->return_pending_url,
+            'return_pending_url' => $this->getReturnPendingUrl(),
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,

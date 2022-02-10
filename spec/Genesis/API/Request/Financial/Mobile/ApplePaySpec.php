@@ -4,17 +4,17 @@ namespace spec\Genesis\API\Request\Financial\Mobile;
 
 use Genesis\API\Request\Financial\Mobile\ApplePay;
 use Genesis\Exceptions\ErrorParameter;
-use Genesis\Exceptions\InvalidArgument;
-use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class ApplePaySpec extends ObjectBehavior
 {
-    use RequestExamples, ApplePayAttributes, CryptoAttributesExamples;
+    use RequestExamples, ApplePayAttributes, CryptoAttributesExamples, BirthDateAttributesExample;
 
     public function it_is_initializable()
     {
@@ -38,41 +38,54 @@ class ApplePaySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_should_not_fail_when_unset_birth_date()
-    {
-        $this->shouldNotThrow()->during('setBirthDate', [null]);
-    }
-
-    public function it_should_not_fail_with_proper_birth_date_format()
-    {
-        $faker = $this->getFaker();
-        $this->shouldNotThrow()->during(
-            'setBirthDate',
-            [$faker->dateTimeThisYear()->format(ApplePay::BIRTH_DATE_FORMAT)]
-        );
-    }
-
-    public function it_should_fail_with_invalid_birth_date_format()
-    {
-        $faker = $this->getFaker();
-        $this->shouldThrow(InvalidArgument::class)->during(
-        'setBirthDate',
-            [$faker->dateTimeThisYear()->format('d/m/Y')]
-        );
-     }
-
-    public function it_should_return_string_birth_date_value()
-    {
-        $this->setBirthDate('01-01-2020');
-        $this->getBirthDate()->shouldBeString();
-    }
-
     public function it_should_throw_when_is_set_wrong_payment_type_parameter()
     {
         $this->setRequestParameters();
         $this->setPaymentType('test_type');
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_not_fail_with_valid_json_token()
+    {
+        $token = $this->getToken();
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->shouldNotThrow()->during('setJsonToken', [$token]);
+    }
+
+    public function it_should_fail_with_missing_attribute_in_json_token()
+    {
+        $decodedToken = json_decode($this->getToken(), true);
+        $decodedToken['transactionIdentifier'] = null;
+        $token = json_encode($decodedToken);
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->shouldNotThrow()->during('setJsonToken', [$token]);
+    }
+
+    public function it_should_fail_with_invalid_json_token()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow()->during('setJsonToken',
+            [Faker::getInstance()->word]
+        );
+    }
+
+    public function it_should_contain_token_attributes_when_set_token()
+    {
+        $token = $this->getToken();
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->setJsonToken($token);
+        $this->getDocument()->shouldContain('transactionIdentifier');
     }
 
     protected function setRequestParameters()
@@ -110,5 +123,43 @@ class ApplePaySpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry($faker->countryCode);
+    }
+
+    private function getToken()
+    {
+        $faker = Faker::getInstance();
+
+        return json_encode([
+            'paymentData' => [
+                'version'   => 'EC_v1',
+                'data'      => $faker->sha256,
+                'signature' => $faker->sha256,
+                'header'    => [
+                    'ephemeralPublicKey' => $faker->sha256,
+                    'publicKeyHash'      => $faker->sha256,
+                    'transactionId'      => $faker->uuid
+                ]
+            ],
+            'paymentMethod' => [
+                'displayName' => 'Visa 2222',
+                'network'     => 'Visa',
+                'type'        => 'debit'
+            ],
+            'transactionIdentifier' => $faker->md5
+        ]);
+    }
+
+    private function setTokenAttributesNull()
+    {
+        $this->setTokenVersion(null);
+        $this->setTokenData(null);
+        $this->setTokenSignature(null);
+        $this->setTokenEphemeralPublicKey(null);
+        $this->setTokenPublicKeyHash(null);
+        $this->setTokenTransactionId(null);
+        $this->setTokenDisplayName(null);
+        $this->setTokenNetwork(null);
+        $this->setTokenType(null);
+        $this->setTokenTransactionIdentifier(null);
     }
 }

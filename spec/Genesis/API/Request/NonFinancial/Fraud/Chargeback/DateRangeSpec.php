@@ -11,6 +11,7 @@ use Genesis\API\Response as Response;
 use Genesis\Parser;
 use PhpSpec\ObjectBehavior;
 use spec\fixtures\API\Stubs\Parser\ParserStub;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\NonFinancial\DateRangeRequestSharedExample;
 use spec\SharedExamples\Genesis\API\Request\NonFinancial\ExternallyProcessedSharedExample;
 use spec\SharedExamples\Genesis\API\Request\NonFinancial\ProcessingTypeSharedExample;
@@ -36,7 +37,7 @@ class DateRangeSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_parameter_import_date()
     {
         $this->setRequestParameters();
-        $this->setImportDate('2012-12-12');
+        $this->setImportDate(Faker::getInstance()->date('Y-m-d'));
         $this->setStartDate(null);
 
         $this->setImportDate(null);
@@ -46,20 +47,21 @@ class DateRangeSpec extends ObjectBehavior
     public function it_should_return_class_instance_after_set_start_date()
     {
         $this->setStartDate(null)->shouldBeAnInstanceOf(DateRange::class);
-        $this->setStartDate('2012-12-12')->shouldBeAnInstanceOf(DateRange::class);
+        $this->setStartDate(Faker::getInstance()->date('Y-m-d'))
+            ->shouldBeAnInstanceOf(DateRange::class);
     }
 
     public function it_should_fail_when_set_end_date_with_invalid_format()
     {
         $this->shouldThrow(InvalidArgument::class)->during(
             'setEndDate',
-            ['12.12.2012']
+            [Faker::getInstance()->date('Ymd')]
         );
     }
 
     public function it_should_be_string_end_date()
     {
-        $this->setEndDate('2012-12-12');
+        $this->setEndDate(Faker::getInstance()->date('Y-m-d'));
         $this->getEndDate()->shouldBeString();
     }
 
@@ -87,13 +89,13 @@ class DateRangeSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidArgument::class)->during(
             'setImportDate',
-            ['12.12.2012']
+            [Faker::getInstance()->date('Ymd')]
         );
     }
 
     public function it_should_be_string_import_date()
     {
-        $this->setImportDate('2012-12-12');
+        $this->setImportDate(Faker::getInstance()->date('Y-m-d'));
         $this->getImportDate()->shouldBeString();
     }
 
@@ -112,7 +114,7 @@ class DateRangeSpec extends ObjectBehavior
     public function it_should_throw_when_start_date_and_import_date_are_set()
     {
         $this->setRequestParameters();
-        $this->setImportDate('2012-12-12');
+        $this->setImportDate(Faker::getInstance()->date('Y-m-d'));
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }

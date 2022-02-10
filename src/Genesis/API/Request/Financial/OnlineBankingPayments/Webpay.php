@@ -25,9 +25,11 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\Base\Financial\SouthAmericanPayment;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 
 class Webpay extends SouthAmericanPayment
 {
+    use PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -45,5 +47,18 @@ class Webpay extends SouthAmericanPayment
     public function getAllowedBillingCountries()
     {
         return ['CL'];
+    }
+
+    /**
+     * Return additional request attributes
+     *
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            ['return_pending_url' => $this->getReturnPendingUrl()]
+        );
     }
 }

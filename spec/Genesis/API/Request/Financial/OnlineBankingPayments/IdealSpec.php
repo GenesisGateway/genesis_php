@@ -7,12 +7,13 @@ use Genesis\API\Request\Financial\OnlineBankingPayments\Ideal;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class IdealSpec extends ObjectBehavior
 {
-    use RequestExamples, PendingPaymentAttributesExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     public function it_is_initializable()
     {

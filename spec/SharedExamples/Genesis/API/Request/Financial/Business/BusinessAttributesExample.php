@@ -2,6 +2,9 @@
 
 namespace spec\SharedExamples\Genesis\API\Request\Financial\Business;
 
+use Genesis\API\Constants\DateTimeFormat;
+use spec\SharedExamples\Faker;
+
 /**
  * Trait BusinessAttributesExample
  * @package spec\SharedExamples\Genesis\API\Request\Financial\Business
@@ -14,5 +17,15 @@ trait BusinessAttributesExample
         $this->setBusinessAirlineCode('123456789');
 
         $this->getDocument()->shouldContain('business_attributes');
+    }
+
+    public function it_should_accept_valid_business_event_start_date()
+    {
+        $this->setRequestParameters();
+        $this->shouldNotThrow()->during('setBusinessEventStartDate', [
+            Faker::getInstance()->date(
+                Faker::getInstance()->randomElement(DateTimeFormat::getDateFormats())
+            )
+        ]);
     }
 }

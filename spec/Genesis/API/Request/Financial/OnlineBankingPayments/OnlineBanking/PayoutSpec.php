@@ -3,6 +3,7 @@
 namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Constants\BankAccountTypes;
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout;
 use Genesis\Exceptions\ErrorParameter;
@@ -11,10 +12,11 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class PayoutSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, BirthDateAttributesExample;
 
     public function it_is_initializable()
     {
@@ -135,35 +137,6 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('setUserId', [null]);
     }
 
-    public function it_should_not_fail_with_proper_birth_date_format()
-    {
-        $faker = $this->getFaker();
-        $this->shouldNotThrow()->during(
-            'setBirthDate',
-            [$faker->dateTimeThisYear()->format(Payout::BIRTH_DATE_FORMAT)]
-        );
-    }
-
-    public function it_should_fail_with_invalid_birth_date_format()
-    {
-        $faker = $this->getFaker();
-        $this->shouldThrow(InvalidArgument::class)->during(
-            'setBirthDate',
-            [$faker->dateTimeThisYear()->format('d/m/Y')]
-        );
-    }
-
-    public function it_should_return_string_birth_date_value()
-    {
-        $this->setRequestParameters();
-        $this->getBirthDate()->shouldBeString();
-    }
-
-    public function it_should_not_fail_when_unset_birth_date()
-    {
-        $this->shouldNotThrow()->during('setBirthDate', [null]);
-    }
-
     public function it_should_contain_proper_structure_elements()
     {
         $this->setRequestParameters();
@@ -276,7 +249,9 @@ class PayoutSpec extends ObjectBehavior
             )
         );
         $this->setBirthDate(
-            Faker::getInstance()->dateTimeThisYear()->format(Payout::BIRTH_DATE_FORMAT)
+            Faker::getInstance()->date(
+                Faker::getInstance()->randomElement(DateTimeFormat::getAll())
+            )
         );
     }
 

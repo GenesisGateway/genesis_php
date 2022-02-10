@@ -26,6 +26,7 @@ namespace Genesis\API\Request\Financial\Vouchers;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PproAttributes;
 
 /**
@@ -39,7 +40,8 @@ use Genesis\API\Traits\Request\Financial\PproAttributes;
  */
 class AstropayCard extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes,
+        PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -87,6 +89,7 @@ class AstropayCard extends \Genesis\API\Request\Base\Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
+            'return_pending_url' => $this->getReturnPendingUrl(),
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'consumer_reference' => $this->consumer_reference,

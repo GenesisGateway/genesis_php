@@ -1,3 +1,38 @@
+1.20.0
+-----
+**Features:**
+* Added new PayPal transaction type with support of
+    * Authorize
+    * Sale
+    * Express
+* Added new currency support for Online Banking
+    * Canadian Dollar (CAD) with supported bank Interac Combined Pay-in (CPI)
+* Added support for Return Pending URL optional attribute to the following transaction requests:
+    * Sofort
+    * BancoDoBrasil
+    * Bancomer
+    * Bradesco
+    * Citadel/Payin
+    * Davivienda
+    * Eps
+    * GiroPay
+    * Ideal
+    * Itau
+    * Multibanco
+    * MyBank
+    * PayU
+    * PostFinance
+    * Pse
+    * RapiPago
+    * SafetyPay
+    * Santander
+    * TrustPay
+    * Webpay
+    * AstropayCard
+* Added addJsonToken method to the Google Pay transaction request class and example usage into README
+* Added addJsonToken method to the Apple Pay transaction request class and example usage into README
+* Updated all date attributes with adding various input formats
+
 1.19.2
 -----
 **Features**:
@@ -5,7 +40,7 @@
 * Added Client-Side Encryption support to the following transaction requests:
     * Account Verification
     * Authorize
-    * uthorize 3D
+    * Authorize 3D
     * Sale
     * Sale 3D
     * Init Recurring Sale

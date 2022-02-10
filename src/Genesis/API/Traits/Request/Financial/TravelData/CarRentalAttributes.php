@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Traits\Request\Financial\TravelData;
 
+use Genesis\API\Constants\DateTimeFormat;
+
 /**
  * Trait CarRentalAttributes
  * @package Genesis\API\Traits\Request\Financial\TravelData
@@ -43,7 +45,9 @@ trait CarRentalAttributes
     protected $car_rental_class_id;
 
     /**
-     * @var string Car rental Pick-up date.
+     * Car rental Pick-up date.
+     *
+     * @var \DateTime
      */
     protected $car_rental_pickup_date;
 
@@ -68,7 +72,9 @@ trait CarRentalAttributes
     protected $car_rental_return_country;
 
     /**
-     * @var string Car Rental return date
+     * Car Rental return date
+     *
+     * @var \DateTime
      */
     protected $car_rental_return_date;
 
@@ -97,6 +103,56 @@ trait CarRentalAttributes
      */
     protected $car_rental_no_show_indicator;
 
+    public function setCarRentalPickupDate($value)
+    {
+        if (empty($value)) {
+            $this->car_rental_pickup_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'car_rental_pickup_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for car_rental_pickup_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCarRentalPickupDate()
+    {
+        return (empty($this->car_rental_pickup_date)) ? null :
+            $this->car_rental_pickup_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    public function setCarRentalReturnDate($value)
+    {
+        if (empty($value)) {
+            $this->car_rental_return_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'car_rental_return_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for car_rental_return_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCarRentalReturnDate()
+    {
+        return (empty($this->car_rental_return_date)) ? null :
+            $this->car_rental_return_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
     /**
      * @return array
      */
@@ -106,12 +162,12 @@ trait CarRentalAttributes
             'car_rental' => [
                 'purchase_identifier'       => $this->car_rental_purchase_identifier,
                 'class_id'                  => $this->car_rental_class_id,
-                'pickup_date'               => $this->car_rental_pickup_date,
+                'pickup_date'               => $this->getCarRentalPickupDate(),
                 'renter_name'               => $this->car_rental_renter_name,
                 'return_city'               => $this->car_rental_return_city,
                 'return_state'              => $this->car_rental_return_city,
                 'return_country'            => $this->car_rental_return_country,
-                'return_date'               => $this->car_rental_return_date,
+                'return_date'               => $this->getCarRentalReturnDate(),
                 'renter_return_location_id' => $this->car_rental_renter_return_location_id,
                 'customer_code'             => $this->car_rental_customer_code,
                 'extra_charges'             => $this->car_rental_extra_charges,

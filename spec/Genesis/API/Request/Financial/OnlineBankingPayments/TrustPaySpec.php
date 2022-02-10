@@ -4,11 +4,13 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Request\Financial\OnlineBankingPayments\TrustPay;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class TrustPaySpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -28,6 +28,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BankAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Validators\Request\RegexValidator;
 
 /**
@@ -36,7 +37,8 @@ use Genesis\API\Validators\Request\RegexValidator;
  */
 class GiroPay extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BankAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BankAttributes,
+        PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -86,6 +88,7 @@ class GiroPay extends Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
+            'return_pending_url' => $this->getReturnPendingUrl(),
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,

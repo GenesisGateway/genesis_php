@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 use Genesis\API\Request\Financial\OnlineBankingPayments\Alipay;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class AlipaySpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, BirthDateAttributesExample;
 
     public function it_is_initializable()
     {

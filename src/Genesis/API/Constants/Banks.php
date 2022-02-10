@@ -500,6 +500,11 @@ class Banks
     const CA = 'CA';
 
     /**
+     * Interac Combined Pay-in
+     */
+    const CPI = 'CPI';
+
+    /**
      * Servipag
      */
     const SP = 'SP';

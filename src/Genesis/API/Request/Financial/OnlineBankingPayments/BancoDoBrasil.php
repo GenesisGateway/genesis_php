@@ -25,8 +25,11 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PproAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class BancoDoBrasil
@@ -37,11 +40,11 @@ use Genesis\API\Traits\Request\Financial\PproAttributes;
  *
  * @method string getConsumerReference()
  * @method string getNationalId()
- * @method string getBirthDate()
  */
 class BancoDoBrasil extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes,
+        RestrictedSetter, BirthDateAttributes, PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -91,11 +94,12 @@ class BancoDoBrasil extends \Genesis\API\Request\Base\Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
+            'return_pending_url' => $this->getReturnPendingUrl(),
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'consumer_reference' => $this->consumer_reference,
             'national_id'        => $this->national_id,
-            'birth_date'         => $this->birth_date,
+            'birth_date'         => $this->getBirthDate(),
             'customer_email'     => $this->customer_email,
             'billing_address'    => $this->getBillingAddressParamsStructure(),
             'shipping_address'   => $this->getShippingAddressParamsStructure()

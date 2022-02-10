@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Traits\Request;
 
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
@@ -35,11 +37,12 @@ use Genesis\Utils\Common as CommonUtils;
  * @method $this setCardHolder($value) Set Full name of customer as printed on credit card
  * @method $this setCardNumber($value) Set Complete CC number of customer
  * @method $this setCvv($value) Set CVV of CC, requirement is based on terminal configuration
- * @method $this setBirthDate($value) Set Birth date of the customer
  * @method bool getClientSideEncryption() Get Client-Side Encryption value
  */
 trait CreditCardAttributes
 {
+    use RestrictedSetter, BirthDateAttributes;
+
     /**
      * Full name of customer as printed on credit card (first name and last name at least)
      *
@@ -74,13 +77,6 @@ trait CreditCardAttributes
      * @var string (yyyy)
      */
     protected $expiration_year;
-
-    /**
-     * Birth date of the customer
-     *
-     * @var string
-     */
-    protected $birth_date;
 
     /**
      * Internal attribute used for ignoring the Credit Card fields validations
@@ -196,7 +192,7 @@ trait CreditCardAttributes
             'expiration_month' => $this->expiration_month,
             'expiration_year'  => $this->expiration_year,
             'cvv'              => $this->cvv,
-            'birth_date'       => $this->birth_date
+            'birth_date'       => $this->getBirthDate()
         ];
     }
 

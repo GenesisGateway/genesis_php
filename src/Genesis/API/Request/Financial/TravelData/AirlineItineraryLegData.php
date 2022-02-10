@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Financial\TravelData;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Traits\MagicAccessors;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
@@ -37,12 +38,11 @@ class AirlineItineraryLegData extends AidAttributes
     const DEPARTURE_TIME_SEGMENT_PM = 'P';
     const STOPOVER_CODE_ALLOWED     = 1;
     const STOPOVER_CODE_DISALLOWED  = 0;
-    const DATE_FORMAT               = 'Y-m-d';
 
     use MagicAccessors;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     protected $departureDate;
 
@@ -92,7 +92,7 @@ class AirlineItineraryLegData extends AidAttributes
     protected $departureTimeSegment;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     protected $arrivalDate;
 
@@ -139,7 +139,7 @@ class AirlineItineraryLegData extends AidAttributes
      */
     public function setDepartureDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->departureDate = null;
 
             return $this;
@@ -147,16 +147,19 @@ class AirlineItineraryLegData extends AidAttributes
 
         return $this->parseDate(
             'departureDate',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string)$value,
             'Invalid format for departure date'
         );
     }
 
+    /**
+     * @return string|null
+     */
     public function getDepartureDate()
     {
         return empty($this->departureDate) ?
-            null : $this->departureDate->format(self::DATE_FORMAT);
+            null : $this->departureDate->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -291,7 +294,7 @@ class AirlineItineraryLegData extends AidAttributes
 
             return $this;
         }
-        
+
         return $this->allowedOptionsSetter(
             'departureTimeSegment',
             [
@@ -336,26 +339,28 @@ class AirlineItineraryLegData extends AidAttributes
      */
     public function setArrivalDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->arrivalDate = null;
 
             return $this;
         }
 
-         return  $this->parseDate(
-             'arrivalDate',
-             [self::DATE_FORMAT],
-             $value,
-             'Invalid format for arrival date:'
-         );
+        return $this->parseDate(
+            'arrivalDate',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid format for arrival date:'
+        );
     }
 
+    /**
+     * @return string|null
+     */
     public function getArrivalDate()
     {
         return empty($this->arrivalDate) ?
-            null : $this->arrivalDate->format(self::DATE_FORMAT);
+            null : $this->arrivalDate->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
-
 
     public function getStructureName()
     {

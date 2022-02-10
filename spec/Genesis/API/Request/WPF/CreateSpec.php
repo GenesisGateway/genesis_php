@@ -6,13 +6,15 @@ use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\WPF\Create;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
-use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 
 class CreateSpec extends ObjectBehavior
 {
-    use BusinessAttributesExample, PendingPaymentAttributesExamples, ThreedsV2AttributesExamples, AllowedZeroAmount;
+    use BusinessAttributesExample, PendingPaymentAttributesExamples, AsyncAttributesExample,
+        ThreedsV2AttributesExamples, AllowedZeroAmount;
 
     public function it_is_initializable()
     {

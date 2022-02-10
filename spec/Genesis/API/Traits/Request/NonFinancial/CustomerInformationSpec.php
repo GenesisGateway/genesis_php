@@ -5,9 +5,12 @@ namespace spec\Genesis\API\Traits\Request\NonFinancial;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\NonFinancial\CustomerInformationStub;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class CustomerInformationSpec extends ObjectBehavior
 {
+    use BirthDateAttributesExample;
+
     public function let()
     {
         $this->beAnInstanceOf(CustomerInformationStub::class);

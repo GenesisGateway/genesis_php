@@ -68,7 +68,8 @@ class Create extends \Genesis\API\Request
 {
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
-        RestrictedSetter, BusinessAttributes, PendingPaymentAttributes, WpfThreedsV2Attributes;
+        RestrictedSetter, BusinessAttributes, WpfThreedsV2Attributes,
+        PendingPaymentAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -628,7 +629,7 @@ class Create extends \Genesis\API\Request
                 'return_success_url'        => $this->return_success_url,
                 'return_failure_url'        => $this->return_failure_url,
                 'return_cancel_url'         => $this->return_cancel_url,
-                'return_pending_url'        => $this->return_pending_url,
+                'return_pending_url'        => $this->getReturnPendingUrl(),
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'remember_card'             => var_export($this->remember_card, true),

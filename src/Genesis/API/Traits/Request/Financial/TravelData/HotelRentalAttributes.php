@@ -23,6 +23,8 @@
 
 namespace Genesis\API\Traits\Request\Financial\TravelData;
 
+use Genesis\API\Constants\DateTimeFormat;
+
 /**
  * Trait HotelRentalAttributes
  * @package Genesis\API\Traits\Request\Financial\TravelData
@@ -39,14 +41,14 @@ trait HotelRentalAttributes
     /**
      * Hotel check-in date.
      *
-     * @var string
+     * @var \DateTime
      */
     protected $hotel_rental_arrival_date;
 
     /**
      * The departure date. Date can be in future.
      *
-     * @var string
+     * @var \DateTime
      */
     protected $hotel_rental_departure_date;
 
@@ -73,6 +75,66 @@ trait HotelRentalAttributes
     protected $hotel_rental_no_show_indicator;
 
     /**
+     * @param string $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setHotelRentalArrivalDate($value)
+    {
+        if (empty($value)) {
+            $this->hotel_rental_arrival_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'hotel_rental_arrival_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for hotel_rental_arrival_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHotelRentalArrivalDate()
+    {
+        return (empty($this->hotel_rental_arrival_date)) ? null :
+            $this->hotel_rental_arrival_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setHotelRentalDepartureDate($value)
+    {
+        if (empty($value)) {
+            $this->hotel_rental_departure_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'hotel_rental_departure_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for hotel_rental_departure_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHotelRentalDepartureDate()
+    {
+        return (empty($this->hotel_rental_departure_date)) ? null :
+            $this->hotel_rental_departure_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    /**
      * @return array
      */
     public function getHotelRentalStructure()
@@ -80,8 +142,8 @@ trait HotelRentalAttributes
         return [
             'hotel_rental' => [
                 'purchase_identifier' => $this->hotel_rental_purchase_identifier,
-                'arrival_date'        => $this->hotel_rental_arrival_date,
-                'departure_date'      => $this->hotel_rental_departure_date,
+                'arrival_date'        => $this->getHotelRentalArrivalDate(),
+                'departure_date'      => $this->getHotelRentalDepartureDate(),
                 'customer_code'       => $this->hotel_rental_customer_code,
                 'extra_charges'       => $this->hotel_rental_extra_charges,
                 'no_show_indicator'   => $this->hotel_rental_no_show_indicator

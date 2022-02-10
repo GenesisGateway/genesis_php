@@ -6,6 +6,7 @@ use Genesis\API\Request\Financial\TravelData\AirlineItineraryLegData;
 use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
 
 class AirlineItineraryLegDataSpec extends ObjectBehavior
 {
@@ -22,17 +23,13 @@ class AirlineItineraryLegDataSpec extends ObjectBehavior
 
     public function it_should_work_with_valid_departure_date()
     {
-        $this->shouldNotThrow()->during('setDepartureDate', ['2020-03-03']);
-    }
-
-    public function it_should_throw_with_departure_date_and_hour()
-    {
-        $this->shouldThrow()->during('setDepartureDate', ['2020-03-03 10:30']);
+        $this->shouldNotThrow()->during('setDepartureDate', [Faker::getInstance()->date('Y-m-d')]);
+        $this->shouldNotThrow()->during('setDepartureDate', [Faker::getInstance()->date('d.m.Y')]);
     }
 
     public function it_should_throw_with_invalid_departure_date_format()
     {
-        $this->shouldThrow()->during('setDepartureDate', ['33-33-2020']);
+        $this->shouldThrow()->during('setDepartureDate', [Faker::getInstance()->date('Ymd')]);
     }
 
     public function it_should_work_with_valid_carrier_code()
@@ -82,7 +79,8 @@ class AirlineItineraryLegDataSpec extends ObjectBehavior
 
     public function it_should_work_with_valid_arrival_date()
     {
-        $this->shouldNotThrow()->during('setArrivalDate', ['2020-03-03']);
+        $this->shouldNotThrow()->during('setArrivalDate', [Faker::getInstance()->date('Y-m-d')]);
+        $this->shouldNotThrow()->during('setArrivalDate', [Faker::getInstance()->date('d.m.Y')]);
     }
 
     public function it_should_not_fail_with_missing_arrival_date()
@@ -92,7 +90,11 @@ class AirlineItineraryLegDataSpec extends ObjectBehavior
 
     public function it_should_fail_with_invalid_arrival_date_format()
     {
-        $this->shouldThrow(InvalidArgument::class)->during('setArrivalDate', ['03-03-2020']);
+        $this->shouldThrow(InvalidArgument::class)->during('setArrivalDate',
+            [
+                Faker::getInstance()->date('Ymd')
+            ]
+        );
     }
 
     public function it_should_fail_with_invalid_carrier_code()

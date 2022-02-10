@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\NonFinancial\KYC\Transaction;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\CustomerInformation;
 use Genesis\API\Traits\Request\NonFinancial\DepositLimits;
@@ -44,8 +45,6 @@ use Genesis\Exceptions\InvalidArgument;
  */
 class Create extends BaseRequest
 {
-    const DATETIIME_FORMAT = 'Y-m-d h:i:s';
-
     use RestrictedSetter, CustomerInformation, DepositLimits, KycBillingInformation,
         KycShippingInformation, PaymentDetails;
 
@@ -81,7 +80,7 @@ class Create extends BaseRequest
      * Date in which the customer was registered in the system OR the date
      * in which the customer was created in the cashier Database yyyy-mm-dd
      *
-     * @var string
+     * @var \DateTime
      */
     protected $customer_registration_date;
 
@@ -102,14 +101,14 @@ class Create extends BaseRequest
     /**
      * Empty if first deposit yyyy-mm-dd
      *
-     * @var string
+     * @var \DateTime
      */
     protected $first_deposit_date;
 
     /**
      * Empty if 0 withdrawals yyyy-mm-dd
      *
-     * @var string
+     * @var \DateTime
      */
     protected $first_withdrawal_date;
 
@@ -152,7 +151,7 @@ class Create extends BaseRequest
     /**
      * Represents the time of the transaction on the Merchant server. Format: yyyy-mm-dd hh:mm:ss
      *
-     * @var string
+     * @var \DateTime
      */
     protected $transaction_created_at;
 
@@ -215,7 +214,7 @@ class Create extends BaseRequest
     /**
      * Represents the local time of the customer doing the transaction. Format: yyyy-mm-dd hh:mm:ss
      *
-     * @var string
+     * @var \DateTime
      */
     protected $local_time;
 
@@ -318,20 +317,154 @@ class Create extends BaseRequest
     }
 
     /**
-     * @param $date
+     * @param string $dateTime
      *
      * @return $this
      * @throws InvalidArgument
      */
-    public function setTransactionCreatedAt($date)
+    public function setTransactionCreatedAt($dateTime)
     {
-        if (strtotime($date) !== strtotime(date(self::DATETIIME_FORMAT, strtotime($date)))) {
-            throw new InvalidArgument('Date must be in yyyy-mm-dd hh:mm:ss format.');
+        if (empty($dateTime)) {
+            $this->transaction_created_at = null;
+
+            return $this;
         }
 
-        $this->transaction_created_at = $date;
+        return $this->parseDate(
+            'transaction_created_at',
+            DateTimeFormat::getDateTimeFormats(),
+            $dateTime,
+            'Invalid value given for transaction_created_at.'
+        );
+    }
 
-        return $this;
+    /**
+     * @return string|null
+     */
+    public function getTransactionCreatedAt()
+    {
+        return (empty($this->transaction_created_at)) ? null :
+            $this->transaction_created_at->format(DateTimeFormat::YYYY_MM_DD_H_I_S);
+    }
+
+    /**
+     * @param string $dateTime
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setLocalTime($dateTime)
+    {
+        if (empty($dateTime)) {
+            $this->local_time = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'local_time',
+            DateTimeFormat::getDateTimeFormats(),
+            $dateTime,
+            'Invalid value given for local_time.'
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocalTime()
+    {
+        return (empty($this->local_time)) ? null :
+            $this->local_time->format(DateTimeFormat::YYYY_MM_DD_H_I_S);
+    }
+
+    /**
+     * @param string $date
+     * @return $this|Create
+     * @throws InvalidArgument
+     */
+    public function setCustomerRegistrationDate($date)
+    {
+        if (empty($date)) {
+            $this->customer_registration_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'customer_registration_date',
+            DateTimeFormat::getAll(),
+            $date,
+            'Invalid value given for customer_registration_date'
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerRegistrationDate()
+    {
+        return (empty($this->customer_registration_date)) ? null :
+            $this->customer_registration_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
+    }
+
+    /**
+     * @param string $date
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFirstDepositDate($date)
+    {
+        if (empty($date)) {
+            $this->first_deposit_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'first_deposit_date',
+            DateTimeFormat::getAll(),
+            $date,
+            'Invalid value given for first_deposit_date'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstDepositDate()
+    {
+        return (empty($this->first_deposit_date)) ? null :
+            $this->first_deposit_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
+    }
+
+    /**
+     * @param string $date
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFirstWithdrawalDate($date)
+    {
+        if (empty($date)) {
+            $this->first_withdrawal_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'first_withdrawal_date',
+            DateTimeFormat::getAll(),
+            $date,
+            'Invalid value given for first_withdrawal_date'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstWithdrawalDate()
+    {
+        return (empty($this->first_withdrawal_date)) ? null :
+            $this->first_withdrawal_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -380,11 +513,11 @@ class Create extends BaseRequest
             'customer_username'                => $this->customer_username,
             'customer_unique_id'               => $this->customer_unique_id,
             'customer_loyalty_level'           => $this->customer_loyalty_level,
-            'customer_registration_date'       => $this->customer_registration_date,
+            'customer_registration_date'       => $this->getCustomerRegistrationDate(),
             'customer_registration_ip_address' => $this->customer_registration_ip_address,
             'customer_registration_device_id'  => $this->customer_registration_device_id,
-            'first_deposit_date'               => $this->first_deposit_date,
-            'first_withdrawal_date'            => $this->first_withdrawal_date,
+            'first_deposit_date'               => $this->getFirstDepositDate(),
+            'first_withdrawal_date'            => $this->getFirstWithdrawalDate(),
             'deposits_count'                   => $this->deposits_count,
             'withdrawals_count'                => $this->withdrawals_count,
             'current_balance'                  => $this->current_balance,
@@ -396,7 +529,7 @@ class Create extends BaseRequest
             'payment_details'                  => $this->getPaymentDetailsStructure(),
             'amount'                           => intval($this->transformAmount($this->amount, $this->currency)),
             'currency'                         => $this->currency,
-            'transaction_created_at'           => $this->transaction_created_at,
+            'transaction_created_at'           => $this->getTransactionCreatedAt(),
             'transaction_status'               => $this->transaction_status,
             'customer_ip_address'              => $this->customer_ip_address,
             'customer_device_id'               => $this->customer_device_id,
@@ -404,7 +537,7 @@ class Create extends BaseRequest
             'device_fingerprint'               => $this->device_fingerprint,
             'device_fingerprint_type'          => $this->device_fingerprint_type,
             'shopping_cart_items_count'        => $this->shopping_cart_items_count,
-            'local_time'                       => $this->local_time,
+            'local_time'                       => $this->getLocalTime(),
             'order_source'                     => $this->order_source,
             'merchant_website'                 => $this->merchant_website,
             'industry_type'                    => $this->industry_type,

@@ -26,6 +26,7 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 
 /**
  * Class SafetyPay
@@ -36,7 +37,7 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  */
 class SafetyPay extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -84,6 +85,7 @@ class SafetyPay extends \Genesis\API\Request\Base\Financial
             'remote_ip'          => $this->remote_ip,
             'return_success_url' => $this->return_success_url,
             'return_failure_url' => $this->return_failure_url,
+            'return_pending_url' => $this->getReturnPendingUrl(),
             'amount'             => $this->transformAmount($this->amount, $this->currency),
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,

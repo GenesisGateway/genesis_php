@@ -24,9 +24,11 @@
 namespace Genesis\API\Request\Base\Financial;
 
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\PproAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class SouthAmericanPayment
@@ -37,7 +39,8 @@ use Genesis\API\Traits\Request\Financial\PproAttributes;
  */
 abstract class SouthAmericanPayment extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes,
+        RestrictedSetter, BirthDateAttributes;
 
     /**
      * @return array
@@ -90,7 +93,7 @@ abstract class SouthAmericanPayment extends \Genesis\API\Request\Base\Financial
             'currency'           => $this->currency,
             'consumer_reference' => $this->consumer_reference,
             'national_id'        => $this->national_id,
-            'birth_date'         => $this->birth_date,
+            'birth_date'         => $this->getBirthDate(),
             'customer_email'     => $this->customer_email,
             'billing_address'    => $this->getBillingAddressParamsStructure(),
             'shipping_address'   => $this->getShippingAddressParamsStructure()

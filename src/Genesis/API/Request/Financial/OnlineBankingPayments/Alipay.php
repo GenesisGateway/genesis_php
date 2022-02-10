@@ -25,7 +25,9 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Alipay
@@ -33,14 +35,11 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  * Alipay - oBeP-style alternative payment method
  *
  * @package Genesis\API\Request\Financial\OnlineBankingPayments
- *
- * @method Alipay setBirthDate($value) Set customer birth date
  */
 class Alipay extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
-
-    protected $birth_date;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
+        RestrictedSetter, BirthDateAttributes;
 
     /**
      * Returns the Request transaction type
@@ -92,7 +91,7 @@ class Alipay extends \Genesis\API\Request\Base\Financial
             'currency'             => $this->currency,
             'customer_email'       => $this->customer_email,
             'customer_phone'       => $this->customer_phone,
-            'birth_date'           => $this->birth_date,
+            'birth_date'           => $this->getBirthDate(),
             'billing_address'      => $this->getBillingAddressParamsStructure(),
             'shipping_address'     => $this->getShippingAddressParamsStructure()
         ];

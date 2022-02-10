@@ -27,14 +27,6 @@ class PproAttributesSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_set_birth_date_correctly()
-    {
-        $this->shouldNotThrow()->during(
-            'setBirthDate',
-            ['31-11-1999']
-        );
-    }
-
     public function it_should_fail_when_consumer_reference_is_invalid()
     {
         $this->shouldThrow()->during(
@@ -48,14 +40,6 @@ class PproAttributesSpec extends ObjectBehavior
         $this->shouldThrow()->during(
             'setNationalId',
             [str_repeat('8', $this->object->getWrappedObject()->getNationalIdLen() + 1)]
-        );
-    }
-
-    public function it_should_fail_when_birth_date_is_invalid()
-    {
-        $this->shouldThrow()->during(
-            'setBirthDate',
-            ['30.10.1999']
         );
     }
 }

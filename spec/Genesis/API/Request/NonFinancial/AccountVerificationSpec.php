@@ -7,10 +7,12 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class AccountVerificationSpec extends ObjectBehavior
 {
-    use RequestExamples, CredentialOnFileAttributesExamples, CreditCardAttributesExamples;
+    use RequestExamples, CredentialOnFileAttributesExamples,
+        CreditCardAttributesExamples, BirthDateAttributesExample;
 
     public function it_is_initializable()
     {

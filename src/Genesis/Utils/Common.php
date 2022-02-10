@@ -20,9 +20,11 @@
  *
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\Utils;
 
 use Genesis\Exceptions\Exception;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Various helper functions used across the project
@@ -35,7 +37,7 @@ final class Common
     /**
      * Helper for version_compare()
      *
-     * @param string $version  - The version you want to check against
+     * @param string $version - The version you want to check against
      * @param string $operator - Type of version check
      *
      * @return mixed
@@ -71,7 +73,7 @@ final class Common
      * Convert PascalCase string to a SnakeCase
      * useful for argument parsing
      *
-     * @param  string $input
+     * @param string $input
      *
      * @return string
      */
@@ -247,7 +249,7 @@ final class Common
      */
     public static function appendItemsToArrayObj(&$arrObj, $key, $values)
     {
-        if (! $arrObj instanceof \ArrayObject) {
+        if (!$arrObj instanceof \ArrayObject) {
             return null;
         }
 
@@ -432,7 +434,7 @@ final class Common
      */
     public static function filterLanguageCode($language)
     {
-        return (string) substr(strtolower($language), 0, 2);
+        return (string)substr(strtolower($language), 0, 2);
     }
 
     /**
@@ -445,7 +447,7 @@ final class Common
     {
         $filterBoolean = static::filterBoolean($string);
 
-        return (is_bool($filterBoolean)) ? $filterBoolean : (bool) $filterBoolean;
+        return (is_bool($filterBoolean)) ? $filterBoolean : (bool)$filterBoolean;
     }
 
     /**
@@ -468,5 +470,35 @@ final class Common
         }
 
         return $arrayObject;
+    }
+
+    /**
+     * Check if parameter is valid URL
+     *
+     * @param string $url
+     * @return bool
+     */
+    public static function isValidUrl($url)
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) !== false;
+    }
+
+    /**
+     * Decodes a JSON String into object (stdClass or array)
+     *
+     * @param string $body
+     * @param bool $toArray
+     * @return null|array|\stdClass
+     * @throws InvalidArgument
+     */
+    public static function decodeJsonString($body, $toArray = false)
+    {
+        $jsonObject = json_decode($body, $toArray);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidArgument('JSON Decode Error: ' . json_last_error_msg());
+        }
+
+        return $jsonObject;
     }
 }

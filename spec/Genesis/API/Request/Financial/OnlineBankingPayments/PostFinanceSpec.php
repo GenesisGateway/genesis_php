@@ -6,12 +6,13 @@ use Genesis\API\Request\Financial\OnlineBankingPayments\PostFinance;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PostFinanceSpec extends ObjectBehavior
 {
-    use RequestExamples, PendingPaymentAttributesExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples;
 
     /**
      * Allowed currencies

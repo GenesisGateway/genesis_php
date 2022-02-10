@@ -24,6 +24,7 @@
 namespace Genesis\API\Traits\Request\NonFinancial;
 
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -32,6 +33,8 @@ use Genesis\Exceptions\InvalidArgument;
  */
 trait CustomerInformation
 {
+    use BirthDateAttributes;
+
     /**
      * @var string
      */
@@ -93,13 +96,6 @@ trait CustomerInformation
      * @var string
      */
     protected $phone2;
-
-    /**
-     * Required for Visa only when MCC is a Financial Services one (e.g. MCC 6012)
-     *
-     * @var string
-     */
-    protected $birth_date;
 
     /**
      * @var string
@@ -187,7 +183,7 @@ trait CustomerInformation
             'country'         => $this->country,
             'phone1'          => $this->phone1,
             'phone2'          => $this->phone2,
-            'birth_date'      => $this->birth_date,
+            'birth_date'      => $this->getBirthDate(),
             'document_type'   => $this->document_type,
             'document_number' => $this->document_number,
             'gender'          => $this->gender

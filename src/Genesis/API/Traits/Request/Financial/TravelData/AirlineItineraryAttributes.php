@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Traits\Request\Financial\TravelData;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
 use Genesis\Exceptions\InvalidArgument;
 
@@ -33,7 +34,6 @@ use Genesis\Exceptions\InvalidArgument;
  */
 trait AirlineItineraryAttributes
 {
-
     /**
      * @var string The number on the ticket.
      */
@@ -81,7 +81,9 @@ trait AirlineItineraryAttributes
     protected $aid_confirmation_information;
 
     /**
-     * @var string An entry should be supplied if a travel agency issued the ticket.
+     * An entry should be supplied if a travel agency issued the ticket.
+     *
+     * @var \DateTime
      */
     protected $aid_date_of_issue;
 
@@ -94,6 +96,36 @@ trait AirlineItineraryAttributes
      * @var array
      */
     protected $taxes = [];
+
+    /**
+     * @return string|null
+     */
+    public function getAidDateOfIssue()
+    {
+        return (empty($this->aid_date_of_issue)) ? null :
+            $this->aid_date_of_issue->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setAidDateOfIssue($value)
+    {
+        if (empty($value)) {
+            $this->aid_date_of_issue = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'aid_date_of_issue',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for aid_date_of_issue.'
+        );
+    }
 
     /**
      * @return array
@@ -110,7 +142,7 @@ trait AirlineItineraryAttributes
             'agency_name'                 => $this->aid_agency_name,
             'agency_code'                 => $this->aid_agency_code,
             'confirmation_information'    => $this->aid_confirmation_information,
-            'date_of_issue'               => $this->aid_date_of_issue
+            'date_of_issue'               => $this->getAidDateOfIssue()
         ];
     }
 

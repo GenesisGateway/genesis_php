@@ -10,10 +10,11 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use Genesis\Utils\Country;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, BirthDateAttributesExample;
 
     public $allowed_country = [
         'AT', 'BE', 'CZ', 'DK', 'EE', 'FI', 'DE', 'LV', 'LT', 'NL', 'NO', 'PL',

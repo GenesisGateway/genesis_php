@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Request\Base\NonFinancial;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request;
 use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\ErrorParameter;
@@ -35,8 +36,6 @@ use Genesis\Utils\Common;
 abstract class DateRangeRequest extends Request
 {
     use RestrictedSetter;
-
-    const DATE_FORMAT = 'Y-m-d';
 
     /**
      * start of the requested date range
@@ -77,7 +76,7 @@ abstract class DateRangeRequest extends Request
      */
     public function setStartDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->start_date = null;
 
             return $this;
@@ -85,7 +84,7 @@ abstract class DateRangeRequest extends Request
 
         return $this->parseDate(
             'start_date',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string)$value,
             'Invalid format for start_date'
         );
@@ -100,7 +99,7 @@ abstract class DateRangeRequest extends Request
      */
     public function setEndDate($value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             $this->end_date = null;
 
             return $this;
@@ -108,7 +107,7 @@ abstract class DateRangeRequest extends Request
 
         return $this->parseDate(
             'end_date',
-            [self::DATE_FORMAT],
+            DateTimeFormat::getAll(),
             (string)$value,
             'Invalid format for end_date'
         );
@@ -148,7 +147,7 @@ abstract class DateRangeRequest extends Request
     public function getStartDate()
     {
         return empty($this->start_date) ?
-            null : $this->start_date->format(self::DATE_FORMAT);
+            null : $this->start_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -159,7 +158,7 @@ abstract class DateRangeRequest extends Request
     public function getEndDate()
     {
         return empty($this->end_date) ?
-            null : $this->end_date->format(self::DATE_FORMAT);
+            null : $this->end_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**

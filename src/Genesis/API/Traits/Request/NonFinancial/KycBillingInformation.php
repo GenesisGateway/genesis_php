@@ -23,6 +23,7 @@
 
 namespace Genesis\API\Traits\Request\NonFinancial;
 
+use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\Exceptions\InvalidArgument;
 
@@ -87,7 +88,7 @@ trait KycBillingInformation
     /**
      * Required for Visa only when MCC is a Financial Services one (e.g. MCC 6012)
      *
-     * @var string
+     * @var \DateTime
      */
     protected $kyc_billing_birth_date;
 
@@ -118,6 +119,36 @@ trait KycBillingInformation
     }
 
     /**
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setKycBillingBirthDate($value)
+    {
+        if (empty($value)) {
+            $this->kyc_billing_birth_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'kyc_billing_birth_date',
+            DateTimeFormat::getAll(),
+            $value,
+            'Invalid value given for kyc_billing_birth_date.'
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getKycBillingBirthDate()
+    {
+        return (empty($this->kyc_billing_birth_date)) ? null :
+            $this->kyc_billing_birth_date->format(DateTimeFormat::DD_MM_YYYY_L_HYPHENS);
+    }
+
+    /**
      * @return array
      */
     public function getKycBillingStructure()
@@ -133,7 +164,7 @@ trait KycBillingInformation
             'country'        => $this->kyc_billing_country,
             'province'       => $this->kyc_billing_province,
             'phone1'         => $this->kyc_billing_phone1,
-            'birth_date'     => $this->kyc_billing_birth_date,
+            'birth_date'     => $this->getKycBillingBirthDate(),
             'gender'         => $this->kyc_billing_gender
         ];
     }

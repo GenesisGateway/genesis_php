@@ -33,6 +33,7 @@ use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Mobile\GooglePayAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Currency;
 
@@ -47,6 +48,26 @@ class GooglePay extends Financial
 {
     use AddressInfoAttributes, PaymentAttributes, GooglePayAttributes, RestrictedSetter,
         BirthDateAttributes, BusinessAttributes, DocumentAttributes;
+
+    /**
+     * Used in Google token for signatures array
+     */
+    const GOOGLE_PAY_TOKEN_KEY_SIGNATURES = 'signatures';
+
+    /**
+     * Sets GooglePay token
+     *
+     * @param string $token
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setJsonToken($token)
+    {
+        $tokenAttributes = CommonUtils::decodeJsonString($token, true);
+        $this->recursiveIterator($tokenAttributes);
+
+        return $this;
+    }
 
     /**
      * Returns the Request transaction type
@@ -107,5 +128,31 @@ class GooglePay extends Financial
             'business_attributes' => $this->getBusinessAttributesStructure(),
             'document_id'         => $this->document_id,
         ];
+    }
+
+    /**
+     * Recursively walk token attributes and set local properties
+     *
+     * @param array $tokenAttributes
+     * @return void
+     */
+    private function recursiveIterator($tokenAttributes)
+    {
+        foreach ($tokenAttributes as $attributeKey => $attributeValue) {
+            if ($attributeKey === self::GOOGLE_PAY_TOKEN_KEY_SIGNATURES) {
+                $this->setTokenSignatures($attributeValue);
+
+                continue;
+            }
+
+            $property = 'token_' . CommonUtils::pascalToSnakeCase($attributeKey);
+            if (property_exists($this, $property)) {
+                $this->{'set' . CommonUtils::snakeCaseToCamelCase($property)}($attributeValue);
+            }
+
+            if (CommonUtils::isValidArray($attributeValue)) {
+                $this->recursiveIterator($attributeValue);
+            }
+        }
     }
 }

@@ -560,7 +560,8 @@ require 'vendor/autoload.php';
 \Genesis\Config::setToken('<enter_your_token>');
 
 // Google Pay token
-$googleToken = json_decode('"{\"protocolVersion\":\"ECv2\",\"signature\":\"MEQCIH6Q4OwQ0jAceFEkGF0JID6sJNXxOEi4r+mA7biRxqBQAiAondqoUpU\/bdsrAOpZIsrHQS9nwiiNwOrr24RyPeHA0Q\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\": \"{\\\"keyExpiration\\\":\\\"1542323393147\\\",\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\/1+3HBVSbdv+j7NaArdgMyoSAM43yRydzqdg1TxodSzA96Dj4Mc1EiKroxxunavVIvdxGnJeFViTzFvzFRxyCw\\u003d\\u003d\\\"}\", \"signatures\": [\"MEYCIQCO2EIi48s8VTH+ilMEpoXLFfkxAwHjfPSCVED\/QDSHmQIhALLJmrUlNAY8hDQRV\/y1iKZGsWpeNmIP+z+tCQHQxP0v\"]},\"signedMessage\":\"{\\\"tag\\\":\\\"jpGz1F1Bcoi\/fCNxI9n7Qrsw7i7KHrGtTf3NrRclt+U\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BJatyFvFPPD21l8\/uLP46Ta1hsKHndf8Z+tAgk+DEPQgYTkhHy19cF3h\/bXs0tWTmZtnNm+vlVrKbRU9K8+7cZs\\u003d\\\",\\\"encryptedMessage\\\":\\\"mKOoXwi8OavZ\\\"}\"}"', true);
+$jsonToken = "{\"protocolVersion\":\"ECv2\",\"signature\":\"MEQCIH6Q4OwQ0jAceFEkGF0JID6sJNXxOEi4r+mA7biRxqBQAiAondqoUpU\/bdsrAOpZIsrHQS9nwiiNwOrr24RyPeHA0Q\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\": \"{\\\"keyExpiration\\\":\\\"1542323393147\\\",\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\/1+3HBVSbdv+j7NaArdgMyoSAM43yRydzqdg1TxodSzA96Dj4Mc1EiKroxxunavVIvdxGnJeFViTzFvzFRxyCw\\u003d\\u003d\\\"}\", \"signatures\": [\"MEYCIQCO2EIi48s8VTH+ilMEpoXLFfkxAwHjfPSCVED\/QDSHmQIhALLJmrUlNAY8hDQRV\/y1iKZGsWpeNmIP+z+tCQHQxP0v\"]},\"signedMessage\":\"{\\\"tag\\\":\\\"jpGz1F1Bcoi\/fCNxI9n7Qrsw7i7KHrGtTf3NrRclt+U\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BJatyFvFPPD21l8\/uLP46Ta1hsKHndf8Z+tAgk+DEPQgYTkhHy19cF3h\/bXs0tWTmZtnNm+vlVrKbRU9K8+7cZs\\u003d\\\",\\\"encryptedMessage\\\":\\\"mKOoXwi8OavZ\\\"}\"}";
+$decodedToken = json_decode($jsonToken, true);
 
 // Create a new Genesis instance with Google Pay API request
 $genesis = new Genesis('Financial\Mobile\GooglePay');
@@ -568,11 +569,12 @@ $genesis = new Genesis('Financial\Mobile\GooglePay');
 // Set request parameters
 $genesis->request()
     // Add Google Pay token details  
-    ->setTokenSignature($googleToken['signature'])
-    ->setTokenSignedKey($googleToken['intermediateSigningKey']['signedKey'])
-    ->setTokenProtocolVersion($googleToken['protocolVersion'])
-    ->setTokenSignedMessage($googleToken['signedMessage'])
-    ->setTokenSignatures($googleToken['intermediateSigningKey']['signatures']) // Token Signatures accepts array value
+    // Use ->setJsonToken($jsonToken) with JSON string for $jsonToken
+    ->setTokenSignature($decodedToken['signature'])
+    ->setTokenSignedKey($decodedToken['intermediateSigningKey']['signedKey'])
+    ->setTokenProtocolVersion($decodedToken['protocolVersion'])
+    ->setTokenSignedMessage($decodedToken['signedMessage'])
+    ->setTokenSignatures($decodedToken['intermediateSigningKey']['signatures']) // Token Signatures accepts array value
     // Set request parameters
     ->setTransactionId('43671')
     ->setPaymentType('sale')
@@ -680,6 +682,97 @@ $genesis
     ->setShippingCountry('US')
     ->setLanguage(\Genesis\API\Constants\i18n::EN)
     ->addTransactionType('google_pay', ['payment_type' => 'sale']);
+
+try {
+    // Send the request
+    $genesis->execute();
+
+    // Successfully completed the transaction - display the gateway unique id
+    echo $genesis->response()->getResponseObject()->unique_id;
+}
+// Log/handle API errors
+// Example: Invalid data, Invalid configuration
+catch (\Genesis\Exceptions\ErrorAPI $api) {
+    error_log($api->getMessage());
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle network (transport) errors
+// Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
+
+```
+</details>
+
+Example Apple Pay
+------------------
+<details>
+<summary>Example Apple Pay transaction request</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+\Genesis\Config::setToken('<enter_your_token>');
+
+// Apple Pay token
+$jsonToken = "{\"protocolVersion\":\"ECv2\",\"signature\":\"MEQCIH6Q4OwQ0jAceFEkGF0JID6sJNXxOEi4r+mA7biRxqBQAiAondqoUpU\/bdsrAOpZIsrHQS9nwiiNwOrr24RyPeHA0Q\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\": \"{\\\"keyExpiration\\\":\\\"1542323393147\\\",\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\/1+3HBVSbdv+j7NaArdgMyoSAM43yRydzqdg1TxodSzA96Dj4Mc1EiKroxxunavVIvdxGnJeFViTzFvzFRxyCw\\u003d\\u003d\\\"}\", \"signatures\": [\"MEYCIQCO2EIi48s8VTH+ilMEpoXLFfkxAwHjfPSCVED\/QDSHmQIhALLJmrUlNAY8hDQRV\/y1iKZGsWpeNmIP+z+tCQHQxP0v\"]},\"signedMessage\":\"{\\\"tag\\\":\\\"jpGz1F1Bcoi\/fCNxI9n7Qrsw7i7KHrGtTf3NrRclt+U\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BJatyFvFPPD21l8\/uLP46Ta1hsKHndf8Z+tAgk+DEPQgYTkhHy19cF3h\/bXs0tWTmZtnNm+vlVrKbRU9K8+7cZs\\u003d\\\",\\\"encryptedMessage\\\":\\\"mKOoXwi8OavZ\\\"}\"}";
+$decodedToken = json_decode($jsonToken, true);
+
+// Create a new Genesis instance with Apple Pay API request
+$genesis = new Genesis('Financial\Mobile\ApplePay');
+
+// Set request parameters
+$genesis->request()
+    // Add Apple Pay token details
+    // Use ->setJsonToken($jsonToken) with JSON string for $jsonToken
+    ->setTokenVersion($decodedToken['paymentData']['version'])
+    ->setTokenData($decodedToken['paymentData']['data'])
+    ->setTokenSignature($decodedToken['paymentData']['signature'])
+    ->setTokenEphemeralPublicKey($decodedToken['paymentData']['header']['ephemeralPublicKey'])
+    ->setTokenPublicKeyHash($decodedToken['paymentData']['header']['publicKeyHash'])
+    ->setTokenTransactionId($decodedToken['paymentData']['header']['transactionId'])
+    ->setTokenDisplayName($decodedToken['paymentMethod']['displayName'])
+    ->setTokenNetwork($decodedToken['paymentMethod']['network'])
+    ->setTokenType($decodedToken['paymentMethod']['type'])
+    ->setTokenTransactionIdentifier($decodedToken['transactionIdentifier'])
+    // Set request parameters
+    ->setTransactionId('43671')
+    ->setPaymentType('sale')
+    ->setUsage('40208 concert tickets')
+    ->setRemoteIp('245.253.2.12')
+    ->setAmount('50')
+    ->setCurrency('USD')
+    // Customer Details
+    ->setCustomerEmail('emil@example.com')
+    ->setCustomerPhone('1987987987987')
+    // Billing/Invoice Details
+    ->setBillingFirstName('Travis')
+    ->setBillingLastName('Pastrana')
+    ->setBillingAddress1('Muster Str. 12')
+    ->setBillingZipCode('10178')
+    ->setBillingCity('Los Angeles')
+    ->setBillingState('CA')
+    ->setBillingCountry('US')
+    // Shipping Details
+    ->setShippingFirstName('Travis')
+    ->setShippingLastName('Pastrana')
+    ->setShippingAddress1('Muster Str. 12')
+    ->setShippingZipCode('10178')
+    ->setShippingCity('Los Angeles')
+    ->setShippingState('CA')
+    ->setShippingCountry('US');
 
 try {
     // Send the request
@@ -859,7 +952,6 @@ Financial\Alternatives\Klarna\Capture
 Financial\Alternatives\Klarna\Refund
 Financial\Alternatives\TransferTo\Payout
 Financial\Alternatives\Trustly\Sale
-Financial\Alternatives\PaypalExpress
 
 // Credit Cards transactions
 Financial\Cards\Argencard
@@ -951,6 +1043,7 @@ Financial\Vouchers\Paysafecard
 
 // Electronic Wallets transactions
 Financial\Wallets\eZeeWallet
+Financial\Wallets\PayPal
 Financial\Wallets\Neteller
 Financial\Wallets\WebMoney
 

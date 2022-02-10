@@ -30,7 +30,6 @@ use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -42,7 +41,7 @@ use Genesis\Utils\Common as CommonUtils;
 class AccountVerification extends \Genesis\API\Request
 {
     use BaseAttributes, MotoAttributes, CreditCardAttributes, AddressInfoAttributes, RiskAttributes,
-        DocumentAttributes, CredentialOnFileAttributes, RestrictedSetter;
+        DocumentAttributes, CredentialOnFileAttributes;
 
     /**
      * Set the per-request configuration
@@ -104,7 +103,7 @@ class AccountVerification extends \Genesis\API\Request
                     'customer_email'   => $this->customer_email,
                     'customer_phone'   => $this->customer_phone,
                     'document_id'      => $this->document_id,
-                    'birth_date'       => $this->birth_date,
+                    'birth_date'       => $this->getBirthDate(),
                     'billing_address'  => $this->getBillingAddressParamsStructure(),
                     'shipping_address' => $this->getShippingAddressParamsStructure(),
                     'risk_params'      => $this->getRiskParamsStructure()

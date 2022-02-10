@@ -6,10 +6,11 @@ use Genesis\API\Request\NonFinancial\AVS;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class AVSSpec extends ObjectBehavior
 {
-    use RequestExamples, CreditCardAttributesExamples;
+    use RequestExamples, CreditCardAttributesExamples, BirthDateAttributesExample;
 
     public function it_is_initializable()
     {

@@ -49,6 +49,48 @@ class GooglePaySpec extends ObjectBehavior
         $this->getDocument()->shouldContain('business_attributes');
     }
 
+    public function it_should_not_fail_with_valid_json_token()
+    {
+        $token = $this->getToken();
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->shouldNotThrow()->during('setJsonToken', [$token]);
+    }
+
+    public function it_should_fail_with_missing_attribute_in_json_token()
+    {
+        $decodedToken = json_decode($this->getToken(), true);
+        $decodedToken['signature'] = null;
+        $token = json_encode($decodedToken);
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->shouldNotThrow()->during('setJsonToken', [$token]);
+    }
+
+    public function it_should_fail_with_invalid_json_token()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow()->during('setJsonToken',
+            [Faker::getInstance()->word]
+        );
+    }
+
+    public function it_should_contain_token_attributes_when_set_token()
+    {
+        $token = $this->getToken();
+
+        $this->setRequestParameters();
+        $this->setTokenAttributesNull();
+
+        $this->setJsonToken($token);
+        $this->getDocument()->shouldContain('protocolVersion');
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
@@ -66,5 +108,29 @@ class GooglePaySpec extends ObjectBehavior
         $this->setTokenSignedKey($faker->sha256);
         $this->setTokenSignedMessage($faker->sha256);
         $this->setTokenProtocolVersion('ECv2');
+    }
+
+    private function setTokenAttributesNull()
+    {
+        $this->setTokenSignatures(null);
+        $this->setTokenSignature(null);
+        $this->setTokenSignedKey(null);
+        $this->setTokenSignedMessage(null);
+        $this->setTokenProtocolVersion(null);
+    }
+
+    private function getToken()
+    {
+        $faker = Faker::getInstance();
+
+        return json_encode([
+            'signature'              => $faker->sha256,
+            'protocolVersion'        => 'ECv2',
+            'signedMessage'          => $faker->sha256,
+            'intermediateSigningKey' => [
+                'signedKey'  => $faker->sha256,
+                'signatures' => [$faker->sha256],
+            ],
+        ]);
     }
 }

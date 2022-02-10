@@ -4,11 +4,15 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Request\Financial\OnlineBankingPayments\BancoDoBrasil;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 
 class BancoDoBrasilSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples,
+        BirthDateAttributesExample;
 
     public function it_is_initializable()
     {
@@ -59,14 +63,6 @@ class BancoDoBrasilSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_set_birth_date_correctly()
-    {
-        $this->shouldNotThrow()->during(
-            'setBirthDate',
-            ['31-11-1999']
-        );
-    }
-
     public function it_should_fail_when_consumer_reference_is_invalid()
     {
         $this->shouldThrow()->during(
@@ -80,14 +76,6 @@ class BancoDoBrasilSpec extends ObjectBehavior
         $this->shouldThrow()->during(
             'setNationalId',
             [str_repeat('8', $this->object->getWrappedObject()->getNationalIdLen() + 1)]
-        );
-    }
-
-    public function it_should_fail_when_birth_date_is_invalid()
-    {
-        $this->shouldThrow()->during(
-            'setBirthDate',
-            ['30.10.1999']
         );
     }
 }

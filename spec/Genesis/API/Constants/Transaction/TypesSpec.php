@@ -141,7 +141,7 @@ class TypesSpec extends ObjectBehavior
             $typesObject::P24,
             $typesObject::PAGO_FACIL,
             $typesObject::PARTIAL_REVERSAL,
-            $typesObject::PAYPAL_EXPRESS,
+            $typesObject::PAY_PAL,
             $typesObject::PAYU,
             $typesObject::PPRO,
             $typesObject::PSE,

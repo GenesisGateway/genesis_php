@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Base\Financial;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Base\Request\Financial\SouthAmericanPaymentStub;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class SouthAmericanPaymentSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, BirthDateAttributesExample;
 
     public function let()
     {
@@ -46,14 +47,6 @@ class SouthAmericanPaymentSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_set_birth_date_correctly()
-    {
-        $this->shouldNotThrow()->during(
-            'setBirthDate',
-            ['31-11-1999']
-        );
-    }
-
     public function it_should_fail_when_consumer_reference_is_invalid()
     {
         $this->shouldThrow()->during(
@@ -67,14 +60,6 @@ class SouthAmericanPaymentSpec extends ObjectBehavior
         $this->shouldThrow()->during(
             'setNationalId',
             [str_repeat('8', $this->object->getWrappedObject()->getNationalIdLen() + 1)]
-        );
-    }
-
-    public function it_should_fail_when_birth_date_is_invalid()
-    {
-        $this->shouldThrow()->during(
-            'setBirthDate',
-            ['30.10.1999']
         );
     }
 

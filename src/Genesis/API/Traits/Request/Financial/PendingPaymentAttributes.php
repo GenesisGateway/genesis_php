@@ -23,12 +23,14 @@
 
 namespace Genesis\API\Traits\Request\Financial;
 
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
+
 /**
  * Trait PendingPaymentAttributes
  * @package Genesis\API\Traits\Request\Financial
  *
- * @method string getReturnPendingUrl()       URL where customer is sent to when asynchronous payment is pending
- * @method $this  setReturnPendingUrl($value) URL where customer is sent to when asynchronous payment is pending
+ * @method string getReturnPendingUrl() URL where customer is sent to when asynchronous payment is pending
  */
 trait PendingPaymentAttributes
 {
@@ -38,4 +40,25 @@ trait PendingPaymentAttributes
      * @var string $return_pending_url
      */
     protected $return_pending_url;
+
+    /**
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setReturnPendingUrl($value)
+    {
+        if (empty($value)) {
+            $this->return_pending_url = null;
+
+            return $this;
+        }
+        if (!CommonUtils::isValidUrl($value)) {
+            throw new InvalidArgument('Invalid url is given.');
+        }
+
+        $this->return_pending_url = $value;
+
+        return $this;
+    }
 }

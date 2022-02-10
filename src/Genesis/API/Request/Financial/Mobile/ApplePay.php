@@ -25,11 +25,14 @@ namespace Genesis\API\Request\Financial\Mobile;
 
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class ApplePay
@@ -40,53 +43,27 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class ApplePay extends \Genesis\API\Request\Base\Financial
 {
-    use AddressInfoAttributes, DocumentAttributes, PaymentAttributes,
-        ApplePayAttributes, RestrictedSetter, CryptoAttributes;
-
-    const BIRTH_DATE_FORMAT = 'd-m-Y';
+    use AddressInfoAttributes, DocumentAttributes, PaymentAttributes, ApplePayAttributes,
+        RestrictedSetter, CryptoAttributes, BirthDateAttributes;
 
     /**
-    * Required when MCC is a Financial Services one (e.g. MCC 6012)
-    * and either card brand is Visa or Mastercard/Maestro with UK-based merchant,
-    * UK-based bin (domestic), and DEBIT card type
-    *
-    * @var \DateTime $birth_date
-    */
-    protected $birth_date;
-
-    /**
-     * Setter Birth Date
+     * Sets ApplePay token
      *
-     * @param $value
-     * @return ApplePay
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @param string $token
+     * @return $this
+     * @throws InvalidArgument
      */
-    public function setBirthDate($value)
+    public function setJsonToken($token)
     {
+        $tokenAttributes = CommonUtils::decodeJsonString($token, true);
+        array_walk_recursive($tokenAttributes, function ($attributeValue, $attributeKey) {
+            $property = 'token_' . CommonUtils::pascalToSnakeCase($attributeKey);
+            if (property_exists($this, $property)) {
+                $this->{'set' . CommonUtils::snakeCaseToCamelCase($property)}($attributeValue);
+            }
+        });
 
-        if ($value === null) {
-            $this->birth_date = null;
-
-            return $this;
-        }
-
-        return $this->parseDate(
-            'birth_date',
-            [self::BIRTH_DATE_FORMAT],
-            (string) $value,
-            'Invalid birth_date format.'
-        );
-    }
-
-    /**
-     * Getter Birth Date
-     *
-     * @return string
-     */
-    public function getBirthDate()
-    {
-        return is_null($this->birth_date) ?
-            '' : $this->birth_date->format(self::BIRTH_DATE_FORMAT);
+        return $this;
     }
 
     /**
