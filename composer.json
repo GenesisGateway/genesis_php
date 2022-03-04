@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.20.0",
+  "version": "1.20.1",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -70,6 +70,7 @@
     "pagofacil",
     "paypal",
     "paypal_express",
+    "pay_pal",
     "paysafecard",
     "paysec",
     "payu",

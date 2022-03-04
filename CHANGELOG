@@ -1,3 +1,15 @@
+1.20.1
+-----
+**Features:**
+
+* Updated Google Pay and Apple Pay payment parameters
+    * setPaymentType() was replaced with setPaymentSubtype()
+* Added support for payment subtype Sale in Apple Pay transaction request
+* Updated Google Pay and Apple Pay Payment Types constants
+    * Renamed RECURRING to INIT_RECURRING_SALE
+* Refactored Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters to Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePay\PaymentTypes
+* Added support of Business Attributes for Apple Pay transaction request
+
 1.20.0
 -----
 **Features:**

@@ -24,7 +24,7 @@
 namespace Genesis\API\Traits\Request\Mobile;
 
 /**
-* @method $this setPaymentType($value) Sets payment type which is of authorize and recurring
+* @method $this setPaymentSubtype($value) Sets payment type which is of authorize and recurring
 * @method $this setTokenVersion($value) Sets version information about the payment token
 * @method $this setTokenData($value) Sets encrypted payment data
 * @method $this setTokenSignature($value) Sets signature of the payment and header data.
@@ -43,7 +43,7 @@ trait ApplePayAttributes
      *
      * @var string
      */
-    protected $payment_type;
+    protected $payment_subtype;
 
     /**
      * Version information about the payment token.

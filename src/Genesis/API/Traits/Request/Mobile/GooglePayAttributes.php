@@ -27,11 +27,13 @@ use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
- * @method $this setPaymentType($value) Sets payment type, one of authorize, recurring, sale
- * @method $this setTokenSignature($value)
- * @method $this setTokenSignedKey($value)
- * @method $this setTokenProtocolVersion($value)
- * @method $this setTokenSignedMessage($value)
+ * @codingStandardsIgnoreStart
+ * @method $this setPaymentSubtype($value) Sets payment type, one of authorize, recurring, sale
+ * @method $this setTokenSignature($value) Verifies that the message came from Google
+ * @method $this setTokenSignedKey($value) A base64-encoded message that contains payment description of the key
+ * @method $this setTokenProtocolVersion($value) Identifies the encryption or signing scheme under which the message is created
+ * @method $this setTokenSignedMessage($value) A JSON object serialized as an HTML-safe string that contains the encryptedMessage, ephemeralPublicKey, and tag
+ * @codingStandardsIgnoreStart
  */
 trait GooglePayAttributes
 {
@@ -40,7 +42,7 @@ trait GooglePayAttributes
      *
      * @var string
      */
-    protected $payment_type;
+    protected $payment_subtype;
 
     /**
      * Verifies that the message came from Google. It's base64-encoded, and created

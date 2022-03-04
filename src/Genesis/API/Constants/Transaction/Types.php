@@ -712,7 +712,7 @@ class Types
     const GOOGLE_PAY = 'google_pay';
 
     /**
-     * PayPal trannsaction is a fast and easy way for buyers to pay with their PayPal account.
+     * PayPal transaction is a fast and easy way for buyers to pay with their PayPal account.
      * It gives buyers all the transaction details at once, including order details, shipping options,
      * insurance choices, and tax totals.
      */
@@ -873,6 +873,7 @@ class Types
         return [
             self::ACCOUNT_VERIFICATION,
             self::ARGENCARD,
+            self::APPLE_PAY,
             self::AURA,
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
@@ -1010,7 +1011,8 @@ class Types
             self::AUTHORIZE_3D,
             self::KLARNA_AUTHORIZE,
             self::APPLE_PAY,
-            self::GOOGLE_PAY
+            self::GOOGLE_PAY,
+            self::PAY_PAL
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -1100,6 +1102,7 @@ class Types
             self::SALE,
             self::SALE_3D,
             self::GOOGLE_PAY,
+            self::PAY_PAL
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

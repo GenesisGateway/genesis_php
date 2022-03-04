@@ -3,18 +3,19 @@
 namespace spec\Genesis\API\Request\Financial\Mobile;
 
 use Genesis\API\Request\Financial\Mobile\ApplePay;
+use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
-use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
-use Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePayParameters;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class ApplePaySpec extends ObjectBehavior
 {
-    use RequestExamples, ApplePayAttributes, CryptoAttributesExamples, BirthDateAttributesExample;
+    use RequestExamples, ApplePayAttributes, CryptoAttributesExamples, BirthDateAttributesExample,
+        BusinessAttributesExample;
 
     public function it_is_initializable()
     {
@@ -24,7 +25,7 @@ class ApplePaySpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
-            'payment_type',
+            'payment_subtype',
             'token_version',
             'token_data',
             'token_signature',
@@ -41,7 +42,7 @@ class ApplePaySpec extends ObjectBehavior
     public function it_should_throw_when_is_set_wrong_payment_type_parameter()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('test_type');
+        $this->setPaymentSubtype('test_type');
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
@@ -93,8 +94,8 @@ class ApplePaySpec extends ObjectBehavior
         $faker = $this->getFaker();
 
         $this->setTransactionId($faker->uuid);
-        $this->setPaymentType($faker->randomElement(
-            ApplePayParameters::getAllowedPaymentTypes()
+        $this->setPaymentSubtype($faker->randomElement(
+            \Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePay\PaymentTypes::getAllowedPaymentTypes()
         ));
         $this->setTokenVersion($faker->word);
         $this->setTokenData($faker->text);

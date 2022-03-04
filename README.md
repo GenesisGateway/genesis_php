@@ -577,7 +577,7 @@ $genesis->request()
     ->setTokenSignatures($decodedToken['intermediateSigningKey']['signatures']) // Token Signatures accepts array value
     // Set request parameters
     ->setTransactionId('43671')
-    ->setPaymentType('sale')
+    ->setPaymentSubtype(\Genesis\API\Constants\Transaction\Parameters\Mobile\GooglePay\PaymentTypes::SALE)
     ->setUsage('40208 concert tickets')
     ->setRemoteIp('245.253.2.12')
     ->setAmount('50')
@@ -642,7 +642,7 @@ require 'vendor/autoload.php';
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
-// Create a new Genesis instance with Google Pay API request
+// Create a new Genesis instance with Web Payment Form request
 $genesis = new Genesis('WPF\Create');
 
 // Set request parameters
@@ -681,7 +681,7 @@ $genesis
     ->setShippingState('CA')
     ->setShippingCountry('US')
     ->setLanguage(\Genesis\API\Constants\i18n::EN)
-    ->addTransactionType('google_pay', ['payment_type' => 'sale']);
+    ->addTransactionType('google_pay', ['payment_subtype' => 'sale']);
 
 try {
     // Send the request
@@ -749,7 +749,7 @@ $genesis->request()
     ->setTokenTransactionIdentifier($decodedToken['transactionIdentifier'])
     // Set request parameters
     ->setTransactionId('43671')
-    ->setPaymentType('sale')
+    ->setPaymentSubtype(\Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePay\PaymentTypes::SALE)
     ->setUsage('40208 concert tickets')
     ->setRemoteIp('245.253.2.12')
     ->setAmount('50')
@@ -773,6 +773,87 @@ $genesis->request()
     ->setShippingCity('Los Angeles')
     ->setShippingState('CA')
     ->setShippingCountry('US');
+
+try {
+    // Send the request
+    $genesis->execute();
+
+    // Successfully completed the transaction - display the gateway unique id
+    echo $genesis->response()->getResponseObject()->unique_id;
+}
+// Log/handle API errors
+// Example: Invalid data, Invalid configuration
+catch (\Genesis\Exceptions\ErrorAPI $api) {
+    error_log($api->getMessage());
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle network (transport) errors
+// Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
+
+```
+</details>
+
+<details>
+<summary>Example Apple Pay WPF request</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+
+// Create a new Genesis instance with Web Payment Form request
+$genesis = new Genesis('WPF\Create');
+
+// Set request parameters
+$genesis
+    ->request()
+    ->setTransactionId('43671')
+    ->setUsage('40208 concert tickets')
+    ->setDescription('WPF Apple Pay test transaction')
+    ->setAmount('50')
+    ->setCurrency('USD')
+
+    // Customer Details
+    ->setCustomerEmail('emil@example.com')
+    ->setCustomerPhone('1987987987987')
+
+    ->setNotificationUrl('https://example.com/notification')
+    ->setReturnSuccessUrl('https://example.com/return?type=success')
+    ->setReturnFailureUrl('https://example.com/return?type=failure')
+    ->setReturnCancelUrl('https://example.com/return?type=cancel')
+        
+    // Billing/Invoice Details
+    ->setBillingFirstName('Travis')
+    ->setBillingLastName('Pastrana')
+    ->setBillingAddress1('Muster Str. 12')
+    ->setBillingZipCode('10178')
+    ->setBillingCity('Los Angeles')
+    ->setBillingState('CA')
+    ->setBillingCountry('US')
+
+    // Shipping Details
+    ->setShippingFirstName('Travis')
+    ->setShippingLastName('Pastrana')
+    ->setShippingAddress1('Muster Str. 12')
+    ->setShippingZipCode('10178')
+    ->setShippingCity('Los Angeles')
+    ->setShippingState('CA')
+    ->setShippingCountry('US')
+    ->setLanguage(\Genesis\API\Constants\i18n::EN)
+    ->addTransactionType('apple_pay', ['payment_subtype' => 'sale']);
 
 try {
     // Send the request

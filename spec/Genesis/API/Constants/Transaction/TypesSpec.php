@@ -81,18 +81,19 @@ class TypesSpec extends ObjectBehavior
     {
         $typesObject = $this->getWrappedObject();
         $voidableTypes = [
+            $typesObject::APPLE_PAY,
             $typesObject::AUTHORIZE,
             $typesObject::AUTHORIZE_3D,
-            $typesObject::TRUSTLY_SALE,
-            $typesObject::TCS,
-            $typesObject::FASHIONCHEQUE,
-            $typesObject::INTERSOLVE,
-            $typesObject::REFUND,
             $typesObject::CAPTURE,
-            $typesObject::APPLE_PAY,
+            $typesObject::FASHIONCHEQUE,
+            $typesObject::GOOGLE_PAY,
+            $typesObject::INTERSOLVE,
+            $typesObject::PAY_PAL,
+            $typesObject::REFUND,
             $typesObject::SALE,
             $typesObject::SALE_3D,
-            $typesObject::GOOGLE_PAY
+            $typesObject::TCS,
+            $typesObject::TRUSTLY_SALE
         ];
 
         foreach ($voidableTypes as $type) {
@@ -174,5 +175,29 @@ class TypesSpec extends ObjectBehavior
         $typesObject = $this->getWrappedObject();
 
         $this::canRefund($typesObject::CENCOSUD)->shouldBe(false);
+    }
+
+    public function it_should_be_true_for_capturable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+        $capturableTypes = [
+            $typesObject::APPLE_PAY,
+            $typesObject::AUTHORIZE,
+            $typesObject::AUTHORIZE_3D,
+            $typesObject::GOOGLE_PAY,
+            $typesObject::KLARNA_AUTHORIZE,
+            $typesObject::PAY_PAL
+        ];
+
+        foreach ($capturableTypes as $type) {
+            $this::canCapture($type)->shouldBe(true);
+        }
+    }
+
+    public function it_should_be_false_for_non_capturable_types()
+    {
+        $typesObject = $this->getWrappedObject();
+
+        $this::canCapture($typesObject::CENCOSUD)->shouldBe(false);
     }
 }

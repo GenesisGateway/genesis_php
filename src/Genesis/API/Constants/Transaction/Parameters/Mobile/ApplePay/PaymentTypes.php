@@ -21,34 +21,34 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Constants\Transaction\Parameters\Mobile\GooglePay;
+namespace Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePay;
 
-use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\Common;
 
 class PaymentTypes
 {
     /**
-     * Google Pay authorize payment subtype
+     * Apple Pay authorize payment subtype
      */
     const AUTHORIZE           = 'authorize';
 
     /**
-     * Google Pay init_recurring_sale payment subtype
+     * Apple Pay init_recurring_sale payment subtype
      */
     const INIT_RECURRING_SALE = 'init_recurring_sale';
 
     /**
-     * Google Pay sale payment subtype
+     * Apple Pay sale payment subtype
      */
     const SALE                = 'sale';
 
     /**
-     * Get Google Pay allowed payment types
+     * Get payment allowed payment
      *
      * @return array
      */
     public static function getAllowedPaymentTypes()
     {
-        return CommonUtils::getClassConstants(__CLASS__);
+        return Common::getClassConstants(self::class);
     }
 }

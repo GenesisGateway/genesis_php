@@ -23,7 +23,7 @@ class GooglePaySpec extends ObjectBehavior
     {
         $this->testMissingRequiredParameters([
             'transaction_id',
-            'payment_type',
+            'payment_subtype',
             'amount',
             'currency',
             'token_signature',
@@ -37,7 +37,7 @@ class GooglePaySpec extends ObjectBehavior
     public function it_should_throw_when_is_set_wrong_payment_type_parameter()
     {
         $this->setRequestParameters();
-        $this->setPaymentType('invalid_type');
+        $this->setPaymentSubtype('invalid_type');
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
@@ -96,7 +96,7 @@ class GooglePaySpec extends ObjectBehavior
         $faker = $this->getFaker();
 
         $this->setTransactionId($faker->uuid);
-        $this->setPaymentType($faker->randomElement(
+        $this->setPaymentSubtype($faker->randomElement(
             PaymentTypes::getAllowedPaymentTypes()
         ));
         $this->setAmount($faker->numberBetween(1, 10000));

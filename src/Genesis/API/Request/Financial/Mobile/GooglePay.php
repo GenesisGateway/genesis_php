@@ -23,7 +23,7 @@
 
 namespace Genesis\API\Request\Financial\Mobile;
 
-use Genesis\API\Constants\Transaction\Parameters\Mobile\GooglePay\PaymentTypes;
+use Genesis\API\Constants\Transaction\Parameters\Mobile\GooglePay\PaymentTypes as GooglePaySubtypes;
 use Genesis\API\Constants\Transaction\Types as TransactionType;
 use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\DocumentAttributes;
@@ -88,7 +88,7 @@ class GooglePay extends Financial
     {
         $requiredFields = [
             'transaction_id',
-            'payment_type',
+            'payment_subtype',
             'amount',
             'currency',
             'token_signature',
@@ -100,8 +100,8 @@ class GooglePay extends Financial
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'currency'     => Currency::getList(),
-            'payment_type' => PaymentTypes::getAllowedPaymentTypes(),
+            'currency'        => Currency::getList(),
+            'payment_subtype' => GooglePaySubtypes::getAllowedPaymentTypes(),
         ];
         $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
     }
@@ -118,7 +118,7 @@ class GooglePay extends Financial
             'amount'              => $this->transformAmount($this->amount, $this->currency),
             'currency'            => $this->currency,
             'remote_ip'           => $this->remote_ip,
-            'payment_type'        => $this->payment_type,
+            'payment_subtype'     => $this->payment_subtype,
             'payment_token'       => $this->getPaymentTokenStructure(),
             'customer_email'      => $this->customer_email,
             'customer_phone'      => $this->customer_phone,
