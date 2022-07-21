@@ -719,6 +719,42 @@ class Types
     const PAY_PAL = 'pay_pal';
 
     /**
+     * African Mobile Sale, otherwise known as Charge, is an APM used to process Mobile network operator payments.
+     * It is an async payment method and will be approved once the payment is processed with the Mobile network
+     * operator
+     */
+    const AFRICAN_MOBILE_SALE = 'african_mobile_sale';
+
+    /**
+     * African Mobile Payout, or otherwise known as Disbursement, is an APM used to process Mobile network operator
+     * payments. It is an async payment method and will be approved once the payment is processed with the Mobile
+     * network operator
+     */
+    const AFRICAN_MOBILE_PAYOUT = 'african_mobile_payout';
+
+    /**
+     * Russian Mobile Sale, otherwise known as Charge, is an APM used to process Mobile network operator payments.
+     * It is an async payment method and will be approved once the payment is processed by the Mobile network operator.
+     * Notice: Russian Mobile Sale does not support refund and void.
+     */
+    const RUSSIAN_MOBILE_SALE = 'russian_mobile_sale';
+
+    /**
+     * Russian Mobile Payout, or otherwise known as Disbursement, is an APM used to process Mobile network operator
+     * payments. It is an async payment method and will be approved once the payment is processed by the
+     * Mobile network operator. Notice: Russian Mobile Payout does not support refund and void.
+     */
+    const RUSSIAN_MOBILE_PAYOUT = 'russian_mobile_payout';
+
+    /**
+     * Pix is a payment service created by the Central Bank of Brazil (BACEN),
+     * which represents a new way of receiving/sending money. Pix allows payments
+     * to be made instantly. The customer can pay bills, invoices, public utilities,
+     * transfer and receive credits in a facilitated manner, using only Pix keys (CPF/CNPJ).
+     */
+    const PIX = 'pix';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -782,6 +818,7 @@ class Types
             self::EMPRESE_DE_ENERGIA      => 'CashPayments\EmpreseDeEnergia',
             self::OXXO                    => 'CashPayments\Oxxo',
             self::PAGO_FACIL              => 'CashPayments\PagoFacil',
+            self::PIX                     => 'CashPayments\Pix',
             self::REDPAGOS                => 'CashPayments\Redpagos',
             self::SANTANDER_CASH          => 'CashPayments\SantanderCash',
             self::SURTIMAX                => 'CashPayments\Surtimax',
@@ -793,6 +830,8 @@ class Types
             self::INTERSOLVE              => 'GiftCards\Intersolve',
             self::APPLE_PAY               => 'Mobile\ApplePay',
             self::GOOGLE_PAY              => 'Mobile\GooglePay',
+            self::RUSSIAN_MOBILE_SALE     => 'Mobile\RussianMobileSale',
+            self::AFRICAN_MOBILE_SALE     => 'Mobile\AfricanMobileSale.php',
             self::ALIPAY                  => 'OnlineBankingPayments\Alipay',
             self::ASTROPAY_DIRECT         => 'OnlineBankingPayments\AstropayDirect',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
@@ -827,6 +866,8 @@ class Types
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::PAYBYVOUCHER_YEEPAY     => 'PayByVouchers\oBeP',
             self::PAYBYVOUCHER_SALE       => 'PayByVouchers\Sale',
+            self::AFRICAN_MOBILE_PAYOUT   => 'Payout\AfricanMobilePayout',
+            self::RUSSIAN_MOBILE_PAYOUT   => 'Payout\RussianMobilePayout',
             self::INCREMENTAL_AUTHORIZE   => 'Preauthorization\IncrementalAuthorize',
             self::PARTIAL_REVERSAL        => 'Preauthorization\PartialReversal',
             self::SCT_PAYOUT              => 'SCT\Payout',
@@ -918,12 +959,14 @@ class Types
             self::PAY_PAL,
             self::PAYSAFECARD,
             self::PAYU,
+            self::PIX,
             self::POLI,
             self::POST_FINANCE,
             self::PPRO,
             self::PSE,
             self::RAPI_PAGO,
             self::REDPAGOS,
+            self::RUSSIAN_MOBILE_SALE,
             self::SAFETYPAY,
             self::SALE,
             self::SALE_3D,
@@ -1027,6 +1070,8 @@ class Types
     {
         $transactionTypesList = [
             self::APPLE_PAY,
+            self::AFRICAN_MOBILE_PAYOUT,
+            self::AFRICAN_MOBILE_SALE,
             self::BALOTO,
             self::BANCOMER,
             self::BANCONTACT,
@@ -1057,6 +1102,7 @@ class Types
             self::PARTIAL_REVERSAL,
             self::PAY_PAL,
             self::PAYU,
+            self::PIX,
             self::PPRO,
             self::PSE,
             self::POST_FINANCE,
@@ -1090,6 +1136,8 @@ class Types
     public static function canVoid($type)
     {
         $transactionTypesList = [
+            self::AFRICAN_MOBILE_PAYOUT,
+            self::AFRICAN_MOBILE_SALE,
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
             self::TRUSTLY_SALE,

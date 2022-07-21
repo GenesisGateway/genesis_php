@@ -23,8 +23,8 @@
 
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
@@ -32,6 +32,7 @@ use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class InitRecurringSale
@@ -42,9 +43,9 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use MotoAttributes, AddressInfoAttributes, RiskAttributes,
-        DescriptorAttributes, DocumentAttributes, TravelDataAttributes,
-        FxRateAttributes, BusinessAttributes, RestrictedSetter;
+    use MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
+        TravelDataAttributes, FxRateAttributes, BusinessAttributes, RestrictedSetter,
+        ManagedRecurringAttributes;
 
     /**
      * Returns the Request transaction type
@@ -74,9 +75,12 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\Credit
     {
         parent::setRequiredFields();
 
-        $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional();
+        $requiredFieldsConditional = array_merge(
+            $this->requiredTokenizationFieldsConditional(),
+            $this->requiredManagedRecurringFieldsConditional()
+        );
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
     /**
@@ -96,7 +100,8 @@ class InitRecurringSale extends \Genesis\API\Request\Base\Financial\Cards\Credit
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'travel'                    => $this->getTravelData(),
             'fx_rate_id'                => $this->fx_rate_id,
-            'business_attributes'       => $this->getBusinessAttributesStructure()
+            'business_attributes'       => $this->getBusinessAttributesStructure(),
+            'managed_recurring'         => $this->getManagedRecurringAttributesStructure()
         ];
     }
 }

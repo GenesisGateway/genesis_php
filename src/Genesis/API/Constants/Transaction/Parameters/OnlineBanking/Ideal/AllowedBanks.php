@@ -64,11 +64,6 @@ class AllowedBanks
     const KNAB                  = 'KNABNL2H';
 
     /**
-     * Allowed BIC of issuer Moneyou
-     */
-    const MONEYOU               = 'MOYONL21';
-
-    /**
      * Allowed BIC of issuer Rabobank
      */
     const RABOBANK              = 'RABONL2U';

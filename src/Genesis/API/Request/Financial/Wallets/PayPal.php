@@ -35,6 +35,7 @@ use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Currency;
 
@@ -90,6 +91,25 @@ class PayPal extends Financial
             'payment_type' => PaymentTypes::getAllowedPaymentTypes(),
         ];
         $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Add document_id conditional validation if it is present
+     *
+     * @return void
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                $this->getDocumentIdConditions()
+            );
+        }
+
+        parent::checkRequirements();
     }
 
     /**

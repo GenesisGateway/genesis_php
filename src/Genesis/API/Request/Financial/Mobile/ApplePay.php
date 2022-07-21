@@ -100,16 +100,33 @@ class ApplePay extends \Genesis\API\Request\Base\Financial
             'currency'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
-        $requiredFieldValues = array_merge(
-            [
-                'currency'        => \Genesis\Utils\Currency::getList(),
-                'payment_subtype' => ApplePaySubtypes::getAllowedPaymentTypes()
-            ]
-        );
+        $requiredFieldValues = [
+            'currency'        => \Genesis\Utils\Currency::getList(),
+            'payment_subtype' => ApplePaySubtypes::getAllowedPaymentTypes()
+        ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Add document_id conditional validation if it is present
+     *
+     * @return void
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                $this->getDocumentIdConditions()
+            );
+        }
+
+        parent::checkRequirements();
     }
 
     /**

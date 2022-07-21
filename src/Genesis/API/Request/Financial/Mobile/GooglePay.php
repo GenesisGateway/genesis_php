@@ -107,6 +107,25 @@ class GooglePay extends Financial
     }
 
     /**
+     * Add document_id conditional validation if it is present
+     *
+     * @return void
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                $this->getDocumentIdConditions()
+            );
+        }
+
+        parent::checkRequirements();
+    }
+
+    /**
      * Return additional request attributes
      *
      * @return array

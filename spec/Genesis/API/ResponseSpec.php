@@ -7,9 +7,15 @@ use Prophecy\Argument;
 
 use \Genesis\API\Request as Request;
 use \Genesis\Network as Network;
+use spec\Genesis\API\Stubs\Base\ResponseStub;
 
 class ResponseSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beAnInstanceOf(ResponseStub::class);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\API\Response');
@@ -232,6 +238,11 @@ XML;
         $this->getResponseObject()->timestamp->shouldBe('ERROR');
 
         ini_set('error_log', $log);
+    }
+
+    public function it_should_validate_json_header_case_insensitive()
+    {
+        $this->isResponseTypeJson('content-type: application/json')->shouldBe(true);
     }
 
     protected function buildSample($settings = array())

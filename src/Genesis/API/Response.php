@@ -142,7 +142,7 @@ class Response
      */
     protected function isResponseTypeJson($headers)
     {
-        return strpos($headers, self::HEADER_CONTENT_TYPE_JSON) !== false;
+        return stripos($headers, self::HEADER_CONTENT_TYPE_JSON) !== false;
     }
 
     /**

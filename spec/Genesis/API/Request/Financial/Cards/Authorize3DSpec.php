@@ -16,13 +16,14 @@ use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class Authorize3DSpec extends ObjectBehavior
 {
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
         DescriptorAttributesExample, CryptoAttributesExamples, TokenizationAttributesExamples,
         BusinessAttributesExample, ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples,
-        AllowedZeroAmount, CreditCardAttributesExamples;
+        AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample;
 
     public function it_is_initializable()
     {

@@ -23,10 +23,8 @@
 
 namespace Genesis\API\Request\Financial\Cards\Recurring;
 
-use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
-use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\ScaAttributes;
 use Genesis\API\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
@@ -39,7 +37,7 @@ use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
-use Genesis\Utils\Common;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class InitRecurringSale3D
@@ -52,10 +50,10 @@ use Genesis\Utils\Common;
  */
 class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use MotoAttributes, NotificationAttributes, AsyncAttributes,
-        AddressInfoAttributes, MpiAttributes, RiskAttributes,
-        DescriptorAttributes, DocumentAttributes, TravelDataAttributes,
-        ScaAttributes, FxRateAttributes, BusinessAttributes, RestrictedSetter, AllThreedsV2Attributes;
+    use MotoAttributes, NotificationAttributes, AsyncAttributes, AddressInfoAttributes,
+        MpiAttributes, RiskAttributes, DescriptorAttributes, TravelDataAttributes, ScaAttributes,
+        FxRateAttributes, BusinessAttributes, RestrictedSetter, AllThreedsV2Attributes,
+        ManagedRecurringAttributes;
 
     /**
      * Returns the Request transaction type
@@ -93,17 +91,18 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Cred
             ],
             $this->requiredMpiFieldsConditional(),
             $this->requiredTokenizationFieldsConditional(),
-            $this->requiredThreedsV2DeviceTypeConditional()
+            $this->requiredThreedsV2DeviceTypeConditional(),
+            $this->requiredManagedRecurringFieldsConditional()
         );
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldsGroups = [
             'synchronous'  => ['notification_url', 'return_success_url', 'return_failure_url'],
             'asynchronous' => ['mpi_eci']
         ];
 
-        $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
+        $this->requiredFieldsGroups = CommonUtils::createArrayObject($requiredFieldsGroups);
     }
 
     /**
@@ -117,7 +116,7 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Cred
     {
         $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
 
-        $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldsValuesConditional);
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
 
         parent::checkRequirements();
     }
@@ -145,7 +144,8 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Cred
                 'travel'                    => $this->getTravelData(),
                 'fx_rate_id'                => $this->fx_rate_id,
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
-                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure()
+                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
+                'managed_recurring'         => $this->getManagedRecurringAttributesStructure()
             ],
             $this->getScaAttributesStructure()
         );

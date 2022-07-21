@@ -77,6 +77,56 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     const PATTERN_TIMESTAMP = '/(?:\d|[01]\d|2[0-3]):[0-5]\d:[0-5]\d/';
 
     /**
+     * Argentina document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_AR = '/^[0-9]{7,9}$|^[0-9]{11}$/';
+
+    /**
+     * Brazil document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_BR = '/^[0-9]{11,14}$/';
+
+    /**
+     * Chile document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_CL = '/^[0-9]{8,9}$/';
+
+    /**
+     * Colombia document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_CO = '/^[0-9]{6,10}$/';
+
+    /**
+     * India document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_IN = '/^[A-Z]{5}[0-9]{4}[A-Z0-9]$/';
+
+    /**
+     * Mexico document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_MX = '/^[0-9]{10,18}$/';
+
+    /**
+     * Paraguay document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_PY = '/^[0-9]{5,20}$/';
+
+    /**
+     * Peru document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_PE = '/^[0-9]{8,9}$/';
+
+    /**
+     * Turkey document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_TR = '/^[0-9]{5,20}$/';
+
+    /**
+     * Uruguay document_id pattern
+     */
+    const REGEXP_DOCUMENT_ID_UY = '/^[0-9]{6,8}$/';
+
+    /**
      * Regex expression
      *
      * @var string

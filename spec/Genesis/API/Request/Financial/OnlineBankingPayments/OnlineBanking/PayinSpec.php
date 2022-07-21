@@ -11,10 +11,11 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class PayinSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, DocumentAttributesExample;
 
     public function it_is_initializable()
     {
@@ -119,6 +120,7 @@ class PayinSpec extends ObjectBehavior
         $this->setPaymentType(PaymentTypes::NETBANKING);
         $this->setCurrency('MYR');
         $this->setBankCode(Banks::CASH_711);
+        $this->setBillingCountry('IN');
         $this->setDocumentId('ABCDE1234F');
         $this->setShippingFirstName($faker->firstName);
         $this->setVirtualPaymentAddress('someone@example');
@@ -140,7 +142,8 @@ class PayinSpec extends ObjectBehavior
             'billing_address',
             'shipping_address',
             'virtual_payment_address',
-            'consumer_reference'
+            'consumer_reference',
+            'country'
         ];
 
         foreach ($attributes as $attribute) {

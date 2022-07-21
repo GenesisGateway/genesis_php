@@ -15,13 +15,14 @@ use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class SaleSpec extends ObjectBehavior
 {
     use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample,
         CryptoAttributesExamples, TokenizationAttributesExamples, BusinessAttributesExample,
         CredentialOnFileAttributesExamples, UcofAttributesExamples, ScaAttributesExamples,
-        AllowedZeroAmount, CreditCardAttributesExamples;
+        AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample;
 
     public function it_is_initializable()
     {

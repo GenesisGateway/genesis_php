@@ -23,7 +23,6 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\UcofAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
@@ -37,6 +36,7 @@ use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Authorize
@@ -47,8 +47,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use GamingAttributes, MotoAttributes, AddressInfoAttributes,
-        RiskAttributes, DescriptorAttributes, DocumentAttributes,
+    use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes,
         CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes;
 
@@ -83,7 +82,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
         $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional() +
                                      $this->requiredCCFieldsConditional();
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
     /**

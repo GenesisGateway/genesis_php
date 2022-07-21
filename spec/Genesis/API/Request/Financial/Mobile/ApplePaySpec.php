@@ -10,12 +10,13 @@ use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class ApplePaySpec extends ObjectBehavior
 {
     use RequestExamples, ApplePayAttributes, CryptoAttributesExamples, BirthDateAttributesExample,
-        BusinessAttributesExample;
+        BusinessAttributesExample, DocumentAttributesExample;
 
     public function it_is_initializable()
     {

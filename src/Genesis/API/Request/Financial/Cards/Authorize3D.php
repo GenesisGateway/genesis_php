@@ -23,9 +23,6 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
-use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
-use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
@@ -42,7 +39,7 @@ use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\Request\Financial\Threeds\V2\CommonAttributes as ThreedsV2CommonAttributes;
 use Genesis\API\Traits\RestrictedSetter;
-use Genesis\Utils\Common;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Authorize3D
@@ -55,11 +52,10 @@ use Genesis\Utils\Common;
  */
 class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes,
-        AddressInfoAttributes, MpiAttributes, RiskAttributes,
-        DescriptorAttributes, DocumentAttributes, PreauthorizationAttributes,
-        TravelDataAttributes, ScaAttributes, FxRateAttributes,
-        CryptoAttributes, BusinessAttributes, RestrictedSetter, ThreedsV2CommonAttributes;
+    use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes, AddressInfoAttributes,
+        MpiAttributes, RiskAttributes, DescriptorAttributes, PreauthorizationAttributes,
+        TravelDataAttributes, ScaAttributes, FxRateAttributes, CryptoAttributes,
+        BusinessAttributes, RestrictedSetter, ThreedsV2CommonAttributes;
 
     /**
      * Returns the Request transaction type
@@ -101,14 +97,14 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
             $this->requiredThreedsV2DeviceTypeConditional()
         );
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldsGroups = [
             'synchronous'  => ['notification_url', 'return_success_url', 'return_failure_url'],
             'asynchronous' => ['mpi_eci']
         ];
 
-        $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
+        $this->requiredFieldsGroups = CommonUtils::createArrayObject($requiredFieldsGroups);
     }
 
     /**
@@ -122,7 +118,7 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     {
         $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
 
-        $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldsValuesConditional);
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
 
         parent::checkRequirements();
     }

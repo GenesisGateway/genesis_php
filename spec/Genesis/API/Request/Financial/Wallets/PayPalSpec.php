@@ -10,10 +10,11 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class PayPalSpec extends ObjectBehavior
 {
-    use RequestExamples, BusinessAttributesExample;
+    use RequestExamples, BusinessAttributesExample, DocumentAttributesExample;
 
     public function it_is_initializable()
     {

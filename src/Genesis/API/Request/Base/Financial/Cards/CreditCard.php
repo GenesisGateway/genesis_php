@@ -25,6 +25,7 @@ namespace Genesis\API\Request\Base\Financial\Cards;
 
 use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\CreditCardAttributes;
+use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\TokenizationAttributes;
@@ -39,7 +40,8 @@ use Genesis\Utils\Currency;
  */
 abstract class CreditCard extends Financial
 {
-    use CreditCardAttributes, TokenizationAttributes, PaymentAttributes, CredentialOnFileAttributes;
+    use CreditCardAttributes, TokenizationAttributes, PaymentAttributes, CredentialOnFileAttributes,
+        DocumentAttributes;
 
     const REQUEST_KEY_AMOUNT = 'amount';
 
@@ -87,6 +89,7 @@ abstract class CreditCard extends Financial
     /**
      * Inject the requiredFieldValuesConditional Validations
      * Enable CC holder name validation if Client-Side Encryption is not set
+     * Add document_id conditional validation if it is present
      *
      * @throws \Genesis\Exceptions\ErrorParameter
      * @throws \Genesis\Exceptions\InvalidArgument
@@ -104,6 +107,15 @@ abstract class CreditCard extends Financial
             CommonUtils::createArrayObject(
                 array_merge((array) $this->requiredFieldValuesConditional, $requiredFieldValuesConditional)
             );
+
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                array_merge(
+                    (array) $this->requiredFieldValuesConditional,
+                    $this->getDocumentIdConditions()
+                )
+            );
+        }
 
         parent::checkRequirements();
     }

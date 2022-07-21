@@ -6,10 +6,11 @@ use Genesis\API\Request\Financial\OnlineBankingPayments\Upi;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class UpiSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, DocumentAttributesExample;
 
     public function it_is_initializable()
     {

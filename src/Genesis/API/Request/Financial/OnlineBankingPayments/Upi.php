@@ -30,6 +30,8 @@ use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\VirtualPaymentAddressAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 class Upi extends Financial
 {
@@ -60,13 +62,32 @@ class Upi extends Financial
             'billing_country'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
             'currency' => [ 'INR' ]
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Add document_id conditional validation if it is present
+     *
+     * @return void
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                $this->getDocumentIdConditions()
+            );
+        }
+
+        parent::checkRequirements();
     }
 
     /**

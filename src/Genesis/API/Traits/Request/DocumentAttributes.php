@@ -23,11 +23,14 @@
 
 namespace Genesis\API\Traits\Request;
 
-use Genesis\Exceptions\InvalidArgument;
+use Genesis\API\Validators\Request\RegexValidator;
 
 /**
  * Trait DocumentAttributes
  * @package Genesis\API\Traits\Request
+ *
+ * @method string getDocumentId()
+ * @method $this setDocumentId($value)
  */
 trait DocumentAttributes
 {
@@ -37,30 +40,43 @@ trait DocumentAttributes
     protected $document_id;
 
     /**
-     * @return string
+     * @return array
      */
-    public function getDocumentIdRegex()
+    protected function getDocumentIdConditions()
     {
-        return '/^[A-Z]{5}[0-9]{4}[A-Z0-9]$/';
-    }
-
-    /**
-     * @param $documentId
-     *
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setDocumentId($documentId)
-    {
-        if (preg_match($this->getDocumentIdRegex(), $documentId)) {
-            $this->document_id = $documentId;
-
-            return $this;
-        }
-
-        throw new InvalidArgument(
-            'document_id must be a string with 10 alphanumeric letters.' .
-                     '5 letters, followed by 4 numbers, followed by 1 letter or number. Example: ABCDE1234F'
-        );
+        return [
+            'billing_country' => [
+                'AR' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_AR)]
+                ],
+                'BR' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_BR)]
+                ],
+                'CL' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_CL)]
+                ],
+                'CO' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_CO)]
+                ],
+                'IN' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_IN)]
+                ],
+                'MX' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_MX)]
+                ],
+                'PY' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_PY)]
+                ],
+                'PE' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_PE)]
+                ],
+                'TR' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_TR)]
+                ],
+                'UY' => [
+                    ['document_id' => new RegexValidator(RegexValidator::REGEXP_DOCUMENT_ID_UY)]
+                ],
+            ]
+        ];
     }
 }

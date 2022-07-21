@@ -23,12 +23,13 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
+use Genesis\API\Traits\Request\Payout\MoneyTransferPayoutAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Payout
@@ -39,9 +40,11 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use RestrictedSetter, AddressInfoAttributes, DocumentAttributes,
-        SourceOfFundsAttributes, FxRateAttributes, DescriptorAttributes;
+    use RestrictedSetter, AddressInfoAttributes, SourceOfFundsAttributes,
+        FxRateAttributes, DescriptorAttributes, MoneyTransferPayoutAttributes;
 
+    const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
+    const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
 
     /**
      * Returns the Request transaction type
@@ -62,9 +65,10 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
         parent::setRequiredFields();
 
         $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional() +
-                                     $this->requiredCCFieldsConditional();
+                                     $this->requiredCCFieldsConditional() +
+                                     $this->requiredMoneyTransferFieldsConditional();
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
     /**
@@ -81,7 +85,8 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'fx_rate_id'                => $this->fx_rate_id,
-                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure()
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'money_transfer'            => $this->getMoneyTransferPayoutStructure(),
             ],
             $this->getSourceOfFundsStructure()
         );

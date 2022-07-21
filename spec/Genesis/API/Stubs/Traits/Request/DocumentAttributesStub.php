@@ -2,6 +2,8 @@
 
 namespace spec\Genesis\API\Stubs\Traits\Request;
 
+use Genesis\API\Traits\Request\DocumentAttributes;
+
 /**
  * Class DocumentAttributesStub
  *
@@ -11,5 +13,7 @@ namespace spec\Genesis\API\Stubs\Traits\Request;
  */
 class DocumentAttributesStub
 {
-    use \Genesis\API\Traits\Request\DocumentAttributes;
+    use DocumentAttributes {
+        getDocumentIdConditions as public;
+    }
 }

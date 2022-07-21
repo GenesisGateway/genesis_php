@@ -9,10 +9,11 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class GooglePaySpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, DocumentAttributesExample;
 
     public function is_it_initializable()
     {

@@ -1062,6 +1062,7 @@ Financial\CashPayments\Boleto
 Financial\CashPayments\Efecty
 Financial\CashPayments\Oxxo
 Financial\CashPayments\PagoFacil
+Financial\CashPayments\Pix
 Financial\CashPayments\Redpagos
 
 // Crypto transactions
@@ -1077,6 +1078,8 @@ Financial\GiftCards\TCS
 // Mobile
 Financial\Mobile\ApplePay
 Financial\Mobile\GooglePay
+Financial\Mobile\RussianMobileSale
+Financial\Mobile\AfricanMobileSale
 
 //Sepa Direct Debit transactions
 Financial\SCT\Payout
@@ -1112,6 +1115,10 @@ Financial\OnlineBankingPayments\TrustPay
 Financial\OnlineBankingPayments\Upi
 Financial\OnlineBankingPayments\Webpay
 Financial\OnlineBankingPayments\WeChat
+
+//Payout
+Financial\Payout\AfricanMobilePayout
+Financial\Payout\RussianMobilePayout
 
 // Preauthorization
 Financial\Preauthorization\IncrementalAuthorize

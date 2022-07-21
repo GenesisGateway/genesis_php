@@ -32,6 +32,7 @@ use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\VirtualPaymentAdd
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\BankCodeParameters;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Payin
@@ -120,13 +121,13 @@ class Payin extends Financial
             'bank_code'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
             'currency' => BankCodeParameters::getAllowedCurrencies()
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
 
         $this->setRequiredFieldsConditional();
     }
@@ -145,7 +146,7 @@ class Payin extends Financial
             ]
         ];
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
 
         $requiredFieldValuesConditional = [
             'currency' => [
@@ -206,9 +207,31 @@ class Payin extends Financial
             ]
         ];
 
-        $this->requiredFieldValuesConditional = \Genesis\Utils\Common::createArrayObject(
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
             $requiredFieldValuesConditional
         );
+    }
+
+    /**
+     * Add document_id conditional validation if it is present
+     *
+     * @return void
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        if ($this->document_id) {
+            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+                array_merge(
+                    (array)$this->requiredFieldValuesConditional,
+                    $this->getDocumentIdConditions()
+                )
+            );
+        }
+
+        parent::checkRequirements();
     }
 
     /**

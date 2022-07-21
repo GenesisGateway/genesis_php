@@ -23,7 +23,6 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
-use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\UcofAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
@@ -37,6 +36,7 @@ use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Sale
@@ -48,10 +48,9 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use GamingAttributes, MotoAttributes, AddressInfoAttributes,
-        RiskAttributes, DescriptorAttributes, ReferenceAttributes,
-        DocumentAttributes, TravelDataAttributes, FxRateAttributes,
-        CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes;
+    use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
+        ReferenceAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes,
+        BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes;
 
     /**
      * Returns the Request transaction type
@@ -84,7 +83,7 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
         $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional() +
                                      $this->requiredCCFieldsConditional();
 
-        $this->requiredFieldsConditional = \Genesis\Utils\Common::createArrayObject($requiredFieldsConditional);
+        $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
 
     /**

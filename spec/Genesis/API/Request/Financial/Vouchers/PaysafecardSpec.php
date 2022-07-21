@@ -11,12 +11,12 @@ class PaysafecardSpec extends ObjectBehavior
 {
     use RequestExamples;
 
-    public $allowed_country = [
+    private $allowedCountries = [
         'AU', 'AT', 'BE', 'BG', 'CA', 'HR', 'CY', 'CZ', 'DK', 'FI', 'FR',
         'GE', 'DE', 'GI', 'GR', 'HU', 'IS', 'IE', 'IT', 'KW', 'LV', 'LI',
-        'LT', 'LU', 'MT', 'MX', 'ME', 'NL', 'NZ', 'NO', 'PY', 'PE', 'PL',
-        'PT', 'RO', 'SA', 'SK', 'SI', 'ES', 'SE', 'CH', 'TR', 'AE', 'GB',
-        'US', 'UY'
+        'LT', 'LU', 'MT', 'MX', 'MD', 'ME', 'NL', 'NZ', 'NO', 'PY', 'PE',
+        'PL', 'PT', 'RO', 'SA', 'SK', 'SI', 'ES', 'SE', 'CH', 'TR', 'AE',
+        'GB', 'US', 'UY'
     ];
 
     public function it_is_initializable()
@@ -34,15 +34,15 @@ class PaysafecardSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_parameters()
     {
         $this->setRequestParameters();
-        $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
+        $this->shouldThrow()->during('setCustomerEmail', ['']);
     }
 
     public function it_should_fail_when_wrong_billing_country_parameter()
     {
-        $faker         = $this->getFaker();
-        $notAllowed    = array_diff(
+        $faker      = $this->getFaker();
+        $notAllowed = array_diff(
             array_keys(Country::$countries),
-            $this->allowed_country
+            $this->allowedCountries
         );
         $randomCountry = $faker->randomElement($notAllowed);
         $this->setRequestParameters();
@@ -53,7 +53,7 @@ class PaysafecardSpec extends ObjectBehavior
     public function it_should_not_fail_with_allowed_billing_country_parameter()
     {
         $faker         = $this->getFaker();
-        $randomCountry = $faker->randomElement($this->allowed_country);
+        $randomCountry = $faker->randomElement($this->allowedCountries);
         $this->setRequestParameters();
         $this->setBillingCountry($randomCountry);
         $this->shouldNotThrow()->during('getDocument');
