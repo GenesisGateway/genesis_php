@@ -167,7 +167,8 @@ trait ManagedRecurringAttributes
             'first_date'  => $this->getManagedRecurringFirstDate(),
             'time_of_day' => $this->managed_recurring_time_of_day,
             'period'      => $this->managed_recurring_period,
-            'amount'      => $this->transformAmount($this->managed_recurring_amount, $this->currency),
+            'amount'      => $this->managed_recurring_amount ?
+                $this->transformAmount($this->managed_recurring_amount, $this->currency) : null,
             'max_count'   => $this->managed_recurring_max_count
         ];
     }

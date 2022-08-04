@@ -1,3 +1,11 @@
+1.21.1
+-----
+**Fixes**:
+
+* Fixed amount parameter parsing part of the managed_recurring parameters for the following transaction requests:
+    * InitRecurringSale
+    * InitRecurringSale3D
+
 1.21.0
 -----
 **Features**:

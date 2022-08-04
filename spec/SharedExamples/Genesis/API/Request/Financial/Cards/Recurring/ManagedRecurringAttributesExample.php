@@ -37,4 +37,11 @@ trait ManagedRecurringAttributesExample
     {
         $this->shouldThrow()->during('setManagedRecurringInterval', [$this->getFaker()]);
     }
+
+    public function it_should_not_add_managed_recurring_when_missing()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldNotContain('<managed_recurring>');
+    }
 }
