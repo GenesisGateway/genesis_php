@@ -30,4 +30,9 @@ class BankAttributesSpec extends ObjectBehavior
             [str_repeat('8', 99)]
         );
     }
+
+    public function it_should_allow_null_value_bic()
+    {
+        $this->shouldNotThrow()->during('setBic', [null]);
+    }
 }

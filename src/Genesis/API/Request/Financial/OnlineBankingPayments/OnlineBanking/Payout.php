@@ -306,6 +306,9 @@ class Payout extends \Genesis\API\Request\Base\Financial
                 'BRL' => [
                     ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('BRL')]
                 ],
+                'CAD' => [
+                    ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('CAD')]
+                ],
                 'CLP' => [
                     ['bank_name' => PayoutBankParameters::getBankNamesPerCurrency('CLP')]
                 ],

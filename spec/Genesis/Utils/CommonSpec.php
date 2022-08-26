@@ -49,27 +49,27 @@ class CommonSpec extends ObjectBehavior
     public function it_can_resolve_dynamic_methods()
     {
         $tests = array(
-            'setMode'                   => array('set', 'mode'),
-            'addMode'                   => array('add', 'mode'),
-            'selectMODE'                => array('select', 'mode'),
-            'setMoDe'                   => array('set', 'mo_de'),
-            'isUniqueid'                => array('is', 'uniqueid'),
-            'addUniqueId'               => array('add', 'unique_id'),
-            'setUniqueId'               => array('set', 'unique_id'),
-            'testUniqueID'              => array('test', 'unique_id'),
-            'deleteReturnSuccessUrl'    => array('delete', 'return_success_url'),
-            'updateReturnSuccessURL'    => array('update', 'return_success_url'),
-            'closeReturnSuccessUrl'     => array('close', 'return_success_url'),
-            'removeReturnSuccessURL'    => array('remove', 'return_success_url'),
-            'subBillingFirstName'       => array('sub', 'billing_first_name'),
-            'addBillingFirstName'       => array('add', 'billing_first_name'),
-            'delBillingAddress1'        => array('del', 'billing_address1'),
-            'remBillingADDRESS1'        => array('rem', 'billing_address1'),
-            'testPDFLoad'               => array('test', 'pdf_load'),
-            'closeStartMIDDLELast'      => array('close', 'start_middle_last'),
-            'isAString'                 => array('is', 'a_string'),
-            'addSome4Numbers234'        => array('add', 'some4_numbers234'),
-            'remTEST123String'          => array('rem', 'test123_string'),
+            'setMode'                => array('set', 'mode'),
+            'addMode'                => array('add', 'mode'),
+            'selectMODE'             => array('select', 'mode'),
+            'setMoDe'                => array('set', 'mo_de'),
+            'isUniqueid'             => array('is', 'uniqueid'),
+            'addUniqueId'            => array('add', 'unique_id'),
+            'setUniqueId'            => array('set', 'unique_id'),
+            'testUniqueID'           => array('test', 'unique_id'),
+            'deleteReturnSuccessUrl' => array('delete', 'return_success_url'),
+            'updateReturnSuccessURL' => array('update', 'return_success_url'),
+            'closeReturnSuccessUrl'  => array('close', 'return_success_url'),
+            'removeReturnSuccessURL' => array('remove', 'return_success_url'),
+            'subBillingFirstName'    => array('sub', 'billing_first_name'),
+            'addBillingFirstName'    => array('add', 'billing_first_name'),
+            'delBillingAddress1'     => array('del', 'billing_address1'),
+            'remBillingADDRESS1'     => array('rem', 'billing_address1'),
+            'testPDFLoad'            => array('test', 'pdf_load'),
+            'closeStartMIDDLELast'   => array('close', 'start_middle_last'),
+            'isAString'              => array('is', 'a_string'),
+            'addSome4Numbers234'     => array('add', 'some4_numbers234'),
+            'remTEST123String'       => array('rem', 'test123_string'),
         );
 
         foreach ($tests as $test => $result) {
@@ -120,6 +120,18 @@ class CommonSpec extends ObjectBehavior
             'removeMultipleKeys', array($array, 'string'));
     }
 
+    public function it_should_remove_correct_keys()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
+        $keysToBeRemoved = array('key1' => 'value1', 'key2' => 'value2');
+
+        $arrayObject = $this::createArrayObject($array);
+
+        $this::removeMultipleKeys(array_keys($keysToBeRemoved), $arrayObject)->shouldNotExist('key1');
+        $this::removeMultipleKeys(array_keys($keysToBeRemoved), $arrayObject)->shouldNotExist('key2');
+        $this::removeMultipleKeys(array_keys($keysToBeRemoved), $arrayObject)->shouldExist('key3');
+    }
+
     public function it_should_return_array_object()
     {
         $array = array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3');
@@ -135,6 +147,9 @@ class CommonSpec extends ObjectBehavior
         return array(
             'haveASizeOf' => function ($subject, $value) {
                 return (sizeof($subject) == $value);
+            },
+            'exist'       => function ($subject, $key) {
+                return array_key_exists($key, $subject);
             },
         );
     }

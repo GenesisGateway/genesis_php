@@ -2,9 +2,12 @@
 
 namespace spec\Genesis\API\Request\WPF;
 
+use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\WPF\Create;
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
@@ -245,6 +248,97 @@ class CreateSpec extends ObjectBehavior
         $this->setScaPreference(false);
 
         $this->getDocument()->shouldNotContain('<sca_preference>false</sca_preference>');
+    }
+
+    public function it_should_not_fail_when_empty_description()
+    {
+        $this->setRequestParameters();
+
+        $this->setDescription(null);
+        $this->shouldNotThrow()->during('getDocument');
+
+        $this->setDescription('');
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_have_proper_structure_when_description_exist()
+    {
+        $this->setRequestParameters();
+
+        $this->setDescription('Example Description');
+        $this->getDocument()->shouldContain('<description>Example Description</description>');
+    }
+
+    public function it_should_have_proper_structure_when_description_not_exist()
+    {
+        $this->setRequestParameters();
+
+        $this->setDescription('');
+        $this->getDocument()->shouldNotContain('<description>');
+    }
+
+    public function it_should_allow_sca_exemption()
+    {
+        $this->setRequestParameters();
+        $this->setScaExemption(
+            Faker::getInstance()->randomElement(
+                [ScaExemptions::EXEMPTION_LOW_VALUE, ScaExemptions::EXEMPTION_LOW_RISK]
+            )
+        )->shouldBeAnInstanceOf(Create::class);
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_when_exemption_invalid()
+    {
+        $this->shouldThrow(ErrorParameter::class)
+            ->during('setScaExemption', [ScaExemptions::EXEMPTION_CORPORATE_PAYMENT]);
+    }
+
+    public function it_should_have_proper_structure_when_exemption_exist()
+    {
+        $this->setRequestParameters();
+        $exemption = Faker::getInstance()->randomElement(
+            [ScaExemptions::EXEMPTION_LOW_VALUE, ScaExemptions::EXEMPTION_LOW_RISK]
+        );
+        $this->setScaExemption($exemption);
+
+        $this->getDocument()->shouldContain(
+            "\n\x20\x20<sca_params>" .
+            "\n\x20\x20\x20\x20<exemption>$exemption</exemption>" .
+            "\n\x20\x20</sca_params>"
+        );
+    }
+
+    public function it_should_have_proper_structure_when_exemption_not_exist()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldNotContain('<sca_params>');
+    }
+
+    public function it_should_work_when_web_payment_form_id_exist()
+    {
+        $this->setRequestParameters();
+        $this->setWebPaymentFormId(Faker::getInstance()->numberBetween(1));
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_have_proper_structure_when_web_payment_form_id_exist()
+    {
+        $this->setRequestParameters();
+        $webPaymentFormId = Faker::getInstance()->uuid;
+        $this->setWebPaymentFormId($webPaymentFormId);
+
+        $this->getDocument()->shouldContain("<web_payment_form_id>$webPaymentFormId</web_payment_form_id>");
+    }
+
+    public function it_should_have_proper_structure_when_web_payment_form_id_not_exist()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldNotContain("<web_payment_form_id>");
     }
 
     protected function setRequestParameters()

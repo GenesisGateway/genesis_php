@@ -30,6 +30,8 @@ use Genesis\API\Traits\Request\Financial\BankAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Validators\Request\RegexValidator;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class GiroPay
@@ -62,19 +64,38 @@ class GiroPay extends Financial
             'currency',
             'return_success_url',
             'return_failure_url',
-            'bic',
             'billing_country'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
             'billing_country' => ['DE'],
-            'currency'        => ['EUR'],
-            'iban'            => new RegexValidator(RegexValidator::PATTERN_DE_IBAN)
+            'currency'        => ['EUR']
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
+    }
+
+    /**
+     * Add iban conditional validation if it is present
+     *
+     * @return void
+     *
+     * @throws InvalidArgument
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+            array_merge(
+                (array)$this->requiredFieldValuesConditional,
+                $this->getIbanConditions()
+            )
+        );
+
+        parent::checkRequirements();
     }
 
     /**

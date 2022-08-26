@@ -1,3 +1,19 @@
+1.21.2
+-----
+**Features**:
+
+* Improved compatibility with PHP 8+
+* Updated GiroPay transaction requests via direct and PPRO integration
+    * bic attribute was marked as optional
+    * iban attribute was marked as optional
+* Updated supported bank list for the Online Banking Payout transaction request
+* Added CAD currency support to the Online Banking Payout transaction request
+* Updated required description attribute for the Web Payment Form create transaction request by marking as optional
+* Added SCA parameters support to the Web Payment Form transaction request
+* Added Web Payment Form Id attribute support to the Web Payment Form transaction request
+* Added Return Pending URL attribute support to the PPRO transaction request
+* Updated iban attribute validation pattern for the GiroPay transaction request
+
 1.21.1
 -----
 **Fixes**:

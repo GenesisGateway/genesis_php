@@ -59,7 +59,7 @@ class RegexValidator extends \Genesis\API\Validators\Request\Base\Validator
     /**
      * DE IBAN validation. Used in PPRO GiroPay
      */
-    const PATTERN_DE_IBAN = '/DE[0-9]{20}/';
+    const PATTERN_DE_IBAN = '/^DE[0-9]{20}$/';
 
     /**
      * Numeric value - 4 digits only; It cannot start with 0;

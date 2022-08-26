@@ -455,7 +455,10 @@ final class Common
      *
      * @param array $arrayKeys
      * @param \ArrayObject $arrayObject
+     *
      * @return \ArrayObject
+     *
+     * @throws Exception
      */
     public static function removeMultipleKeys($arrayKeys, $arrayObject)
     {
@@ -464,7 +467,7 @@ final class Common
         }
 
         foreach ($arrayKeys as $key) {
-            if (array_key_exists($key, $arrayObject)) {
+            if (property_exists($arrayObject, $key)) {
                 unset($arrayObject->{$key});
             }
         }

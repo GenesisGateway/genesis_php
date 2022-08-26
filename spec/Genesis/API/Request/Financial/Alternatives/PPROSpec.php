@@ -4,11 +4,12 @@ namespace spec\Genesis\API\Request\Financial\Alternatives;
 
 use Genesis\API\Request\Financial\Alternatives\PPRO;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class PPROSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, PendingPaymentAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -22,20 +23,60 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_bic_for_giropay()
+    public function it_should_contain_proper_structure_with_optional_parameters()
     {
         $this->setRequestParameters();
+
         $this->setPaymentType('giropay');
-        $this->setBic(null);
+        $this->setCurrency('EUR');
+        $this->setBillingCountry('DE');
+        $this->setBic('AGB3SSWI');
+        $this->getDocument()->shouldContain('<bic>AGB3SSWI</bic>');
+
+        $this->setIban('DE12345678901234567890');
+        $this->getDocument()->shouldContain('<iban>DE12345678901234567890</iban>');
+    }
+
+    public function it_should_fail_with_improper_iban()
+    {
+        $this->setRequestParameters();
+
+        $this->setPaymentType('giropay');
+        $this->setCurrency('EUR');
+        $this->setBillingCountry('DE');
+
+        $this->setIban('BG12345678901234567890');
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_fail_when_missing_iban_for_giropay()
+    public function it_should_contain_proper_structure_without_optional_parameters()
     {
-        $this->setRequestParameters();
+        $faker = $this->getFaker();
+
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
         $this->setPaymentType('giropay');
-        $this->setIban(null);
-        $this->shouldThrow()->during('getDocument');
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
+        $this->setCurrency('EUR');
+        $this->setBillingCountry('DE');
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setCustomerEmail($faker->email);
+        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setAccountNumber($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setBankCode('0000');
+        $this->setAccountPhone($faker->phoneNumber);
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingAddress1($faker->streetAddress);
+        $this->setBillingZipCode($faker->postcode);
+        $this->setBillingCity($faker->city);
+        $this->setBillingState($faker->state);
+
+        $this->getDocument()->shouldNotContain('<bic>');
+        $this->getDocument()->shouldNotContain('<iban>');
     }
 
     public function it_should_fail_when_missing_customer_email_for_przelewy24()
