@@ -41,6 +41,18 @@ use Genesis\Exceptions\InvalidMethod;
  * @method bool isEnabled()
  * @method bool isDisabled()
  * @method bool isSuccess()
+ * @method bool isSubmitted()
+ * @method bool isPendingHold()
+ * @method bool isSecondChargebacked()
+ * @method bool isRepresented()
+ * @method bool isInProgress()
+ * @method bool isUnsuccessful()
+ * @method bool isNew()
+ * @method bool isUser()
+ * @method bool isTimeout()
+ * @method bool isChargebacked()
+ * @method bool isChargebackReversed()
+ * @method bool isPreArbitrated()
  */
 class States
 {
@@ -145,6 +157,26 @@ class States
     const SUCCESS = 'success';
 
     /**
+     * WPF status represent submitted form
+     */
+    const SUBMITTED = 'submitted';
+
+    /**
+     * An asynchronous transaction has been finalized by user but is waiting final update from provider.
+     */
+    const PENDING_HOLD = 'pending_hold';
+
+    /**
+     * Once a chargeback_reversed/represented transaction is chargebacked the state changes to second chargebacked.
+     */
+    const SECOND_CHARGEBACKED = 'second_chargebacked';
+
+    /**
+     * Once a chargebacked transaction is charged, the state changes to represented. Chargeback has been canceled.
+     */
+    const REPRESENTED = 'represented';
+
+    /**
      * Store the state of transaction for comparison
      *
      * @var string
@@ -201,6 +233,8 @@ class States
      */
     public function compare($subject)
     {
+        $subject = $this->getStateAliasConstantName($subject);
+
         return $this->status == constant('self::' . strtoupper($subject));
     }
 
@@ -214,5 +248,25 @@ class States
         $statusList = \Genesis\Utils\Common::getClassConstants(__CLASS__);
 
         return in_array(strtolower($this->status), $statusList);
+    }
+
+    /**
+     * Check for the alias of the state for building a proper constant's comparison call
+     *
+     * @param $state
+     * @return mixed|string
+     */
+    private function getStateAliasConstantName($state)
+    {
+        $subject = $state;
+        $alias   = [
+            self::NEW_STATUS => 'new_status'
+        ];
+
+        if (array_key_exists($state, $alias)) {
+            $subject = $alias[$state];
+        }
+
+        return $subject;
     }
 }

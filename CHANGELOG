@@ -1,3 +1,15 @@
+1.21.3
+-----
+**Features**:
+
+* Improved compatibility with PHP 8.1
+* Updated Transaction States
+* Added Business Attributes support to the Trustly Sale transaction request
+* Updated Online Banking Payin transaction request
+    * Updated supported banks for MYR currency
+    * Added support of Bancontact (BCT) bank for EUR currency
+* Updated library Requirements
+
 1.21.2
 -----
 **Features**:

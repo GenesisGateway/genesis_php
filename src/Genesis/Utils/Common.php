@@ -410,7 +410,15 @@ final class Common
      */
     public static function isRegexExpr($pattern)
     {
-        return @preg_match($pattern, null) !== false;
+        set_error_handler(
+            function () {
+            },
+            E_WARNING
+        );
+        $isRegularExpression = preg_match($pattern, '') !== false;
+        restore_error_handler();
+
+        return $isRegularExpression;
     }
 
     /**

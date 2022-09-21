@@ -22,6 +22,8 @@ Requirements
     * [Hash](https://php.net/hash)
     * [XMLReader](https://php.net/xmlreader)
     * [XMLWriter](https://php.net/xmlwriter)
+    * [JSON](https://www.php.net/manual/en/book.json)
+    * [OpenSSL](https://www.php.net/manual/en/book.openssl.php)
 * Composer (optional)
 
 Note: Most of the extension are part of PHP and enabled by default, however some distributions are using custom configuration that might have some of them removed/disabled.

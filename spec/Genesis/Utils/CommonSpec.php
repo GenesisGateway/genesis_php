@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Utils;
 
+use Genesis\API\Validators\Request\RegexValidator;
 use PhpSpec\ObjectBehavior;
 use Genesis\Exceptions\Exception;
 
@@ -140,6 +141,18 @@ class CommonSpec extends ObjectBehavior
         $this::removeMultipleKeys($array, $arrayObject)->shouldBeAnInstanceOf(
             '\ArrayObject'
         );
+    }
+
+    public function it_should_return_false_with_non_regex()
+    {
+        $this::isRegexExpr('nonregex')->shouldBe(false);
+        $this::isRegexExpr(1234)->shouldBe(false);
+        $this::isRegexExpr('')->shouldBe(false);
+    }
+
+    public function it_should_return_true_with_regex()
+    {
+        $this::isRegexExpr(RegexValidator::PATTERN_CREDIT_CARD_NUMBER)->shouldBe(true);
     }
 
     public function getMatchers()

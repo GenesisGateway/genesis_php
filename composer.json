@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.21.2",
+  "version": "1.21.3",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -120,7 +120,9 @@
     "ext-hash": "*",
     "ext-simplexml": "*",
     "ext-xmlreader": "*",
-    "ext-xmlwriter": "*"
+    "ext-xmlwriter": "*",
+    "ext-json": "*",
+    "ext-openssl": "*"
   },
   "require-dev": {
     "fzaninotto/faker": "1.*@stable",

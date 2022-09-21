@@ -8,13 +8,14 @@ use Genesis\API\Request\Financial\Alternatives\Trustly\Sale;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use Genesis\Utils\Country;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples, BirthDateAttributesExample;
+    use RequestExamples, BirthDateAttributesExample, BusinessAttributesExample;
 
     public $allowed_country = [
         'AT', 'BE', 'CZ', 'DK', 'EE', 'FI', 'DE', 'LV', 'LT', 'NL', 'NO', 'PL',
@@ -113,6 +114,26 @@ class SaleSpec extends ObjectBehavior
         foreach ($parameters as $parameter) {
             $this->getDocument()->shouldContain("<$parameter>");
         }
+    }
+
+    public function it_should_not_contain_business_attributes_if_not_set()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldNotContain('<business_attributes>');
+    }
+
+    public function it_should_contain_business_attributes_if_set()
+    {
+        $faker = $this->getFaker();
+
+        $this->setRequestParameters();
+        $this->setBusinessEventStartDate($faker->date());
+        $this->setBusinessEventEndDate($faker->date());
+
+        $this->getDocument()->shouldContain('<business_attributes>');
+        $this->getDocument()->shouldContain('<event_start_date>');
+        $this->getDocument()->shouldContain('<event_end_date>');
     }
 
     protected function setRequestParameters()

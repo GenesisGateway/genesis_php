@@ -70,6 +70,54 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(true);
     }
 
+    public function it_should_not_throw_when_status_submitted($network)
+    {
+        $this->prepareNetworkMock($network, $this->buildSample(
+            array('submitted')
+        ));
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+    }
+
+    public function it_should_not_throw_when_status_pending_hold($network)
+    {
+        $this->prepareNetworkMock($network, $this->buildSample(
+            array('pending_hold')
+        ));
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+    }
+
+    public function it_should_not_throw_when_status_represented($network)
+    {
+        $this->prepareNetworkMock($network, $this->buildSample(
+            array('represented')
+        ));
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+    }
+
+    public function it_should_not_throw_when_status_second_chargebacked($network)
+    {
+        $this->prepareNetworkMock($network, $this->buildSample(
+            array('second_chargebacked')
+        ));
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+    }
+
     public function it_should_be_unsuccessful_on_error($network)
     {
         $this->prepareNetworkMock($network, $this->buildSample(

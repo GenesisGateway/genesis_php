@@ -360,6 +360,11 @@ class Banks
     const BN = 'BN';
 
     /**
+     * Bancontact
+     */
+    const BCT = 'BCT';
+
+    /**
      * PSE
      */
     const PS = 'PS';
@@ -698,7 +703,7 @@ class Banks
     /**
      * Kuwait Finance House
      */
-    const FPX_KFN = 'FPX_KFN';
+    const FPX_KFH = 'FPX_KFH';
 
     /**
      * May Bank

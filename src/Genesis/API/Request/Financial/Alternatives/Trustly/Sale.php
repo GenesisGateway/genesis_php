@@ -26,6 +26,7 @@ namespace Genesis\API\Request\Financial\Alternatives\Trustly;
 use Genesis\API\Constants\Transaction\Parameters\IFrameTargets;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\RestrictedSetter;
@@ -44,7 +45,8 @@ use Genesis\Exceptions\InvalidArgument;
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, RestrictedSetter, BirthDateAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, RestrictedSetter, BirthDateAttributes,
+        BusinessAttributes;
 
     /**
      * URL target for successful payment in Trustly iFrame.
@@ -140,7 +142,8 @@ class Sale extends \Genesis\API\Request\Base\Financial
                 'user_id'                   => $this->user_id,
                 'birth_date'                => $this->getBirthDate(),
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
-                'shipping_address'          => $this->getShippingAddressParamsStructure()
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'business_attributes'       => $this->getBusinessAttributesStructure()
             ]
         );
     }

@@ -119,7 +119,7 @@ class PayinSpec extends ObjectBehavior
         $this->setCustomerPhone($faker->phoneNumber);
         $this->setPaymentType(PaymentTypes::NETBANKING);
         $this->setCurrency('MYR');
-        $this->setBankCode(Banks::CASH_711);
+        $this->setBankCode(Banks::FPX_ABB);
         $this->setBillingCountry('IN');
         $this->setDocumentId('ABCDE1234F');
         $this->setShippingFirstName($faker->firstName);
