@@ -3,11 +3,9 @@
 
 namespace spec\Genesis\API\Request\Financial\TravelData;
 
-use Genesis\API\Request\Financial\TravelData\AirlineItineraryTaxesData;
-use Genesis\API\Request\Financial\TravelData\AdditionalAidAttributes;
+use Genesis\API\Request\Financial\TravelData\Base\AidAttributes;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
-
 
 class AirlineItineraryTaxesDataSpec extends ObjectBehavior
 {
@@ -19,7 +17,7 @@ class AirlineItineraryTaxesDataSpec extends ObjectBehavior
 
     function it_should_be_instance_of_base_airline_itinenary_class()
     {
-        $this->shouldBeAnInstanceOf(AdditionalAidAttributes::class);
+        $this->shouldBeAnInstanceOf(AidAttributes::class);
     }
 
     public function it_should_fail_when_fee_type_is_more_than_eight_symbols()

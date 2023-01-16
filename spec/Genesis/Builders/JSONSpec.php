@@ -25,7 +25,7 @@ class JSONSpec extends ObjectBehavior
         $this->getOutput()->shouldBeValidJSON();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty'     => function ($subject) {

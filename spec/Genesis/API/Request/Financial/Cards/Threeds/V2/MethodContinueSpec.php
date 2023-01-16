@@ -218,7 +218,8 @@ class MethodContinueSpec extends ObjectBehavior
         $this->prepareResponseMock($response);
         Config::setPassword('password_hash');
 
-        $genesis = $this::buildFromResponseObject($this->response->getResponseObject())->shouldHaveType(
+        $genesis = $this::buildFromResponseObject($this->response->getResponseObject());
+        $genesis->shouldHaveType(
             Genesis::class
         );
 

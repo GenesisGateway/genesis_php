@@ -135,7 +135,7 @@ class CreateSpec extends ObjectBehavior
         $this->setLastName($faker->lastName);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

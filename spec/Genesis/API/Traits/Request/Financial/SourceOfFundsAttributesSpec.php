@@ -36,7 +36,7 @@ class SourceOfFundsAttributesSpec extends ObjectBehavior
         );
     }
 
-    /*
+    /**
      * Helper methods
      */
 

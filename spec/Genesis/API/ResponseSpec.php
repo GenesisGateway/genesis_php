@@ -331,7 +331,7 @@ XML;
         return $xml->getDocument();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

@@ -84,9 +84,9 @@ class CommonSpec extends ObjectBehavior
             '\ArrayObject'
         );
 
-        $this::createArrayObject(array('key_example' => 'value_example'))->key_example->shouldBe(
-            'value_example'
-        );
+        $this->createArrayObject(array('key_example' => 'value_example'))->offsetGet(
+            'key_example'
+        )->shouldBe('value_example');
     }
 
     public function it_can_sanitize_null_array()
@@ -155,14 +155,14 @@ class CommonSpec extends ObjectBehavior
         $this::isRegexExpr(RegexValidator::PATTERN_CREDIT_CARD_NUMBER)->shouldBe(true);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'haveASizeOf' => function ($subject, $value) {
                 return (sizeof($subject) == $value);
             },
             'exist'       => function ($subject, $key) {
-                return array_key_exists($key, $subject);
+                return property_exists($subject, $key);
             },
         );
     }

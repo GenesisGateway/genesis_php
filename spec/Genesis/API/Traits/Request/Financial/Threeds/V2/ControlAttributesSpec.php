@@ -57,7 +57,7 @@ class ControlAttributesSpec extends ObjectBehavior
         $this->getThreedsV2ControlChallengeIndicator()->shouldBe($indicator);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beNotEmptyArray' => function ($subject) {

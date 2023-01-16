@@ -64,7 +64,7 @@ class CreateSpec extends ObjectBehavior
         $this->setServiceType(Create::CALL_SERVICE_TYPE_SMS);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

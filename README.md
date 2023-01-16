@@ -37,6 +37,12 @@ Installation
 composer.phar require genesisgateway/genesis_php
 ```
 
+Note: If you want to use the package with PHP version lover than 7.4, you can use 
+
+```sh
+composer.phar require genesisgateway/genesis_php --update-no-dev
+```
+
 #### Manual
 * Clone / [download](https://github.com/GenesisGateway/genesis_php/archive/master.zip) this repo
 
@@ -1208,7 +1214,7 @@ More information about each one of the request types can be found in the Genesis
 Running Specs
 --------------
 
-The following step are optional, however its recommended to run specs at least once, in order to ensure that everything is working as intended on your setup
+The following step are optional, however it's recommended to run specs at least once, in order to ensure that everything is working as intended on your setup
 
 * install [Composer] (if you don't have it already)
 ```sh
@@ -1224,5 +1230,7 @@ php composer.phar install
 ```sh
 php vendor/bin/phpspec run
 ```
+
+Note: The specs are intended to run with PHP v7.4
 
 [Composer]: https://getcomposer.org/

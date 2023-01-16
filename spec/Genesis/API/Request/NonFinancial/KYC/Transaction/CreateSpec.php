@@ -250,7 +250,7 @@ class CreateSpec extends ObjectBehavior
         $this->setEwalletId($faker->email);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

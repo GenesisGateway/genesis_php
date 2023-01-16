@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -18,6 +18,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -101,7 +103,7 @@ class BankCodeParameters
             Banks::DRAGONPAY
         ],
         'SGD' => [
-            Banks::ENETS_D, Banks::SINGPOST_PHP
+            Banks::DBS, Banks::UOB, Banks::OCBC, Banks::SCB
         ],
         'UYU' => [
             Banks::AI

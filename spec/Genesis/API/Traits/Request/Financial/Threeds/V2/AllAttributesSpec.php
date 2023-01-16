@@ -25,7 +25,7 @@ class AllAttributesSpec extends ObjectBehavior
         $this->getStructure()->shouldBeNotEmptyArray();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beNotEmptyArray' => function ($subject) {

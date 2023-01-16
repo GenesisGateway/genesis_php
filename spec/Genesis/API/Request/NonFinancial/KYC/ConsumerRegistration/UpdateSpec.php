@@ -45,7 +45,7 @@ class UpdateSpec extends ObjectBehavior
         $this->setStatusReason($faker->text(50));
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

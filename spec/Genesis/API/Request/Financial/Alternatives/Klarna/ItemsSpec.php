@@ -133,7 +133,7 @@ class ItemsSpec extends ObjectBehavior
         return \Genesis\Utils\Currency::exponentToAmount($total_tax_amount, $this->currency);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beEmpty' => function ($subject) {

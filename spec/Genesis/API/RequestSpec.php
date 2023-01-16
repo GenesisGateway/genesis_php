@@ -69,7 +69,7 @@ class RequestSpec extends ObjectBehavior
         $this->getApiConfig('url')->shouldBe('https://staging.gate.emerchantpay.net:443/blacklists');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'contain' => function ($subject, $arg) {

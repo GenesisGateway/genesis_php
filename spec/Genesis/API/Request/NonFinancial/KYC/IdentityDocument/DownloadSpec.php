@@ -38,7 +38,7 @@ class DownloadSpec extends ObjectBehavior
         $this->setIdentityDocumentId($faker->numberBetween(1, PHP_INT_MAX));
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

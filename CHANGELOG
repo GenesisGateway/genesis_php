@@ -1,3 +1,15 @@
+1.21.4
+-----
+**Features**:
+
+* Updated license comments that are located in the library files
+* Updated Customer Email validations by allowing accented characters
+* Updated Online Banking SGD currency by allowing the following bank codes:
+    * ENETS-D_DBS
+    * ENETS-D_UOB
+    * ENETS-D_OCBC
+    * ENETS-D_SCB
+
 1.21.3
 -----
 **Features**:

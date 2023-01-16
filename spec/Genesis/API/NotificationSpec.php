@@ -164,9 +164,9 @@ class NotificationSpec extends ObjectBehavior
         );
 
         $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['api'], $invalid_data)));
-        $this->getNotificationObject()->sig3->shouldBe($this->sample['api']['signature'] . '3');
-        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['api']['signature']);
-        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
+        $this->getNotificationObject()->offsetGet('sig3')->shouldBe($this->sample['api']['signature'] . '3');
+        $this->getNotificationObject()->offsetGet('sigU')->shouldBe('u' . $this->sample['api']['signature']);
+        $this->getNotificationObject()->offsetGet('$alpha')->shouldBe('');
     }
 
     public function it_should_parse_wpf_notification()
@@ -184,9 +184,9 @@ class NotificationSpec extends ObjectBehavior
         );
 
         $this->shouldNotThrow()->during('parseNotification', array(array_merge($this->sample['wpf'], $invalid_data)));
-        $this->getNotificationObject()->sig3->shouldBe($this->sample['wpf']['signature'] . '3');
-        $this->getNotificationObject()->sigU->shouldBe('u' . $this->sample['wpf']['signature']);
-        $this->getNotificationObject()->{'$alpha'}->shouldBe('');
+        $this->getNotificationObject()->offsetGet('sig3')->shouldBe($this->sample['wpf']['signature'] . '3');
+        $this->getNotificationObject()->offsetGet('sigU')->shouldBe('u' . $this->sample['wpf']['signature']);
+        $this->getNotificationObject()->offsetGet('$alpha')->shouldBe('');
     }
 
     public function it_can_render_api_response_correctly()
@@ -215,7 +215,7 @@ class NotificationSpec extends ObjectBehavior
         $this->generateResponse()->shouldBe(ob_get_clean());
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

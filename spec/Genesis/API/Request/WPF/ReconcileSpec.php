@@ -35,7 +35,7 @@ class ReconcileSpec extends ObjectBehavior
         $this->setUniqueId(mt_rand(PHP_INT_SIZE, PHP_INT_MAX));
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

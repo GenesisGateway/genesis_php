@@ -45,7 +45,7 @@ class MethodAttributesSpec extends ObjectBehavior
         );
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beNotEmptyArray' => function ($subject) {

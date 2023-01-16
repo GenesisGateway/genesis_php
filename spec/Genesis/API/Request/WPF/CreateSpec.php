@@ -385,7 +385,7 @@ class CreateSpec extends ObjectBehavior
         );
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty'       => function ($subject) {

@@ -68,7 +68,7 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->setNotificationUrl($faker->url);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty'       => function ($subject) {

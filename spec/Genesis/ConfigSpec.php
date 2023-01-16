@@ -203,7 +203,7 @@ class ConfigSpec extends ObjectBehavior
         $this::setInterface('network', 'curl');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty'       => function ($subject) {

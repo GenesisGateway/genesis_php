@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Request\Financial\CashPayments;
+namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Hipercard;
 use PhpSpec\ObjectBehavior;

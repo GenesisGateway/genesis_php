@@ -27,7 +27,7 @@ class ProductIdentifiersSpec extends ObjectBehavior
         $this->setManufacturerPartNumber($faker->randomAscii);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beEmpty' => function ($subject) {

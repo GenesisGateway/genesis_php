@@ -63,7 +63,7 @@ class GooglePayAttributesSpec extends ObjectBehavior
         $this->setTokenSignatures($tokenSignatures)->getTokenSignatures()->shouldBe($tokenSignatures);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beValidJson' => function ($subject) {

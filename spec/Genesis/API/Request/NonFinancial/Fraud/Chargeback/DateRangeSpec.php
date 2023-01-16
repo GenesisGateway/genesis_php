@@ -158,7 +158,7 @@ class DateRangeSpec extends ObjectBehavior
         $this->response = $response;
     }
 
-    /*
+    /**
      * Helpers
      */
 

@@ -54,7 +54,7 @@ class UpdateSpec extends ObjectBehavior
         $this->setSecurityCodeInput(1234);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

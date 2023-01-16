@@ -61,7 +61,7 @@ class ApplePayAttributesSpec extends ObjectBehavior
         }
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'beValidJson' => function ($subject) {

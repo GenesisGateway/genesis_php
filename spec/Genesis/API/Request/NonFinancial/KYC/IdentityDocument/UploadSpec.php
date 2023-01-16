@@ -66,7 +66,7 @@ class UploadSpec extends ObjectBehavior
         $this->addDoc(base64_encode($faker->text), $faker->mimeType);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

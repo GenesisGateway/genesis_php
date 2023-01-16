@@ -53,7 +53,7 @@ class BuilderSpec extends ObjectBehavior
         $this->getDocument()->shouldMatch('/&gt;/');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

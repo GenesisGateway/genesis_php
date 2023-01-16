@@ -73,7 +73,7 @@ class RussianMobileSaleSpec extends ObjectBehavior
         $this->setCurrency('RUB');
         $this->setBillingCountry('RU');
         $this->setOperator($faker->randomElement(RussianMobileOperators::getAll()));
-        $this->setTarget($faker->randomNumber());
+        $this->setTarget($faker->numberBetween(1));
         $this->setRemoteIp($faker->ipv4);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);

@@ -76,7 +76,7 @@ trait RequestExamples
         );
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

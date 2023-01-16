@@ -85,7 +85,7 @@ class UpdateSpec extends ObjectBehavior
         $this->setStatus(Update::TRANSACTION_STATUS_APPROVED);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

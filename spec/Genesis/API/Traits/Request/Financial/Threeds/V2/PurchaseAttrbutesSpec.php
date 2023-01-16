@@ -37,7 +37,7 @@ class PurchaseAttrbutesSpec extends ObjectBehavior
         $this->getThreedsV2PurchaseCategory()->shouldBe($category);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beNotEmptyArray' => function ($subject) {

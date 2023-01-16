@@ -123,7 +123,7 @@ class StreamSpec extends ObjectBehavior
         $this->getStatus()->shouldBe(200);
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {

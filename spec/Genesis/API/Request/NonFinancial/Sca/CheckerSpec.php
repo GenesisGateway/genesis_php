@@ -209,7 +209,7 @@ class CheckerSpec extends ObjectBehavior
         $this->getTransactionExemption()->shouldBeNull();
     }
 
-    /*
+    /**
      * Helper Methods
      */
 

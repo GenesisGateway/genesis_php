@@ -24,7 +24,7 @@ class FORMSpec extends ObjectBehavior
         $this->getOutput()->shouldBeValidQueryString();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beValidQueryString' => function ($subject) {

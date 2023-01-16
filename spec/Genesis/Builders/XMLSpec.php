@@ -67,7 +67,7 @@ class XMLSpec extends ObjectBehavior
         $xmlWriter->outputMemory(true)->shouldHaveBeenCalled();
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return array(
             'beEmpty' => function ($subject) {
