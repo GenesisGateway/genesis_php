@@ -18,42 +18,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
-
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+namespace Genesis\API\Constants\Transaction\Parameters\Recurring;
 
 /**
- * class ManagedRecurringAttributesStub
+ * List of available Recurring Categories
  *
- * Used to spec ManagedRecurringAttributes trait
+ * Specifies whether the recurring transaction is a subscription(fixed amount, fixed intervals)or if it is a standing
+ * order(varying amount, fixed intervals).
  *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
+ * class Types
  */
-class ManagedRecurringAttributesStub extends Request
+class Categories
 {
-    use RestrictedSetter;
+    /**
+     * Recurring Category Subscription - fixed amount, fixed intervals
+     */
+    const SUBSCRIPTION   = 'subscription';
 
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
+    /**
+     * Recurring Category Stangin Order - varying amount, fixed intervals
+     */
+    const STANDING_ORDER = 'standing_order';
 
-    protected function populateStructure()
+    /**
+     * Return all available recurring categories
+     *
+     * @return array
+     */
+    public static function getAll()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
+        return array(
+            self::SUBSCRIPTION,
+            self::STANDING_ORDER
         );
     }
 }

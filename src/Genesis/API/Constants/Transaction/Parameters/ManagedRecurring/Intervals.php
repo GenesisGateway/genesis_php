@@ -18,42 +18,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
-
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+namespace Genesis\API\Constants\Transaction\Parameters\ManagedRecurring;
 
 /**
- * class ManagedRecurringAttributesStub
+ * class Intervals
  *
- * Used to spec ManagedRecurringAttributes trait
+ * Managed Recurring available Intervals.
+ * Used for Non-Indian
  *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
+ * @package Genesis\API\Constants\Transaction\Parameters\ManagedRecurring
  */
-class ManagedRecurringAttributesStub extends Request
+class Intervals
 {
-    use RestrictedSetter;
+    /**
+     * Interval Days
+     */
+    const DAYS   = 'days';
 
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
+    /**
+     * Interval Months
+     */
+    const MONTHS = 'months';
 
-    protected function populateStructure()
+    /**
+     * Get all available Intervals
+     *
+     * @return array
+     */
+    public static function getAll()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
+        return array(
+            self::DAYS,
+            self::MONTHS
         );
     }
 }

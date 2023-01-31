@@ -18,42 +18,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
-
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+namespace Genesis\API\Constants\Transaction\Parameters\Recurring;
 
 /**
- * class ManagedRecurringAttributesStub
+ * List of available Recurring Types
  *
- * Used to spec ManagedRecurringAttributes trait
- *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
+ * class Types
  */
-class ManagedRecurringAttributesStub extends Request
+class Types
 {
-    use RestrictedSetter;
+    /**
+     * Indication for an Initial Recurring Transaction. Respond to Init_Recurring
+     */
+    const INITIAL    = 'initial';
 
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
+    /**
+     * Indication for a Managed Recurring Transaction. Respond to Managed Recurring transactions.
+     */
+    const MANAGED    = 'managed';
 
-    protected function populateStructure()
+    /**
+     * Indication for a Subsequent Transaction on the Initial Recurring. Respond to subsequent Recurring payments.
+     */
+    const SUBSEQUENT = 'subsequent';
+
+    /**
+     * Return all Initial Recurring Types
+     *
+     * @return string[]
+     */
+    public static function getInitialTypes()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
+        return array(
+            self::INITIAL,
+            self::MANAGED
+        );
+    }
+
+    /**
+     * Return all Subsequent Types
+     *
+     * @return string[]
+     */
+    public static function getSubsequentTypes()
+    {
+        return array(
+            self::SUBSEQUENT
         );
     }
 }

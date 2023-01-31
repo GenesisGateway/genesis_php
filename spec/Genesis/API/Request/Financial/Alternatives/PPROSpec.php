@@ -2,7 +2,9 @@
 
 namespace spec\Genesis\API\Request\Financial\Alternatives;
 
+use Genesis\API\Constants\Payment\Methods;
 use Genesis\API\Request\Financial\Alternatives\PPRO;
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
@@ -83,7 +85,7 @@ class PPROSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->setPaymentType('przelewy24');
-        $this->shouldThrow()->during('setCustomerEmail', [ '' ]);
+        $this->shouldThrow(ErrorParameter::class)->during('setCustomerEmail', ['']);
     }
 
     public function it_should_fail_when_wrong_country_code_for_safetypay()
@@ -110,6 +112,14 @@ class PPROSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_fail_with_trustpay_payment_method()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType('trustpay');
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
@@ -118,7 +128,7 @@ class PPROSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setPaymentType('trustpay');
+        $this->setPaymentType(Methods::BCMC);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('EUR');
@@ -136,6 +146,6 @@ class PPROSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
-        $this->setBillingCountry('CZ');
+        $this->setBillingCountry('BE');
     }
 }

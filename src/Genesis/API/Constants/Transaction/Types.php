@@ -88,16 +88,19 @@ class Types
 
     /**
      * A standard initial recurring
+     * @deprecated Since 1.21.5 Payment method is deprecated and will be removed
      */
     const INIT_RECURRING_SALE = 'init_recurring_sale';
 
     /**
      * 3D-based initial recurring
+     * @deprecated Since 1.21.5 Payment method is deprecated and will be removed
      */
     const INIT_RECURRING_SALE_3D = 'init_recurring_sale3d';
 
     /**
      * A RecurringSale transaction is a "repeated" transaction which follows and references an initial transaction
+     * @deprecated Since 1.21.5 Payment method is deprecated and will be removed
      */
     const RECURRING_SALE = 'recurring_sale';
 
@@ -158,6 +161,7 @@ class Types
 
     /**
      * TrustPay is a real-time bank transfer payment service, which is widely used in the Czech Republic and Slovakia.
+     * @deprecated since 1.21.5 - the TrustPay API was deprecated by Genesis
      */
     const TRUSTPAY = 'trustpay';
 
@@ -979,7 +983,6 @@ class Types
             self::TARJETA_SHOPPING,
             self::TCS,
             self::TRUSTLY_SALE,
-            self::TRUSTPAY,
             self::UPI,
             self::WEBMONEY,
             self::WEBPAY,
@@ -1304,6 +1307,7 @@ class Types
             self::SANTANDER_CASH,
             self::SURTIMAX,
             self::TRUSTLY_WITHDRAWAL,
+            self::TRUSTPAY,
             self::ZIMPLER
         ];
 

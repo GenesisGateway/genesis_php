@@ -18,42 +18,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
+namespace Genesis\API\Constants\Transaction\Parameters\ManagedRecurring;
 
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
 
 /**
- * class ManagedRecurringAttributesStub
+ * class PaymentTypes
  *
- * Used to spec ManagedRecurringAttributes trait
+ * Managed Recurring available Payment Types
+ * Used for Indian Cards
  *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
+ * @package Genesis\API\Constants\Transaction\Parameters\ManagedRecurring
  */
-class ManagedRecurringAttributesStub extends Request
+class PaymentTypes
 {
-    use RestrictedSetter;
+    /**
+     * Payment Type Initial
+     */
+    const INITIAL      = 'initial';
 
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
+    /**
+     * Payment Type Subsequent
+     */
+    const SUBSEQUENT   = 'subsequent';
 
-    protected function populateStructure()
+    /**
+     * Payment Type Modification
+     */
+    const MODIFICATION = 'modification';
+
+    /**
+     * Payment Type Cancellation
+     */
+    const CANCELLATION = 'cancellation';
+
+    /**
+     * Get all available Payment Types
+     *
+     * @return array
+     */
+    public static function getAll()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
-        );
+        return Common::getClassConstants(self::class);
     }
 }

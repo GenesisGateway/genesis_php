@@ -26,7 +26,9 @@
 namespace Genesis\API\Traits\Request\Financial\Cards\Recurring;
 
 use Genesis\API\Constants\DateTimeFormat;
-use Genesis\API\Constants\Transaction\Parameters\Alternatives\AccountTypes;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\Intervals;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\Modes;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait ManagedRecurringAttributes
@@ -36,10 +38,12 @@ use Genesis\API\Constants\Transaction\Parameters\Alternatives\AccountTypes;
  *
  * @package Genesis\API\Traits\Request\Financial\Cards\Recurring
  *
+ * @method string  getManagedRecurringMode()
  * @method string  getManagedRecurringInterval()
  * @method integer getManagedRecurringTimeOfDay()
  * @method integer getManagedRecurringPeriod()
  * @method integer getManagedRecurringAmount()
+ * @method integer getManagedRecurringMaxCount()
  *
  * @method $this   setManagedRecurringTimeOfDay($value)
  * @method $this   setManagedRecurringPeriod($value)
@@ -47,9 +51,19 @@ use Genesis\API\Constants\Transaction\Parameters\Alternatives\AccountTypes;
  */
 trait ManagedRecurringAttributes
 {
+    use ManagedRecurringIndianCardAttributes;
+
     /**
-     * @var string $managed_recurring_interval      The interval type for the period: days or months.
-     * The default value is days
+     * Indicates that the gateway will automatically manage or not the subsequent recurring transactions.
+     *
+     * @var string $managed_recurring_mode              Fill in with automatic or manual
+     */
+    protected $managed_recurring_mode;
+
+    /**
+     * The interval type for the period. The default value is days.
+     *
+     * @var string $managed_recurring_interval          Allowed: days or months
      */
     protected $managed_recurring_interval;
 
@@ -83,11 +97,27 @@ trait ManagedRecurringAttributes
     protected $managed_recurring_max_count;
 
     /**
-     * @var array $intervalAllowedValues            Managed Recurring interval allowed values
+     * Indicates that the gateway will automatically manage or not the subsequent recurring transactions.
+     *
+     * @param string|null $value
+     * @return $this
+     * @throws InvalidArgument
      */
-    protected $intervalAllowedValues = [
-        'days', 'months'
-    ];
+    public function setManagedRecurringMode($value)
+    {
+        if (empty($value)) {
+            $this->managed_recurring_mode = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'managed_recurring_mode',
+            Modes::getAll(),
+            $value,
+            'Invalid value given for Mode.'
+        );
+    }
 
     /**
      * Specifies the date of the first recurring event in the future, default value is date of creation + period.
@@ -103,6 +133,7 @@ trait ManagedRecurringAttributes
     /**
      * @param string $value
      * @return $this
+     * @throws InvalidArgument
      */
     public function setManagedRecurringFirstDate($value)
     {
@@ -137,10 +168,23 @@ trait ManagedRecurringAttributes
 
         return $this->allowedOptionsSetter(
             'managed_recurring_interval',
-            $this->intervalAllowedValues,
+            Intervals::getAll(),
             $value,
             'Invalid value given for Interval.'
         );
+    }
+
+    /**
+     * Maximum transactions count as per the agreement.
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setManagedRecurringMaxCount($value)
+    {
+        $this->managed_recurring_max_count = (int) $value;
+
+        return $this;
     }
 
     /**
@@ -150,11 +194,20 @@ trait ManagedRecurringAttributes
     protected function requiredManagedRecurringFieldsConditional()
     {
         return [
-            'managed_recurring_interval'    => ['managed_recurring_period'],
-            'managed_recurring_first_date'  => ['managed_recurring_period'],
-            'managed_recurring_time_of_day' => ['managed_recurring_period'],
-            'managed_recurring_amount'      => ['managed_recurring_period'],
-            'managed_recurring_max_count'   => ['managed_recurring_period']
+            'managed_recurring_period'      => ['managed_recurring_mode'],
+            'managed_recurring_interval'    => ['managed_recurring_mode'],
+            'managed_recurring_first_date'  => ['managed_recurring_mode'],
+            'managed_recurring_time_of_day' => ['managed_recurring_mode'],
+            'managed_recurring_amount'      => ['managed_recurring_mode'],
+            'managed_recurring_max_count'   => ['managed_recurring_mode'],
+
+            // Indian Cards Requirements, managed_recurring_mode is required
+            'managed_recurring_payment_type'                  => ['managed_recurring_mode'],
+            'managed_recurring_amount_type'                   => ['managed_recurring_mode'],
+            'managed_recurring_frequency'                     => ['managed_recurring_mode'],
+            'managed_recurring_registration_reference_number' => ['managed_recurring_mode'],
+            'managed_recurring_max_amount'                    => ['managed_recurring_mode'],
+            'managed_recurring_validated'                     => ['managed_recurring_mode']
         ];
     }
 
@@ -164,14 +217,18 @@ trait ManagedRecurringAttributes
      */
     protected function getManagedRecurringAttributesStructure()
     {
-        return [
-            'interval'    => $this->managed_recurring_interval,
-            'first_date'  => $this->getManagedRecurringFirstDate(),
-            'time_of_day' => $this->managed_recurring_time_of_day,
-            'period'      => $this->managed_recurring_period,
-            'amount'      => $this->managed_recurring_amount ?
+        return array_merge(
+            [
+                'mode'        => $this->managed_recurring_mode,
+                'interval'    => $this->managed_recurring_interval,
+                'first_date'  => $this->getManagedRecurringFirstDate(),
+                'time_of_day' => $this->managed_recurring_time_of_day,
+                'period'      => $this->managed_recurring_period,
+                'amount'      => $this->managed_recurring_amount ?
                 $this->transformAmount($this->managed_recurring_amount, $this->currency) : null,
-            'max_count'   => $this->managed_recurring_max_count
-        ];
+                'max_count'   => $this->managed_recurring_max_count
+            ],
+            $this->getManagedRecurringIndianCardAttributesStructure()
+        );
     }
 }

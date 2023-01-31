@@ -23,11 +23,20 @@
 
 namespace spec\Genesis\API\Traits\Request\Financial\Cards\Recurring;
 
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\AmountTypes;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\Frequencies;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\Intervals;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\Modes;
+use Genesis\API\Constants\Transaction\Parameters\ManagedRecurring\PaymentTypes;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributesStub;
+use spec\SharedExamples\Faker;
 
 class ManagedRecurringAttributesSpec extends ObjectBehavior
 {
+    const INVALID_VALUE = 'invalid';
+
     public function let()
     {
         $this->beAnInstanceOf(ManagedRecurringAttributesStub::class);
@@ -35,7 +44,7 @@ class ManagedRecurringAttributesSpec extends ObjectBehavior
 
     public function it_should_have_proper_structure()
     {
-        $this->setRequestParameters();
+        $this->setAmountRequestParameters('setManagedRecurringAmount');
 
         $this->requiredManagedRecurringFieldsConditional()->shouldBeArray();
         $this->getManagedRecurringAttributesStructure()->shouldBeArray();
@@ -43,7 +52,7 @@ class ManagedRecurringAttributesSpec extends ObjectBehavior
 
     public function it_should_return_proper_amount()
     {
-        $this->setRequestParameters();
+        $this->setAmountRequestParameters('setManagedRecurringAmount');
 
         $this->getDocument()->shouldContain(
             "<payment_transaction>" .
@@ -55,9 +64,119 @@ class ManagedRecurringAttributesSpec extends ObjectBehavior
         );
     }
 
-    public function setRequestParameters()
+    public function it_should_return_proper_max_amount()
     {
-        $this->setManagedRecurringAmount('5.00');
+        $this->setAmountRequestParameters('setManagedRecurringMaxAmount');
+
+        $this->getDocument()->shouldContain(
+            "<payment_transaction>" .
+            "\n\x20\x20<currency>EUR</currency>" .
+            "\n\x20\x20<managed_recurring>" .
+            "\n\x20\x20\x20\x20<max_amount>500</max_amount>" .
+            "\n\x20\x20</managed_recurring>" .
+            "\n</payment_transaction>"
+        );
+    }
+
+    public function it_should_throw_with_invalid_mode()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setManagedRecurringMode', [self::INVALID_VALUE]);
+    }
+
+    public function it_should_not_throw_with_valid_mode()
+    {
+        $this->shouldNotThrow()->during(
+            'setManagedRecurringMode',
+            [Faker::getInstance()->randomElement(Modes::getAll())]
+        );
+    }
+
+    public function it_should_throw_with_invalid_interval()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setManagedRecurringInterval', [self::INVALID_VALUE]);
+    }
+
+    public function it_should_not_throw_with_valid_interval()
+    {
+        $this->shouldNotThrow()->during(
+            'setManagedRecurringInterval',
+            [Faker::getInstance()->randomElement(Intervals::getAll())]
+        );
+    }
+
+    public function it_should_throw_with_invalid_payment_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setManagedRecurringPaymentType', [self::INVALID_VALUE]);
+    }
+
+    public function it_should_not_throw_with_valid_payment_type()
+    {
+        $this->shouldNotThrow()->during(
+            'setManagedRecurringPaymentType',
+            [Faker::getInstance()->randomElement(PaymentTypes::getAll())]
+        );
+    }
+
+    public function it_should_throw_with_invalid_amount_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setManagedRecurringAmountType', [self::INVALID_VALUE]);
+    }
+
+    public function it_should_not_throw_with_valid_amount_type()
+    {
+        $this->shouldNotThrow()->during(
+            'setManagedRecurringAmountType',
+            [Faker::getInstance()->randomElement(AmountTypes::getAll())]
+        );
+    }
+
+    public function it_should_throw_with_invalid_frequency()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setManagedRecurringFrequency', [self::INVALID_VALUE]);
+    }
+
+    public function it_should_not_throw_with_valid_frequency()
+    {
+        $this->shouldNotThrow()->during(
+            'setManagedRecurringFrequency',
+            [Faker::getInstance()->randomElement(Frequencies::getAll())]
+        );
+    }
+
+    public function it_should_contain_false_string_validated_value()
+    {
+        $this->setManagedRecurringValidated('no');
+
+        $this->getDocument()->shouldContain(
+            "<payment_transaction>" .
+            "\n\x20\x20<managed_recurring>" .
+            "\n\x20\x20\x20\x20<validated>false</validated>" .
+            "\n\x20\x20</managed_recurring>" .
+            "\n</payment_transaction>"
+        );
+    }
+
+    public function it_should_contain_true_string_validated_value()
+    {
+        $this->setManagedRecurringValidated('true');
+
+        $this->getDocument()->shouldContain(
+            "<payment_transaction>" .
+            "\n\x20\x20<managed_recurring>" .
+            "\n\x20\x20\x20\x20<validated>true</validated>" .
+            "\n\x20\x20</managed_recurring>" .
+            "\n</payment_transaction>"
+        );
+    }
+
+    private function setAmountRequestParameters($accessor)
+    {
+        $this->$accessor('5.00');
         $this->setCurrency('EUR');
     }
 }

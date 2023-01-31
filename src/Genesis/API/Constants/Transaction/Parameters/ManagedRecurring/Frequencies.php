@@ -22,74 +22,88 @@
  * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Payment;
+
+namespace Genesis\API\Constants\Transaction\Parameters\ManagedRecurring;
+
+use Genesis\Utils\Common;
 
 /**
- * Class Methods
+ * class Frequencies
  *
- * Payment methods for Genesis Transactions
+ * Managed Recurring available Frequencies
+ * Used for Indian Cards
  *
- * @package Genesis\API\Constants\Transaction
+ * @package Genesis\API\Constants\Transaction\Parameters\ManagedRecurring
  */
-class Methods
+class Frequencies
 {
     /**
-     * e-payment standard
-     *
-     * PPRO transaction
+     * Frequency Daily
      */
-    const EPS = 'eps';
+    const DAILY            = 'daily';
 
     /**
-     * GiroPay
-     *
-     * PPRO transaction
+     * Frequency Twice Weekly
      */
-    const GIRO_PAY = 'giropay';
+    const TWICE_WEEKLY     = 'twice_weekly';
 
     /**
-     * iDEAL
-     *
-     * PPRO transaction
+     * Frequency Weekly
      */
-    const IDEAL = 'ideal';
+    const WEEKLY           = 'weekly';
 
     /**
-     * Przelewy24
-     *
-     * PPRO transaction
+     * Frequency Ten Days
      */
-    const PRZELEWY24 = 'przelewy24';
+    const TEN_DAYS         = 'ten_days';
 
     /**
-     * SafetyPay
-     *
-     * PPRO transaction
+     * Frequency Fortnightly
      */
-    const SAFETY_PAY = 'safetypay';
+    const FORTNIGHTLY      = 'fortnightly';
 
     /**
-     * Mr.Cash
-     *
-     * PPRO transaction
+     * Frequency Monthly
      */
-    const BCMC = 'bcmc';
+    const MONTHLY          = 'monthly';
 
     /**
-     * MyBank
-     *
-     * PPRO transaction
+     * Frequency Every Two Months
      */
-    const MYBANK = 'mybank';
+    const EVERY_TWO_MONTHS = 'every_two_months';
 
     /**
-     * Returns all available payment methods
+     * Frequency Trimester
+     */
+    const TRIMESTER        = 'trimester';
+
+    /**
+     * Frequency Quarterly
+     */
+    const QUARTERLY        = 'quarterly';
+
+    /**
+     * Frequency Twice Yearly
+     */
+    const TWICE_YEARLY     = 'twice_yearly';
+
+    /**
+     * Frequency Annually
+     */
+    const ANNUALLY         = 'annually';
+
+    /**
+     * Frequency Unscheduled
+     */
+    const UNSCHEDULED      = 'unscheduled';
+
+    /**
+     * Get all available Frequencies
+     *
      * @return array
      */
-    public static function getMethods()
+    public static function getAll()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
-
-        return array_values($methods);
+        return Common::getClassConstants(self::class);
     }
 }

@@ -22,74 +22,51 @@
  * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Constants\Payment;
+
+namespace Genesis\API\Traits\Request\Financial\Cards\Recurring;
+
+use Genesis\API\Constants\Transaction\Parameters\Recurring\Categories;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
- * Class Methods
+ * trait RecurringCategoryAttributes
  *
- * Payment methods for Genesis Transactions
+ * Specifies whether the recurring transaction is a subscription(fixed amount, fixed intervals)or if it is a standing
+ * order(varying amount, fixed intervals).
  *
- * @package Genesis\API\Constants\Transaction
+ * @package Genesis\API\Traits\Request\Financial\Cards\Recurring
+ *
+ * @method string|null getRecurringCategory() Specifies whether the recurring is a subscription or standing order
  */
-class Methods
+trait RecurringCategoryAttributes
 {
     /**
-     * e-payment standard
+     * Specifies whether the recurring transaction is a subscription or standing order
      *
-     * PPRO transaction
+     * @var string
      */
-    const EPS = 'eps';
+    protected $recurring_category;
 
     /**
-     * GiroPay
+     * Specifies whether the recurring transaction is a subscription or standing order
      *
-     * PPRO transaction
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
      */
-    const GIRO_PAY = 'giropay';
-
-    /**
-     * iDEAL
-     *
-     * PPRO transaction
-     */
-    const IDEAL = 'ideal';
-
-    /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Mr.Cash
-     *
-     * PPRO transaction
-     */
-    const BCMC = 'bcmc';
-
-    /**
-     * MyBank
-     *
-     * PPRO transaction
-     */
-    const MYBANK = 'mybank';
-
-    /**
-     * Returns all available payment methods
-     * @return array
-     */
-    public static function getMethods()
+    public function setRecurringCategory($value)
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+        if (empty($value)) {
+            $this->recurring_category = null;
 
-        return array_values($methods);
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'recurring_category',
+            Categories::getAll(),
+            $value,
+            'Invalid value given for Recurring Category.'
+        );
     }
 }

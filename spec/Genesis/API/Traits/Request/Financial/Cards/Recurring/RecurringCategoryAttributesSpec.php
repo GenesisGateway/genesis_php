@@ -21,39 +21,33 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
+namespace spec\Genesis\API\Traits\Request\Financial\Cards\Recurring;
 
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+use Genesis\API\Constants\Transaction\Parameters\Recurring\Categories;
+use Genesis\Exceptions\InvalidArgument;
+use PhpSpec\ObjectBehavior;
+use spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring\RecurringCategoryStub;
+use spec\SharedExamples\Faker;
 
-/**
- * class ManagedRecurringAttributesStub
- *
- * Used to spec ManagedRecurringAttributes trait
- *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
- */
-class ManagedRecurringAttributesStub extends Request
+class RecurringCategoryAttributesSpec extends ObjectBehavior
 {
-    use RestrictedSetter;
-
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
-
-    protected function populateStructure()
+    public function let()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
+        $this->beAnInstanceOf(RecurringCategoryStub::class);
+    }
+
+    public function it_should_fail_with_invalid_category()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setRecurringCategory', ['invalid']);
+    }
+
+    public function it_should_not_fail_with_valid_category()
+    {
+        $this->shouldNotThrow()->during(
+            'setRecurringCategory',
+            [Faker::getInstance()->randomElement(Categories::getAll())]
         );
     }
 }
+

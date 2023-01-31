@@ -899,13 +899,16 @@ In certain cases, it is possible to submit a transaction with a zero-value amoun
 ```php
 <?php
 require 'vendor/autoload.php';
+
 // Load the pre-configured ini file...
 \Genesis\Config::loadSettings('/path/to/config.ini');
+
 // ...OR, optionally, you can set the credentials manually
 \Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
 \Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
+
 try {
     // Create a new Genesis instance with desired API request
     $genesis = new \Genesis\Genesis('WPF\Create');
@@ -977,14 +980,26 @@ When using an Asynchronous workflow, you need to parse the incoming extension in
 Example:
 
 ```php
-<?php
-require 'vendor/autoload.php';
+<?php  
+require 'vendor/autoload.php';   
+
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+
+// Add your Terminal Token for all Non-WPF (Web Payment Form/Checkout) requests
+\Genesis\Config::setToken('<enter_your_password>');
 
 try {
     $notification = new \Genesis\API\Notification($_POST);
 
     // Reconciliation is generally optional, but
-    // its a recommended practice to ensure
+    // it's a recommended practice to ensure
     // that you have the latest information
     $notification->initReconciliation();
 
@@ -1059,9 +1074,6 @@ Financial\Cards\Payout
 Financial\Cards\Sale
 Financial\Cards\Sale3D
 Financial\Cards\TarjetaShopping
-Financial\Cards\Recurring\InitRecurringSale
-Financial\Cards\Recurring\InitRecurringSale3D
-Financial\Cards\Recurring\RecurringSale
 
 // Cash Payments transactions
 Financial\CashPayments\Baloto

@@ -25,8 +25,10 @@
 
 namespace Genesis\API\Traits\Request\Financial;
 
+use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait MpiAttributes
@@ -36,6 +38,8 @@ use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
  * @method $this setMpiEci($value) Set Electric Commerce Indicator as returned from the MPI.
  * @method $this setMpiXid($value) Set Transaction ID that uniquely identifies a 3D Secure check request
  * @method $this setMpiDirectoryServerId($value) Set the directory server ID used during 3DS authentication
+ * @method $this setMpiAscTransactionId($value) Set the ASC Transaction ID
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 trait MpiAttributes
 {
@@ -78,6 +82,20 @@ trait MpiAttributes
     protected $mpi_directory_server_id;
 
     /**
+     * Optional value for ASC Transaction ID. Highly recommended to increase approve ratio.
+     *
+     * @var string
+     */
+    protected $mpi_asc_transaction_id;
+
+    /**
+     * Optional value for 3DS challenge indicator. Highly recommended to increase approve ratio.
+     *
+     * @var string
+     */
+    protected $mpi_threeds_challenge_indicator;
+
+    /**
      * Validate Protocol Version
      *
      * @param $value
@@ -101,6 +119,28 @@ trait MpiAttributes
         $this->mpi_protocol_version = (string)$value;
 
         return $this;
+    }
+
+    /**
+     * Set the value for 3DS challenge indicator. Highly recommended to increase approve ratio.
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMpiThreedsChallengeIndicator($value)
+    {
+        if (empty($value)) {
+            $this->mpi_threeds_challenge_indicator = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'mpi_threeds_challenge_indicator',
+            ChallengeIndicators::getAll(),
+            $value,
+            'Invalid MPI Challenge Indicator.'
+        );
     }
 
     /**
@@ -146,10 +186,12 @@ trait MpiAttributes
     protected function get3DSv2ParamsStructure()
     {
         return [
-            'cavv'                => $this->mpi_cavv,
-            'eci'                 => $this->mpi_eci,
-            'protocol_version'    => $this->mpi_protocol_version,
-            'directory_server_id' => $this->mpi_directory_server_id
+            'cavv'                        => $this->mpi_cavv,
+            'eci'                         => $this->mpi_eci,
+            'protocol_version'            => $this->mpi_protocol_version,
+            'directory_server_id'         => $this->mpi_directory_server_id,
+            'asc_transaction_id'          => $this->mpi_asc_transaction_id,
+            'threeds_challenge_indicator' => $this->mpi_threeds_challenge_indicator
         ];
     }
 

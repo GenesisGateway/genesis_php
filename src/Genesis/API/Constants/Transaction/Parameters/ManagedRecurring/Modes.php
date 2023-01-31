@@ -18,42 +18,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * @author      emerchantpay
+ * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
-
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+namespace Genesis\API\Constants\Transaction\Parameters\ManagedRecurring;
 
 /**
- * class ManagedRecurringAttributesStub
+ * class Modes
  *
- * Used to spec ManagedRecurringAttributes trait
+ * Managed Recurring available Modes
  *
- * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
+ * @package Genesis\API\Constants\Transaction\Parameters\ManagedRecurring
  */
-class ManagedRecurringAttributesStub extends Request
+class Modes
 {
-    use RestrictedSetter;
+    /**
+     * Managed Recurring Mode Automatic. Mandatory use with Recurring Type Managed.
+     * This indicates that the gateway will automatically manage the subsequent recurring transactions.
+     */
+    const AUTOMATIC = 'automatic';
 
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
+    /**
+     * Manager Recurring Mode Manual. Mandatory use with Indian Cards.
+     * This indicates that the merchant will manually manage the subsequent recurring transactions.
+     */
+    const MANUAL    = 'manual';
 
-    protected function populateStructure()
+    /**
+     * Get all available Modes
+     *
+     * @return array
+     */
+    public static function getAll()
     {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
+        return array(
+            self::MANUAL,
+            self::AUTOMATIC
         );
     }
 }

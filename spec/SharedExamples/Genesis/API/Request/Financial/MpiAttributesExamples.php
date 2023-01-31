@@ -4,6 +4,9 @@
 namespace spec\SharedExamples\Genesis\API\Request\Financial;
 
 use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
+use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators;
+use Genesis\Exceptions\ErrorParameter;
+use spec\SharedExamples\Faker;
 
 /**
  * Trait MpiAttributesExamples
@@ -77,4 +80,30 @@ trait MpiAttributesExamples
 
         $this->shouldThrow()->during('getDocument');
     }
+
+    public function it_should_contain_asc_transaction_id()
+    {
+        $testUuid = Faker::getInstance()->uuid();
+
+        $this->setRequestParameters();
+        $this->setMpi3DSv2();
+
+        $this->setMpiAscTransactionId($testUuid);
+
+        $this->getDocument()->shouldContain("<asc_transaction_id>$testUuid</asc_transaction_id>");
+    }
+
+    public function it_should_contain_threeds_challenge_indicator()
+    {
+        $testUuid = Faker::getInstance()->randomElement(ChallengeIndicators::getAll());
+
+        $this->setRequestParameters();
+        $this->setMpi3DSv2();
+
+        $this->setMpiThreedsChallengeIndicator($testUuid);
+
+        $this->getDocument()->shouldContain("<threeds_challenge_indicator>$testUuid</threeds_challenge_indicator>");
+    }
+
+
 }

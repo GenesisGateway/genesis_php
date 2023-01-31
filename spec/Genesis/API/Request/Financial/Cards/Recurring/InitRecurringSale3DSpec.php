@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
@@ -22,7 +23,7 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
         DescriptorAttributesExample, TokenizationAttributesExamples, BusinessAttributesExample,
         ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples, AllowedZeroAmount,
-        DocumentAttributesExample, ManagedRecurringAttributesExample;
+        DocumentAttributesExample, ManagedRecurringAttributesExample, RecurringCategoryAttributesExample;
 
     public function it_is_initializable()
     {

@@ -11,13 +11,16 @@ use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 
 class CreateSpec extends ObjectBehavior
 {
     use BusinessAttributesExample, PendingPaymentAttributesExamples, AsyncAttributesExample,
-        ThreedsV2AttributesExamples, AllowedZeroAmount;
+        ThreedsV2AttributesExamples, AllowedZeroAmount, RecurringTypeAttributesExample,
+        RecurringCategoryAttributesExample;
 
     public function it_is_initializable()
     {

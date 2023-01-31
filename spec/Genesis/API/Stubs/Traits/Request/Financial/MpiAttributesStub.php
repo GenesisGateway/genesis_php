@@ -2,7 +2,9 @@
 
 namespace spec\Genesis\API\Stubs\Traits\Request\Financial;
 
+use Genesis\API\Traits\MagicAccessors;
 use Genesis\API\Traits\Request\Financial\MpiAttributes;
+use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class MpiAttributesStub
@@ -13,7 +15,7 @@ use Genesis\API\Traits\Request\Financial\MpiAttributes;
  */
 class MpiAttributesStub
 {
-    use MpiAttributes;
+    use MagicAccessors, MpiAttributes, RestrictedSetter;
 
     public function getIs3DSv2()
     {

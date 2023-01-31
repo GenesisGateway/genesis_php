@@ -23,37 +23,18 @@
 
 namespace spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring;
 
-use Genesis\API\Request;
-use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
-use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\MagicAccessors;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 
 /**
- * class ManagedRecurringAttributesStub
+ * class RecurringCategoryStub
  *
- * Used to spec ManagedRecurringAttributes trait
+ * Used to spec RecurringCategoryAttributes trait
  *
  * @package spec\Genesis\API\Stubs\Traits\Request\Financial\Cards\Recurring
  */
-class ManagedRecurringAttributesStub extends Request
+class RecurringCategoryStub
 {
-    use RestrictedSetter;
-
-    use ManagedRecurringAttributes {
-        getManagedRecurringAttributesStructure as public;
-        requiredManagedRecurringFieldsConditional as public;
-    }
-    use PaymentAttributes;
-
-    protected function populateStructure()
-    {
-        $this->treeStructure = \Genesis\Utils\Common::createArrayObject(
-            [
-                'payment_transaction' => [
-                    'currency' => $this->currency,
-                    'managed_recurring' => $this->getManagedRecurringAttributesStructure()
-                ]
-            ]
-        );
-    }
+    use RecurringCategoryAttributes, MagicAccessors, RestrictedSetter;
 }

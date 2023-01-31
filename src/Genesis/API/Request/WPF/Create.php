@@ -27,6 +27,8 @@ namespace Genesis\API\Request\WPF;
 use Genesis\API\Constants\i18n;
 use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
@@ -75,7 +77,7 @@ class Create extends \Genesis\API\Request
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
         RestrictedSetter, BusinessAttributes, WpfThreedsV2Attributes,
-        PendingPaymentAttributes;
+        PendingPaymentAttributes, RecurringTypeAttributes, RecurringCategoryAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -638,7 +640,8 @@ class Create extends \Genesis\API\Request
 
     protected function checkRequirements()
     {
-        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
+        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations() +
+            $this->requiredRecurringInitialTypesFieldValuesConditional();
 
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
 
@@ -691,7 +694,9 @@ class Create extends \Genesis\API\Request
                     'exemption' => $this->sca_exemption,
                 ],
                 'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
-                'web_payment_form_id'       => $this->web_payment_form_id
+                'web_payment_form_id'       => $this->web_payment_form_id,
+                'recurring_type'            => $this->recurring_type,
+                'recurring_category'        => $this->recurring_category
             ]
         ];
 

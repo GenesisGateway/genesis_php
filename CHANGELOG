@@ -1,3 +1,36 @@
+1.21.5
+-----
+**Features**:
+
+* Deprecated **Init Recurring Sale**, Init Recurring Sale 3D, Recurring Sale transaction request. They will be removed soon. Transaction requests are still available for use.
+* Added Recurring Type accessor providing Recurring transaction capabilities to the following transaction requests:
+  * Authorize
+  * Authorize 3D
+  * Sale
+  * Sale 3D
+  * Web Payment Form
+* Updated Managed Recurring parameters by adding the following accessors available for Indian Cards:
+  * Mode
+  * Payment Type
+  * Amount Type
+  * Frequency
+  * Registration Reference Number
+  * Max Amount
+  * Validated
+* Updated [Gateway Notification](https://github.com/GenesisGateway/genesis_php#notifications) handling example by adding required configuration.
+* Deprecated TrustPay transaction request
+* Updated MPI Params by adding the following optional accessors:
+  * ASC Transaction Id
+  * Threeds Challenge Indicator
+* Added Recurring Category accessor to the following transaction requests:
+  * Authorize
+  * Authorize 3D
+  * Sale
+  * Sale 3D
+  * Web Payment Form
+  * Init Recurring Sale
+  * Init Recurring Sale 3D
+
 1.21.4
 -----
 **Features**:

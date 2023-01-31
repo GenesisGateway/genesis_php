@@ -169,16 +169,6 @@ class PPRO extends \Genesis\API\Request\Base\Financial
                         'currency'        => ['EUR', 'USD']
                     ]
                 ],
-                PaymentMethods::TRUST_PAY  => [
-                    [
-                        'billing_country' => 'CZ',
-                        'currency'        => 'CZK'
-                    ],
-                    [
-                        'billing_country' => ['CZ', 'SK'],
-                        'currency'        => 'EUR'
-                    ]
-                ],
                 PaymentMethods::PRZELEWY24 => [
                     [
                         'billing_country' => 'PL',

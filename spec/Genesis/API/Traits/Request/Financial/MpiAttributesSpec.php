@@ -3,9 +3,12 @@
 namespace spec\Genesis\API\Traits\Request\Financial;
 
 use Genesis\API\Constants\Transaction\Parameters\MpiProtocolVersions;
+use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\MpiAttributesStub;
+use spec\SharedExamples\Faker;
 
 class MpiAttributesSpec extends ObjectBehavior
 {
@@ -16,7 +19,7 @@ class MpiAttributesSpec extends ObjectBehavior
 
     public function it_should_not_fail_when_valid_protocol_version()
     {
-        foreach(MpiProtocolVersions::getAll() as $value) {
+        foreach (MpiProtocolVersions::getAll() as $value) {
             $this->shouldNotThrow()->duringSetMpiProtocolVersion($value);
         }
     }
@@ -66,5 +69,39 @@ class MpiAttributesSpec extends ObjectBehavior
         $this->returnMpiParamsStructure()->shouldHaveKey('eci');
         $this->returnMpiParamsStructure()->shouldHaveKey('protocol_version');
         $this->returnMpiParamsStructure()->shouldHaveKey('directory_server_id');
+    }
+
+    public function it_should_have_key_asc_transaction_id_when_threeds_v2()
+    {
+        $this->setMpiProtocolVersion(MpiProtocolVersions::PROTOCOL_VERSION_2);
+        $this->setMpiAscTransactionId(Faker::getInstance()->uuid());
+        $this->returnMpiParamsStructure()->shouldHaveKey('asc_transaction_id');
+    }
+
+    public function it_should_have_key_threeds_challenge_indicator_when_threeds_v2()
+    {
+        $this->setMpiProtocolVersion(MpiProtocolVersions::PROTOCOL_VERSION_2);
+        $this->setMpiThreedsChallengeIndicator(Faker::getInstance()->randomElement(ChallengeIndicators::getAll()));
+        $this->returnMpiParamsStructure()->shouldHaveKey('threeds_challenge_indicator');
+    }
+
+    public function it_should_not_fail_on_correct_threeds_challenge_indicator()
+    {
+        $this->shouldNotThrow()->during(
+            'setMpiThreedsChallengeIndicator',
+            [
+                Faker::getInstance()->randomElement(ChallengeIndicators::getAll())
+            ]
+        );
+    }
+
+    public function it_should_fail_on_incorrect_threeds_challenge_indicator()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setMpiThreedsChallengeIndicator',
+            [
+                Faker::getInstance()->uuid()
+            ]
+        );
     }
 }

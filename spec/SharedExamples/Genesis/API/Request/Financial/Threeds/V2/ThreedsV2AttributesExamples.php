@@ -3,7 +3,9 @@
 namespace spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2;
 
 use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes;
+use Genesis\API\Request\Financial\Cards\Authorize3D;
 use Genesis\API\Request\Financial\Cards\Recurring\InitRecurringSale3D;
+use Genesis\API\Request\Financial\Cards\Sale3D;
 use Genesis\API\Request\WPF\Create as WpfCreate;
 use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
@@ -298,6 +300,8 @@ trait ThreedsV2AttributesExamples
         $this->setThreedsV2CardHolderAccountRegistrationDate('16-09-2018');
 
         if ($this->getWrappedObject() instanceof InitRecurringSale3D ||
+            $this->getWrappedObject() instanceof Sale3D ||
+            $this->getWrappedObject() instanceof Authorize3D ||
             $this->getWrappedObject() instanceof WpfCreate
         ) {
             $this->setThreedsV2RecurringExpirationDate('12-12-2020');
