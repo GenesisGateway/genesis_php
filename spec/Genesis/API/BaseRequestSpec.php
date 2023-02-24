@@ -23,9 +23,9 @@ class BaseRequestSpec extends ObjectBehavior
         $this->getTransformAmount('0', 'EUR')->shouldBe("0");
     }
 
-    public function it_should_return_array_with_allowed_zero_amount()
+    public function it_should_return_array_when_call_allowed_empty_required_attributes()
     {
-        $this->getMethodAllowedEmptyRequiredAttributes()->shouldContain(CreditCard::REQUEST_KEY_AMOUNT);
+        $this->getMethodAllowedEmptyRequiredAttributes()->shouldBeArray();
     }
 
     public function it_should_skip_empty_values_for_zero_amount()

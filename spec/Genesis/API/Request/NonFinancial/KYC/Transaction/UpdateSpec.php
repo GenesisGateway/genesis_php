@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\Transaction;
 
+use Genesis\API\Constants\NonFinancial\KYC\TransactionStatuses;
 use Genesis\API\Request\NonFinancial\KYC\Transaction\Update;
 use PhpSpec\ObjectBehavior;
 
@@ -34,22 +35,22 @@ class UpdateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
 
-        $this->setStatus(Update::TRANSACTION_STATUS_REJECTED);
+        $this->setStatus(TransactionStatuses::REJECTED);
         $this->shouldThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_DECLINED);
+        $this->setStatus(TransactionStatuses::DECLINED);
         $this->shouldThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_CHARGEBACK);
+        $this->setStatus(TransactionStatuses::CHARGEBACK);
         $this->shouldThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_REFUND);
+        $this->setStatus(TransactionStatuses::REFUND);
         $this->shouldThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_RETURN);
+        $this->setStatus(TransactionStatuses::RETURN);
         $this->shouldThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_VOID);
+        $this->setStatus(TransactionStatuses::VOID);
         $this->shouldThrow()->during('getDocument');
     }
 
@@ -58,23 +59,30 @@ class UpdateSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setReason('test');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_REJECTED);
+        $this->setStatus(TransactionStatuses::REJECTED);
         $this->shouldNotThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_DECLINED);
+        $this->setStatus(TransactionStatuses::DECLINED);
         $this->shouldNotThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_CHARGEBACK);
+        $this->setStatus(TransactionStatuses::CHARGEBACK);
         $this->shouldNotThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_REFUND);
+        $this->setStatus(TransactionStatuses::REFUND);
         $this->shouldNotThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_RETURN);
+        $this->setStatus(TransactionStatuses::RETURN);
         $this->shouldNotThrow()->during('getDocument');
 
-        $this->setStatus(Update::TRANSACTION_STATUS_VOID);
+        $this->setStatus(TransactionStatuses::VOID);
         $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_have_correct_transaction_update_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/update_transaction'
+        );
     }
 
     protected function setRequestParameters()
@@ -82,7 +90,7 @@ class UpdateSpec extends ObjectBehavior
         $faker = \Faker\Factory::create();
 
         $this->setTransactionUniqueId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setStatus(Update::TRANSACTION_STATUS_APPROVED);
+        $this->setStatus(TransactionStatuses::APPROVED);
     }
 
     public function getMatchers(): array

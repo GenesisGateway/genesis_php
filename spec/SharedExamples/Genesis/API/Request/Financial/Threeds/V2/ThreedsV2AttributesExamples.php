@@ -246,6 +246,42 @@ trait ThreedsV2AttributesExamples
         $this->getDocument()->shouldContain('<java_enabled>false</java_enabled>');
     }
 
+    public function it_should_allow_empty_integer_browser_time_zone_offset()
+    {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
+        $this->setFullThreedsV2Request();
+        $this->setThreedsV2BrowserTimeZoneOffset(0);
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_allow_empty_browser_string_time_zone_offset()
+    {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
+        $this->setFullThreedsV2Request();
+        $this->setThreedsV2BrowserTimeZoneOffset('0');
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_contain_browser_time_zone_offset_when_zero_value()
+    {
+        if ($this->getWrappedObject() instanceof WpfCreate) {
+            throw new SkippingException('Unsupported attributes from Web Payment Form');
+        }
+
+        $this->setFullThreedsV2Request();
+        $this->setThreedsV2BrowserTimeZoneOffset(0);
+
+        $this->getDocument()->shouldContain('<time_zone_offset>0</time_zone_offset>');
+    }
+
     protected function prepareResponseMock($response)
     {
         $parser = new ParserStub('Financial\Threeds\V2');

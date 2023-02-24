@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\API\Traits\Request\NonFinancial;
 
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\Genders;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\NonFinancial\KycBillingInformationStub;
 use spec\SharedExamples\Faker;
@@ -16,10 +16,7 @@ class KycBillingInformationSpec extends ObjectBehavior
 
     public function it_should_set_gender_correctly()
     {
-        $allowed = [
-            BaseRequest::GENDER_MALE,
-            BaseRequest::GENDER_FEMALE
-        ];
+        $allowed = Genders::getAll();
 
         foreach ($allowed AS $gender) {
             $this->shouldNotThrow()->during(

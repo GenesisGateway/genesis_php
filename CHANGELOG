@@ -1,3 +1,16 @@
+1.21.6
+-----
+**Features**:
+
+* Updated Know Your Customer (KYC) API requests to meet the latest Gateway requirements
+* Added Dynamic Descriptor attributes support to the following transaction requests:
+  * Apple Pay
+  * Google Pay
+
+**Fixes**:
+
+* Fixed 3DSv2 Browser Time Zone Offset attribute by allowing zero value
+
 1.21.5
 -----
 **Features**:

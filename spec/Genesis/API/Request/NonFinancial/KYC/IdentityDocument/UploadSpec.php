@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\IdentityDocument;
 
+use Genesis\API\Constants\NonFinancial\KYC\IdentityDocumentMethods;
 use Genesis\API\Request\NonFinancial\KYC\IdentityDocument\Upload;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
@@ -57,12 +58,19 @@ class UploadSpec extends ObjectBehavior
         $this->shouldThrow()->during('setMethod', [88]);
     }
 
+    public function it_should_have_correct_document_upload_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/upload_document'
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setMethod(Upload::IDENTITY_DOCUMENT_METHOD_BOTH);
+        $this->setMethod(IdentityDocumentMethods::BOTH);
         $this->addDoc(base64_encode($faker->text), $faker->mimeType);
     }
 

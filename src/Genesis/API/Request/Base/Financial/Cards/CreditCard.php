@@ -53,16 +53,6 @@ abstract class CreditCard extends Financial
      */
     abstract protected function getTransactionAttributes();
 
-    /**
-     * Indicated if Zero amounts will be passed through Required field the validations
-     *
-     * @return bool
-     */
-    protected function allowedZeroAmount()
-    {
-        return false;
-    }
-
     protected function setRequiredFields()
     {
         $requiredFields = [

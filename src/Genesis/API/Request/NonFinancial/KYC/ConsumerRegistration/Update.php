@@ -25,6 +25,7 @@
 
 namespace Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration;
 
+use Genesis\API\Constants\NonFinancial\KYC\ProfileCurrentStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\RestrictedSetter;
 
@@ -79,12 +80,7 @@ class Update extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'profile_current_status',
-            [
-                self::PROFILE_CURRENT_STATUS_UNDEFINED,
-                self::PROFILE_CURRENT_STATUS_REVIEW,
-                self::PROFILE_CURRENT_STATUS_DENIED,
-                self::PROFILE_CURRENT_STATUS_APPROVED
-            ],
+            ProfileCurrentStatuses::getAll(),
             $status,
             'Invalid profile current status.'
         );
@@ -106,7 +102,7 @@ class Update extends BaseRequest
 
         $requiredFieldsConditional = [
             'profile_current_status' => [
-                self::PROFILE_CURRENT_STATUS_DENIED => [
+                ProfileCurrentStatuses::DENIED => [
                     'status_reason'
                 ]
             ]

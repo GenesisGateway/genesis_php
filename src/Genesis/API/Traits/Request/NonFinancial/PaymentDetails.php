@@ -25,7 +25,7 @@
 
 namespace Genesis\API\Traits\Request\NonFinancial;
 
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\CVVPresents;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -150,10 +150,7 @@ trait PaymentDetails
     {
         return $this->allowedOptionsSetter(
             'cvv_present',
-            [
-                BaseRequest::CVV_PRESENT_YES,
-                BaseRequest::CVV_PRESENT_NO
-            ],
+            CVVPresents::getAll(),
             $cvvPresent,
             'Invalid cvv present indicator.'
         );

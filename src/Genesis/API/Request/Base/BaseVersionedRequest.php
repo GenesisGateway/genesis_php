@@ -25,6 +25,7 @@
 namespace Genesis\API\Request\Base;
 
 use Genesis\Builder;
+use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -133,8 +134,9 @@ abstract class BaseVersionedRequest extends \Genesis\API\Request
      * Set the per-request configuration
      *
      * @return void
+     * @throws EnvironmentNotSet
      */
-    protected function initConfiguration()
+    protected function initConfiguration($subdomain = 'gateway')
     {
         switch ($this->requestType) {
             case Builder::XML:
@@ -145,7 +147,7 @@ abstract class BaseVersionedRequest extends \Genesis\API\Request
                 break;
         }
 
-        $this->initApiGatewayConfiguration($this->version . '/' . $this->requestPath, false);
+        $this->initApiGatewayConfiguration($this->version . '/' . $this->requestPath, false, $subdomain);
     }
 
     /**

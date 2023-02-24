@@ -261,4 +261,19 @@ trait Browser
             'user_agent'       => $this->getThreedsV2BrowserUserAgent()
         ];
     }
+
+    /**
+     * Return all allowed zero non-empty field values
+     * array(
+     *     'class_property' => 'request_parameter'
+     * )
+     *
+     * @return array
+     */
+    protected function getAllowedFieldsZeroValues()
+    {
+        return array(
+            'threeds_v2_browser_time_zone_offset' => 'time_zone_offset'
+        );
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\Transaction;
 
+use Faker\Factory;
+use Genesis\API\Constants\NonFinancial\KYC\PaymentMethods;
 use Genesis\API\Request\NonFinancial\KYC\Transaction\Create;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -60,14 +62,14 @@ class CreateSpec extends ObjectBehavior
     public function it_should_fail_when_missing_parameters_for_payment_method_echeck()
     {
         $this->setRequestParameters();
-        $this->setPaymentMethod(Create::PAYMENT_METHOD_ECHECK);
+        $this->setPaymentMethod(PaymentMethods::ECHECK);
         $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_not_fail_with_payment_method_echeck()
     {
         $this->setRequestParameters();
-        $this->setPaymentMethod(Create::PAYMENT_METHOD_ECHECK);
+        $this->setPaymentMethod(PaymentMethods::ECHECK);
         $this->setEwalletId(null);
         $this->setRouting('88888');
         $this->setAccount('888888');
@@ -78,14 +80,14 @@ class CreateSpec extends ObjectBehavior
     public function it_should_fail_when_missing_parameters_for_payment_method_cc()
     {
         $this->setRequestParameters();
-        $this->setPaymentMethod(Create::PAYMENT_METHOD_CREDIT_CARD);
+        $this->setPaymentMethod(PaymentMethods::CREDIT_CARD);
         $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_not_fail_with_credit_card_payment_method()
     {
         $this->setRequestParameters();
-        $this->setPaymentMethod(Create::PAYMENT_METHOD_CREDIT_CARD);
+        $this->setPaymentMethod(PaymentMethods::CREDIT_CARD);
         $this->setEwalletId(null);
         $this->setBin('411111');
         $this->setTail('1111');
@@ -239,14 +241,21 @@ class CreateSpec extends ObjectBehavior
             ->getFirstWithdrawalDate()->shouldBeString();
     }
 
+    public function it_should_have_correct_transaction_create_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/create_transaction'
+        );
+    }
+
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         $this->setTransactionUniqueId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setTransactionCreatedAt($faker->date('Y-m-d H:i:s'));
         $this->setCustomerIpAddress($faker->ipv4);
-        $this->setPaymentMethod(Create::PAYMENT_METHOD_EWALLET);
+        $this->setPaymentMethod(PaymentMethods::EWALLET);
         $this->setEwalletId($faker->email);
     }
 

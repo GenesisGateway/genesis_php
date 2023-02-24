@@ -50,9 +50,9 @@ class CreditCardSpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
-    public function it_should_return_false_allowed_zero_amount()
+    public function it_should_return_false_when_allowed_empty_values_called()
     {
-        $this->getAllowedZeroAmount()->shouldBe(false);
+        $this->getHasAllowedEmptyNotNullFields()->shouldBe(false);
     }
 
     protected function setRequestParameters()

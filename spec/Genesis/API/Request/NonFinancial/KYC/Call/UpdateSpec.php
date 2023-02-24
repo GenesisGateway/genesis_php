@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\Call;
 
+use Genesis\API\Constants\NonFinancial\KYC\CallVerificationStatuses;
 use Genesis\API\Request\NonFinancial\KYC\Call\Update;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
@@ -45,12 +46,19 @@ class UpdateSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_have_correct_call_update_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/update_authentication'
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
-        $this->setVerificationStatus(Update::CALL_VERIFICATION_STATUS_VERIFICATION_SUCCESS);
+        $this->setVerificationStatus(CallVerificationStatuses::VERIFICATION_SUCCESS);
         $this->setSecurityCodeInput(1234);
     }
 

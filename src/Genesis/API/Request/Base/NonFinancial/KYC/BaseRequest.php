@@ -25,8 +25,10 @@
 
 namespace Genesis\API\Request\Base\NonFinancial\KYC;
 
-use Genesis\API\Request;
+use Genesis\API\Request\Base\BaseVersionedRequest;
 use Genesis\Builder;
+use Genesis\Exceptions\EnvironmentNotSet;
+use Genesis\API\Constants\NonFinancial\KYC\Genders;
 
 /**
  * Class BaseRequest
@@ -37,84 +39,20 @@ use Genesis\Builder;
  *
  * @package Genesis\API\Request\Base\NonFinancial\KYC
  */
-abstract class BaseRequest extends Request
+abstract class BaseRequest extends BaseVersionedRequest
 {
-    const DEVICE_FINGERPRINT_TYPE_CUSTOM       = 1;
-    const DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE  = 2;
-    const DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE2 = 3;
-
-    const PROFILE_ACTION_TYPE_REGISTRATION     = 1;
-    const PROFILE_ACTION_TYPE_PROFILE_UPDATE   = 2;
-
-    const PROFILE_CURRENT_STATUS_UNDEFINED     = 0;
-    const PROFILE_CURRENT_STATUS_REVIEW        = 1;
-    const PROFILE_CURRENT_STATUS_DENIED        = 2;
-    const PROFILE_CURRENT_STATUS_APPROVED      = 3;
-
-    const INDUSTRY_TYPE_FINANCE                = 1;
-    const INDUSTRY_TYPE_GAMBLING               = 2;
-    const INDUSTRY_TYPE_CRYPTO                 = 3;
-    const INDUSTRY_TYPE_TRAVEL                 = 4;
-    const INDUSTRY_TYPE_RETAIL                 = 5;
-    const INDUSTRY_TYPE_RISK_VENDOR            = 6;
-    const INDUSTRY_TYPE_ADULT                  = 7;
-    const INDUSTRY_TYPE_REMITTANCE_TRANSFER    = 8;
-    const INDUSTRY_TYPE_OTHER                  = 9;
-
-    const DOCUMENT_TYPE_SSN                    = 0;
-    const DOCUMENT_TYPE_PASSPORT_REGISTRY      = 1;
-    const DOCUMENT_TYPE_PERSONAL_ID            = 2;
-    const DOCUMENT_TYPE_IDENTITY_CARD          = 3;
-    const DOCUMENT_TYPE_DRIVER_LICENSE         = 4;
-    const DOCUMENT_TYPE_TRAVEL_DOCUMENT        = 8;
-    const DOCUMENT_TYPE_RESIDENCE_PERMIT       = 12;
-    const DOCUMENT_TYPE_IDENTITY_CERTIFICATE   = 13;
-    const DOCUMENT_TYPE_FEDERAL_REGISTER       = 16;
-    const DOCUMENT_TYPE_ELECTRON_CREDENTIALS   = 17;
-    const DOCUMENT_TYPE_CPF                    = 18;
-
-    const GENDER_MALE                          = 'M';
-    const GENDER_FEMALE                        = 'F';
-
-    const PAYMENT_METHOD_CREDIT_CARD           = 'CC';
-    const PAYMENT_METHOD_ECHECK                = 'EC';
-    const PAYMENT_METHOD_EWALLET               = 'EW';
-
-    const CVV_PRESENT_YES                      = 'Yes';
-    const CVV_PRESENT_NO                       = 'No';
-
-    const TRANSACTION_STATUS_APPROVED        = 1;
-    const TRANSACTION_STATUS_PRE_AUTH        = 2;
-    const TRANSACTION_STATUS_SETTLED         = 3;
-    const TRANSACTION_STATUS_VOID            = 4;
-    const TRANSACTION_STATUS_REJECTED        = 5;
-    const TRANSACTION_STATUS_DECLINED        = 6;
-    const TRANSACTION_STATUS_CHARGEBACK      = 7;
-    const TRANSACTION_STATUS_RETURN          = 8;
-    const TRANSACTION_STATUS_PENDING         = 9;
-    const TRANSACTION_STATUS_PASS            = 10;
-    const TRANSACTION_STATUS_FAILED          = 11;
-    const TRANSACTION_STATUS_REFUND          = 12;
-    const TRANSACTION_STATUS_APPROVED_REVIEW = 13;
-    const TRANSACTION_STATUS_ABANDON         = 14;
-
-    const IDENTITY_DOCUMENT_METHOD_MANUAL    = 1;
-    const IDENTITY_DOCUMENT_METHOD_OCR       = 2;
-    const IDENTITY_DOCUMENT_METHOD_BOTH      = 3;
-
-    const CALL_SERVICE_TYPE_SMS              = 1;
-    const CALL_SERVICE_TYPE_VOICE            = 2;
-
-    const CALL_VERIFICATION_STATUS_IN_PROGRESS          = 1;
-    const CALL_VERIFICATION_STATUS_FAILED               = 2;
-    const CALL_VERIFICATION_STATUS_VERIFICATION_FAILED  = 3;
-    const CALL_VERIFICATION_STATUS_VERIFICATION_SUCCESS = 4;
-    const CALL_VERIFICATION_STATUS_ABANDON              = 5;
-
     /**
      * @var string
      */
-    private $requestPath;
+    private $request_path;
+
+    /**
+     * Switch between KYC and Gate
+     *
+     * @var string
+     */
+    private $kyc_subdomain;
+
     /**
      * KYC constructor.
      *
@@ -122,23 +60,25 @@ abstract class BaseRequest extends Request
      */
     public function __construct($requestPath)
     {
-        $this->requestPath = $requestPath;
+        $this->request_path = $requestPath;
+        $this->kyc_subdomain = 'kyc';
 
-        parent::__construct(Builder::JSON);
+        parent::__construct($this->request_path, Builder::JSON, ['v1']);
     }
-
-    abstract protected function getRequestStructure();
 
     /**
      * Set the per-request configuration
      *
      * @return void
+     * @throws EnvironmentNotSet
+     * @SuppressWarnings("unused")
      */
-    protected function initConfiguration()
+    protected function initConfiguration($subdomain = 'kyc')
     {
-        $this->initJsonConfiguration();
-        $this->initApiGatewayConfiguration('kyc_service/' . $this->requestPath, false);
+        parent::initConfiguration($this->kyc_subdomain);
+        $this->initApiGatewayConfiguration('api/' . $this->getVersion() . '/' . $this->request_path,false, $this->kyc_subdomain);  // @codingStandardsIgnoreLine
     }
+
     /**
      * Create the request's Tree structure
      *

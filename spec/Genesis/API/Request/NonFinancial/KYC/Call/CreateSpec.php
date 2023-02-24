@@ -2,12 +2,19 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\Call;
 
+use Genesis\API\Constants\Environments;
+use Genesis\API\Constants\NonFinancial\KYC\CallServiceTypes;
 use Genesis\API\Request\NonFinancial\KYC\Call\Create;
+use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\NonFinancial\KYC\KYCRequestExamples;
 
 class CreateSpec extends ObjectBehavior
 {
+    use KYCRequestExamples;
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(Create::class);
@@ -52,6 +59,13 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_have_correct_call_create_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/create_authentication'
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -61,7 +75,7 @@ class CreateSpec extends ObjectBehavior
         $this->setCustomerPhoneNumber('359878664488');
         $this->setServiceLanguage('bg');
         $this->setSecurityCode(1234);
-        $this->setServiceType(Create::CALL_SERVICE_TYPE_SMS);
+        $this->setServiceType(CallServiceTypes::SMS);
     }
 
     public function getMatchers(): array

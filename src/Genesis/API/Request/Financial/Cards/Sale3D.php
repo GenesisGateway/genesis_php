@@ -73,13 +73,22 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     }
 
     /**
-     * Transaction Request with zero amount is allowed
+     * Return the required parameters keys which values could evaluate as empty
+     * Example value:
+     * array(
+     *     'class_property' => 'request_structure_key'
+     * )
      *
-     * @return bool
+     * @return array
      */
-    protected function allowedZeroAmount()
+    protected function allowedEmptyNotNullFields()
     {
-        return true;
+        return array_merge(
+            array(
+                'amount' => static::REQUEST_KEY_AMOUNT
+            ),
+            $this->getAllowedFieldsZeroValues()
+        );
     }
 
     /**

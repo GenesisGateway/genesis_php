@@ -92,7 +92,8 @@ trait Validations
         $iterator = new \RecursiveIteratorIterator($this->requiredFields->getIterator());
 
         foreach ($iterator as $fieldName) {
-            if ($this->isNotNullZeroAmountAllowed($fieldName, $this->$fieldName)) {
+            if ($this->isNotNullAndEmptyValueAllowed($fieldName, $this->$fieldName)) {
+                // Bypass Not Null but Empty value evaluation allowed like 0
                 continue;
             }
 
@@ -217,6 +218,11 @@ trait Validations
                     }
 
                     foreach ($fieldDependency as $field) {
+                        if ($this->isNotNullAndEmptyValueAllowed($field, $this->$field)) {
+                            // Bypass Not Null but Empty value evaluation allowed like 0
+                            continue;
+                        }
+
                         if (empty($this->$field)) {
                             $fieldValue =
                                 is_bool($this->$fieldName)
@@ -356,26 +362,37 @@ trait Validations
     }
 
     /**
-     * Check if the Zero Amount is allowed
+     * Indicates that the request has allowed fields with empty value
+     * Like 0 value
      *
      * @return bool
      */
-    protected function isZeroAmountAllowed()
+    protected function hasAllowedEmptyFields()
     {
-        return method_exists($this, 'allowedZeroAmount') && $this->allowedZeroAmount();
+        return method_exists($this, 'allowedEmptyNotNullFields') &&
+            !empty($this->allowedEmptyNotNullFields());
     }
 
     /**
-     * Check if the Amount attribute could be Zero and it is not null
+     * Check if the current validated field has 0 or empty value and pass the validation
      *
      * @param $fieldName
      * @param $fieldValue
      * @return bool
      */
-    private function isNotNullZeroAmountAllowed($fieldName, $fieldValue)
+    private function isNotNullAndEmptyValueAllowed($fieldName, $fieldValue)
     {
-        return $this->isZeroAmountAllowed() &&
-            $fieldName === CreditCard::REQUEST_KEY_AMOUNT &&
-            !is_null($fieldValue);
+        if (!$this->hasAllowedEmptyFields()) {
+            return false;
+        }
+
+        $allowedEmptyField = array_filter(
+            array_keys($this->allowedEmptyNotNullFields()),
+            function ($value) use ($fieldName, $fieldValue) {
+                return $value === $fieldName && !is_null($fieldValue);
+            }
+        );
+
+        return count($allowedEmptyField) > 0;
     }
 }

@@ -25,7 +25,8 @@
 
 namespace Genesis\API\Traits\Request\NonFinancial;
 
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\DocumentTypes;
+use Genesis\API\Constants\NonFinancial\KYC\Genders;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Exceptions\InvalidArgument;
 
@@ -130,19 +131,7 @@ trait CustomerInformation
     {
         return $this->allowedOptionsSetter(
             'document_type',
-            [
-                BaseRequest::DOCUMENT_TYPE_SSN,
-                BaseRequest::DOCUMENT_TYPE_PASSPORT_REGISTRY,
-                BaseRequest::DOCUMENT_TYPE_PERSONAL_ID,
-                BaseRequest::DOCUMENT_TYPE_IDENTITY_CARD,
-                BaseRequest::DOCUMENT_TYPE_DRIVER_LICENSE,
-                BaseRequest::DOCUMENT_TYPE_TRAVEL_DOCUMENT,
-                BaseRequest::DOCUMENT_TYPE_RESIDENCE_PERMIT,
-                BaseRequest::DOCUMENT_TYPE_IDENTITY_CERTIFICATE,
-                BaseRequest::DOCUMENT_TYPE_FEDERAL_REGISTER,
-                BaseRequest::DOCUMENT_TYPE_ELECTRON_CREDENTIALS,
-                BaseRequest::DOCUMENT_TYPE_CPF
-            ],
+            DocumentTypes::getAll(),
             $type,
             'Invalid document type provided.'
         );
@@ -158,10 +147,7 @@ trait CustomerInformation
     {
         return $this->allowedOptionsSetter(
             'gender',
-            [
-                BaseRequest::GENDER_MALE,
-                BaseRequest::GENDER_FEMALE
-            ],
+            Genders::getAll(),
             $gender,
             'Invalid gender provided.'
         );

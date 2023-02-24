@@ -44,7 +44,7 @@ final class Config
     /**
      * Library Version
      */
-    const VERSION = '1.21.5';
+    const VERSION = '1.21.6';
 
     /**
      * Core configuration settings
@@ -84,6 +84,10 @@ final class Config
         'wpf'     => [
             'production' => 'wpf.',
             'sandbox'    => 'staging.wpf.'
+        ],
+        'kyc'     => [
+            'production' => 'kyc.',
+            'sandbox'    => 'staging.kyc.'
         ]
     ];
 

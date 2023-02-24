@@ -8,12 +8,13 @@ use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class GooglePaySpec extends ObjectBehavior
 {
-    use RequestExamples, DocumentAttributesExample;
+    use RequestExamples, DocumentAttributesExample, DescriptorAttributesExample;
 
     public function is_it_initializable()
     {

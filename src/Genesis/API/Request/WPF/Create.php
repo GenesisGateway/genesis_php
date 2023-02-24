@@ -27,6 +27,7 @@ namespace Genesis\API\Request\WPF;
 use Genesis\API\Constants\i18n;
 use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Constants\Transaction\Types;
+use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
@@ -595,13 +596,19 @@ class Create extends \Genesis\API\Request
     }
 
     /**
-     * Transaction Request with zero amount is allowed
+     * Return the required parameters keys which values could evaluate as empty
+     * Example value:
+     * array(
+     *     'class_property' => 'request_structure_key'
+     * )
      *
-     * @return bool
+     * @return array
      */
-    protected function allowedZeroAmount()
+    protected function allowedEmptyNotNullFields()
     {
-        return true;
+        return array(
+            'amount' => CreditCard::REQUEST_KEY_AMOUNT
+        );
     }
 
     /**

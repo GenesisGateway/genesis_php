@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration;
 
+use Genesis\API\Constants\NonFinancial\KYC\ProfileCurrentStatuses;
 use Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration\Update;
 use PhpSpec\ObjectBehavior;
 
@@ -34,13 +35,20 @@ class UpdateSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_have_correct_consumer_update_endpoint()
+    {
+        $this->getApiConfig('url')->shouldContain(
+            'https://staging.kyc.emerchantpay.net:443/api/v1/update_consumer'
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
 
         $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setProfileCurrentStatus(
-            \Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration\Update::PROFILE_CURRENT_STATUS_DENIED
+            ProfileCurrentStatuses::DENIED
         );
         $this->setStatusReason($faker->text(50));
     }

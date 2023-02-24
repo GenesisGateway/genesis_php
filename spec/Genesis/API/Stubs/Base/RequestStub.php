@@ -22,11 +22,6 @@ class RequestStub extends Request
         return (array) $this->treeStructure;
     }
 
-    public function allowedZeroAmount()
-    {
-        return true;
-    }
-
     public function getTransformAmount($amount = '', $currency = '')
     {
         return $this->transformAmount($amount, $currency);
@@ -34,11 +29,18 @@ class RequestStub extends Request
 
     public function getMethodAllowedEmptyRequiredAttributes()
     {
-        return $this->getAllowedEmptyRequiredAttributes();
+        return $this->allowedEmptyNotNullFields();
     }
 
     public function executeProcessRequestParameters()
     {
         $this->processRequestParameters();
+    }
+
+    protected function allowedEmptyNotNullFields()
+    {
+        return [
+            'amount' => Request\Base\Financial\Cards\CreditCard::REQUEST_KEY_AMOUNT
+        ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\API\Traits\Request\NonFinancial;
 
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\CVVPresents;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\NonFinancial\PaymentDetailsStub;
 
@@ -67,10 +67,7 @@ class PaymentDetailsSpec extends ObjectBehavior
 
     public function it_should_set_cvv_present_correctly()
     {
-        $allowed = [
-            BaseRequest::CVV_PRESENT_YES,
-            BaseRequest::CVV_PRESENT_NO
-        ];
+        $allowed = CVVPresents::getAll();
 
         foreach ($allowed AS $cvvPresent) {
             $this->shouldNotThrow()->during(

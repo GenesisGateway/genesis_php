@@ -25,6 +25,7 @@
 
 namespace Genesis\API\Request\NonFinancial\KYC\Call;
 
+use Genesis\API\Constants\NonFinancial\KYC\CallVerificationStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Validators\Request\RegexValidator;
 
@@ -85,11 +86,7 @@ class Update extends BaseRequest
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'verification_status' => [
-                self::CALL_VERIFICATION_STATUS_VERIFICATION_FAILED,
-                self::CALL_VERIFICATION_STATUS_VERIFICATION_SUCCESS,
-                self::CALL_VERIFICATION_STATUS_ABANDON
-            ],
+            'verification_status' => CallVerificationStatuses::getAll(),
             'security_code_input' => new RegexValidator(RegexValidator::PATTERN_KYC_CALL_SECURITY_CODE)
         ];
 

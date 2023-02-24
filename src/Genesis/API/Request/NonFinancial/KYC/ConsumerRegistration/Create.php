@@ -26,10 +26,13 @@
 namespace Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration;
 
 use Genesis\API\Constants\DateTimeFormat;
+use Genesis\API\Constants\NonFinancial\KYC\DeviceFingerprintTypes;
+use Genesis\API\Constants\NonFinancial\KYC\IndustryTypes;
+use Genesis\API\Constants\NonFinancial\KYC\ProfileActionTypes;
+use Genesis\API\Constants\NonFinancial\KYC\ProfileCurrentStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\CustomerInformation;
 use Genesis\API\Traits\RestrictedSetter;
-
 /**
  * Class Create
  *
@@ -196,11 +199,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'device_fingerprint_type',
-            [
-                self::DEVICE_FINGERPRINT_TYPE_CUSTOM,
-                self::DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE,
-                self::DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE2
-            ],
+            DeviceFingerprintTypes::getAll(),
             $type,
             'Invalid device fingerprint type.'
         );
@@ -216,10 +215,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'profile_action_type',
-            [
-                self::PROFILE_ACTION_TYPE_REGISTRATION,
-                self::PROFILE_ACTION_TYPE_PROFILE_UPDATE
-            ],
+            ProfileActionTypes::getAll(),
             $type,
             'Invalid profile action type.'
         );
@@ -235,12 +231,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'profile_current_status',
-            [
-                self::PROFILE_CURRENT_STATUS_UNDEFINED,
-                self::PROFILE_CURRENT_STATUS_REVIEW,
-                self::PROFILE_CURRENT_STATUS_DENIED,
-                self::PROFILE_CURRENT_STATUS_APPROVED
-            ],
+            ProfileCurrentStatuses::getAll(),
             $status,
             'Invalid profile current status.'
         );
@@ -256,17 +247,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'industry_type',
-            [
-                self::INDUSTRY_TYPE_FINANCE,
-                self::INDUSTRY_TYPE_GAMBLING,
-                self::INDUSTRY_TYPE_CRYPTO,
-                self::INDUSTRY_TYPE_TRAVEL,
-                self::INDUSTRY_TYPE_RETAIL,
-                self::INDUSTRY_TYPE_RISK_VENDOR,
-                self::INDUSTRY_TYPE_ADULT,
-                self::INDUSTRY_TYPE_REMITTANCE_TRANSFER,
-                self::INDUSTRY_TYPE_OTHER
-            ],
+            IndustryTypes::getAll(),
             $type,
             'Invalid industry type.'
         );

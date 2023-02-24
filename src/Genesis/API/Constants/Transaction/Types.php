@@ -1102,6 +1102,7 @@ class Types
             self::MY_BANK,
             self::NEOSURF,
             self::OXXO,
+            self::ONLINE_BANKING_PAYIN,
             self::P24,
             self::PAGO_FACIL,
             self::PARTIAL_REVERSAL,

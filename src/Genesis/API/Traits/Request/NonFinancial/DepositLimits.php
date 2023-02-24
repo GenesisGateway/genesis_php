@@ -25,7 +25,7 @@
 
 namespace Genesis\API\Traits\Request\NonFinancial;
 
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\PaymentMethods;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -71,11 +71,7 @@ trait DepositLimits
     {
         return $this->allowedOptionsSetter(
             'payment_method',
-            [
-                BaseRequest::PAYMENT_METHOD_CREDIT_CARD,
-                BaseRequest::PAYMENT_METHOD_ECHECK,
-                BaseRequest::PAYMENT_METHOD_EWALLET
-            ],
+            PaymentMethods::getAll(),
             $method,
             'Invalid payment method provided.'
         );

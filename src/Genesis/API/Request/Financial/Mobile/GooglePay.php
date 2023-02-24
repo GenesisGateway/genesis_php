@@ -32,6 +32,7 @@ use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Mobile\GooglePayAttributes;
 use Genesis\API\Traits\RestrictedSetter;
@@ -49,7 +50,8 @@ use Genesis\Utils\Currency;
 class GooglePay extends Financial
 {
     use AddressInfoAttributes, PaymentAttributes, GooglePayAttributes, RestrictedSetter,
-        BirthDateAttributes, BusinessAttributes, DocumentAttributes;
+        BirthDateAttributes, BusinessAttributes, DocumentAttributes,
+        DescriptorAttributes;
 
     /**
      * Used in Google token for signatures array
@@ -135,19 +137,20 @@ class GooglePay extends Financial
     public function getPaymentTransactionStructure()
     {
         return [
-            'usage'               => $this->usage,
-            'amount'              => $this->transformAmount($this->amount, $this->currency),
-            'currency'            => $this->currency,
-            'remote_ip'           => $this->remote_ip,
-            'payment_subtype'     => $this->payment_subtype,
-            'payment_token'       => $this->getPaymentTokenStructure(),
-            'customer_email'      => $this->customer_email,
-            'customer_phone'      => $this->customer_phone,
-            'birth_date'          => $this->getBirthDate(),
-            'billing_address'     => $this->getBillingAddressParamsStructure(),
-            'shipping_address'    => $this->getShippingAddressParamsStructure(),
-            'business_attributes' => $this->getBusinessAttributesStructure(),
-            'document_id'         => $this->document_id,
+            'usage'                     => $this->usage,
+            'amount'                    => $this->transformAmount($this->amount, $this->currency),
+            'currency'                  => $this->currency,
+            'remote_ip'                 => $this->remote_ip,
+            'payment_subtype'           => $this->payment_subtype,
+            'payment_token'             => $this->getPaymentTokenStructure(),
+            'customer_email'            => $this->customer_email,
+            'customer_phone'            => $this->customer_phone,
+            'birth_date'                => $this->getBirthDate(),
+            'billing_address'           => $this->getBillingAddressParamsStructure(),
+            'shipping_address'          => $this->getShippingAddressParamsStructure(),
+            'business_attributes'       => $this->getBusinessAttributesStructure(),
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'document_id'               => $this->document_id,
         ];
     }
 

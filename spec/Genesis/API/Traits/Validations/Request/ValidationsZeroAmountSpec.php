@@ -12,9 +12,9 @@ class ValidationsZeroAmountSpec extends ObjectBehavior
         $this->beAnInstanceOf(ValidationsZeroAmountStub::class);
     }
 
-    public function it_should_return_true_with_allowed_zero_amount()
+    public function it_should_return_true_with_allowed_field_amount()
     {
-        $this->getIsZeroAmountAllowed()->shouldBe(true);
+        $this->getHasAllowedEmptyFields()->shouldBe(true);
     }
 
     public function it_should_return_true_with_amount_for_amount_key_with_non_null_value()

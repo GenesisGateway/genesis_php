@@ -26,7 +26,7 @@
 namespace Genesis\API\Traits\Request\NonFinancial;
 
 use Genesis\API\Constants\DateTimeFormat;
-use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
+use Genesis\API\Constants\NonFinancial\KYC\Genders;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -111,10 +111,7 @@ trait KycBillingInformation
     {
         return $this->allowedOptionsSetter(
             'kyc_billing_gender',
-            [
-                BaseRequest::GENDER_MALE,
-                BaseRequest::GENDER_FEMALE
-            ],
+            Genders::getAll(),
             $gender,
             'Invalid gender provided.'
         );

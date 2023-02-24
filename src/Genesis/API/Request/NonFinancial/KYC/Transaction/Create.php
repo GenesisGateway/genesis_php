@@ -26,6 +26,9 @@
 namespace Genesis\API\Request\NonFinancial\KYC\Transaction;
 
 use Genesis\API\Constants\DateTimeFormat;
+use Genesis\API\Constants\NonFinancial\KYC\DeviceFingerprintTypes;
+use Genesis\API\Constants\NonFinancial\KYC\IndustryTypes;
+use Genesis\API\Constants\NonFinancial\KYC\PaymentMethods;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\CustomerInformation;
 use Genesis\API\Traits\Request\NonFinancial\DepositLimits;
@@ -282,11 +285,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'device_fingerprint_type',
-            [
-                self::DEVICE_FINGERPRINT_TYPE_CUSTOM,
-                self::DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE,
-                self::DEVICE_FINGERPRINT_TYPE_OPEN_SOURCE2
-            ],
+            DeviceFingerprintTypes::getAll(),
             $type,
             'Invalid device fingerprint type.'
         );
@@ -302,17 +301,7 @@ class Create extends BaseRequest
     {
         return $this->allowedOptionsSetter(
             'industry_type',
-            [
-                self::INDUSTRY_TYPE_FINANCE,
-                self::INDUSTRY_TYPE_GAMBLING,
-                self::INDUSTRY_TYPE_CRYPTO,
-                self::INDUSTRY_TYPE_TRAVEL,
-                self::INDUSTRY_TYPE_RETAIL,
-                self::INDUSTRY_TYPE_RISK_VENDOR,
-                self::INDUSTRY_TYPE_ADULT,
-                self::INDUSTRY_TYPE_REMITTANCE_TRANSFER,
-                self::INDUSTRY_TYPE_OTHER
-            ],
+            IndustryTypes::getAll(),
             $type,
             'Invalid industry type.'
         );
@@ -487,16 +476,16 @@ class Create extends BaseRequest
 
         $requiredFieldsConditional = [
             'payment_method' => [
-                self::PAYMENT_METHOD_CREDIT_CARD => [
+                PaymentMethods::CREDIT_CARD => [
                     'bin',
                     'tail',
                     'hashed_pan'
                 ],
-                self::PAYMENT_METHOD_ECHECK      => [
+                PaymentMethods::ECHECK      => [
                     'routing',
                     'account'
                 ],
-                self::PAYMENT_METHOD_EWALLET     => [
+                PaymentMethods::EWALLET     => [
                     'ewallet_id'
                 ]
             ]
