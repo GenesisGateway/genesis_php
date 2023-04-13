@@ -25,6 +25,7 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
@@ -43,7 +44,8 @@ use Genesis\Utils\Common as CommonUtils;
 class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use RestrictedSetter, AddressInfoAttributes, SourceOfFundsAttributes,
-        FxRateAttributes, DescriptorAttributes, MoneyTransferPayoutAttributes;
+        FxRateAttributes, DescriptorAttributes, MoneyTransferPayoutAttributes,
+        CustomerIdentificationData;
 
     const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
     const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
@@ -89,6 +91,7 @@ class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'fx_rate_id'                => $this->fx_rate_id,
                 'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
                 'money_transfer'            => $this->getMoneyTransferPayoutStructure(),
+                'customer_identification'   => $this->getCustomerIdentificationDataStructure(),
             ],
             $this->getSourceOfFundsStructure()
         );

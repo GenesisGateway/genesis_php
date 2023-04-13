@@ -44,7 +44,7 @@ final class Config
     /**
      * Library Version
      */
-    const VERSION = '1.21.6';
+    const VERSION = '1.21.7';
 
     /**
      * Core configuration settings

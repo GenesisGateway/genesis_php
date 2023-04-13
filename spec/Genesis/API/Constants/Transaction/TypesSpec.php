@@ -77,6 +77,11 @@ class TypesSpec extends ObjectBehavior
         $this->getDeprecatedRequests()->shouldBeArray();
     }
 
+    public function it_should_return_array_with_card_transaction_types()
+    {
+        $this->getCardTransactionTypes()->shouldBeArray();
+    }
+
     public function it_should_be_true_for_voidable_types()
     {
         $typesObject = $this->getWrappedObject();

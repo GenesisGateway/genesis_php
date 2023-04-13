@@ -5,6 +5,7 @@ namespace spec\Genesis\API\Request\Financial\Cards;
 use Genesis\API\Constants\Transaction\Parameters\Payout\MoneyTransferTypes;
 use Genesis\API\Request\Financial\Cards\Payout;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\Cards\CustomerIdentificationExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
@@ -18,7 +19,7 @@ class PayoutSpec extends ObjectBehavior
 {
     use RequestExamples, FxRateAttributesExamples, SourceOfFundsAttributesExamples,
         DescriptorAttributesExample, TokenizationAttributesExamples, CredentialOnFileAttributesExamples,
-        CreditCardAttributesExamples, DocumentAttributesExample;
+        CreditCardAttributesExamples, DocumentAttributesExample, CustomerIdentificationExamples;
 
     public function it_is_initializable()
     {

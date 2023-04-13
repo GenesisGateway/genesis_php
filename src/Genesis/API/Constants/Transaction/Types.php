@@ -1331,4 +1331,21 @@ class Types
             Services::getServiceDeprecatedRequests()
         );
     }
+
+    /**
+     * Get Card payment types
+     *
+     * @return array
+     */
+    public static function getCardTransactionTypes()
+    {
+        return [
+            Types::AUTHORIZE,
+            Types::AUTHORIZE_3D,
+            Types::SALE,
+            Types::SALE_3D,
+            Types::INIT_RECURRING_SALE,
+            Types::INIT_RECURRING_SALE_3D
+        ];
+    }
 }

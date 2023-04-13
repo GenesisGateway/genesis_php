@@ -3,13 +3,17 @@
 namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Credit;
+use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\Cards\CustomerIdentificationExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\SourceOfFundsAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 class CreditSpec extends ObjectBehavior
 {
-    use RequestExamples, SourceOfFundsAttributesExamples;
+    use RequestExamples, SourceOfFundsAttributesExamples,
+        CustomerIdentificationExamples;
 
     public function it_is_initializable()
     {
@@ -26,17 +30,15 @@ class CreditSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $faker = $this->getFaker();
-
-        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setTransactionId(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));
         $this->setCurrency(
-            $faker->randomElement(
-                \Genesis\Utils\Currency::getList()
+            Faker::getInstance()->randomElement(
+                Currency::getList()
             )
         );
-        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setAmount(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));
         $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setRemoteIp($faker->ipv4);
-        $this->setReferenceId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setRemoteIp(Faker::getInstance()->ipv4);
+        $this->setReferenceId(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));
     }
 }

@@ -1,3 +1,12 @@
+1.21.7
+-----
+**Features**:
+
+* Added Customer Identification parameters support to the following transaction requests:
+  * Credit
+  * Payout
+* Added helper method for retrieving the Credit Card transaction types
+
 1.21.6
 -----
 **Features**:

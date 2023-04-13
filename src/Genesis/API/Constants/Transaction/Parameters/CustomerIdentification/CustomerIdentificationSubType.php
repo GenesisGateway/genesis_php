@@ -23,45 +23,40 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Cards;
+namespace Genesis\API\Constants\Transaction\Parameters\CustomerIdentification;
 
-use Genesis\API\Traits\Request\Financial\CustomerIdentificationData;
-use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
 
 /**
- * Class Credit
+ * Specifies the type of the document ID.
  *
- * Credit Request
- *
- * @package Genesis\API\Request\Financial\Cards
+ * class CustomerIdentificationSubType
+ * @package Genesis\API\Constants\Transaction\Parameters\CustomerIdentification
  */
-class Credit extends \Genesis\API\Request\Base\Financial\Reference
+class CustomerIdentificationSubType
 {
-    use RestrictedSetter, SourceOfFundsAttributes, CustomerIdentificationData;
 
     /**
-     * Returns the Request transaction type
-     * @return string
+     * Document ID type - business
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::CREDIT;
-    }
+    const BUSINESS   = 'business';
 
     /**
-     * Return additional request attributes
+     * Document ID type - business
+     *
+     * @var string
+     */
+    const INDIVIDUAL = 'individual';
+
+    /**
+     * Returns all constants as array
      *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    public static function getAll()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getSourceOfFundsStructure(),
-            [
-                'customer_identification' => $this->getCustomerIdentificationDataStructure()
-            ]
-        );
+        return Common::getClassConstants(self::class);
     }
 }

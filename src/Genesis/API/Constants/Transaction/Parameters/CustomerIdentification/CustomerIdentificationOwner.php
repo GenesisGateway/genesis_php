@@ -23,45 +23,39 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Cards;
+namespace Genesis\API\Constants\Transaction\Parameters\CustomerIdentification;
 
-use Genesis\API\Traits\Request\Financial\CustomerIdentificationData;
-use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
-use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Utils\Common;
 
 /**
- * Class Credit
+ * Specifies if the document ID belongs to the sender or the receiver of the OCT
  *
- * Credit Request
- *
- * @package Genesis\API\Request\Financial\Cards
+ * class CustomerIdentificationOwner
+ * @package Genesis\API\Constants\Transaction\Parameters\CustomerIdentification
  */
-class Credit extends \Genesis\API\Request\Base\Financial\Reference
+class CustomerIdentificationOwner
 {
-    use RestrictedSetter, SourceOfFundsAttributes, CustomerIdentificationData;
-
     /**
-     * Returns the Request transaction type
-     * @return string
+     * Document ID belongs to
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::CREDIT;
-    }
+    const SENDER   = 'sender';
 
     /**
-     * Return additional request attributes
+     * Document ID belongs to
+     *
+     * @var string
+     */
+    const RECEIVER = 'receiver';
+
+    /**
+     * Returns all constants as array
      *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    public static function getAll()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getSourceOfFundsStructure(),
-            [
-                'customer_identification' => $this->getCustomerIdentificationDataStructure()
-            ]
-        );
+        return Common::getClassConstants(self::class);
     }
 }
