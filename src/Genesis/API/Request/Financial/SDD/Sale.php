@@ -41,6 +41,20 @@ class Sale extends \Genesis\API\Request\Base\Financial
     use PaymentAttributes, AddressInfoAttributes, BankAttributes;
 
     /**
+     * Name of the company
+     *
+     * @var string
+     */
+    protected $company_name;
+
+    /**
+     * Reference which contains the SEPAExpress paper mandate
+     *
+     * @var string
+     */
+    protected $mandate_reference;
+
+    /**
      * Returns the Request transaction type
      * @return string
      */
@@ -62,7 +76,6 @@ class Sale extends \Genesis\API\Request\Base\Financial
             'amount',
             'currency',
             'iban',
-            'bic',
             'billing_first_name',
             'billing_last_name',
             'billing_country'
@@ -88,14 +101,16 @@ class Sale extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'           => $this->transformAmount($this->amount, $this->currency),
-            'currency'         => $this->currency,
-            'iban'             => $this->iban,
-            'bic'              => $this->bic,
-            'customer_email'   => $this->customer_email,
-            'customer_phone'   => $this->customer_phone,
-            'billing_address'  => $this->getBillingAddressParamsStructure(),
-            'shipping_address' => $this->getShippingAddressParamsStructure()
+            'amount'            => $this->transformAmount($this->amount, $this->currency),
+            'currency'          => $this->currency,
+            'iban'              => $this->iban,
+            'bic'               => $this->bic,
+            'customer_email'    => $this->customer_email,
+            'customer_phone'    => $this->customer_phone,
+            'company_name'      => $this->company_name,
+            'mandate_reference' => $this->mandate_reference,
+            'billing_address'   => $this->getBillingAddressParamsStructure(),
+            'shipping_address'  => $this->getShippingAddressParamsStructure()
         ];
     }
 }

@@ -31,6 +31,44 @@ class SaleSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_not_fail_when_bic_not_set()
+    {
+        $this->setBaseRequestParameters();
+        $this->setBillingInfoRequestParams();
+
+        $faker = $this->getFaker();
+
+        $this->setIban($faker->iban('DE'));
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_contain_company_name_when_set()
+    {
+        $this->setRequestParameters();
+
+        $faker = $this->getFaker();
+
+        $fakeCompanyName = $faker->company;
+        $this->setCompanyName($fakeCompanyName);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain("<company_name>$fakeCompanyName</company_name>");
+    }
+
+    public function it_should_contain_mandate_reference_when_set()
+    {
+        $this->setRequestParameters();
+
+        $faker = $this->getFaker();
+
+        $fakeMandateReference = $faker->text(255);
+        $this->setMandateReference($fakeMandateReference);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain("<mandate_reference>$fakeMandateReference</mandate_reference>");
+    }
+
     protected function setBaseRequestParameters()
     {
         $faker = $this->getFaker();

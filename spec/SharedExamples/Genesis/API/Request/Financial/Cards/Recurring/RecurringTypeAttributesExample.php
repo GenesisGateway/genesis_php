@@ -104,7 +104,6 @@ trait RecurringTypeAttributesExample
     private function handleSkipperSubsequentTransactionTypes()
     {
         if (
-            $this->getWrappedObject() instanceof Authorize ||
             $this->getWrappedObject() instanceof Authorize3D ||
             $this->getWrappedObject() instanceof Sale3D ||
             $this->getWrappedObject() instanceof WpfCreate

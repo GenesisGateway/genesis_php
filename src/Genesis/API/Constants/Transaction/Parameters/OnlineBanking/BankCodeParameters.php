@@ -117,6 +117,9 @@ class BankCodeParameters
             Banks::VTCP_SACOMBANK, Banks::VTCP_SAIGON_BANK, Banks::VTCP_SEAABANK, Banks::VTCP_TECHCOMBANK,
             Banks::VTCP_TIENPHONGBANK, Banks::VTCP_VIB, Banks::VTCP_VIETABANK, Banks::VTCP_VIETCOMBANK,
             Banks::VTCP_VIETINBANK
+        ],
+        'PLN' => [
+            Banks::BL
         ]
     ];
 

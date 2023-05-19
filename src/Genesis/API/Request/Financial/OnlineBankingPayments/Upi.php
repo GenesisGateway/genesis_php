@@ -30,6 +30,7 @@ use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\UserCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\VirtualPaymentAddressAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Exceptions\InvalidArgument;
@@ -37,7 +38,8 @@ use Genesis\Utils\Common as CommonUtils;
 
 class Upi extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes, VirtualPaymentAddressAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
+        DocumentAttributes, VirtualPaymentAddressAttributes, UserCategoryAttributes;
 
     /**
      * Return the Transaction Type used by Genesis
@@ -108,6 +110,7 @@ class Upi extends Financial
             'customer_phone'          => $this->customer_phone,
             'document_id'             => $this->document_id,
             'virtual_payment_address' => $this->virtual_payment_address,
+            'user_category'           => $this->user_category,
             'billing_address'         => $this->getBillingAddressParamsStructure(),
             'shipping_address'        => $this->getShippingAddressParamsStructure()
         ];

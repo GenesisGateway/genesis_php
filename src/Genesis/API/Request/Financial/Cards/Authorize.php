@@ -35,6 +35,7 @@ use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\API\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\API\Traits\Request\Financial\ScaAttributes;
+use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
@@ -55,7 +56,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes,
         CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
-        ManagedRecurringAttributes, RecurringCategoryAttributes;
+        ManagedRecurringAttributes, RecurringCategoryAttributes, ReferenceAttributes;
 
     /**
      * Returns the Request transaction type
@@ -91,9 +92,13 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     {
         parent::setRequiredFields();
 
-        $requiredFieldsConditional = $this->requiredTokenizationFieldsConditional() +
-            $this->requiredCCFieldsConditional() + $this->requiredManagedRecurringFieldsConditional() +
-            $this->requiredRecurringManagedTypeFieldConditional();
+        $requiredFieldsConditional = array_merge_recursive(
+            $this->requiredTokenizationFieldsConditional(),
+            $this->requiredCCFieldsConditional(),
+            $this->requiredManagedRecurringFieldsConditional(),
+            $this->requiredRecurringManagedTypeFieldConditional(),
+            $this->requiredRecurringSubsequentTypeFieldConditional()
+        );
 
         $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }
@@ -108,7 +113,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
      */
     protected function checkRequirements()
     {
-        $requiredFieldValuesConditional = $this->requiredRecurringInitialTypesFieldValuesConditional();
+        $requiredFieldValuesConditional = $this->requiredRecurringAllTypesFieldValuesConditional();
 
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
             $requiredFieldValuesConditional
@@ -141,7 +146,8 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
-                'recurring_category'        => $this->recurring_category
+                'recurring_category'        => $this->recurring_category,
+                'reference_id'              => $this->reference_id
             ],
             $this->getScaAttributesStructure(),
             $this->getUcofAttributesStructure()

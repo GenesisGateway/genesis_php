@@ -1,3 +1,16 @@
+1.21.8
+-----
+**Features**:
+
+* Added Mandate Reference and Company Name parameters support to the SDD Sale transaction request
+* Updated SDD Sale transaction request by removing the requirement of mandatory BIC parameter
+* Updated OnlineBanking Payout bank list for Brazil
+* Added Subsequent Requiring Type support to Authorize transaction request
+* Added Blik One Click bank support to Online Banking PayIn
+* Added User Category parameter support to the following transaction requests:
+  * Online Banking PayIn
+  * UPI
+
 1.21.7
 -----
 **Features**:

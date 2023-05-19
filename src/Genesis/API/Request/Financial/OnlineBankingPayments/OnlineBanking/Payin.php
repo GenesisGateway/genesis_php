@@ -30,6 +30,7 @@ use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\UserCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\VirtualPaymentAddressAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Exceptions\InvalidArgument;
@@ -53,7 +54,8 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Payin extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes, VirtualPaymentAddressAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
+        DocumentAttributes, VirtualPaymentAddressAttributes, UserCategoryAttributes;
 
     /**
      * Customer’s bank code
@@ -75,6 +77,13 @@ class Payin extends Financial
      * @var string $consumer_reference
      */
     protected $consumer_reference;
+
+    /**
+     * 6-digit code used to authenticate the consumer within BLIK
+     *
+     * @var string
+     */
+    protected $auth_code;
 
     /**
      * @param $paymentType
@@ -206,6 +215,9 @@ class Payin extends Financial
                 'CAD' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('CAD')]
                 ],
+                'PLN' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('PLN')]
+                ],
             ]
         ];
 
@@ -255,7 +267,9 @@ class Payin extends Financial
             'billing_address'         => $this->getBillingAddressParamsStructure(),
             'shipping_address'        => $this->getShippingAddressParamsStructure(),
             'virtual_payment_address' => $this->virtual_payment_address,
-            'consumer_reference'      => $this->consumer_reference
+            'consumer_reference'      => $this->consumer_reference,
+            'user_category'           => $this->user_category,
+            'auth_code'               => $this->auth_code
         ];
     }
 }
