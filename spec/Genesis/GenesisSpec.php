@@ -278,6 +278,13 @@ class GenesisSpec extends ObjectBehavior
         $this->shouldThrow(DeprecatedMethod::class)->duringInstantiation();
     }
 
+    public function it_fails_on_deprecated_account_verification_request()
+    {
+        $this->beConstructedWith('NonFinancial\AccountVerification');
+
+        $this->shouldThrow('\Genesis\Exceptions\DeprecatedMethod')->duringInstantiation();
+    }
+
     public function it_fails_on_non_existing_transaction_request()
     {
         $this->beConstructedWith('Non\Existing\Transaction');

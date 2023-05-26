@@ -137,6 +137,18 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('setUserId', [null]);
     }
 
+    public function it_should_contain_bank_account_verification_digit_when_set()
+    {
+        $this->setRequestParameters();
+
+        $digit = Faker::getInstance()->randomDigitNotNull();
+        $this->setBankAccountVerificationDigit($digit);
+
+        $this->getDocument()->shouldContain(
+            "<bank_account_verification_digit>$digit</bank_account_verification_digit>"
+        );
+    }
+
     public function it_should_contain_proper_structure_elements()
     {
         $this->setRequestParameters();

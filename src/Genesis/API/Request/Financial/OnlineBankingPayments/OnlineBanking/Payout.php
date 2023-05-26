@@ -48,6 +48,8 @@ use Genesis\Utils\Common;
  * @method Payout setBankCode($value) Set Customer’s bank code
  * @method Payout setBankBranch($value) Set Customer’s bank branch
  * @method Payout setBankProvince($value) Set Name of the province that the bank is located
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Payout extends \Genesis\API\Request\Base\Financial
 {
@@ -82,7 +84,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
     protected $bank_name;
 
     /**
-     * Customer’s bank ode
+     * Customer’s bank code
      *
      * @var string
      */
@@ -153,6 +155,13 @@ class Payout extends \Genesis\API\Request\Base\Financial
      * @var string $user_id
      */
     protected $user_id;
+
+    /**
+     * Verifier digit. Given by external provider, used to verify transaction
+     *
+     * @var string $bank_account_verification_digit
+     */
+    protected $bank_account_verification_digit;
 
     protected function getTransactionType()
     {
@@ -354,28 +363,29 @@ class Payout extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'                    => $this->transformAmount($this->amount, $this->currency),
-            'currency'                  => $this->currency,
-            'customer_email'            => $this->customer_email,
-            'customer_phone'            => $this->customer_phone,
-            'notification_url'          => $this->notification_url,
-            'return_success_url'        => $this->return_success_url,
-            'return_failure_url'        => $this->return_failure_url,
-            'bank_code'                 => $this->bank_code,
-            'bank_name'                 => $this->bank_name,
-            'bank_branch'               => $this->bank_branch,
-            'bank_account_name'         => $this->bank_account_name,
-            'bank_account_number'       => $this->bank_account_number,
-            'bank_province'             => $this->bank_province,
-            'id_card_number'            => $this->id_card_number,
-            'payer_bank_account_number' => $this->payer_bank_phone_number,
-            'bank_account_type'         => $this->bank_account_type,
-            'document_type'             => $this->document_type,
-            'account_id'                => $this->account_id,
-            'user_id'                   => $this->user_id,
-            'birth_date'                => $this->getBirthDate(),
-            'billing_address'           => $this->getBillingAddressParamsStructure(),
-            'shipping_address'          => $this->getShippingAddressParamsStructure()
+            'amount'                          => $this->transformAmount($this->amount, $this->currency),
+            'currency'                        => $this->currency,
+            'customer_email'                  => $this->customer_email,
+            'customer_phone'                  => $this->customer_phone,
+            'notification_url'                => $this->notification_url,
+            'return_success_url'              => $this->return_success_url,
+            'return_failure_url'              => $this->return_failure_url,
+            'bank_code'                       => $this->bank_code,
+            'bank_name'                       => $this->bank_name,
+            'bank_branch'                     => $this->bank_branch,
+            'bank_account_name'               => $this->bank_account_name,
+            'bank_account_number'             => $this->bank_account_number,
+            'bank_province'                   => $this->bank_province,
+            'id_card_number'                  => $this->id_card_number,
+            'payer_bank_account_number'       => $this->payer_bank_phone_number,
+            'bank_account_type'               => $this->bank_account_type,
+            'bank_account_verification_digit' => $this->bank_account_verification_digit,
+            'document_type'                   => $this->document_type,
+            'account_id'                      => $this->account_id,
+            'user_id'                         => $this->user_id,
+            'birth_date'                      => $this->getBirthDate(),
+            'billing_address'                 => $this->getBillingAddressParamsStructure(),
+            'shipping_address'                => $this->getShippingAddressParamsStructure()
         ];
     }
 }

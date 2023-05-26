@@ -40,6 +40,8 @@ use Genesis\Utils\Common as CommonUtils;
  *
  * @package    Genesis
  * @subpackage Request
+ *
+ * @deprecated Since 1.21.9 Payment method is deprecated and will be removed
  */
 class AccountVerification extends \Genesis\API\Request
 {

@@ -25,6 +25,8 @@
 
 namespace Genesis\API\Constants\NonFinancial;
 
+use Genesis\API\Constants\Transaction\Types;
+
 /**
  * Class Services
  *
@@ -55,8 +57,9 @@ class Services
     public static function getServiceDeprecatedRequests()
     {
         return [
-            self::AVS             => 'NonFinancial\AVS',
-            self::ABNI_DEAL_BANKS => 'NonFinancial\Retrieve\AbniDealBanks'
+            self::AVS                   => 'NonFinancial\AVS',
+            self::ABNI_DEAL_BANKS       => 'NonFinancial\Retrieve\AbniDealBanks',
+            Types::ACCOUNT_VERIFICATION => 'NonFinancial\AccountVerification'
         ];
     }
 }

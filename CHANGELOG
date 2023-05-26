@@ -1,3 +1,14 @@
+1.21.9
+-----
+**Features**:
+
+* Updated Bank Pay-out transaction request by adding support bank_account_verification_digit parameter
+* Deprecated Account Verification transaction request. Replaced by Sale, Sale 3D, Authorize, Authorize 3D with 0 amount.
+
+**Fixes**:
+
+* Fixed PHP 8.1+ compatibility
+
 1.21.8
 -----
 **Features**:

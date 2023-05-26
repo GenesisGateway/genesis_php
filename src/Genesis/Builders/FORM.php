@@ -62,6 +62,6 @@ class FORM implements Builder
             throw new InvalidArgument('Invalid data/tree');
         }
 
-        $this->content = http_build_query($structure, null, '&', PHP_QUERY_RFC1738);
+        $this->content = http_build_query($structure, '', '&', PHP_QUERY_RFC1738);
     }
 }
