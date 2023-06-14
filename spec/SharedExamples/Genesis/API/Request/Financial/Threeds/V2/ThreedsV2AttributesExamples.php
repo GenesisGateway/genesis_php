@@ -221,14 +221,16 @@ trait ThreedsV2AttributesExamples
         );
     }
 
-    public function it_should_fail_with_invalid_color_depth()
+    public function it_should_fail_with_zero_or_negative_color_depth()
     {
         if ($this->getWrappedObject() instanceof WpfCreate) {
             throw new SkippingException('Unsupported attributes from Web Payment Form');
         }
 
         $this->setFullThreedsV2Request();
-        $this->setThreedsV2BrowserColorDepth('180000');
+
+        $colorDepth = rand(PHP_INT_MIN, 0);
+        $this->setThreedsV2BrowserColorDepth($colorDepth);
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }

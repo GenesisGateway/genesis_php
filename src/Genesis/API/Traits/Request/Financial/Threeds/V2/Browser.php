@@ -25,6 +25,7 @@
 
 namespace Genesis\API\Traits\Request\Financial\Threeds\V2;
 
+use Faker\Provider\ar_EG\Payment;
 use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Browser\ColorDepths;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
@@ -139,11 +140,12 @@ trait Browser
      * Value representing the bit depth of the colour palette for displaying images, in bits per pixel
      *
      * @param string|int $value
+     *
      * @return $this
      */
     public function setThreedsV2BrowserColorDepth($value)
     {
-        $this->threeds_v2_browser_color_depth = (int) $value;
+        $this->threeds_v2_browser_color_depth = $this->fetchColorDepth($value);
 
         return $this;
     }
@@ -275,5 +277,35 @@ trait Browser
         return array(
             'threeds_v2_browser_time_zone_offset' => 'time_zone_offset'
         );
+    }
+
+    /**
+     * Fetch proper color depth value
+     *
+     * The value as per EMVCo specs can be one of 1, 4, 8, 15, 16, 24, 32, 48.
+     * In case, an unsupported color_depth is determined, the nearest supported value that is less than
+     * the actual one needs to be submitted. For example, if the obtained value is 30,
+     * which is not supported as per EMVCo specs, 24 has to be submitted.
+     *
+     * @param string|int $value
+     *
+     * @return int
+     */
+    protected function fetchColorDepth($value)
+    {
+        $colorDepth = (int) $value;
+
+        if ($value > 0) {
+            $filteredDepthsList = array_filter(
+                ColorDepths::getAll(),
+                function ($arrVal) use ($colorDepth) {
+                    return $colorDepth >= $arrVal;
+                }
+            );
+
+            $colorDepth = end($filteredDepthsList);
+        }
+
+        return $colorDepth;
     }
 }

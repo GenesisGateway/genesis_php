@@ -363,6 +363,11 @@ final class Errors
     const IBAN_BLACKLIST_ERROR                          = 696;
 
     /**
+     * Terminal card brand limitation!
+     */
+    const CARD_BRAND_VELOCITY_RESTRICTION_ERROR         = 697;
+
+    /**
      * Consumer with this consumer_id, email combination already exists!
      */
     const CONSUMER_UNIQUENESS_ERROR                     = 701;
@@ -627,6 +632,8 @@ final class Errors
                 return 'Please contact the risk team!';
             case self::IBAN_BLACKLIST_ERROR:
                 return 'Transaction declined by risk management, iban blacklisted!';
+            case self::CARD_BRAND_VELOCITY_RESTRICTION_ERROR:
+                return 'Terminal card brand limitation!';
             case self::REMOTE_ERROR:
                 return 'Some error occurred on the issuer.';
             case self::REMOTE_SYSTEM_ERROR:

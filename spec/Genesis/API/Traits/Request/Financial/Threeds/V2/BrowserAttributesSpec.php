@@ -6,6 +6,7 @@ use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\API\Stubs\Traits\Request\Financial\Threeds\V2\BrowserStub;
 use spec\SharedExamples\Faker;
+use Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Browser\ColorDepths;
 
 /**
  * Class BrowserAttributesSpec
@@ -75,13 +76,15 @@ class BrowserAttributesSpec extends ObjectBehavior
         $this->getThreedsV2BrowserJavaEnabled()->shouldBe(true);
     }
 
-    public function it_should_set_correct_dolor_depth()
+    public function it_should_set_correct_color_depth()
     {
-        $number = (string) rand(-100000, PHP_INT_MAX);
+        $depthsList = ColorDepths::getAll();
+
+        $number = (string) rand(reset($depthsList), PHP_INT_MAX);
 
         $this->setThreedsV2BrowserColorDepth($number)->shouldHaveType(BrowserStub::class);
         $this->getThreedsV2BrowserColorDepth()->shouldBeInt();
-        $this->getThreedsV2BrowserColorDepth()->shouldBe((int) $number);
+        $this->getThreedsV2BrowserColorDepth()->shouldBeInArray($depthsList);
     }
 
     public function it_should_set_correct_screen_height()
@@ -135,6 +138,9 @@ class BrowserAttributesSpec extends ObjectBehavior
         return array(
             'beNotEmptyArray' => function ($subject) {
                 return is_array($subject) && count($subject) > 0;
+            },
+            'beInArray' => function ($subject, $value) {
+                return in_array($subject, $value);
             }
         );
     }

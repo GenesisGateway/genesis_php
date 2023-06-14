@@ -1010,7 +1010,7 @@ class Banks
     /**
      * BL
      */
-    const BL = 'BL';
+    const BLK = 'BLK';
 
     /**
      * Retrieve list of all Bank Codes

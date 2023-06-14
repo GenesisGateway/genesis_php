@@ -1,3 +1,22 @@
+1.21.10
+-----
+**Features**:
+
+* Updated available transaction statuses
+* Updated error codes list
+* Updated Online banking PLN bank codes
+* Added support for Tokenization API. The following requests were added:
+  * Tokenize
+  * Detokenize
+  * Update token
+  * Validate token
+  * Delete token
+  * Get card
+
+**Fixes**:
+
+* Fixed color_depth 3DSecure request parameter behaviour
+
 1.21.9
 -----
 **Features**:

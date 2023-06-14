@@ -119,7 +119,7 @@ class BankCodeParameters
             Banks::VTCP_VIETINBANK
         ],
         'PLN' => [
-            Banks::BL
+            Banks::BLK
         ]
     ];
 

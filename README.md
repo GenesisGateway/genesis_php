@@ -1219,6 +1219,14 @@ NonFinancial\TransactionApi\CardExpiryDateUpdate
 
 // ThreedsV2-Method Continue Request
 Financial\Cards\Threeds\V2\MethodContinue
+
+// Tokenization API
+NonFinancial\TokenizationApi\Tokenize
+NonFinancial\TokenizationApi\Detokenize
+NonFinancial\TokenizationApi\UpdateToken
+NonFinancial\TokenizationApi\ValidateToken
+NonFinancial\TokenizationApi\DeleteToken
+NonFinancial\TokenizationApi\GetCard
 ```
 
 More information about each one of the request types can be found in the Genesis API Documentation and the Wiki

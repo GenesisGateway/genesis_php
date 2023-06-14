@@ -55,6 +55,15 @@ use Genesis\Exceptions\InvalidMethod;
  * @method bool isChargebacked()
  * @method bool isChargebackReversed()
  * @method bool isPreArbitrated()
+ * @method bool isActive()
+ * @method bool isInvalidated()
+ * @method bool isChargebackReversal()
+ * @method bool isPendingReview()
+ * @method bool isCancelled()
+ * @method bool isAccepted()
+ * @method bool isChanged()
+ * @method bool isDeleted()
+ * @method bool isReceived()
  */
 class States
 {
@@ -177,6 +186,66 @@ class States
      * Once a chargebacked transaction is charged, the state changes to represented. Chargeback has been canceled.
      */
     const REPRESENTED = 'represented';
+
+    /**
+     * Active token status
+     *
+     * Used in Tokenization API
+     */
+    const ACTIVE = 'active';
+
+    /**
+     * Invalidated token status
+     *
+     * Used in Tokenization API
+     */
+    const INVALIDATED = 'invalidated';
+    
+    /**
+     * Once a chargebacked transaction has been charged, the state changes to chargeback_reversal.
+     * The chargeback has been cancelled.
+     */
+    const CHARGEBACK_REVERSAL = 'chargeback_reversal';
+
+    /**
+     * The transaction is on hold, a manual review needs to be performed.
+     */
+    const PENDING_REVIEW = 'pending_review';
+
+    /**
+     * Cancelled status
+     *
+     * Used in KYC services
+     */
+    const CANCELLED = 'cancelled';
+
+    /**
+     * Accepted status
+     *
+     * Used in KYC services
+     */
+    const ACCEPTED = 'accepted';
+
+    /**
+     * Changed status
+     *
+     * Used in KYC services
+     */
+    const CHANGED = 'changed';
+
+    /**
+     * Deleted status
+     *
+     * Used in KYC services
+     */
+    const DELETED = 'deleted';
+
+    /**
+     * Received status
+     *
+     * Used in KYC services
+     */
+    const RECEIVED = 'received';
 
     /**
      * Store the state of transaction for comparison
