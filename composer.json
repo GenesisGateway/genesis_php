@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.21.10",
+  "version": "1.21.11",
   "license": "MIT",
   "keywords": [
     "3ds_v2",

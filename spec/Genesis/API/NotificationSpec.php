@@ -4,10 +4,12 @@ namespace spec\Genesis\API;
 
 use Genesis\Config;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use spec\SharedExamples\Faker;
 
 class NotificationSpec extends ObjectBehavior
 {
+    private $password;
+
     private $sample = array(
         'api'   => array(
             'unique_id'     => '',
@@ -23,6 +25,10 @@ class NotificationSpec extends ObjectBehavior
 
     public function __construct()
     {
+        $this->password = Faker::getInstance()->uuid;
+
+        Config::setPassword($this->password);
+
         for ($i=0; $i < mt_rand(32, 48); $i++) {
             $this->sample['api']['unique_id'] .= chr(mt_rand(97, 122));
         }
@@ -63,6 +69,60 @@ class NotificationSpec extends ObjectBehavior
 
         $this->isAPINotification()->shouldBe(false);
         $this->isWPFNotification()->shouldBe(true);
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_api_sha1_notification()
+    {
+        $this->sample['api']['signature'] = hash('sha1', "{$this->sample['api']['unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_api_sha256_notification()
+    {
+        $this->sample['api']['signature'] = hash('sha256', "{$this->sample['api']['unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_api_sha512_notification()
+    {
+        $this->sample['api']['signature'] = hash('sha512', "{$this->sample['api']['unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['api']));
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_wpf_sha1_notification()
+    {
+        $this->sample['wpf']['signature'] = hash('sha1', "{$this->sample['wpf']['wpf_unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_wpf_sha256_notification()
+    {
+        $this->sample['wpf']['signature'] = hash('sha256', "{$this->sample['wpf']['wpf_unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
+
+        $this->isAuthentic()->shouldBe(true);
+    }
+
+    public function it_can_verify_wpf_sha512_notification()
+    {
+        $this->sample['wpf']['signature'] = hash('sha512', "{$this->sample['wpf']['wpf_unique_id']}$this->password");
+
+        $this->shouldNotThrow()->during('parseNotification', array($this->sample['wpf']));
 
         $this->isAuthentic()->shouldBe(true);
     }

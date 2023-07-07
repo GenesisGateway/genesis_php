@@ -158,6 +158,9 @@ class Notification
             case 40:
                 $hashType = 'sha1';
                 break;
+            case 64:
+                $hashType = 'sha256';
+                break;
             case 128:
                 $hashType = 'sha512';
                 break;

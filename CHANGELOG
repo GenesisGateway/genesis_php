@@ -1,3 +1,23 @@
+1.21.11
+-----
+**Features**:
+
+* Added 3DSv2 parameters support to the Google Pay transaction request
+* Added PHP 8+ compatibility updates
+* Added support for the following Dynamic Descriptor parameters:
+  * merchant_country
+  * merchant_state
+  * merchant_zip_code
+  * merchant_address
+  * merchant_url
+  * merchant_phone
+  * merchant_service_city
+  * merchant_service_country
+  * merchant_service_state
+  * merchant_service_zip_code
+  * merchant_service_phone
+* Added sha256 encryption algorithm support during notification authentication
+
 1.21.10
 -----
 **Features**:

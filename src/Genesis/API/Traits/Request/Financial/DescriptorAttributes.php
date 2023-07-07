@@ -32,9 +32,20 @@ namespace Genesis\API\Traits\Request\Financial;
  *
  * @package Genesis\API\Traits\Request\Financial
  *
- * @method $this setDynamicMerchantName($value) Dynamically override the charge descriptor
- * @method $this setDynamicMerchantCity($value) Dynamically override the merchant phone number
- * @method $this setDynamicSubMerchantId($value) Sub-merchant ID assigned by the Payment Facilitator
+ * @method $this setDynamicMerchantName( $value ) Dynamically override the charge descriptor
+ * @method $this setDynamicMerchantCity( $value ) Dynamically override the merchant phone number
+ * @method $this setDynamicSubMerchantId( $value ) Sub-merchant ID assigned by the Payment Facilitator
+ * @method $this setDynamicMerchantCountry( $value ) Dynamically override the merchant country
+ * @method $this setDynamicMerchantState( $value ) Dynamically override the merchant subdivision code
+ * @method $this setDynamicMerchantZipCode( $value ) Dynamically override the merchant zip/postal code
+ * @method $this setDynamicMerchantAddress( $value ) Dynamically override the merchant address
+ * @method $this setDynamicMerchantUrl( $value ) Dynamically override the merchant URL
+ * @method $this setDynamicMerchantPhone( $value ) Dynamically override the merchant phone number
+ * @method $this setDynamicMerchantServiceCity( $value ) Dynamically override the merchant service city
+ * @method $this setDynamicMerchantServiceCountry( $value ) Dynamically override the merchant service country
+ * @method $this setDynamicMerchantServiceState( $value ) Dynamically override the merchant service subdivision code
+ * @method $this setDynamicMerchantServiceZipCode( $value ) Dynamically override the merchant service zip/postal
+ * @method $this setDynamicMerchantServicePhone( $value ) Dynamically override the merchant service phone number
  */
 trait DescriptorAttributes
 {
@@ -46,7 +57,7 @@ trait DescriptorAttributes
     protected $dynamic_merchant_name;
 
     /**
-     * Allows to dynamically override the mer- chant phone number
+     * Allows to dynamically override the merchant phone number
      *
      * @var string
      */
@@ -60,6 +71,83 @@ trait DescriptorAttributes
     protected $dynamic_sub_merchant_id;
 
     /**
+     * Allows to dynamically override the merchant country.
+     *
+     * @var string $dynamic_merchant_country
+     */
+    protected $dynamic_merchant_country;
+
+    /**
+     * Allows to dynamically override the merchant subdivision code.
+     *
+     * @var string $dynamic_merchant_state
+     */
+    protected $dynamic_merchant_state;
+
+    /**
+     * Allows to dynamically override the merchant zip/postal code.
+     *
+     * @var string $dynamic_merchant_zip_code
+     */
+    protected $dynamic_merchant_zip_code;
+
+    /**
+     * Allows to dynamically override the merchant address.
+     *
+     * @var string $dynamic_merchant_address
+     */
+    protected $dynamic_merchant_address;
+
+    /**
+     * Allows to dynamically override the merchant URL
+     *
+     * @var string $dynamic_merchant_url
+     */
+    protected $dynamic_merchant_url;
+
+    /**
+     * Allows to dynamically override the merchant phone number.
+     *
+     * @var string $dynamic_merchant_phone
+     */
+    protected $dynamic_merchant_phone;
+
+    /**
+     * Allows to dynamically override the merchant service city.
+     *
+     * @var string $dynamic_merchant_service_city
+     */
+    protected $dynamic_merchant_service_city;
+
+    /**
+     * Allows to dynamically override the merchant service country.
+     *
+     * @var string $dynamic_merchant_service_country
+     */
+    protected $dynamic_merchant_service_country;
+
+    /**
+     * Allows to dynamically override the merchant service subdivision code.
+     *
+     * @var string $dynamic_merchant_service_state
+     */
+    protected $dynamic_merchant_service_state;
+
+    /**
+     * Allows to dynamically override the merchant service zip/postal code.
+     *
+     * @var string $dynamic_merchant_service_zip_code
+     */
+    protected $dynamic_merchant_service_zip_code;
+
+    /**
+     * Allows to dynamically override the merchant service phone number.
+     *
+     * @var string $dynamic_merchant_service_phone
+     */
+    protected $dynamic_merchant_service_phone;
+
+    /**
      * Builds an array list with all Params
      *
      * @return array
@@ -67,9 +155,20 @@ trait DescriptorAttributes
     protected function getDynamicDescriptorParamsStructure()
     {
         return [
-            'merchant_name'   => $this->dynamic_merchant_name,
-            'merchant_city'   => $this->dynamic_merchant_city,
-            'sub_merchant_id' => $this->dynamic_sub_merchant_id
+            'merchant_name'             => $this->dynamic_merchant_name,
+            'merchant_city'             => $this->dynamic_merchant_city,
+            'sub_merchant_id'           => $this->dynamic_sub_merchant_id,
+            'merchant_country'          => $this->dynamic_merchant_country,
+            'merchant_state'            => $this->dynamic_merchant_state,
+            'merchant_zip_code'         => $this->dynamic_merchant_zip_code,
+            'merchant_address'          => $this->dynamic_merchant_address,
+            'merchant_url'              => $this->dynamic_merchant_url,
+            'merchant_phone'            => $this->dynamic_merchant_phone,
+            'merchant_service_city'     => $this->dynamic_merchant_service_city,
+            'merchant_service_country'  => $this->dynamic_merchant_service_country,
+            'merchant_service_state'    => $this->dynamic_merchant_service_state,
+            'merchant_service_zip_code' => $this->dynamic_merchant_service_zip_code,
+            'merchant_service_phone'    => $this->dynamic_merchant_service_phone
         ];
     }
 }

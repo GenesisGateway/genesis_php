@@ -175,7 +175,9 @@ class i18n
      */
     public static function isValidLanguageCode($languageCode)
     {
-        if (@constant('self::' . strtoupper($languageCode))) {
+        $languageConstant = 'self::' . strtoupper($languageCode);
+
+        if (defined($languageConstant) && constant($languageConstant)) {
             return true;
         }
 
