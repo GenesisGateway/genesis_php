@@ -18,6 +18,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
@@ -27,7 +28,7 @@ class Sale3DSpec extends ObjectBehavior
         DescriptorAttributesExample, CryptoAttributesExamples, TokenizationAttributesExamples,
         BusinessAttributesExample, ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
-        RecurringTypeAttributesExample, RecurringCategoryAttributesExample;
+        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples;
 
     public function it_is_initializable()
     {

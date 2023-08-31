@@ -5,6 +5,7 @@ namespace spec\Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking
 use Genesis\API\Constants\BankAccountTypes;
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutPaymentTypesParameters;
 use Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -149,6 +150,13 @@ class PayoutSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_fail_with_not_proper_payment_type_value()
+    {
+        $faker = $this->getFaker();
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setPaymentType', [$faker->asciify('**')]);
+    }
+
     public function it_should_contain_proper_structure_elements()
     {
         $this->setRequestParameters();
@@ -176,6 +184,7 @@ class PayoutSpec extends ObjectBehavior
             'account_id',
             'user_id',
             'birth_date',
+            'payment_type',
             'billing_address'
         ];
 
@@ -263,6 +272,11 @@ class PayoutSpec extends ObjectBehavior
         $this->setBirthDate(
             Faker::getInstance()->date(
                 Faker::getInstance()->randomElement(DateTimeFormat::getAll())
+            )
+        );
+        $this->setPaymentType(
+            Faker::getInstance()->randomElement(
+                PayoutPaymentTypesParameters::getAll()
             )
         );
     }

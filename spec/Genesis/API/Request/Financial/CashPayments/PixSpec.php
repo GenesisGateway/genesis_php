@@ -16,9 +16,7 @@ class PixSpec extends ObjectBehavior
             'transaction_id',
             'amount',
             'currency',
-            'document_id',
-            'billing_first_name',
-            'billing_last_name'
+            'document_id'
         ]);
     }
 

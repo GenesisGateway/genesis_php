@@ -80,6 +80,15 @@ class NeosurfSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_not_fail_with_empty_return_urls()
+    {
+        $this->setRequestParameters();
+        $this->setReturnSuccessUrl('');
+        $this->setReturnFailureUrl('');
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
     protected function setRequestParameters()
     {
         $this->setDefaultRequestParameters();

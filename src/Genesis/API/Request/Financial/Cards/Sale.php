@@ -39,6 +39,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
+use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
@@ -56,7 +57,7 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         ReferenceAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes,
         BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
-        ManagedRecurringAttributes, RecurringCategoryAttributes;
+        ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes;
 
     /**
      * Returns the Request transaction type
@@ -146,7 +147,8 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
-                'recurring_category'        => $this->recurring_category
+                'recurring_category'        => $this->recurring_category,
+                'funding'                   => $this->getFundingAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
             $this->getUcofAttributesStructure()

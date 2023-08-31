@@ -1,3 +1,24 @@
+1.21.12
+-----
+**Features**:
+
+* Added Funding parameters support to the following transaction requests:
+  * Web Payment Form
+  * Authorize
+  * Authorize 3D
+  * Sale
+  * Sale 3D
+  * Init Recurring Sale
+  * Init Recurring Sale 3D
+* Added support for the following KYC Customer Verification requests:
+  * Register
+  * Status
+  * Verify
+* Added Payment Type attribute support to Bank Payout transaction request.
+* Updated the PIX transaction request by marking billing address attributes as optional.
+* Updated Online Banking transaction request bank codes for THB, VDN, and IDR currencies.
+* Updated the Neosurf transaction by marking Return Success and Return Failure URL attributes as optional.
+
 1.21.11
 -----
 **Features**:

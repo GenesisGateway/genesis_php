@@ -43,7 +43,7 @@ trait RestrictedSetter
      * @return $this
      * @throws InvalidArgument
      */
-    public function allowedOptionsSetter($field, $allowed, $value, $errorMessage)
+    protected function allowedOptionsSetter($field, $allowed, $value, $errorMessage)
     {
         if (!in_array($value, $allowed)) {
             throw new InvalidArgument($errorMessage . ' Allowed values are ' . implode(', ', $allowed));

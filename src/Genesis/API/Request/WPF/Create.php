@@ -39,6 +39,7 @@ use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\Threeds\V2\WpfAttributes as WpfThreedsV2Attributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -78,7 +79,8 @@ class Create extends \Genesis\API\Request
     use PaymentAttributes, AddressInfoAttributes, AsyncAttributes,
         NotificationAttributes, RiskAttributes, DescriptorAttributes,
         RestrictedSetter, BusinessAttributes, WpfThreedsV2Attributes,
-        PendingPaymentAttributes, RecurringTypeAttributes, RecurringCategoryAttributes;
+        PendingPaymentAttributes, RecurringTypeAttributes, RecurringCategoryAttributes,
+        FundingAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -703,7 +705,8 @@ class Create extends \Genesis\API\Request
                 'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
                 'web_payment_form_id'       => $this->web_payment_form_id,
                 'recurring_type'            => $this->recurring_type,
-                'recurring_category'        => $this->recurring_category
+                'recurring_category'        => $this->recurring_category,
+                'funding'                   => $this->getFundingAttributesStructure()
             ]
         ];
 

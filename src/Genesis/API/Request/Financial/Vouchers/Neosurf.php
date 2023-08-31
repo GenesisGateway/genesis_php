@@ -69,8 +69,6 @@ class Neosurf extends \Genesis\API\Request\Base\Financial
             'remote_ip',
             'amount',
             'currency',
-            'return_success_url',
-            'return_failure_url',
             'voucher_number',
             'billing_country'
         ];

@@ -86,9 +86,7 @@ class Pix extends Financial
             'transaction_id',
             'amount',
             'currency',
-            'document_id',
-            'billing_first_name',
-            'billing_last_name'
+            'document_id'
         ];
 
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);

@@ -562,25 +562,15 @@ class Banks
     const PC = 'PC';
 
     /**
-     * ALTO, Prima, ATM Bersama
-     */
-    const ATMVA = 'ATMVA';
-
-    /**
      * Bank Central Asia
      */
-    const BCA_IDR = 'BCA_IDR';
+    const DK_BCA_IB = 'DK_BCA_IB';
 
     /**
      * Bank Rakyat Indonesia
      */
-    const BRI_IDR = 'BRI_IDR';
-
-    /**
-     * Bank Negara Indonesia
-     */
-    const BNI_IDR = 'BNI_IDR';
-
+    const DK_BRI_IB = 'DK_BRI_IB';
+    
     /**
      * BTN Bank
      */
@@ -589,12 +579,12 @@ class Banks
     /**
      * CIMB Clicks Indonesia
      */
-    const CIMB_IDR = 'CIMB_IDR';
+    const DK_CIMBCLICKS_IB = 'DK_CIMBCLICKS_IB';
 
     /**
      * Danamon Bank
      */
-    const DMN_IDR = 'DMB_IDR';
+    const DK_DANAMON_IB = 'DK_DANAMON_IB';
 
     /**
      * Mandiri Bank
@@ -604,7 +594,7 @@ class Banks
     /**
      * Permata Bank
      */
-    const PMB_IDR = 'PMB_IDR';
+    const DK_PERMATANET_IB = 'DK_PERMATANET_IB';
 
     /**
      * Virtual Account Bank
@@ -788,41 +778,28 @@ class Banks
     /**
      * Bangkok Bank
      */
-    const BBL_THB = 'BBL_THB';
-    const TH_PB_BBLPN = 'TH_PB_BBLPN';
+    const BBL_IB_U = 'BBL_IB_U';
 
     /**
-     * Kasikorn Bank
+     * Kasikornbank PAYPLUS
      */
-    const KKB_THB = 'KKB_THB';
+    const KBANK_PAYPLUS = 'KBANK_PAYPLUS';
 
     /**
-     * Krungsri (Bank of Ayudhya Public Company Limited)
+     * Bank of Ayudhya (Krungsri)
      */
-    const BAY_THB = 'BAY_THB';
+    const BAY_IB_U = 'BAY_IB_U';
     const TH_PB_BAYPN = 'TH_PB_BAYPN';
 
     /**
      * Krung Thai Bank
      */
-    const KTB_THB = 'KTB_THB';
-    const TH_PB_KTBPN = 'TH_PB_KTBPN';
-
-    /**
-     * OMISE_TL
-     */
-    const OMISE_TL_PHP = 'OMISE_TL.php';
+    const KTB_IB_U = 'KTB_IB_U';
 
     /**
      * Siam Commercial Bank
      */
-    const SCB_THB = 'SCB_THB';
-    const TH_PB_SCBPN = 'TH_PB_SCBPN';
-
-    /**
-     * UOBT
-     */
-    const UOB_THB = 'UOB_THB';
+    const SCB_IB_U = 'SCB_IB_U';
 
     /**
      * Abitab
@@ -845,7 +822,7 @@ class Banks
     const SINGPOST_PHP = 'singpost.php';
 
     /**
-     * VTC-Pay
+     * VTC-Pay VPBank
      */
     const VTCP_VPBANK = 'VTCP_VPBANK';
     /**
@@ -950,7 +927,7 @@ class Banks
     /**
      * VTC-Pay SaigonBank
      */
-    const VTCP_SAIGON_BANK = 'VTCP-SAIGON_BANK';
+    const VTCP_SAIGONBANK = 'VTCP-SAIGONBANK';
 
     /**
      * VTC-Pay SeaABank

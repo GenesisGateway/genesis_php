@@ -63,9 +63,8 @@ class BankCodeParameters
             Banks::PF, Banks::BCT
         ],
         'THB' => [
-            Banks::SCB_THB, Banks::KTB_THB, Banks::BAY_THB, Banks::UOB_THB, Banks::KKB_THB,
-            Banks::BBL_THB, Banks::TH_PB_BBLPN, Banks::TH_PB_BAYPN, Banks::TH_PB_KTBPN, Banks::OMISE_TL_PHP,
-            Banks::TH_PB_SCBPN
+            Banks::BBL_IB_U, Banks::KBANK_PAYPLUS, Banks::BAY_IB_U, Banks::TH_PB_BAYPN, Banks::KTB_IB_U,
+            Banks::SCB_IB_U
         ],
         'USD' => [
             Banks::SN, Banks::IT, Banks::BR, Banks::BB, Banks::WP, Banks::BN, Banks::PS, Banks::BO
@@ -83,8 +82,8 @@ class BankCodeParameters
             Banks::PE
         ],
         'IDR' => [
-            Banks::ATMVA, Banks::MDR_IDR, Banks::BNI_IDR, Banks::BCA_IDR, Banks::BRI_IDR,
-            Banks::PMB_IDR, Banks::CIMB_IDR, Banks::DMN_IDR, Banks::BTN_IDR, Banks::VA
+            Banks::DK_BCA_IB, Banks::DK_BRI_IB, Banks::DK_CIMBCLICKS_IB, Banks::DK_DANAMON_IB,
+            Banks::DK_PERMATANET_IB
         ],
         'INR' => [
             Banks::ABPB, Banks::AIRP, Banks::ALLA, Banks::ANDB, Banks::BARB_R, Banks::BBKM, Banks::BKDN, Banks::BKID,
@@ -114,7 +113,7 @@ class BankCodeParameters
             Banks::VTCP_EXIMBANK, Banks::VTCP_GPBANK, Banks::VTCP_HDBANK, Banks::VTCP_LVPB,
             Banks::VTCP_MB, Banks::VTCP_MARITIMEBANK, Banks::VTCP_NAMABANK, Banks::VTCP_NAVIBANK,
             Banks::VTCP_OCEANBANK, Banks::VTCP_PGBANK, Banks::VTCP_PHUONGDONG, Banks::VTCP_SHB,
-            Banks::VTCP_SACOMBANK, Banks::VTCP_SAIGON_BANK, Banks::VTCP_SEAABANK, Banks::VTCP_TECHCOMBANK,
+            Banks::VTCP_SACOMBANK, Banks::VTCP_SAIGONBANK, Banks::VTCP_SEAABANK, Banks::VTCP_TECHCOMBANK,
             Banks::VTCP_TIENPHONGBANK, Banks::VTCP_VIB, Banks::VTCP_VIETABANK, Banks::VTCP_VIETCOMBANK,
             Banks::VTCP_VIETINBANK
         ],

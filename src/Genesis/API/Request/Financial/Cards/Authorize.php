@@ -41,6 +41,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
+use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -56,7 +57,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes,
         CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
-        ManagedRecurringAttributes, RecurringCategoryAttributes, ReferenceAttributes;
+        ManagedRecurringAttributes, RecurringCategoryAttributes, ReferenceAttributes, FundingAttributes;
 
     /**
      * Returns the Request transaction type
@@ -147,7 +148,8 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
-                'reference_id'              => $this->reference_id
+                'reference_id'              => $this->reference_id,
+                'funding'                   => $this->getFundingAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
             $this->getUcofAttributesStructure()

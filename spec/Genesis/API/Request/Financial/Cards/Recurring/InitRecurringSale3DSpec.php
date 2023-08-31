@@ -15,6 +15,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
@@ -23,7 +24,8 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use RequestExamples, MpiAttributesExamples, ScaAttributesExamples, FxRateAttributesExamples,
         DescriptorAttributesExample, TokenizationAttributesExamples, BusinessAttributesExample,
         ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples, AllowedZeroAmount,
-        DocumentAttributesExample, ManagedRecurringAttributesExample, RecurringCategoryAttributesExample;
+        DocumentAttributesExample, ManagedRecurringAttributesExample, RecurringCategoryAttributesExample,
+        FundingAttributesExamples;
 
     public function it_is_initializable()
     {

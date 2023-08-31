@@ -18,6 +18,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
@@ -27,7 +28,7 @@ class AuthorizeSpec extends ObjectBehavior
         TokenizationAttributesExamples, BusinessAttributesExample, CredentialOnFileAttributesExamples,
         UcofAttributesExamples, ScaAttributesExamples, AllowedZeroAmount, CreditCardAttributesExamples,
         DocumentAttributesExample, ManagedRecurringAttributesExample, RecurringTypeAttributesExample,
-        RecurringCategoryAttributesExample;
+        RecurringCategoryAttributesExample, FundingAttributesExamples;
 
     public function it_is_initializable()
     {

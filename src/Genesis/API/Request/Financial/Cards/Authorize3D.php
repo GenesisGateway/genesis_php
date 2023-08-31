@@ -42,6 +42,7 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
@@ -60,7 +61,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     use GamingAttributes, MotoAttributes, NotificationAttributes, AsyncAttributes, AddressInfoAttributes,
         MpiAttributes, RiskAttributes, DescriptorAttributes, PreauthorizationAttributes, TravelDataAttributes,
         ScaAttributes, FxRateAttributes, CryptoAttributes, BusinessAttributes, RestrictedSetter,
-        AllThreedsV2Attributes, RecurringTypeAttributes, ManagedRecurringAttributes, RecurringCategoryAttributes;
+        AllThreedsV2Attributes, RecurringTypeAttributes, ManagedRecurringAttributes, RecurringCategoryAttributes,
+        FundingAttributes;
 
     /**
      * Returns the Request transaction type
@@ -169,7 +171,8 @@ class Authorize3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
                 'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
-                'recurring_category'        => $this->recurring_category
+                'recurring_category'        => $this->recurring_category,
+                'funding'                   => $this->getFundingAttributesStructure()
             ],
             $this->getScaAttributesStructure()
         );

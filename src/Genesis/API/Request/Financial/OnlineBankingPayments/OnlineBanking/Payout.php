@@ -27,6 +27,7 @@ namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Constants\BankAccountTypes;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutPaymentTypesParameters;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
@@ -48,6 +49,7 @@ use Genesis\Utils\Common;
  * @method Payout setBankCode($value) Set Customer’s bank code
  * @method Payout setBankBranch($value) Set Customer’s bank branch
  * @method Payout setBankProvince($value) Set Name of the province that the bank is located
+ * @method string getPaymentType() Get Payment type
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
@@ -163,6 +165,14 @@ class Payout extends \Genesis\API\Request\Base\Financial
      */
     protected $bank_account_verification_digit;
 
+    /**
+     * Bank payout subtype.
+     * Available values: bank_to_bank, pix, bsb, pay_id
+     *
+     * @var string protected $payment_type;
+     */
+    protected $payment_type;
+
     protected function getTransactionType()
     {
         return \Genesis\API\Constants\Transaction\Types::ONLINE_BANKING_PAYOUT;
@@ -267,6 +277,29 @@ class Payout extends \Genesis\API\Request\Base\Financial
             $value,
             null,
             self::USER_ID_MAX_LENGTH
+        );
+    }
+
+    /**
+     * The payment type
+     *
+     * @param $value
+     * @return Payout
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setPaymentType($value)
+    {
+        if (empty($value)) {
+            $this->payment_type = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'payment_type',
+            PayoutPaymentTypesParameters::getAll(),
+            $value,
+            'Invalid payment_type.'
         );
     }
 
@@ -384,6 +417,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
             'account_id'                      => $this->account_id,
             'user_id'                         => $this->user_id,
             'birth_date'                      => $this->getBirthDate(),
+            'payment_type'                    => $this->payment_type,
             'billing_address'                 => $this->getBillingAddressParamsStructure(),
             'shipping_address'                => $this->getShippingAddressParamsStructure()
         ];

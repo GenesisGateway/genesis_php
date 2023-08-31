@@ -17,6 +17,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
@@ -26,7 +27,7 @@ class SaleSpec extends ObjectBehavior
         CryptoAttributesExamples, TokenizationAttributesExamples, BusinessAttributesExample,
         CredentialOnFileAttributesExamples, UcofAttributesExamples, ScaAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
-        RecurringTypeAttributesExample, RecurringCategoryAttributesExample;
+        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples;
 
     public function it_is_initializable()
     {
