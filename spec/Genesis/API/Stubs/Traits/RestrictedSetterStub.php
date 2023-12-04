@@ -58,4 +58,15 @@ class RestrictedSetterStub
     {
         return $this->allowedOptionsSetter($field, $allowed, $value, $errorMessage);
     }
+
+    /**
+     * @param string $field
+     * @param $value
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @return $this
+     */
+    public function publicParseAmount($field, $value)
+    {
+        return $this->parseAmount($field, $value);
+    }
 }

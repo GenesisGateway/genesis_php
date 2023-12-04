@@ -3,6 +3,7 @@
 namespace spec\Genesis\API\Request\Financial\PayByVouchers;
 
 use Genesis\API\Request\Financial\PayByVouchers\oBeP;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
@@ -22,6 +23,14 @@ class oBePSpec extends ObjectBehavior
         $this->testMissingRequiredParameters([
             'customer_name'
         ]);
+    }
+
+    public function it_should_fail_with_invalid_amount()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow(InvalidArgument::class)->during('setAmount', ['-23.45']);
+        $this->shouldThrow(InvalidArgument::class)->during('setAmount', ['23,45']);
     }
 
     protected function setRequestParameters()

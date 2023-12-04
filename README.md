@@ -945,6 +945,9 @@ try {
 
         // Desired Transaction Type
         ->addTransactionType('init_recurring_sale');
+        // Example: Recurring V2 available for following transaction types: sale, sale3d, authorize, authorize3d
+        // Recurring Type can have one value of 'initial' or 'managed'
+        // ->addTransactionType('sale', ['recurring_type' => 'initial']);
 
     // Send the request
     $genesis->execute();

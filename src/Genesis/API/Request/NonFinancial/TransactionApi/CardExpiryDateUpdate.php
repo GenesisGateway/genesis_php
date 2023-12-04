@@ -28,7 +28,6 @@ namespace Genesis\API\Request\NonFinancial\TransactionApi;
 use DateTime;
 use Genesis\API\Request;
 use Genesis\API\Request\Base\BaseVersionedRequest;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Builder;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -43,8 +42,6 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class CardExpiryDateUpdate extends BaseVersionedRequest
 {
-    use RestrictedSetter;
-
     /**
      * Expiration month as printed on credit card
      *

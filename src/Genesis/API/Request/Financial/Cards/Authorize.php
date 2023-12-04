@@ -42,7 +42,6 @@ use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\Request\Financial\FundingAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -56,7 +55,7 @@ class Authorize extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         PreauthorizationAttributes, TravelDataAttributes, FxRateAttributes,
-        CryptoAttributes, BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
+        CryptoAttributes, BusinessAttributes, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
         ManagedRecurringAttributes, RecurringCategoryAttributes, ReferenceAttributes, FundingAttributes;
 
     /**

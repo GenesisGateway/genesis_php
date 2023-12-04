@@ -27,7 +27,6 @@ namespace Genesis\API\Request\Base\NonFinancial;
 
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Common;
 
@@ -37,8 +36,6 @@ use Genesis\Utils\Common;
  */
 abstract class DateRangeRequest extends Request
 {
-    use RestrictedSetter;
-
     /**
      * start of the requested date range
      *

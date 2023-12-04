@@ -27,7 +27,6 @@ namespace Genesis\API\Request\NonFinancial\TokenizationApi;
 use Genesis\API\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiTokenAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -39,7 +38,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Detokenize extends BaseRequest
 {
-    use TokenizationApiAttributes, TokenizationApiTokenAttributes, RestrictedSetter;
+    use TokenizationApiAttributes, TokenizationApiTokenAttributes;
 
     /**
      * Detokenize constructor

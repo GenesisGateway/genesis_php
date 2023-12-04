@@ -31,7 +31,6 @@ use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PproAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class BancoDoBrasil
@@ -46,7 +45,7 @@ use Genesis\API\Traits\RestrictedSetter;
 class BancoDoBrasil extends \Genesis\API\Request\Base\Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes,
-        RestrictedSetter, BirthDateAttributes, PendingPaymentAttributes;
+        BirthDateAttributes, PendingPaymentAttributes;
 
     /**
      * Returns the Request transaction type

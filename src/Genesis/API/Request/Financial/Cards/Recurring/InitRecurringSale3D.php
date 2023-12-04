@@ -30,17 +30,14 @@ use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttribu
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\Financial\ScaAttributes;
-use Genesis\API\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
 use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\Request\Financial\MpiAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -52,11 +49,11 @@ use Genesis\Utils\Common as CommonUtils;
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
+class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard3D
 {
     use MotoAttributes, NotificationAttributes, AsyncAttributes, AddressInfoAttributes,
-        MpiAttributes, RiskAttributes, DescriptorAttributes, TravelDataAttributes, ScaAttributes,
-        FxRateAttributes, BusinessAttributes, RestrictedSetter, AllThreedsV2Attributes,
+        RiskAttributes, DescriptorAttributes, TravelDataAttributes, ScaAttributes,
+        FxRateAttributes, BusinessAttributes,
         ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes;
 
     /**
@@ -102,18 +99,17 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Cred
                 'return_success_url' => ['notification_url', 'return_failure_url'],
                 'return_failure_url' => ['notification_url', 'return_success_url']
             ],
-            $this->requiredMpiFieldsConditional(),
             $this->requiredTokenizationFieldsConditional(),
-            $this->requiredThreedsV2DeviceTypeConditional(),
+            $this->required3DSFieldsConditional(),
             $this->requiredManagedRecurringFieldsConditional()
         );
 
         $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
 
-        $requiredFieldsGroups = [
-            'synchronous'  => ['notification_url', 'return_success_url', 'return_failure_url'],
-            'asynchronous' => ['mpi_eci']
-        ];
+        $requiredFieldsGroups = array_merge(
+            ['synchronous'  => ['notification_url', 'return_success_url', 'return_failure_url']],
+            $this->required3DSFieldsGroups()
+        );
 
         $this->requiredFieldsGroups = CommonUtils::createArrayObject($requiredFieldsGroups);
     }
@@ -151,18 +147,17 @@ class InitRecurringSale3D extends \Genesis\API\Request\Base\Financial\Cards\Cred
                 'document_id'               => $this->document_id,
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
-                'mpi_params'                => $this->getMpiParamsStructure(),
                 'risk_params'               => $this->getRiskParamsStructure(),
                 'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
                 'travel'                    => $this->getTravelData(),
                 'fx_rate_id'                => $this->fx_rate_id,
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
-                'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
                 'funding'                   => $this->getFundingAttributesStructure()
             ],
-            $this->getScaAttributesStructure()
+            $this->getScaAttributesStructure(),
+            $this->get3DSTransactionAttributes()
         );
     }
 }

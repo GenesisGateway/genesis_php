@@ -38,10 +38,20 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
  * sends notification to merchant on the configured url into its account.
  *
  * @package Genesis\API\Request\Financial\Vouchers
+ *
+ * @method $this  setCustomerId($value)
+ * @method string getCustomerId()
  */
 class Paysafecard extends \Genesis\API\Request\Base\Financial
 {
     use AsyncAttributes, PaymentAttributes, AddressInfoAttributes;
+
+    /**
+     * Customer ID
+     *
+     * @var string
+     */
+    protected $customer_id;
 
     /**
      * Returns the Request transaction type
@@ -60,6 +70,12 @@ class Paysafecard extends \Genesis\API\Request\Base\Financial
     protected function setRequiredFields()
     {
         parent::setRequiredFields();
+
+        $requiredFields = array_merge(
+            (array)$this->requiredFields,
+            ['customer_id']
+        );
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
             'billing_country' => [
@@ -88,6 +104,7 @@ class Paysafecard extends \Genesis\API\Request\Base\Financial
             'currency'           => $this->currency,
             'customer_email'     => $this->customer_email,
             'customer_phone'     => $this->customer_phone,
+            'customer_id'        => $this->customer_id,
             'billing_address'    => $this->getBillingAddressParamsStructure(),
             'shipping_address'   => $this->getShippingAddressParamsStructure()
         ];

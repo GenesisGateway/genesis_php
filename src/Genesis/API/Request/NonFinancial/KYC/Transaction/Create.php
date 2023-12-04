@@ -35,7 +35,6 @@ use Genesis\API\Traits\Request\NonFinancial\DepositLimits;
 use Genesis\API\Traits\Request\NonFinancial\KycBillingInformation;
 use Genesis\API\Traits\Request\NonFinancial\KycShippingInformation;
 use Genesis\API\Traits\Request\NonFinancial\PaymentDetails;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -50,7 +49,7 @@ use Genesis\Exceptions\InvalidArgument;
  */
 class Create extends BaseRequest
 {
-    use RestrictedSetter, CustomerInformation, DepositLimits, KycBillingInformation,
+    use CustomerInformation, DepositLimits, KycBillingInformation,
         KycShippingInformation, PaymentDetails;
 
     /**

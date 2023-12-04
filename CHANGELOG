@@ -1,3 +1,31 @@
+1.23.1
+-----
+**Features**:
+
+* Added the following attributes support to the Google Pay transaction request:
+  * Notification Url
+  * Return Success Url
+  * Return Failure Url
+
+1.23.0
+-----
+**Features**:
+
+* Removed Recurring Type attribute support from the Web Payment Form transaction request
+  * Recurring Type is available for a definition like a Custom Attribute via addTransactionType('sale3d', ['recurring_type' => 'initial'])
+* Removed Bank Payout Parameter constants
+
+1.22.0
+-----
+**Features**:
+
+* Added new required customer_id parameter to the Paysafecard transaction request.
+* Updated Online Banking Payin transaction request bank codes for THB currency.
+* Added support of new optional Return Success and Failure URL parameters to Sepa Direct Debit (SDD Sale) transaction request.
+* Added Customer Attributes support to the Online Banking Payout transaction request.
+* Added Bank Code parameter support to the Online Banking Payout transaction request.
+* Refactored currency amount validations to throw an Invalid Argument exception when an invalid value is submitted.
+
 1.21.12
 -----
 **Features**:

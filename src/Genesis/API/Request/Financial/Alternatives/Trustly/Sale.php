@@ -31,7 +31,6 @@ use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -47,7 +46,7 @@ use Genesis\Exceptions\InvalidArgument;
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, RestrictedSetter, BirthDateAttributes,
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BirthDateAttributes,
         BusinessAttributes;
 
     /**

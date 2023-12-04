@@ -23,44 +23,54 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Request\Financial\Cards;
+namespace Genesis\API\Request\Base\Financial\Cards;
 
-use Genesis\API\Traits\Request\Financial\CustomerIdentificationData;
-use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
+use Genesis\API\Traits\Request\Financial\MpiAttributes;
+use Genesis\API\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
 
 /**
- * Class Credit
+ * Class CreditCard3D
+ * @package Genesis\API\Request\Base\Financial\Cards
  *
- * Credit Request
- *
- * @package Genesis\API\Request\Financial\Cards
  */
-class Credit extends \Genesis\API\Request\Base\Financial\Reference
+abstract class CreditCard3D extends CreditCard
 {
-    use SourceOfFundsAttributes, CustomerIdentificationData;
+    use AllThreedsV2Attributes, MpiAttributes;
 
     /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\API\Constants\Transaction\Types::CREDIT;
-    }
-
-    /**
-     * Return additional request attributes
+     * Return required conditional 3DS fields
      *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    protected function required3DSFieldsConditional()
     {
         return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getSourceOfFundsStructure(),
-            [
-                'customer_identification' => $this->getCustomerIdentificationDataStructure()
-            ]
+            $this->requiredMpiFieldsConditional(),
+            $this->requiredThreedsV2DeviceTypeConditional()
         );
+    }
+
+    /**
+     * Return required 3DS fields groups
+     *
+     * @return array
+     */
+    protected function required3DSFieldsGroups()
+    {
+        return [
+            'asynchronous' => ['mpi_eci']
+        ];
+    }
+
+    /**
+     * Return 3DS request attributes
+     * @return array
+     */
+    protected function get3DSTransactionAttributes()
+    {
+        return [
+            'mpi_params'        => $this->getMpiParamsStructure(),
+            'threeds_v2_params' => $this->getThreedsV2ParamsStructure()
+        ];
     }
 }

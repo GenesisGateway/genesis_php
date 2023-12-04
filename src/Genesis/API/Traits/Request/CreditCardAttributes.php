@@ -26,7 +26,6 @@
 namespace Genesis\API\Traits\Request;
 
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
@@ -43,7 +42,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 trait CreditCardAttributes
 {
-    use RestrictedSetter, BirthDateAttributes;
+    use BirthDateAttributes;
 
     /**
      * Full name of customer as printed on credit card (first name and last name at least)

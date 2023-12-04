@@ -29,7 +29,6 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Alipay
@@ -40,8 +39,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Alipay extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
-        RestrictedSetter, BirthDateAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, BirthDateAttributes;
 
     /**
      * Returns the Request transaction type

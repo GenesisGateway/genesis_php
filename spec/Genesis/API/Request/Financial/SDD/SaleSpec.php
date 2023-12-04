@@ -69,6 +69,28 @@ class SaleSpec extends ObjectBehavior
         $this->getDocument()->shouldContain("<mandate_reference>$fakeMandateReference</mandate_reference>");
     }
 
+    public function it_should_contain_return_failure_url_when_set()
+    {
+        $this->setRequestParameters();
+
+        $fakeUrl = $this->getFaker()->url();
+        $this->setReturnFailureUrl($fakeUrl);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain("<return_failure_url>{$fakeUrl}</return_failure_url>");
+    }
+
+    public function it_should_contain_return_success_url_when_set()
+    {
+        $this->setRequestParameters();
+
+        $fakeUrl = $this->getFaker()->url();
+        $this->setReturnSuccessUrl($fakeUrl);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain("<return_success_url>{$fakeUrl}</return_success_url>");
+    }
+
     protected function setBaseRequestParameters()
     {
         $faker = $this->getFaker();

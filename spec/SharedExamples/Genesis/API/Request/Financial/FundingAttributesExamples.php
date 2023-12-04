@@ -36,12 +36,12 @@ trait FundingAttributesExamples
 
     public function it_should_contain_funding_receiver_country_when_set()
     {
-        $faker = Faker::getInstance();
-
         $this->setRequestParameters();
 
-        $this->setFundingReceiverCountry($faker->countryCode());
-        $this->getDocument()->shouldContain('country');
+        $this->setFundingReceiverCountry('AF');
+        $this->getDocument()->shouldContain(
+            "<country>{$this->getWrappedObject()->getFundingReceiverCountry()}</country>"
+        );
     }
 
     public function it_should_contain_funding_receiver_account_number_when_set()

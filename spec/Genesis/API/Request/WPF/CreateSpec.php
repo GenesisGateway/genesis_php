@@ -20,7 +20,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2Attrib
 class CreateSpec extends ObjectBehavior
 {
     use BusinessAttributesExample, PendingPaymentAttributesExamples, AsyncAttributesExample,
-        ThreedsV2AttributesExamples, AllowedZeroAmount, RecurringTypeAttributesExample,
+        ThreedsV2AttributesExamples, AllowedZeroAmount,
         RecurringCategoryAttributesExample, FundingAttributesExamples;
 
     public function it_is_initializable()

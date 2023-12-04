@@ -29,7 +29,6 @@ use Genesis\API\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiTokenAttributes;
 use Genesis\Utils\Common as CommonUtils;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class ValidateToken
@@ -40,7 +39,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class ValidateToken extends BaseRequest
 {
-    use TokenizationApiAttributes, TokenizationApiTokenAttributes, RestrictedSetter;
+    use TokenizationApiAttributes, TokenizationApiTokenAttributes;
 
     /**
      * ValidateToken constructor

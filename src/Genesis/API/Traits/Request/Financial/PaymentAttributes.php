@@ -32,7 +32,6 @@ namespace Genesis\API\Traits\Request\Financial;
  *
  * @package Genesis\API\Traits\Request\Financial
  *
- * @method $this setAmount($value) Set the amount of transaction in minor currency unit
  * @method $this setCurrency($value) Set the currency code in ISO-4217
  */
 trait PaymentAttributes
@@ -50,6 +49,17 @@ trait PaymentAttributes
      * @var string
      */
     protected $currency;
+
+    /**
+     * Set the amount of transaction in minor currency unit
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setAmount($value)
+    {
+        return $this->parseAmount('amount', $value);
+    }
 
     protected function getPaymentAttributesStructure()
     {

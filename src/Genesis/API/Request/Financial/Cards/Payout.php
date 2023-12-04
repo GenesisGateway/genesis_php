@@ -31,7 +31,6 @@ use Genesis\API\Traits\Request\Financial\FxRateAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
 use Genesis\API\Traits\Request\Payout\MoneyTransferPayoutAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -43,7 +42,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Payout extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
-    use RestrictedSetter, AddressInfoAttributes, SourceOfFundsAttributes,
+    use AddressInfoAttributes, SourceOfFundsAttributes,
         FxRateAttributes, DescriptorAttributes, MoneyTransferPayoutAttributes,
         CustomerIdentificationData;
 

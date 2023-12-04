@@ -41,7 +41,6 @@ use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\Financial\FundingAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -56,7 +55,7 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
 {
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         ReferenceAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes,
-        BusinessAttributes, RestrictedSetter, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
+        BusinessAttributes, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
         ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes;
 
     /**

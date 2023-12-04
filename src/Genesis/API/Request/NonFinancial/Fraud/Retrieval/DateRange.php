@@ -24,7 +24,6 @@
  */
 namespace Genesis\API\Request\NonFinancial\Fraud\Retrieval;
 
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Constants\DateTimeFormat;
 
 /**
@@ -36,8 +35,6 @@ use Genesis\API\Constants\DateTimeFormat;
 
 class DateRange extends \Genesis\API\Request
 {
-    use RestrictedSetter;
-
     /**
      * start of the requested date range
      *

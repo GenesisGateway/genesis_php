@@ -27,7 +27,6 @@ namespace Genesis\API\Request\NonFinancial\KYC\ConsumerRegistration;
 
 use Genesis\API\Constants\NonFinancial\KYC\ProfileCurrentStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Update
@@ -39,8 +38,6 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Update extends BaseRequest
 {
-    use RestrictedSetter;
-
     /**
      * Unique id returned by corresponding transaction
      *

@@ -114,4 +114,9 @@ class AirlineItineraryAttributesSpec extends ObjectBehavior
         $this->setAidDateOfIssue(Faker::getInstance()->date('Y-m-d'))
             ->getAidDateOfIssue()->shouldBeString();
     }
+    public function it_should_fail_with_invalid_aid_total_fare()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setAidTotalFare', [-23]);
+        $this->shouldThrow(InvalidArgument::class)->during('setAidTotalFare', ['abc']);
+    }
 }

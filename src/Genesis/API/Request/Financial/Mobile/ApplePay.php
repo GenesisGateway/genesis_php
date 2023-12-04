@@ -34,7 +34,6 @@ use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Mobile\ApplePayAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -48,8 +47,7 @@ use Genesis\Utils\Common as CommonUtils;
 class ApplePay extends \Genesis\API\Request\Base\Financial
 {
     use AddressInfoAttributes, DocumentAttributes, PaymentAttributes, ApplePayAttributes,
-        RestrictedSetter, CryptoAttributes, BirthDateAttributes, BusinessAttributes,
-        DescriptorAttributes;
+        CryptoAttributes, BirthDateAttributes, BusinessAttributes, DescriptorAttributes;
 
     /**
      * Sets ApplePay token

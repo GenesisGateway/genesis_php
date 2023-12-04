@@ -210,4 +210,23 @@ class RestrictedSetterSpec extends ObjectBehavior
             ]
         );
     }
+
+    public function it_should_fail_during_parse_amount_with_invalid_value()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('publicParseAmount', ['test', 'aaa']);
+        $this->shouldThrow(InvalidArgument::class)->during('publicParseAmount', ['test', -23]);
+        $this->shouldThrow(InvalidArgument::class)->during('publicParseAmount', ['test', '23,76']);
+    }
+
+    public function it_should_not_fail_during_parse_amount_with_proper_value()
+    {
+        $faker = Faker::getInstance();
+        $this->shouldNotThrow()->during(
+            'publicParseAmount',
+            [
+                'test',
+                $faker->numberBetween(1, PHP_INT_MAX)
+            ]
+        );
+    }
 }

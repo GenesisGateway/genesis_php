@@ -24,6 +24,8 @@
  */
 namespace Genesis\API\Request\Financial\PayByVouchers;
 
+use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+
 /**
  * Class oBeP
  *
@@ -35,6 +37,8 @@ namespace Genesis\API\Request\Financial\PayByVouchers;
 class oBeP extends \Genesis\API\Request
 // @codingStandardsIgnoreEnd
 {
+    use PaymentAttributes;
+
     /**
      * Unique transaction id defined by mer-chant
      *
@@ -89,20 +93,6 @@ class oBeP extends \Genesis\API\Request
      * @var string
      */
     protected $product_category;
-
-    /**
-     * Amount of transaction in minor currency unit
-     *
-     * @var int
-     */
-    protected $amount;
-
-    /**
-     * Currency code in ISO-4217
-     *
-     * @var string
-     */
-    protected $currency;
 
     /**
      * Email address of the Customer

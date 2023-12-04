@@ -28,7 +28,6 @@ namespace Genesis\API\Request\NonFinancial\Fraud\Chargeback;
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ExternallyProcessed;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ProcessingTypes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\ErrorParameter;
 
 /**
@@ -44,8 +43,6 @@ use Genesis\Exceptions\ErrorParameter;
  */
 class DateRange extends \Genesis\API\Request
 {
-    use RestrictedSetter;
-
     /**
      * start of the requested date range
      *

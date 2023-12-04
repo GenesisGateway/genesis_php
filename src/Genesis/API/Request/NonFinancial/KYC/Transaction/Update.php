@@ -28,7 +28,6 @@ namespace Genesis\API\Request\NonFinancial\KYC\Transaction;
 use Genesis\API\Constants\NonFinancial\KYC\IndustryTypes;
 use Genesis\API\Constants\NonFinancial\KYC\TransactionStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Update
@@ -40,8 +39,6 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Update extends BaseRequest
 {
-    use RestrictedSetter;
-
     /**
      * If this value is not provided the user email account should be complete and valid
      *

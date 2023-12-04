@@ -32,7 +32,7 @@ use Genesis\API\Constants\NonFinancial\KYC\ProfileActionTypes;
 use Genesis\API\Constants\NonFinancial\KYC\ProfileCurrentStatuses;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\CustomerInformation;
-use Genesis\API\Traits\RestrictedSetter;
+
 /**
  * Class Create
  *
@@ -44,7 +44,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Create extends BaseRequest
 {
-    use RestrictedSetter, CustomerInformation;
+    use CustomerInformation;
 
     /**
      * If this value is not provided the user email account should be complete and valid

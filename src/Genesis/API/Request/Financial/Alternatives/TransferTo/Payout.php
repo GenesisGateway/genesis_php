@@ -35,7 +35,6 @@ use Genesis\API\Traits\Request\CustomerAddress\BillingInfoAttributes;
 use Genesis\API\Traits\Request\CustomerAddress\ShippingInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
 
@@ -110,7 +109,7 @@ use Genesis\Utils\Common;
  */
 class Payout extends Financial
 {
-    use RestrictedSetter, AsyncAttributes, PaymentAttributes, BillingInfoAttributes, ShippingInfoAttributes;
+    use AsyncAttributes, PaymentAttributes, BillingInfoAttributes, ShippingInfoAttributes;
 
     /**
      * Sender MSISDN Min & Max string Length

@@ -26,7 +26,6 @@ namespace Genesis\API\Request\Financial;
 
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Capture
@@ -37,7 +36,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Capture extends \Genesis\API\Request\Base\Financial\Reference
 {
-    use TravelDataAttributes, BusinessAttributes, RestrictedSetter;
+    use TravelDataAttributes, BusinessAttributes;
 
     /**
      * Returns the Request transaction type

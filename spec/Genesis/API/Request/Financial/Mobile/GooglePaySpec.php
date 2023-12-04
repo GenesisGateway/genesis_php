@@ -7,7 +7,9 @@ use Genesis\API\Request\Financial\Mobile\GooglePay;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\NotificationAttributesExamples;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
@@ -15,7 +17,8 @@ use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 
 class GooglePaySpec extends ObjectBehavior
 {
-    use RequestExamples, DocumentAttributesExample, DescriptorAttributesExample, ThreedsV2AttributesExamples;
+    use RequestExamples, DocumentAttributesExample, DescriptorAttributesExample, ThreedsV2AttributesExamples,
+        AsyncAttributesExample, NotificationAttributesExamples;
 
     public function is_it_initializable()
     {
@@ -33,7 +36,7 @@ class GooglePaySpec extends ObjectBehavior
             'token_signed_key',
             'token_signatures',
             'token_protocol_version',
-            'token_signed_message',
+            'token_signed_message'
         ]);
     }
 

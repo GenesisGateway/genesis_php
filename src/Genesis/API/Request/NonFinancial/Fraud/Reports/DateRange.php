@@ -26,7 +26,6 @@
 namespace Genesis\API\Request\NonFinancial\Fraud\Reports;
 
 use Genesis\API\Constants\DateTimeFormat;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Fraud (SAFE/TC40) reports by Date Range
@@ -36,8 +35,6 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class DateRange extends \Genesis\API\Request
 {
-    use RestrictedSetter;
-
     /**
      * start of the requested date range
      *

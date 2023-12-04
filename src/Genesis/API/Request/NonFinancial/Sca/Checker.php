@@ -27,7 +27,6 @@ namespace Genesis\API\Request\NonFinancial\Sca;
 
 use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Request\Base\BaseVersionedRequest;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Validators\Request\RegexValidator;
 use Genesis\Builder;
 use Genesis\Config;
@@ -41,13 +40,10 @@ use Genesis\Utils\Currency;
  *
  * @package Genesis\API\Request\NonFinancial\Sca
  *
- * @method setTransactionAmount($value) Amount of transaction in minor currency unit
  * @method setTransactionCurrency($value) Transaction currency
  */
 class Checker extends BaseVersionedRequest
 {
-    use RestrictedSetter;
-
     const CARD_NUMBER_MIN_LENGTH = 6;
     const CARD_NUMBER_MAX_LENGTH = 16;
 
@@ -177,6 +173,16 @@ class Checker extends BaseVersionedRequest
         );
 
         return $this;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setTransactionAmount($value)
+    {
+        return $this->parseAmount('transaction_amount', $value);
     }
 
     /**

@@ -6,6 +6,7 @@ use Faker\Generator;
 use Genesis\API\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\API\Request\NonFinancial\Sca\Checker;
 use Genesis\Builder;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
@@ -207,6 +208,14 @@ class CheckerSpec extends ObjectBehavior
         $this->setTransactionExemption(null);
 
         $this->getTransactionExemption()->shouldBeNull();
+    }
+
+    public function it_should_fail_with_invalid_transaction_amount()
+    {
+        $this->setDefaultRequestParameters();
+
+        $this->shouldThrow(InvalidArgument::class)->during('setTransactionAmount', ['-23.45']);
+        $this->shouldThrow(InvalidArgument::class)->during('setTransactionAmount', ['23,45']);
     }
 
     /**

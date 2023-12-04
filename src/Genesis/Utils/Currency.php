@@ -22,6 +22,8 @@
  */
 namespace Genesis\Utils;
 
+use Genesis\Exceptions\InvalidArgument;
+
 /**
  * Currency-related methods
  *
@@ -1114,20 +1116,18 @@ final class Currency
      *
      * @return mixed  - using string as we don't want to cast it without knowing how much precision
      *                is required
+     * @throws InvalidArgument
      */
     public static function amountToExponent($amount, $iso)
     {
-        $iso = strtoupper($iso);
+        $exp = self::fetchCurrencyExponent($iso);
 
-        if (array_key_exists($iso, self::$iso4217)) {
-            $exp = intval(self::$iso4217[$iso]['exponent']);
-
-            if ($exp > 0) {
-                return bcmul($amount, pow(10, $exp), 0);
-            }
+        if (is_null($exp)) {
+            return strval($amount);
         }
 
-        return strval($amount);
+        self::validateCurrencyExponent($amount, $exp, $iso);
+        return ($exp > 0) ? bcmul($amount, pow(10, $exp), 0) : strval($amount);
     }
 
     /**
@@ -1141,17 +1141,13 @@ final class Currency
      */
     public static function exponentToAmount($amount, $iso)
     {
-        $iso = strtoupper($iso);
+        $exp = self::fetchCurrencyExponent($iso);
 
-        if (array_key_exists($iso, self::$iso4217)) {
-            $exp = intval(self::$iso4217[$iso]['exponent']);
-
-            if ($exp > 0) {
-                return bcdiv($amount, pow(10, $exp), $exp);
-            }
+        if (is_null($exp)) {
+            return strval($amount);
         }
 
-        return strval($amount);
+        return ($exp > 0) ? bcdiv($amount, pow(10, $exp), $exp) : strval($amount);
     }
 
     /**
@@ -1175,5 +1171,39 @@ final class Currency
         $lastIndex  = count($currencies) - 1;
 
         return $currencies[mt_rand(0, $lastIndex)];
+    }
+
+    /**
+     * @param mixed $amount
+     * @param int $exp
+     * @param string $currency
+     * @return void
+     * @throws InvalidArgument
+     */
+    public static function validateCurrencyExponent($amount, $exp, $currency)
+    {
+        $parts = explode('.', $amount);
+        if (!empty($parts[1]) && mb_strlen($parts[1]) > $exp) {
+            throw new InvalidArgument(
+                sprintf(
+                    'Currency %s exponent %s does not match the given amount %s',
+                    $currency,
+                    self::$iso4217[$currency]['exponent'],
+                    $amount
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $currencyCode
+     * @return int|null
+     */
+    public static function fetchCurrencyExponent($currencyCode)
+    {
+        $currencyCode = strtoupper($currencyCode);
+        return (array_key_exists($currencyCode, self::$iso4217))
+            ? intval(self::$iso4217[$currencyCode]['exponent'])
+            : null;
     }
 }

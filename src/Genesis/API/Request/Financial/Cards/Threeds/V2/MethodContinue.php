@@ -28,7 +28,6 @@ namespace Genesis\API\Request\Financial\Cards\Threeds\V2;
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Builder;
 use Genesis\Config;
 use Genesis\Exceptions\DeprecatedMethod;
@@ -55,7 +54,7 @@ use Genesis\Utils\Threeds\V2 as ThreedsV2Utils;
  */
 class MethodContinue extends Request
 {
-    use RestrictedSetter, PaymentAttributes;
+    use PaymentAttributes;
 
     /**
      * A link between the customer's browser and the card issuer must be opened with a hidden iframe

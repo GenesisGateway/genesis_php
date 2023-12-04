@@ -513,4 +513,14 @@ final class Common
 
         return $jsonObject;
     }
+
+    /**
+     * Check if value is a valid amount
+     * @param string $value
+     * @return bool
+     */
+    public static function isValidAmount($value)
+    {
+        return is_numeric($value) && $value >= 0;
+    }
 }

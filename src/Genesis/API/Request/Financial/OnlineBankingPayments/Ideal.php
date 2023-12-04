@@ -32,7 +32,6 @@ use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BankAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Ideal
@@ -40,7 +39,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Ideal extends Financial
 {
-    use RestrictedSetter, AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes,
         BankAttributes, PendingPaymentAttributes;
 
     /**

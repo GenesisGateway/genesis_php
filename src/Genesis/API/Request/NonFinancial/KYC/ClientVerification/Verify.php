@@ -33,7 +33,6 @@ use Genesis\API\Traits\Request\NonFinancial\KYC\KycVerifications;
 use Genesis\API\Traits\Request\NonFinancial\KYC\KycDocumentVerifications;
 use Genesis\API\Traits\Request\NonFinancial\KYC\KycBackgroundChecksVerifications;
 use Genesis\API\Traits\Request\NonFinancial\KYC\KycFaceVerifications;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 
@@ -59,7 +58,7 @@ use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
  */
 class Verify extends KYCBaseRequest
 {
-    use RestrictedSetter, KycVerifications, ReferenceAttributes, KycDocumentVerifications,
+    use KycVerifications, ReferenceAttributes, KycDocumentVerifications,
         KycBackgroundChecksVerifications, KycFaceVerifications;
 
     const REFERENCE_ID_MIN_LENGTH = 6;

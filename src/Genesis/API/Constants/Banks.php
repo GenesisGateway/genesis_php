@@ -789,7 +789,6 @@ class Banks
      * Bank of Ayudhya (Krungsri)
      */
     const BAY_IB_U = 'BAY_IB_U';
-    const TH_PB_BAYPN = 'TH_PB_BAYPN';
 
     /**
      * Krung Thai Bank

@@ -30,7 +30,6 @@ use Genesis\API\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiCardAttributes;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiTokenAttributes;
 use Genesis\Utils\Common as CommonUtils;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class UpdateToken
@@ -41,7 +40,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class UpdateToken extends BaseRequest
 {
-    use TokenizationApiAttributes, TokenizationApiCardAttributes, TokenizationApiTokenAttributes, RestrictedSetter;
+    use TokenizationApiAttributes, TokenizationApiCardAttributes, TokenizationApiTokenAttributes;
 
     /**
      * UpdateToken constructor

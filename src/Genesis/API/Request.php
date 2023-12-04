@@ -27,6 +27,7 @@ namespace Genesis\API;
 
 use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 use Genesis\API\Traits\MagicAccessors;
+use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Traits\Validations\Request\Validations;
 use Genesis\Builder;
 use Genesis\Exceptions\EnvironmentNotSet;
@@ -44,7 +45,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 abstract class Request
 {
-    use MagicAccessors, Validations;
+    use MagicAccessors, Validations, RestrictedSetter;
 
     const PROTOCOL_HTTPS = 'https';
     const PORT_HTTPS     = 443;

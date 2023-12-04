@@ -28,6 +28,7 @@ namespace Genesis\API\Request\Financial\SDD;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\BankAttributes;
+use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 
 /**
  * Class Sale
@@ -38,7 +39,7 @@ use Genesis\API\Traits\Request\Financial\BankAttributes;
  */
 class Sale extends \Genesis\API\Request\Base\Financial
 {
-    use PaymentAttributes, AddressInfoAttributes, BankAttributes;
+    use PaymentAttributes, AddressInfoAttributes, BankAttributes, AsyncAttributes;
 
     /**
      * Name of the company
@@ -101,16 +102,18 @@ class Sale extends \Genesis\API\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'            => $this->transformAmount($this->amount, $this->currency),
-            'currency'          => $this->currency,
-            'iban'              => $this->iban,
-            'bic'               => $this->bic,
-            'customer_email'    => $this->customer_email,
-            'customer_phone'    => $this->customer_phone,
-            'company_name'      => $this->company_name,
-            'mandate_reference' => $this->mandate_reference,
-            'billing_address'   => $this->getBillingAddressParamsStructure(),
-            'shipping_address'  => $this->getShippingAddressParamsStructure()
+            'amount'             => $this->transformAmount($this->amount, $this->currency),
+            'currency'           => $this->currency,
+            'iban'               => $this->iban,
+            'bic'                => $this->bic,
+            'customer_email'     => $this->customer_email,
+            'customer_phone'     => $this->customer_phone,
+            'company_name'       => $this->company_name,
+            'mandate_reference'  => $this->mandate_reference,
+            'billing_address'    => $this->getBillingAddressParamsStructure(),
+            'shipping_address'   => $this->getShippingAddressParamsStructure(),
+            'return_success_url' => $this->return_success_url,
+            'return_failure_url' => $this->return_failure_url
         ];
     }
 }

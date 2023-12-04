@@ -31,7 +31,6 @@ use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\API\Traits\Request\MotoAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common;
 use Genesis\Utils\Currency;
 
@@ -44,7 +43,7 @@ use Genesis\Utils\Currency;
  */
 class RecurringSale extends Financial
 {
-    use RestrictedSetter, TravelDataAttributes, BusinessAttributes, RestrictedSetter, ReferenceAttributes,
+    use TravelDataAttributes, BusinessAttributes, ReferenceAttributes,
         PaymentAttributes, MotoAttributes;
 
     /**

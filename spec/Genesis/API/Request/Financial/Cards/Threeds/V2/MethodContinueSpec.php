@@ -106,7 +106,7 @@ class MethodContinueSpec extends ObjectBehavior
         $this->getAmount()->shouldBe('10.00');
 
         $this->setAmount(1000);
-        $this->getAmount()->shouldBe(1000);
+        $this->getAmount()->shouldBe('1000');
     }
 
     public function it_should_have_correct_signature()

@@ -36,7 +36,6 @@ use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Currency;
@@ -53,8 +52,7 @@ use Genesis\Utils\Currency;
 class PayPal extends Financial
 {
     use PaymentAttributes, AddressInfoAttributes, BirthDateAttributes, DocumentAttributes,
-        BusinessAttributes, AsyncAttributes, PendingPaymentAttributes, NotificationAttributes,
-        RestrictedSetter;
+        BusinessAttributes, AsyncAttributes, PendingPaymentAttributes, NotificationAttributes;
 
     /**
      * PayPal Payment Type

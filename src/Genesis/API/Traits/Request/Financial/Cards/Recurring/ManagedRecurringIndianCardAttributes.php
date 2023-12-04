@@ -47,7 +47,6 @@ use Genesis\Utils\Common;
  * @method bool        getManagedRecurringValidated()
  *
  * @method $this       setManagedRecurringRegistrationReferenceNumber($value)
- * @method $this       setManagedRecurringMaxAmount($value)
  */
 trait ManagedRecurringIndianCardAttributes
 {
@@ -175,6 +174,16 @@ trait ManagedRecurringIndianCardAttributes
         $this->managed_recurring_validated = Common::toBoolean($value);
 
         return $this;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setManagedRecurringMaxAmount($value)
+    {
+        return $this->parseAmount('managed_recurring_max_amount', $value);
     }
 
     /**

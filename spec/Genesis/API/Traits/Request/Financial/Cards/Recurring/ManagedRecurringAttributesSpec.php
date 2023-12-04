@@ -179,4 +179,10 @@ class ManagedRecurringAttributesSpec extends ObjectBehavior
         $this->$accessor('5.00');
         $this->setCurrency('EUR');
     }
+
+    public function it_should_fail_with_invalid_amount()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setManagedRecurringAmount', [-23]);
+        $this->shouldThrow(InvalidArgument::class)->during('setManagedRecurringAmount', ['abc']);
+    }
 }

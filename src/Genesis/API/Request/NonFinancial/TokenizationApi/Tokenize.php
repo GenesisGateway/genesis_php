@@ -29,7 +29,6 @@ use Genesis\API\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\API\Traits\Request\NonFinancial\TokenizationApiCardAttributes;
 use Genesis\Utils\Common as CommonUtils;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Tokenize
@@ -43,7 +42,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Tokenize extends BaseRequest
 {
-    use TokenizationApiAttributes, TokenizationApiCardAttributes, RestrictedSetter;
+    use TokenizationApiAttributes, TokenizationApiCardAttributes;
 
     /**
      * Tokenize constructor

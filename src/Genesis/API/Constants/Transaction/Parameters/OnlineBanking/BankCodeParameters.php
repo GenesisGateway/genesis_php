@@ -63,7 +63,7 @@ class BankCodeParameters
             Banks::PF, Banks::BCT
         ],
         'THB' => [
-            Banks::BBL_IB_U, Banks::KBANK_PAYPLUS, Banks::BAY_IB_U, Banks::TH_PB_BAYPN, Banks::KTB_IB_U,
+            Banks::BBL_IB_U, Banks::KBANK_PAYPLUS, Banks::BAY_IB_U, Banks::KTB_IB_U,
             Banks::SCB_IB_U
         ],
         'USD' => [

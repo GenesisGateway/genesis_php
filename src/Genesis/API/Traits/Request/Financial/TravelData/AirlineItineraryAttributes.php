@@ -209,4 +209,14 @@ trait AirlineItineraryAttributes
             'Invalid restricted ticket indicator.'
         );
     }
+
+    /**
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setAidTotalFare($value)
+    {
+        return $this->parseAmount('aid_total_fare', $value);
+    }
 }

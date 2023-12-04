@@ -27,7 +27,8 @@ class PaysafecardSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
-            'billing_country'
+            'billing_country',
+            'customer_id'
         ]);
     }
 
@@ -65,5 +66,6 @@ class PaysafecardSpec extends ObjectBehavior
 
         $this->setCurrency('USD');
         $this->setBillingCountry('US');
+        $this->setCustomerId('customer_id');
     }
 }

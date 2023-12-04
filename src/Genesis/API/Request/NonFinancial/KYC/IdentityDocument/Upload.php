@@ -28,7 +28,6 @@ namespace Genesis\API\Request\NonFinancial\KYC\IdentityDocument;
 use Genesis\API\Constants\NonFinancial\KYC\IdentityDocumentMethods;
 use Genesis\API\Request\Base\NonFinancial\KYC\BaseRequest;
 use Genesis\API\Traits\Request\NonFinancial\IdentityDocuments;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class Upload
@@ -39,7 +38,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 class Upload extends BaseRequest
 {
-    use RestrictedSetter, IdentityDocuments;
+    use IdentityDocuments;
 
     /**
      * Username of the customer on your system

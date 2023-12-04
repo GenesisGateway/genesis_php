@@ -30,7 +30,6 @@ use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\PproAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 
 /**
  * Class SouthAmericanPayment
@@ -41,8 +40,7 @@ use Genesis\API\Traits\RestrictedSetter;
  */
 abstract class SouthAmericanPayment extends \Genesis\API\Request\Base\Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes,
-        RestrictedSetter, BirthDateAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PproAttributes, BirthDateAttributes;
 
     /**
      * @return array

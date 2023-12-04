@@ -26,7 +26,6 @@
 namespace Genesis\API\Request\NonFinancial\Reconcile;
 
 use Genesis\API\Constants\DateTimeFormat;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\API\Validators\Request\RegexValidator;
 
 /**
@@ -37,8 +36,6 @@ use Genesis\API\Validators\Request\RegexValidator;
  */
 class DateRange extends \Genesis\API\Request
 {
-    use RestrictedSetter;
-
     /**
      * start of the requested date range
      *

@@ -56,6 +56,16 @@ class PayoutPaymentTypesParameters
     const PAY_ID = 'pay_id';
 
     /**
+     * Payment Type Bank_to_bank_b2b
+     */
+    const BANK_TO_BANK_B2B = 'bank_to_bank_b2b';
+
+    /**
+     * Payment Type Pix_b2b
+     */
+    const PIX_B2B = 'pix_b2b';
+
+    /**
      * Get all available Payment Types
      *
      * @return array

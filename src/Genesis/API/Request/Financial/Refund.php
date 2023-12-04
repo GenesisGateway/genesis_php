@@ -26,7 +26,6 @@ namespace Genesis\API\Request\Financial;
 
 use Genesis\API\Traits\Request\Financial\BeneficiaryAttributes;
 use Genesis\API\Traits\Request\Financial\Refund\BankAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Utils\Common;
 use Genesis\Utils\Currency;
 
@@ -46,7 +45,7 @@ class Refund extends \Genesis\API\Request\Base\Financial\Reference
     const TICKET_CHANGE_INDICATOR_TO_EXISTING              = 'C';
     const TICKET_CHANGE_INDICATOR_TO_NEW                   = 'N';
 
-    use RestrictedSetter, BeneficiaryAttributes, BankAttributes;
+    use BeneficiaryAttributes, BankAttributes;
 
     /**
      * This field indicates the reason for a credit to the cardholder.

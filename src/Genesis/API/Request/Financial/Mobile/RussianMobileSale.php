@@ -32,7 +32,6 @@ use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
-use Genesis\API\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -48,7 +47,7 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class RussianMobileSale extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PendingPaymentAttributes, RestrictedSetter;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, PendingPaymentAttributes;
 
     const USAGE_MIN_LENGTH = 1;
     const USAGE_MAX_LENGTH = 5;

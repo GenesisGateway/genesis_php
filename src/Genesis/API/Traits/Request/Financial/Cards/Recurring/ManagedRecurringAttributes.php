@@ -47,7 +47,6 @@ use Genesis\Exceptions\InvalidArgument;
  *
  * @method $this   setManagedRecurringTimeOfDay($value)
  * @method $this   setManagedRecurringPeriod($value)
- * @method $this   setManagedRecurringAmount($value)
  */
 trait ManagedRecurringAttributes
 {
@@ -185,6 +184,16 @@ trait ManagedRecurringAttributes
         $this->managed_recurring_max_count = (int) $value;
 
         return $this;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setManagedRecurringAmount($value)
+    {
+        return $this->parseAmount('managed_recurring_amount', $value);
     }
 
     /**
