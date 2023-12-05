@@ -1,4 +1,10 @@
-1.23.1
+1.24.1
+-----
+**Features**:
+
+* Synchronize GitHub tag with Packagist
+
+1.24.0
 -----
 **Features**:
 
@@ -6,19 +12,8 @@
   * Notification Url
   * Return Success Url
   * Return Failure Url
-
-1.23.0
------
-**Features**:
-
 * Removed Recurring Type attribute support from the Web Payment Form transaction request
   * Recurring Type is available for a definition like a Custom Attribute via addTransactionType('sale3d', ['recurring_type' => 'initial'])
-* Removed Bank Payout Parameter constants
-
-1.22.0
------
-**Features**:
-
 * Added new required customer_id parameter to the Paysafecard transaction request.
 * Updated Online Banking Payin transaction request bank codes for THB currency.
 * Added support of new optional Return Success and Failure URL parameters to Sepa Direct Debit (SDD Sale) transaction request.
