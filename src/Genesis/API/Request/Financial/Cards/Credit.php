@@ -25,6 +25,7 @@
 
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\API\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
 
@@ -37,7 +38,7 @@ use Genesis\API\Traits\Request\Financial\SourceOfFundsAttributes;
  */
 class Credit extends \Genesis\API\Request\Base\Financial\Reference
 {
-    use SourceOfFundsAttributes, CustomerIdentificationData;
+    use SourceOfFundsAttributes, CustomerIdentificationData, AccountOwnerAttributes;
 
     /**
      * Returns the Request transaction type
@@ -59,7 +60,8 @@ class Credit extends \Genesis\API\Request\Base\Financial\Reference
             parent::getPaymentTransactionStructure(),
             $this->getSourceOfFundsStructure(),
             [
-                'customer_identification' => $this->getCustomerIdentificationDataStructure()
+                'customer_identification' => $this->getCustomerIdentificationDataStructure(),
+                'account_owner'           => $this->getAccountOwnerAttributesStructure()
             ]
         );
     }

@@ -1,0 +1,22 @@
+HTTP/1.1 200 OK
+Date: Mon, 08 Jan 2024 14:11:14 GMT
+Server: thin
+Content-Type: text/plain; charset=utf-8
+Vary: Accept
+ETag: W/"aac924e2aa208bab43b41225ff58593a"
+X-Request-Id: 8457339a-b54d-48f6-b0df-1ce4be15b1f3
+X-Runtime: 0.006128
+Strict-Transport-Security: max-age=604800
+X-Frame-Options: ALLOWALL
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Content-Security-Policy: default-src https: 'self'; font-src 'self' data:; img-src https: 'self' data:; script-src https: 'self' 'unsafe-inline' js-agent.newrelic.com bam.nr-data.net; style-src https: 'self' 'unsafe-inline'; report-uri https://emerchantpay.report-uri.io/r/default/csp/enforce
+Via: 1.1 gate.e-comprocessing.net
+Public-Key-Pins: pin-sha256="toinGJxbfmwU2Pakg2Q/jTJL0kxqZDhNbkuHm21xcZg="; pin-sha256="Hsy85ebDlmdGqfD2eRNHh683TIAZ60kfyy7RuwiUktk="; max-age=604800
+Cache-Control: no-cache, no-store
+Transfer-Encoding: chunked
+
+
+|*DATE*|

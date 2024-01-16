@@ -26,7 +26,8 @@
 namespace Genesis\API\Request\Base;
 
 use Genesis\API\Traits\Request\BaseAttributes;
-use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
+use Genesis\Config;
+use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -35,10 +36,32 @@ use Genesis\Utils\Common as CommonUtils;
  * Base Abstract Class for all Financial Requests
  *
  * @package Genesis\API\Request\Base
+ *
+ * @method getUseSmartRouter() Get Smart Router usage. Whether Financial transaction endpoint is a Smart Router or not.
  */
 abstract class Financial extends \Genesis\API\Request
 {
     use BaseAttributes;
+
+    /**
+     * Force Smart Router endpoint for Financial transactions
+     *
+     * @var bool
+     */
+    protected $use_smart_router = false;
+
+    /**
+     * Use Smart Router endpoint for Financial transactions
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setUseSmartRouter($value)
+    {
+        $this->use_smart_router = CommonUtils::toBoolean($value);
+
+        return $this;
+    }
 
     /**
      * Returns the Request transaction type
@@ -54,27 +77,37 @@ abstract class Financial extends \Genesis\API\Request
 
     /**
      * Initialize per-request configuration
+     *
+     * @throws EnvironmentNotSet
      */
     protected function initConfiguration()
     {
         $this->initXmlConfiguration();
 
         $this->initApiGatewayConfiguration();
+
+        if (Config::getForceSmartRouting()) {
+            $this->initializeSmartRouter();
+        }
     }
 
     /**
-     * Perform field validation
+     * Process Request Params
      *
      * @return void
-     * @throws \Genesis\Exceptions\InvalidArgument
+     *
+     * @throws EnvironmentNotSet
      * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
      * @throws \Genesis\Exceptions\InvalidClassMethod
      */
-    protected function checkRequirements()
+    protected function processRequestParameters()
     {
-        parent::checkRequirements();
+        if ($this->getUseSmartRouter()) {
+            $this->initializeSmartRouter();
+        }
 
-        $this->validateConditionalValuesRequirements();
+        parent::processRequestParameters();
     }
 
     /**
@@ -96,5 +129,16 @@ abstract class Financial extends \Genesis\API\Request
         $treeStructure['payment_transaction'] += $this->getPaymentTransactionStructure();
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
+    }
+
+    /**
+     * Initialize Smart Router endpoint
+     *
+     * @return void
+     * @throws \Genesis\Exceptions\EnvironmentNotSet
+     */
+    protected function initializeSmartRouter()
+    {
+        $this->initApiGatewayConfiguration('transactions', false, 'smart_router');
     }
 }

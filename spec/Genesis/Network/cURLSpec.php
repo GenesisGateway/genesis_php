@@ -6,11 +6,17 @@ use Genesis\API\Request;
 use Genesis\Builder;
 use PhpSpec\ObjectBehavior;
 use Genesis\Config;
+use spec\Genesis\Network\Stubs\cURLStub;
 
 // @codingStandardsIgnoreStart
 class cURLSpec extends ObjectBehavior
 // @codingStandardsIgnoreEnd
 {
+    public function let()
+    {
+        $this->beAnInstanceOf(cURLStub::class);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Network\cURL');
@@ -18,6 +24,9 @@ class cURLSpec extends ObjectBehavior
 
     public function it_can_connect_to_staging_gateway()
     {
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = false;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
@@ -37,6 +46,9 @@ class cURLSpec extends ObjectBehavior
 
     public function it_can_connect_to_staging_wpf()
     {
+        $this->getWrappedObject()->is_wpf  = true;
+        $this->getWrappedObject()->is_prod = false;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
         );
@@ -56,6 +68,9 @@ class cURLSpec extends ObjectBehavior
 
     public function it_can_connect_to_production_gateway()
     {
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = true;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -76,6 +91,9 @@ class cURLSpec extends ObjectBehavior
 
     public function it_can_connect_to_production_wpf()
     {
+        $this->getWrappedObject()->is_wpf  = true;
+        $this->getWrappedObject()->is_prod = true;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY

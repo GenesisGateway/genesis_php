@@ -37,6 +37,13 @@ namespace Genesis\API\Traits\Request\Mobile;
 * @method $this setTokenNetwork($value) Sets payment network describes the backing the card
 * @method $this setTokenType($value) Sets card’s type
 * @method $this setTokenTransactionIdentifier($value) Sets a unique identifier for this payment.
+* @method $this setTokenApplicationData($value) Optional. Hash of the applicationData property of the original
+*                                               PKPaymentRequest object for transactions that initiate in apps.
+*                                               For transactions that initiate in Apple Pay on the Web, the value is
+*                                               the hash of applicationData in ApplePayPaymentRequest or of
+*                                               applicationData in ApplePayRequest. This key is omitted if the value of
+*                                               that property is nil.
+* @method $this setTokenWrappedKey($value) The symmetric key wrapped using your RSA public key. RSA_v1 only.
 */
 trait ApplePayAttributes
 {
@@ -116,6 +123,25 @@ trait ApplePayAttributes
      */
     protected $token_transaction_identifier;
 
+    /**
+     * Optional. Hash of the applicationData property of the original PKPaymentRequest object for transactions that
+     * initiate in apps. For transactions that initiate in Apple Pay on the Web, the value is the hash of
+     * applicationData in ApplePayPaymentRequest or of applicationData in ApplePayRequest.
+     *
+     * This key is omitted if the value of that property is nil.
+     *
+     * @var string
+     */
+    protected $token_application_data;
+
+    /**
+     * The symmetric key wrapped using your RSA public key.
+     * RSA_v1 only.
+     *
+     * @var string
+     */
+    protected $token_wrapped_key;
+
     public function getPaymentTokenStructure()
     {
         return json_encode([
@@ -124,7 +150,9 @@ trait ApplePayAttributes
                     'data'      => $this->token_data,
                     'signature' => $this->token_signature,
                     'header'    => [
+                        'applicationData'    => $this->token_application_data,
                         'ephemeralPublicKey' => $this->token_ephemeral_public_key,
+                        'wrappedKey'         => $this->token_wrapped_key,
                         'publicKeyHash'      => $this->token_public_key_hash,
                         'transactionId'      => $this->token_transaction_id
                     ]

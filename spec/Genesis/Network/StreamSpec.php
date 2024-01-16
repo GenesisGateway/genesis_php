@@ -6,9 +6,15 @@ use Genesis\API\Request;
 use Genesis\Builder;
 use PhpSpec\ObjectBehavior;
 use Genesis\Config;
+use spec\Genesis\Network\Stubs\StreamStub;
 
 class StreamSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beAnInstanceOf(StreamStub::class);
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType('Genesis\Network\Stream');
@@ -16,6 +22,9 @@ class StreamSpec extends ObjectBehavior
 
     public function it_can_connect_to_staging_gateway_environment()
     {
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = false;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -36,6 +45,9 @@ class StreamSpec extends ObjectBehavior
 
     public function it_can_connect_to_staging_wpf_environment()
     {
+        $this->getWrappedObject()->is_wpf  = true;
+        $this->getWrappedObject()->is_prod = false;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -56,6 +68,9 @@ class StreamSpec extends ObjectBehavior
 
     public function it_can_connect_to_production_gateway_environment()
     {
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = true;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY
@@ -76,6 +91,9 @@ class StreamSpec extends ObjectBehavior
 
     public function it_can_connect_to_production_wpf_environment()
     {
+        $this->getWrappedObject()->is_wpf  = true;
+        $this->getWrappedObject()->is_prod = true;
+
         $endpoints = array(
             \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
             \Genesis\API\Constants\Endpoints::EMERCHANTPAY

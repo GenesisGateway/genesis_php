@@ -2,8 +2,11 @@
 
 namespace spec\Genesis;
 
+use Genesis\API\Constants\Endpoints;
+use Genesis\API\Constants\Environments;
+use Genesis\Config;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ConfigSpec extends ObjectBehavior
 {
@@ -203,17 +206,93 @@ class ConfigSpec extends ObjectBehavior
         $this::setInterface('network', 'curl');
     }
 
+    public function it_should_have_default_force_smart_routing()
+    {
+        $this->shouldHaveDefaultSmartRouting();
+    }
+
+    public function it_should_set_force_smart_routing()
+    {
+        $this::setForceSmartRouting(false)->shouldBe(false);
+    }
+
+    public function it_should_get_force_smart_routing()
+    {
+        $this->getWrappedObject()::setForceSmartRouting(true);
+
+        $this->shouldHaveEnabledSmartRouting();
+    }
+
+    public function it_has_staging_smart_router_subdomain()
+    {
+        $this::setEnvironment('staging');
+
+        $this::getSubDomain('smart_router')->shouldBe('staging.api.');
+    }
+
+    public function it_has_production_smart_router_subdomain()
+    {
+        $this::setEnvironment('prod');
+
+        $this::getSubDomain('smart_router')->shouldBe('prod.api.');
+    }
+
+    public function it_should_fail_when_invalid_settings_file()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('loadSettings', ['invalid_path']);
+    }
+
+    public function it_should_fail_when_invalid_setting_with_ini_file()
+    {
+        $settings_sample = dirname(dirname(__DIR__)) . '/settings_sample.ini';
+
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('loadSettings', [$settings_sample]);
+    }
+
+    public function it_should_load_settings_with_ini_file()
+    {
+        $settings_fixture = dirname(__DIR__) . '/fixtures/settings.ini';
+
+        $this::loadSettings($settings_fixture);
+
+        $this::getEndpoint()->shouldBe(Endpoints::EMERCHANTPAY);
+        $this::getEnvironment()->shouldBe(Environments::STAGING);
+        $this->shouldHaveDefaultSmartRouting();
+        $this->shouldHaveDefaultUsername();
+        $this->shouldHaveDefaultPassword();
+        $this->shouldHaveDefaultToken();
+        $this::getInterface('network')->shouldBe('curl');
+        $this::getInterface('builder')->shouldBe('xml');
+    }
+
     public function getMatchers(): array
     {
         return array(
-            'beEmpty'       => function ($subject) {
+            'beEmpty'                 => function ($subject) {
                 return filesize($subject) < 1;
             },
-            'beReadable'    => function ($subject) {
+            'beReadable'              => function ($subject) {
                 return is_readable($subject);
             },
-            'exist'         => function ($subject) {
+            'exist'                   => function ($subject) {
                 return file_exists($subject);
+            },
+            'haveDefaultSmartRouting' => function () {
+                return array_key_exists('force_smart_routing', Config::$vault) &&
+                    Config::$vault['force_smart_routing'] === false;
+            },
+            'haveEnabledSmartRouting' => function() {
+                return Config::getForceSmartRouting() === true;
+            },
+            'haveDefaultUsername'     => function() {
+                return Config::getUsername() === 'ENTER_YOUR_USERNAME';
+            },
+            'haveDefaultPassword'     => function() {
+                return Config::getPassword() === 'ENTER_YOUR_PASSWORD';
+            },
+            'haveDefaultToken'        => function() {
+                return Config::getToken() === 'ENTER_YOUR_TOKEN';
             }
         );
     }

@@ -52,6 +52,8 @@ class ApplePayAttributesSpec extends ObjectBehavior
             'token_network'                => 'word',
             'token_type'                   => 'word',
             'token_transaction_identifier' => 'sha256',
+            'token_application_data'       => 'sha256',
+            'token_wrapped_key'            => 'uuid'
         ];
 
         foreach ($methods as $method => $fakerMethod) {

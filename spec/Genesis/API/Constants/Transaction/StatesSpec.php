@@ -176,6 +176,13 @@ class StatesSpec extends ObjectBehavior
         $this->{$this->buildMethod(States::REPRESENTED)}()->shouldBe(true);
     }
 
+    public function it_should_have_magic_is_representment_reversed()
+    {
+        $this->beConstructedWith(States::REPRESENTMENT_REVERSED);
+
+        $this->{$this->buildMethod(States::REPRESENTMENT_REVERSED)}()->shouldBe(true);
+    }
+
     public function it_should_compare_properly_statuses()
     {
         $this->beConstructedWith(States::NEW_STATUS);

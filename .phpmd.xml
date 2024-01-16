@@ -59,4 +59,7 @@
     </rule>
 
     <rule ref="rulesets/unusedcode.xml" />
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/spec/*</exclude-pattern>
 </ruleset>

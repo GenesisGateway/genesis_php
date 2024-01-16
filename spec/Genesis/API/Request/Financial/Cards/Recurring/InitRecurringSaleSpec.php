@@ -15,13 +15,14 @@ use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 
 class InitRecurringSaleSpec extends ObjectBehavior
 {
     use RequestExamples, FxRateAttributesExamples, DescriptorAttributesExample,
         TokenizationAttributesExamples, BusinessAttributesExample, CredentialOnFileAttributesExamples,
         AllowedZeroAmount, DocumentAttributesExample, ManagedRecurringAttributesExample,
-        RecurringCategoryAttributesExample, FundingAttributesExamples;
+        RecurringCategoryAttributesExample, FundingAttributesExamples, AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {

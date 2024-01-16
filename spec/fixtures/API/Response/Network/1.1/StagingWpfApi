@@ -1,0 +1,26 @@
+HTTP/1.1 200 OK
+content-type: text/html; charset=utf-8
+date: Mon, 08 Jan 2024 14:11:14 GMT
+vary: Accept
+etag: W/"690b6764d793909443ec32021945de61"
+cache-control: max-age=0, private, must-revalidate
+set-cookie: _payment_session=NzRZcjc1QXdZNFVZOUx6OGhjRlN1eVVENUhrb0tOa3l4UERsZnNMcmdtM1JWQUNtWTAzemh0eHFnOHNrRU9UbFljMzZCSCtGN0N2cGNybmRUZnBSUEZSWGRkRDhxMnlBR0V1S3VqSVhkbFN3TVdDcnFUMUdpeXNxd0hJZHphK0FZL0s0bUFnVEhWd3kyLzBWQkZQSG9INmQvTlRCeVZBU1E4a21EaVZBOVloNk9nNHRtZUJZcjBDL0hjdjF4K0Y1MUN0bG5SNE9SOStWTnlYeDdIQkpBdFVlWjg2Snlab290eHAyTW5JQ1JyL0VraVVPUTBsUyt2OVozNXNXMGl5YVg4YXFUamJuelV5dGhKMVBkNmVhdEtHbmtaMFJwSUdYektudXVnVEZGcG1wc0l2SEgwZEZPR0RsSFlDS3ZKcThZYXdRR3VVTVRTSE1pM3FDc2ltR2pBPT0tLXpOakRNTUhZQjM0azlYVXYwZFZsU2c9PQ%3D%3D--88769442d2fbeddca668560ad4fcba9fd68fba86; path=/; expires=Mon, 08 Jan 2024 15:11:14 GMT; secure; HttpOnly; SameSite=Lax
+x-request-id: c0f91d8b-5b80-45ad-b94e-a2b90d5170da
+x-runtime: 0.024203
+strict-transport-security: max-age=631138519
+x-frame-options: DENY
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-download-options: noopen
+x-permitted-cross-domain-policies: none
+content-security-policy: default-src https: 'self'; font-src 'self' data:  https://fonts.gstatic.com; frame-src https: 'self'  staging.gate.emerchantpay.net:443; img-src 'self' data:  dadu5f16bpxo.cloudfront.net https://www.gstatic.com https://hatscripts.github.io; script-src https: 'self' 'unsafe-inline'  js-agent.newrelic.com bam.nr-data.net pay.google.com; style-src https: 'self' 'unsafe-inline'  dadu5f16bpxo.cloudfront.net; report-uri https://emerchantpay.report-uri.io/r/default/csp/enforce
+x-cache: Miss from cloudfront
+via: 1.1 270872b356df5edccbe6b50376e25078.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR5-P3
+x-amz-cf-id: FT2yKRkhUlH-KmjtiqxbHbFsjXis6GrXX5IfE3auDnjjJZRCFtHGXw==
+
+
+<!DOCTYPE html><html data-default-lang="en" lang="en"><head><meta charset="utf-8" /><meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" name="viewport" /><style id="antiClickjack">body { display:none !important; }</style><title>Genesis Secure payment form</title><meta name="csrf-param" content="authenticity_token" />
+<link rel="stylesheet" media="screen" href="https://d144xmqs7bd3me.cloudfront.net/packs/css/info-87636322.chunk.css" /><!--[if lte IE 9]><link rel="stylesheet" media="screen" href="https://d144xmqs7bd3me.cloudfront.net/packs/css/oldie-22d2bd69.chunk.css" /><![endif]-->
+</head><body><div class="timestamp">2024-01-08 14:11:15 UTC</div><div class="info-page"><h1>This is the web payment form of the Genesis gateway.</h1><p>Genesis is a registered PCI-DSS payment gateway.</p><p>The WPF (Web Payment Form) is a customizable component of the Genesis payment gateway. It provides merchants with an intuitive user interface to easily process their customers’ payments. Through a single point of integration, the merchant can offer its customers multiple payment methods instantly and since the WPF is hosted on the secure Genesis infrastructure, it is already PCI-DSS compliant.</p></div></body></html>

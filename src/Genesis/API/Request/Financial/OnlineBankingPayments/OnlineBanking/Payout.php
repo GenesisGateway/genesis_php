@@ -134,6 +134,7 @@ class Payout extends \Genesis\API\Request\Base\Financial
      *     C: for Checking accounts
      *     S: for Savings accounts
      *     M: for Maestra accounts(Only Peru)
+     *     P: for Payment accounts
      *
      * @var string $bank_account_type
      */
@@ -456,16 +457,13 @@ class Payout extends \Genesis\API\Request\Base\Financial
         }
 
         $requiredFieldsGroups = [
-            'currency' => ['bank_code', 'bank_name'],
+            'BRL Currency' => ['bank_code', 'bank_name']
         ];
         $this->requiredFieldsGroups = Common::createArrayObject($requiredFieldsGroups);
 
-        // Allow empty bank_name with non-empty bank_code
-        if (!empty($this->bank_code)) {
-            $requiredFieldValuesConditional                      = (array)$this->requiredFieldValuesConditional;
-            $requiredFieldValuesConditional['currency']['BRL'][] = ['bank_code' => $this->bank_code];
-
-            $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
+        // Allow empty bank_name, only with Group bank_code and bank_name requirement
+        if (empty($this->bank_name)) {
+            unset($this->requiredFieldValuesConditional['currency']['BRL']);
         }
     }
 }

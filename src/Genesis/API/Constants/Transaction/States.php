@@ -54,6 +54,7 @@ use Genesis\Exceptions\InvalidMethod;
  * @method bool isTimeout()
  * @method bool isChargebacked()
  * @method bool isChargebackReversed()
+ * @method bool isRepresentmentReversed()
  * @method bool isPreArbitrated()
  * @method bool isActive()
  * @method bool isInvalidated()
@@ -206,6 +207,11 @@ class States
      * The chargeback has been cancelled.
      */
     const CHARGEBACK_REVERSAL = 'chargeback_reversal';
+
+    /**
+     * Once a represented transaction is reversed, the state changes to representment reversed.
+     */
+    const REPRESENTMENT_REVERSED = 'representment_reversed';
 
     /**
      * The transaction is on hold, a manual review needs to be performed.

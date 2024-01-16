@@ -110,4 +110,16 @@ class CustomRequiredParameters
             'billing_country' => Authorize::getAllowedCountries()
         ];
     }
+
+    /**
+     * Required custom attribute for Paysafecard
+     *
+     * @return array
+     */
+    public static function forPaysafecard()
+    {
+        return [
+            'customer_id' => null
+        ];
+    }
 }

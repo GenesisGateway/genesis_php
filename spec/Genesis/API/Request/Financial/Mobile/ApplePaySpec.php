@@ -89,6 +89,8 @@ class ApplePaySpec extends ObjectBehavior
 
         $this->setJsonToken($token);
         $this->getDocument()->shouldContain('transactionIdentifier');
+        $this->getDocument()->shouldContain('applicationData');
+        $this->getDocument()->shouldContain('wrappedKey');
     }
 
     protected function setRequestParameters()
@@ -138,7 +140,9 @@ class ApplePaySpec extends ObjectBehavior
                 'data'      => $faker->sha256,
                 'signature' => $faker->sha256,
                 'header'    => [
+                    'applicationData'    => $faker->sha256,
                     'ephemeralPublicKey' => $faker->sha256,
+                    'wrappedKey'         => $faker->uuid,
                     'publicKeyHash'      => $faker->sha256,
                     'transactionId'      => $faker->uuid
                 ]

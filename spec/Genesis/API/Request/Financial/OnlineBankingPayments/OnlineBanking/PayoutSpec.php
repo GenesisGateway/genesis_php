@@ -62,7 +62,7 @@ class PayoutSpec extends ObjectBehavior
 
         $this->setRequestParameters();
         $this->setCurrency($currency);
-        $this->setBankName($invalidBankNames);
+        $this->setBankName(Faker::getInstance()->randomElement($invalidBankNames));
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
@@ -251,102 +251,59 @@ class PayoutSpec extends ObjectBehavior
 
     protected function setRequestParameters()
     {
-        $this->setTransactionId(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));
-        $this->setUsage('Genesis PHP Client Automated Request');
-        $this->setNotificationUrl(Faker::getInstance()->url);
-        $this->setReturnSuccessUrl(Faker::getInstance()->url);
-        $this->setReturnFailureUrl(Faker::getInstance()->url);
-        $this->setRemoteIp(Faker::getInstance()->ipv4);
-        $this->setAmount(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));
+        $faker = Faker::getInstance();
 
-        $currency = Faker::getInstance()->randomElement(
-            PayoutBankParameters::getAllowedCurrencies()
-        );
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setNotificationUrl($faker->url);
+        $this->setReturnSuccessUrl($faker->url);
+        $this->setReturnFailureUrl($faker->url);
+        $this->setRemoteIp($faker->ipv4);
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+
+        $currency = $faker->randomElement(PayoutBankParameters::getAllowedCurrencies());
         $this->setCurrency($currency);
         $this->setBankName(
-            Faker::getInstance()->randomElement(
-                PayoutBankParameters::getBankNamesPerCurrency($currency)
-            )
+            $faker->randomElement(PayoutBankParameters::getBankNamesPerCurrency($currency))
         );
         
-        $this->setBankAccountName(Faker::getInstance()->name);
+        $this->setBankAccountName($faker->name);
         $this->setBankAccountNumber(mt_rand(1, PHP_INT_MAX));
-        $this->setBillingFirstName(Faker::getInstance()->firstName);
-        $this->setBillingLastName(Faker::getInstance()->lastName);
-        $this->setBillingState(Faker::getInstance()->state);
-        $this->setBillingCountry(Faker::getInstance()->countryCode);
-        $this->setBankBranch(Faker::getInstance()->text(20));
+        $this->setBillingFirstName($faker->firstName);
+        $this->setBillingLastName($faker->lastName);
+        $this->setBillingState($faker->state);
+        $this->setBillingCountry($faker->countryCode);
+        $this->setBankBranch($faker->text(20));
         $this->setBankCode('001');
-        $this->setCustomerPhone(Faker::getInstance()->phoneNumber);
-        $this->setCustomerEmail(Faker::getInstance()->email);
-        $this->setBankProvince(Faker::getInstance()->city);
+        $this->setCustomerPhone($faker->phoneNumber);
+        $this->setCustomerEmail($faker->email);
+        $this->setBankProvince($faker->city);
         $this->setIdcardNumber(
-            Faker::getInstance()->asciify(
-                str_repeat(
-                    '*',
-                    mt_rand(1, Payout::ID_CARD_NUMBER_MAX_LENGTH)
-                )
-            )
+            $faker->asciify(str_repeat('*',mt_rand(1, Payout::ID_CARD_NUMBER_MAX_LENGTH)))
         );
         $this->setPayerbankPhoneNumber(
-            Faker::getInstance()->asciify(
-                str_repeat(
-                    '*',
-                    mt_rand(1, Payout::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH)
-                )
+            $faker->asciify(
+                str_repeat('*',mt_rand(1, Payout::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH))
             )
         );
-        $this->setBankAccountType(
-            Faker::getInstance()->randomElement(
-                BankAccountTypes::getAll()
-            )
-        );
+        $this->setBankAccountType($faker->randomElement(BankAccountTypes::getAll()));
         $this->setDocumentType(
-            Faker::getInstance()->asciify(
-                str_repeat(
-                    '*',
-                    mt_rand(1, Payout::DOCUMENT_TYPE_MAX_LENGTH)
-                )
-            )
+            $faker->asciify(str_repeat('*', mt_rand(1, Payout::DOCUMENT_TYPE_MAX_LENGTH)))
         );
         $this->setAccountId(
-            Faker::getInstance()->asciify(
-                str_repeat(
-                    '*',
-                    mt_rand(1, Payout::ACCOUNT_ID_MAX_LENGTH)
-                )
-            )
+            $faker->asciify(str_repeat('*', mt_rand(1, Payout::ACCOUNT_ID_MAX_LENGTH)))
         );
         $this->setUserId(
-            Faker::getInstance()->asciify(
-                str_repeat(
-                    '*',
-                    mt_rand(1, Payout::USER_ID_MAX_LENGTH)
-                )
-            )
+            $faker->asciify(str_repeat('*', mt_rand(1, Payout::USER_ID_MAX_LENGTH)))
         );
-        $this->setBirthDate(
-            Faker::getInstance()->date(
-                Faker::getInstance()->randomElement(DateTimeFormat::getAll())
-            )
-        );
-        $this->setPaymentType(
-            Faker::getInstance()->randomElement(
-                PayoutPaymentTypesParameters::getAll()
-            )
-        );
+        $this->setBirthDate($faker->date($faker->randomElement(DateTimeFormat::getAll())));
+        $this->setPaymentType($faker->randomElement(PayoutPaymentTypesParameters::getAll()));
 
-        $this->setCompanyType(Faker::getInstance()->text(10));
+        $this->setCompanyType($faker->text(10));
+        $this->setCompanyActivity($faker->text(10));
+        $this->setIncorporationDate($faker->date($faker->randomElement(DateTimeFormat::getAll())));
         $this->setCompanyActivity(Faker::getInstance()->text(10));
-        $this->setIncorporationDate(
-            Faker::getInstance()->date(
-                Faker::getInstance()->randomElement(DateTimeFormat::getAll())
-            )
-        );
-        $this->setCompanyActivity(Faker::getInstance()->text(10));
-        $this->setMothersName(
-            "{Faker::getInstance()->firstNameFemale()} {Faker::getInstance()->lastName()}"
-        );
+        $this->setMothersName("{$faker->firstNameFemale()} {$faker->lastName()}");
         $this->setPixKey(Faker::getInstance()->text(5));
     }
 

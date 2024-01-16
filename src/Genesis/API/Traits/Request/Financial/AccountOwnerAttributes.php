@@ -23,41 +23,56 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Constants;
+namespace Genesis\API\Traits\Request\Financial;
 
 /**
- * Class BankAccountTypes
- * @package Genesis\API\Constants
+ * Trait AccountOwnerAttributes
+ *
+ * Account owner parameters related to account owner inquiry requests
+ *
+ * @package Genesis\API\Traits\Request\Financial
+ *
+ * @method $this  setAccountFirstName($value) Set Account owner's first name
+ * @method $this  setAccountMiddleName($value) Set Account owner's middle name
+ * @method $this  setAccountLastName($value) Set Account owner's last name
+ * @method string getAccountFirstName() Get Account owner's first name
+ * @method string getAccountMiddleName() Get Account owner's middle name
+ * @method string getAccountLastName() Get Account owner's last name
  */
-class BankAccountTypes
+trait AccountOwnerAttributes
 {
     /**
-     * C: for Checking accounts
+     * Account owner's first name
+     *
+     * @var string
      */
-    const CHECKING_ACCOUNT = 'C';
+    protected $account_first_name;
 
     /**
-     * S: for Savings accounts
+     * Account owner's middle name
+     *
+     * @var string
      */
-    const SAVINGS_ACCOUNT  = 'S';
+    protected $account_middle_name;
 
     /**
-     * M: for Maestra accounts(Only Peru)
+     * Account owner's last name
+     *
+     * @var string
      */
-    const MAESTRA_ACCOUNTS = 'M';
+    protected $account_last_name;
 
     /**
-     * P: for Payment accounts
+     * Account owner parameters structure
+     *
+     * @return array
      */
-    const PAYMENT_ACCOUNT = 'P';
-
-    public static function getAll()
+    protected function getAccountOwnerAttributesStructure()
     {
         return [
-            self::CHECKING_ACCOUNT,
-            self::SAVINGS_ACCOUNT,
-            self::MAESTRA_ACCOUNTS,
-            self::PAYMENT_ACCOUNT
+            'first_name'  => $this->account_first_name,
+            'middle_name' => $this->account_middle_name,
+            'last_name'   => $this->account_last_name
         ];
     }
 }

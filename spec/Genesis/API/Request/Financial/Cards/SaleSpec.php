@@ -4,6 +4,7 @@ namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Sale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
@@ -27,7 +28,8 @@ class SaleSpec extends ObjectBehavior
         CryptoAttributesExamples, TokenizationAttributesExamples, BusinessAttributesExample,
         CredentialOnFileAttributesExamples, UcofAttributesExamples, ScaAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
-        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples;
+        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples,
+        AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -349,8 +349,7 @@ abstract class Request
         $requestPath = 'process',
         $includeToken = true,
         $subdomain = 'gateway'
-    )
-    {
+    ) {
         $this->setApiConfig(
             'url',
             $this->buildRequestURL(

@@ -1,3 +1,29 @@
+1.24.2
+-----
+**Features**:
+
+* Updated Paysafecard transaction type via Web Payment Form with customer_id required parameter
+* Improved project README with Web Payment Form transaction request example
+* Added Representment Reversed state handling
+* Added Payment Account (P) support for Bank Account Type via Online Banking Payout
+* Added Return Pending URL support to Sepa Direct Debit Sale (SDD Sale)
+* Added Account Owner parameters support to the following transaction requests:
+  * Authorize
+  * Authorize 3D
+  * Credit (Credit Fund Transfer)
+  * Sale
+  * Sale 3D
+  * Payout
+  * Init Recurring Sale
+  * Init Recurring Sale 3D
+  * Web Payment Form
+* Added applicationData and wrappedKey parameters support to the Apple Pay token
+* Added Smart Router support
+
+**Fixes**:
+
+* Fixed Online Banking Payout validations for BRL currency
+
 1.24.1
 -----
 **Features**:

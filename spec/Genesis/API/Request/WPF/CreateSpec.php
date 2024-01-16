@@ -16,12 +16,13 @@ use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\RecurringT
 use spec\SharedExamples\Genesis\API\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 
 class CreateSpec extends ObjectBehavior
 {
     use BusinessAttributesExample, PendingPaymentAttributesExamples, AsyncAttributesExample,
         ThreedsV2AttributesExamples, AllowedZeroAmount,
-        RecurringCategoryAttributesExample, FundingAttributesExamples;
+        RecurringCategoryAttributesExample, FundingAttributesExamples, AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -343,6 +344,22 @@ class CreateSpec extends ObjectBehavior
         $this->setRequestParameters();
 
         $this->getDocument()->shouldNotContain("<web_payment_form_id>");
+    }
+
+    public function it_should_validate_paysafecard_custom_attributes()
+    {
+        $this->setRequestParameters();
+
+        $this->addTransactionType(Types::PAYSAFECARD, ['customer_id' => '123456']);
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_without_customer_id_when_paysafecard()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow()->during('addTransactionType', [Types::PAYSAFECARD]);
     }
 
     protected function setRequestParameters()

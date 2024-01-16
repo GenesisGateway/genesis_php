@@ -38,6 +38,7 @@ use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\RiskAttributes;
+use Genesis\API\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\API\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\API\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\API\Traits\Request\Financial\FundingAttributes;
@@ -59,7 +60,7 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard3D
         AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         ReferenceAttributes, TravelDataAttributes, ScaAttributes, FxRateAttributes,
         CryptoAttributes, BusinessAttributes, RecurringTypeAttributes,
-        ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes;
+        ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes, AccountOwnerAttributes;
 
     /**
      * Returns the Request transaction type
@@ -166,7 +167,8 @@ class Sale3D extends \Genesis\API\Request\Base\Financial\Cards\CreditCard3D
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
-                'funding'                   => $this->getFundingAttributesStructure()
+                'funding'                   => $this->getFundingAttributesStructure(),
+                'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
             $this->get3DSTransactionAttributes()

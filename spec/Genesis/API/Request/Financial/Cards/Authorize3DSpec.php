@@ -3,6 +3,7 @@
 namespace spec\Genesis\API\Request\Financial\Cards;
 
 use Genesis\API\Request\Financial\Cards\Authorize3D;
+use Genesis\API\Traits\Request\Financial\AccountOwnerAttributes;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
@@ -21,6 +22,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2Attrib
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 
 class Authorize3DSpec extends ObjectBehavior
 {
@@ -28,7 +30,8 @@ class Authorize3DSpec extends ObjectBehavior
         DescriptorAttributesExample, CryptoAttributesExamples, TokenizationAttributesExamples,
         BusinessAttributesExample, ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
-        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples;
+        RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples,
+        AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {

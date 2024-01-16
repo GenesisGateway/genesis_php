@@ -1,0 +1,22 @@
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+date: Mon, 08 Jan 2024 14:11:14 GMT
+vary: Accept
+etag: W/"aac924e2aa208bab43b41225ff58593a"
+cache-control: max-age=0, private, must-revalidate
+x-request-id: b6ce3d3c-0341-4fdc-904e-7643e148ec5a
+x-runtime: 0.015836
+strict-transport-security: max-age=631138519
+x-frame-options: ALLOWALL
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-download-options: noopen
+x-permitted-cross-domain-policies: none
+content-security-policy: default-src https: 'self'; font-src 'self' data:; img-src https: 'self' data:; script-src https: 'self' 'unsafe-inline' js-agent.newrelic.com bam.nr-data.net; style-src https: 'self' 'unsafe-inline'; report-uri https://emerchantpay.report-uri.io/r/default/csp/enforce
+x-cache: Miss from cloudfront
+via: 1.1 1cab6471cfd97c9e331bb21f4503b0fe.cloudfront.net (CloudFront)
+x-amz-cf-pop: LHR3-C2
+x-amz-cf-id: JuiDA3GLbW5rjt8Yzd9bvBYJyfGgJbmYZTSukZRPeaUPRyCQ8aQ3iA==
+
+
+|*DATE*|

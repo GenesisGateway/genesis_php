@@ -14,12 +14,14 @@ use spec\SharedExamples\Genesis\API\Request\Financial\SourceOfFundsAttributesExa
 use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
     use RequestExamples, FxRateAttributesExamples, SourceOfFundsAttributesExamples,
         DescriptorAttributesExample, TokenizationAttributesExamples, CredentialOnFileAttributesExamples,
-        CreditCardAttributesExamples, DocumentAttributesExample, CustomerIdentificationExamples;
+        CreditCardAttributesExamples, DocumentAttributesExample, CustomerIdentificationExamples,
+        AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -9,11 +9,12 @@ use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\Cards\CustomerIdentificationExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\SourceOfFundsAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
 
 class CreditSpec extends ObjectBehavior
 {
     use RequestExamples, SourceOfFundsAttributesExamples,
-        CustomerIdentificationExamples;
+        CustomerIdentificationExamples, AccountOwnerAttributesExamples;
 
     public function it_is_initializable()
     {
