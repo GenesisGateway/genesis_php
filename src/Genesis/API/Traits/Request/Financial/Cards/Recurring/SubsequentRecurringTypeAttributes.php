@@ -22,59 +22,65 @@
  * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\API\Request\NonFinancial\TokenizationApi;
 
-use Genesis\API\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
-use Genesis\API\Traits\Request\NonFinancial\TokenizationApiAttributes;
-use Genesis\API\Traits\Request\NonFinancial\TokenizationApiTokenAttributes;
+namespace Genesis\API\Traits\Request\Financial\Cards\Recurring;
+
+use Genesis\API\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
- * Class Detokenize
+ * trait SubsequentRecurringTypeAttributes
  *
- * Exchanges the token with the tokenized cardholder data
- *
- * @package Genesis\API\Request\NonFinancial\Tokenization
+ * @package Genesis\API\Traits\Request\Financial\Cards\Recurring
  */
-class Detokenize extends BaseRequest
+trait SubsequentRecurringTypeAttributes
 {
-    use TokenizationApiAttributes, TokenizationApiTokenAttributes;
-
     /**
-     * Detokenize constructor
+     * Apply transformation: Convert to Minor currency unit
+     * When recurring type is Subsequent and there is no currency
+     * the amount will not be modified
+     *
+     * @param string $amount
+     * @param string $currency
+     *
+     * @return string
      */
-    public function __construct()
+    protected function transformAmount($amount = '', $currency = '')
     {
-        parent::__construct('detokenize');
+        if ($this->recurring_type == Types::SUBSEQUENT && empty($currency)) {
+            return $amount;
+        }
+
+        return parent::transformAmount($amount, $currency);
     }
 
     /**
-     * @return array
-     */
-    protected function getRequestStructure()
-    {
-        return [
-            'consumer_id' => $this->consumer_id,
-            'token_type'  => $this->token_type,
-            'email'       => $this->email,
-            'token'       => $this->token
-        ];
-    }
-
-    /**
-     * Set the required fields
+     * Extend the Request Validations for Subsequent recurring type
      *
      * @return void
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
      */
-    protected function setRequiredFields()
+    protected function checkRequirementsSubsequent()
     {
         $requiredFields = [
-            'consumer_id',
-            'token_type',
-            'email',
-            'token'
+            'transaction_id',
+            'amount'
         ];
 
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
+
+        unset($this->requiredFieldsOR);
+
+        unset($this->requiredFieldValues);
+
+        $requiredFieldValuesConditional = $this->requiredRecurringAllTypesFieldValuesConditional();
+
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+            $requiredFieldValuesConditional
+        );
+
+        $this->validate();
     }
 }

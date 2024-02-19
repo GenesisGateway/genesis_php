@@ -19,7 +19,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -74,22 +74,6 @@ trait RecurringTypeAttributes
                         Types::getInitialTypes(),
                         Types::getSubsequentTypes()
                     )]
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * Returns Conditional Fields validation applicable for Subsequent Recurring Type
-     *
-     * @return array[]
-     */
-    protected function requiredRecurringSubsequentTypeFieldConditional()
-    {
-        return [
-            'recurring_type' => [
-                Types::SUBSEQUENT => [
-                    'reference_id'
                 ]
             ]
         ];

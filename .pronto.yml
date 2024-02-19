@@ -1,9 +1,0 @@
-all:
-  exclude:
-    - 'vendor/**/*'
-github:
-  slug:         ENV['PRONTO_GITHUB_SLUG']
-  access_token: ENV['PRONTO_GITHUB_ACCESS_TOKEN']
-  api_endpoint: ENV['PRONTO_GITHUB_API_ENDPOINT']
-  web_endpoint: ENV['PRONTO_GITHUB_WEB_ENDPOINT']
-verbose: false

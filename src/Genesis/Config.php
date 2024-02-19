@@ -19,12 +19,13 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 namespace Genesis;
 
 use Genesis\Utils\Common as CommonUtils;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Class Config
@@ -47,7 +48,7 @@ final class Config
     /**
      * Library Version
      */
-    const VERSION = '1.24.2';
+    const VERSION = '1.24.3';
 
     /**
      * Core configuration settings
@@ -176,7 +177,7 @@ final class Config
      * @param   string  $environmentArg
      * @return  string
      *
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws InvalidArgument
      */
     public static function setEnvironment($environmentArg)
     {
@@ -205,7 +206,7 @@ final class Config
             }
         }
 
-        throw new \Genesis\Exceptions\InvalidArgument(
+        throw new InvalidArgument(
             'Invalid Environment'
         );
     }
@@ -226,7 +227,7 @@ final class Config
      * @param   string  $endpointArg
      * @return  string
      *
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws InvalidArgument
      */
     public static function setEndpoint($endpointArg)
     {
@@ -254,7 +255,7 @@ final class Config
             }
         }
 
-        throw new \Genesis\Exceptions\InvalidArgument(
+        throw new InvalidArgument(
             'Invalid Endpoint'
         );
     }
@@ -316,12 +317,12 @@ final class Config
      *
      * @param string $iniFile Path to an ini file containing the settings
      *
-     * @throws \Genesis\Exceptions\InvalidArgument()
+     * @throws InvalidArgument()
      */
     public static function loadSettings($iniFile)
     {
         if (!file_exists($iniFile)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
+            throw new InvalidArgument(
                 'The provided configuration file is invalid or inaccessible!'
             );
         }

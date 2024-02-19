@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\API\Request\Financial\Cards\Authorize;
 use Genesis\API\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\Exceptions\ErrorParameter;
@@ -80,6 +81,20 @@ class AuthorizeSpec extends ObjectBehavior
         $this->setCurrency('ABC');
 
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_not_fail_with_subsequent_recurring_type()
+    {
+        $faker = $this->getFaker();
+
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
+        $this->setRecurringType(Types::SUBSEQUENT);
+        $this->setReferenceId('transaction-reference-id');
+
+        $this->shouldNotThrow()->during('getDocument');
     }
 
     protected function setRequestParameters()

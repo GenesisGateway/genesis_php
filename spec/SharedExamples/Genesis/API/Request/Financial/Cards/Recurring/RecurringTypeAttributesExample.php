@@ -85,14 +85,14 @@ trait RecurringTypeAttributesExample
         $this->shouldNotThrow()->during('getDocument');
     }
 
-    public function it_should_fail_with_subsequent_type_when_not_set_reference_id_for_sale_transaction()
+    public function it_should_not_fail_with_subsequent_type_when_not_set_reference_id_for_sale_transaction()
     {
         $this->handleSkipperSubsequentTransactionTypes();
 
         $this->setRequestParameters();
         $this->setRecurringType(Types::SUBSEQUENT);
 
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+        $this->shouldNotThrow(ErrorParameter::class)->during('getDocument');
     }
 
     /**

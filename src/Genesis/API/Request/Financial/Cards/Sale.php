@@ -19,16 +19,18 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2023 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\API\Request\Financial\Cards;
 
+use Genesis\API\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\API\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\API\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
+use Genesis\API\Traits\Request\Financial\Cards\Recurring\SubsequentRecurringTypeAttributes;
 use Genesis\API\Traits\Request\Financial\UcofAttributes;
 use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\API\Traits\Request\Financial\FxRateAttributes;
@@ -57,7 +59,8 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
     use GamingAttributes, MotoAttributes, AddressInfoAttributes, RiskAttributes, DescriptorAttributes,
         ReferenceAttributes, TravelDataAttributes, FxRateAttributes, CryptoAttributes,
         BusinessAttributes, ScaAttributes, UcofAttributes, RecurringTypeAttributes,
-        ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes, AccountOwnerAttributes;
+        ManagedRecurringAttributes, RecurringCategoryAttributes, FundingAttributes, AccountOwnerAttributes,
+        SubsequentRecurringTypeAttributes;
 
     /**
      * Returns the Request transaction type
@@ -96,7 +99,6 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
         $requiredFieldsConditional = array_merge_recursive(
             $this->requiredTokenizationFieldsConditional(),
             $this->requiredCCFieldsConditional(),
-            $this->requiredRecurringSubsequentTypeFieldConditional(),
             $this->requiredManagedRecurringFieldsConditional(),
             $this->requiredRecurringManagedTypeFieldConditional()
         );
@@ -114,6 +116,12 @@ class Sale extends \Genesis\API\Request\Base\Financial\Cards\CreditCard
      */
     protected function checkRequirements()
     {
+        if ($this->recurring_type == Types::SUBSEQUENT) {
+            $this->checkRequirementsSubsequent();
+
+            return;
+        }
+
         $requiredFieldValuesConditional = $this->requiredRecurringAllTypesFieldValuesConditional();
 
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(

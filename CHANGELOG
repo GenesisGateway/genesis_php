@@ -1,3 +1,13 @@
+1.24.3
+-----
+**Features**:
+
+* Added non-referenced subsequent recurring transaction requests support
+
+**Fixes**:
+
+* Fixed validations for Sale and Authorize transactions with subsequent recurring type
+
 1.24.2
 -----
 **Features**:
