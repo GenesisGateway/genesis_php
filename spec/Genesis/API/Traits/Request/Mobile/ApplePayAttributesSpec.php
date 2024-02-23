@@ -26,10 +26,20 @@ class ApplePayAttributesSpec extends ObjectBehavior
 
     public function it_should_return_proper_structure_for_payment_token()
     {
+        $this->setTokenApplicationData('data');
+        $this->setTokenVersion('1.1');
+        $this->setTokenEphemeralPublicKey('key');
+        $this->setTokenDisplayName('name');
+
         $this->getPaymentTokenStructure()->shouldContain('paymentData');
         $this->getPaymentTokenStructure()->shouldContain('version');
         $this->getPaymentTokenStructure()->shouldContain('ephemeralPublicKey');
         $this->getPaymentTokenStructure()->shouldContain('displayName');
+    }
+
+    public function it_should_return_empty_structure_without_attributes()
+    {
+        $this->getPaymentTokenStructure()->shouldBe('[]');
     }
 
     public function it_should_not_throw_with_valid_parameter()

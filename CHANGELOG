@@ -1,3 +1,9 @@
+1.24.4
+-----
+**Fixes**:
+
+* Fixed Apple Pay token parsing of optional elements
+
 1.24.3
 -----
 **Features**:

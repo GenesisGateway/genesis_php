@@ -93,6 +93,16 @@ class ApplePaySpec extends ObjectBehavior
         $this->getDocument()->shouldContain('wrappedKey');
     }
 
+    public function it_should_not_contain_empty_token_elements()
+    {
+        $this->setRequestParameters();
+        $this->setTokenApplicationData('');
+        $this->setTokenWrappedKey('');
+
+        $this->getDocument()->shouldNotContain('applicationData');
+        $this->getDocument()->shouldNotContain('wrappedKey');
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();

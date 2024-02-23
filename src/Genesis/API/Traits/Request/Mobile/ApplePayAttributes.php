@@ -25,6 +25,8 @@
 
 namespace Genesis\API\Traits\Request\Mobile;
 
+use Genesis\Utils\Common as CommonUtils;
+
 /**
 * @method $this setPaymentSubtype($value) Sets payment type which is of authorize and recurring
 * @method $this setTokenVersion($value) Sets version information about the payment token
@@ -144,7 +146,8 @@ trait ApplePayAttributes
 
     public function getPaymentTokenStructure()
     {
-        return json_encode([
+        $structure = CommonUtils::emptyValueRecursiveRemoval(
+            [
                 'paymentData' => [
                     'version'   => $this->token_version,
                     'data'      => $this->token_data,
@@ -163,6 +166,9 @@ trait ApplePayAttributes
                     'type'        => $this->token_type
                 ],
                 'transactionIdentifier' => $this->token_transaction_identifier
-            ], JSON_UNESCAPED_UNICODE);
+            ]
+        );
+
+        return json_encode($structure, JSON_UNESCAPED_UNICODE);
     }
 }
