@@ -100,17 +100,20 @@ class Network
     public function setApiCtxData($apiContext)
     {
         $this->context->prepareRequestBody(
-            [
-                'body'       => $apiContext->getDocument(),
-                'url'        => $apiContext->getApiConfig('url'),
-                'type'       => $apiContext->getApiConfig('type'),
-                'port'       => $apiContext->getApiConfig('port'),
-                'protocol'   => $apiContext->getApiConfig('protocol'),
-                'format'     => $apiContext->getApiConfig('format'),
-                'timeout'    => \Genesis\Config::getNetworkTimeout(),
-                'user_agent' => sprintf('Genesis PHP Client v%s', \Genesis\Config::getVersion()),
-                'user_login' => sprintf('%s:%s', \Genesis\Config::getUsername(), \Genesis\Config::getPassword())
-            ]
+            array_merge(
+                [
+                    'body'          => $apiContext->getDocument(),
+                    'url'           => $apiContext->getApiConfig('url'),
+                    'type'          => $apiContext->getApiConfig('type'),
+                    'port'          => $apiContext->getApiConfig('port'),
+                    'protocol'      => $apiContext->getApiConfig('protocol'),
+                    'format'        => $apiContext->getApiConfig('format'),
+                    'timeout'       => \Genesis\Config::getNetworkTimeout(),
+                    'user_agent'    => sprintf('Genesis PHP Client v%s', \Genesis\Config::getVersion()),
+                    'authorization' => $apiContext->getApiConfig('authorization')
+                ],
+                $this->setAuthCredentials($apiContext)
+            )
         );
     }
 
@@ -120,5 +123,30 @@ class Network
     public function sendRequest()
     {
         $this->context->execute();
+    }
+
+    /**
+     * Determine the appropriate credentials based on the authorization type
+     *
+     * @param \Genesis\API\Request $apiContext
+     * @return array
+     */
+    protected function setAuthCredentials($apiContext)
+    {
+        switch ($apiContext->getApiConfig('authorization')) {
+            case \Genesis\API\Request::AUTH_TYPE_TOKEN:
+                return [
+                    'token' => $apiContext->getApiConfig('bearer_token')
+                ];
+                break;
+            default:
+                return [
+                    'user_login' => sprintf(
+                        '%s:%s',
+                        \Genesis\Config::getUsername(),
+                        \Genesis\Config::getPassword()
+                    )
+                ];
+        }
     }
 }

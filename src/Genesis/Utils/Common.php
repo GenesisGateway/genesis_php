@@ -24,6 +24,8 @@
  */
 namespace Genesis\Utils;
 
+use \ArrayObject;
+use \ReflectionClass;
 use Genesis\Exceptions\Exception;
 use Genesis\Exceptions\InvalidArgument;
 
@@ -32,6 +34,8 @@ use Genesis\Exceptions\InvalidArgument;
  *
  * @package    Genesis
  * @subpackage Utils
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class Common
 {
@@ -168,7 +172,7 @@ final class Common
      */
     public static function createArrayObject($srcArray)
     {
-        return new \ArrayObject($srcArray, \ArrayObject::ARRAY_AS_PROPS);
+        return new ArrayObject($srcArray, ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -344,7 +348,10 @@ final class Common
      */
     public static function isBase64Encoded($input)
     {
-        if ($input && @base64_encode(@base64_decode($input, true)) === $input) {
+        if ($input
+            && base64_decode($input, true)
+            && base64_encode(base64_decode($input)) === $input
+        ) {
             return true;
         }
 
@@ -384,7 +391,7 @@ final class Common
             return false;
         }
 
-        $reflectionClass = new \ReflectionClass($className);
+        $reflectionClass = new ReflectionClass($className);
 
         return $reflectionClass->isAbstract();
     }
@@ -400,7 +407,7 @@ final class Common
             return [];
         }
 
-        $reflection = new \ReflectionClass($className);
+        $reflection = new ReflectionClass($className);
 
         return $reflection->getConstants();
     }
@@ -471,7 +478,7 @@ final class Common
      */
     public static function removeMultipleKeys($arrayKeys, $arrayObject)
     {
-        if (!self::isValidArray($arrayKeys) || !$arrayObject instanceof \ArrayObject) {
+        if (!self::isValidArray($arrayKeys) || !$arrayObject instanceof ArrayObject) {
             throw new Exception();
         }
 

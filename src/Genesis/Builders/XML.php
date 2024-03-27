@@ -24,6 +24,9 @@
  */
 namespace Genesis\Builders;
 
+use \XMLWriter;
+use Genesis\Exceptions\InvalidArgument;
+
 /**
  * XMLWriter Builder Interface
  * Note: requires libxml2 support (either built-in or as extension)
@@ -52,7 +55,7 @@ final class XML implements \Genesis\Interfaces\Builder
      */
     public function __construct()
     {
-        $this->context = new \XMLWriter();
+        $this->context = new XMLWriter();
 
         $this->context->openMemory();
         $this->context->startDocument('1.0', 'UTF-8');
@@ -73,7 +76,7 @@ final class XML implements \Genesis\Interfaces\Builder
     public function populateNodes($data)
     {
         if (!\Genesis\Utils\Common::isValidArray($data)) {
-            throw new \Genesis\Exceptions\InvalidArgument('Invalid data structure');
+            throw new InvalidArgument('Invalid data structure');
         }
 
         // Ensure that the Array position is 0

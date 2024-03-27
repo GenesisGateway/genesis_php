@@ -2,13 +2,15 @@
 
 namespace Genesis\API\Traits\Validations\Request;
 
+use \RecursiveIteratorIterator;
 use Genesis\API\Request\Base\Financial\Cards\CreditCard;
 use Genesis\API\Validators\Request\Base\Validator as RequestValidator;
+use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidClassMethod;
 use Genesis\Utils\Common as CommonUtils;
 
 trait Validations
 {
-
     /**
      * Store the names of the fields that are Required
      *
@@ -73,7 +75,7 @@ trait Validations
         foreach ($this->validations as $property => $method) {
             if (!empty($this->{$property})) {
                 if (!method_exists($this, $method)) {
-                    throw new \Genesis\Exceptions\InvalidClassMethod();
+                    throw new InvalidClassMethod();
                 }
                 $this->{$method}();
             }
@@ -89,7 +91,7 @@ trait Validations
     {
         $this->requiredFields->setIteratorClass('RecursiveArrayIterator');
 
-        $iterator = new \RecursiveIteratorIterator($this->requiredFields->getIterator());
+        $iterator = new RecursiveIteratorIterator($this->requiredFields->getIterator());
 
         foreach ($iterator as $fieldName) {
             if ($this->isNotNullAndEmptyValueAllowed($fieldName, $this->$fieldName)) {
@@ -98,7 +100,7 @@ trait Validations
             }
 
             if (empty($this->$fieldName)) {
-                throw new \Genesis\Exceptions\ErrorParameter(
+                throw new ErrorParameter(
                     sprintf('Empty (null) required parameter: %s', $fieldName)
                 );
             }
@@ -124,7 +126,7 @@ trait Validations
 
             if (CommonUtils::isValidArray($validator)) {
                 if (!in_array($this->$fieldName, $validator)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
+                    throw new ErrorParameter(
                         sprintf(
                             'Required parameter %s is set to %s, but expected to be one of (%s)',
                             $fieldName,
@@ -141,7 +143,7 @@ trait Validations
             }
 
             if ($this->$fieldName !== $validator) {
-                throw new \Genesis\Exceptions\ErrorParameter(
+                throw new ErrorParameter(
                     sprintf(
                         'Required parameter %s is set to %s, but expected to be %s',
                         $fieldName,
@@ -180,7 +182,7 @@ trait Validations
         }
 
         if (!$emptyFlag) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'One of the following group/s of field/s must be filled in: %s%s',
                     PHP_EOL,
@@ -229,7 +231,7 @@ trait Validations
                                     ? var_export($this->$fieldName, true)
                                     : $this->$fieldName;
 
-                            throw new \Genesis\Exceptions\ErrorParameter(
+                            throw new ErrorParameter(
                                 sprintf(
                                     '%s with value %s is depending on: %s, which is empty (null)!',
                                     $fieldName,
@@ -240,7 +242,7 @@ trait Validations
                         }
                     }
                 } elseif (empty($this->$fieldDependency)) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
+                    throw new ErrorParameter(
                         sprintf(
                             '%s is depending on: %s, which is empty (null)!',
                             $fieldName,
@@ -269,7 +271,7 @@ trait Validations
             }
 
             if ($definedFieldsCount > 1) {
-                 throw new \Genesis\Exceptions\ErrorParameter(
+                 throw new ErrorParameter(
                      'Only one of following parameters: ' .
                       implode(', ', array_values($fields)) .
                      ' is allowed.'
@@ -278,7 +280,7 @@ trait Validations
         }
 
         if ($definedFieldsCount === 0) {
-            throw new \Genesis\Exceptions\ErrorParameter(implode(', ', array_values($fields)));
+            throw new ErrorParameter(implode(', ', array_values($fields)));
         }
     }
 
@@ -346,7 +348,7 @@ trait Validations
                 }
 
                 if (!$childFieldGroupValuesValidated) {
-                    throw new \Genesis\Exceptions\ErrorParameter(
+                    throw new ErrorParameter(
                         sprintf(
                             '%s with value %s is depending on group of params with specific values. ' .
                             'Please, refer to the official API documentation for %s transaction type.',

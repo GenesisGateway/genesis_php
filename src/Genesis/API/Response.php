@@ -24,8 +24,15 @@
  */
 namespace Genesis\API;
 
+use \DateTime;
 use Genesis\Network;
 use Genesis\Parser;
+use Genesis\API\Request\NonFinancial\Reconcile\DateRange;
+use Genesis\API\Request\NonFinancial\Reconcile\Transaction;
+use Genesis\API\Request\WPF\Reconcile;
+use Genesis\Exceptions\ErrorAPI;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Exceptions\InvalidResponse;
 
 /**
  * Response - process/format an incoming Genesis response
@@ -93,7 +100,7 @@ class Response
 
             $this->responseObj = $parser->getObject();
         } catch (\Exception $e) {
-            throw new \Genesis\Exceptions\InvalidResponse(
+            throw new InvalidResponse(
                 $e->getMessage(),
                 $e->getCode()
             );
@@ -106,14 +113,14 @@ class Response
             $state = new Constants\Transaction\States($this->responseObj->status);
 
             if (!$state->isValid()) {
-                throw new \Genesis\Exceptions\InvalidArgument(
+                throw new InvalidArgument(
                     'Unknown transaction status',
                     isset($this->responseObj->code) ? $this->responseObj->code : 0
                 );
             }
 
             if ($state->isError() && !$this->suppressReconciliationException()) {
-                throw new \Genesis\Exceptions\ErrorAPI(
+                throw new ErrorAPI(
                     $this->responseObj->message,
                     isset($this->responseObj->code) ? $this->responseObj->code : 0
                 );
@@ -193,9 +200,9 @@ class Response
     public function suppressReconciliationException()
     {
         $instances = [
-            new \Genesis\API\Request\NonFinancial\Reconcile\DateRange(),
-            new \Genesis\API\Request\NonFinancial\Reconcile\Transaction(),
-            new \Genesis\API\Request\WPF\Reconcile()
+            new DateRange(),
+            new Transaction(),
+            new Reconcile()
         ];
 
         if (isset($this->requestCtx) && isset($this->responseObj->unique_id)) {
@@ -355,7 +362,7 @@ class Response
     {
         if (isset($transaction->timestamp)) {
             try {
-                $transaction->timestamp = new \DateTime($transaction->timestamp);
+                $transaction->timestamp = new DateTime($transaction->timestamp);
             } catch (\Exception $e) {
                 // Just log the attempt
                 error_log($e->getMessage());

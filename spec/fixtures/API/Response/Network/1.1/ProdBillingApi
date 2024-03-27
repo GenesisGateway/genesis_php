@@ -1,0 +1,14 @@
+HTTP/1.1 200
+content-type: application/json
+content-length: 3211
+date: Tue, 19 Mar 2024 07:40:25 GMT
+x-amzn-requestid: 80cdce87-c37e-469a-9648-297997536b1e
+x-amz-apigw-id: U3colGCBDoEERlQ=
+x-amzn-trace-id: Root=1-65f94169-0f1a39a9330ad52608667caa;Parent=66cfb61a1450489d;Sampled=0;lineage=54383a3a:0|6e68aebf:0
+x-cache: Miss from cloudfront
+via: 1.1 fde0e9fc1521cf01abbfaf602a8ed128.cloudfront.net (CloudFront)
+x-amz-cf-pop: DUB56-P2
+x-amz-cf-id: TbE7Pa4oPJuyoyKUYrudwnynDkJGVm-QB4z0pxNLN_fR95G-FG8BuQ==
+
+
+|*DATE*|

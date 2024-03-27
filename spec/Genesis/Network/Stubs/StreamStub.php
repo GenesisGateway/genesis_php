@@ -21,4 +21,9 @@ class StreamStub extends Stream
 
         restore_error_handler();
     }
+
+    public function authorization($requestData)
+    {
+        return parent::authorization($requestData);
+    }
 }

@@ -227,14 +227,14 @@ class ConfigSpec extends ObjectBehavior
     {
         $this::setEnvironment('staging');
 
-        $this::getSubDomain('smart_router')->shouldBe('staging.api.');
+        $this::getSubDomain('api_service')->shouldBe('staging.api.');
     }
 
     public function it_has_production_smart_router_subdomain()
     {
         $this::setEnvironment('prod');
 
-        $this::getSubDomain('smart_router')->shouldBe('prod.api.');
+        $this::getSubDomain('api_service')->shouldBe('prod.api.');
     }
 
     public function it_should_fail_when_invalid_settings_file()

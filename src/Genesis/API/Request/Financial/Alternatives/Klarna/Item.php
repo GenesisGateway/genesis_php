@@ -26,6 +26,7 @@
 namespace Genesis\API\Request\Financial\Alternatives\Klarna;
 
 use Genesis\API\Traits\MagicAccessors;
+use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Currency as CurrencyUtils;
 
@@ -214,7 +215,7 @@ class Item
     protected function verifyRequiredField($field, $value)
     {
         if (empty($value)) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Empty (null) item required parameter: %s',
                     $field
@@ -233,7 +234,7 @@ class Item
     protected function verifyNonNegativeField($field, $value)
     {
         if (!empty($value) && $value <= 0) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Item parameter %s is set to %s, but expected to be positive number',
                     $field,
@@ -253,7 +254,7 @@ class Item
     protected function verifyNegativeField($field, $value)
     {
         if (!empty($value) && $value > 0) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Item parameter %s is set to %s, but expected to be negative number',
                     $field,
@@ -378,7 +379,7 @@ class Item
             self::ITEM_TYPE_SURCHARGE
         );
         if (!in_array($value, $item_types)) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Required item parameter item_type is set to %s, but expected to be one of (%s)',
                     $value,
@@ -404,7 +405,7 @@ class Item
     public function setQuantityUnit($value)
     {
         if (!empty($value) && strlen($value) > 8) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Item parameter quantity_unit is set to %s, but expected to be string with max length 8 characters',
                     $value

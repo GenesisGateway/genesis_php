@@ -53,6 +53,47 @@ git clone http://github.com/GenesisGateway/genesis_php genesis_php && cd genesis
 Getting Started
 ------------------
 
+### Configuration
+
+A sample configuration file settings_sample.ini is provided. The configuration file can be loaded via:
+```php
+\Genesis\Config::loadSettings('/path/to/config.ini');
+```
+Or the configuration settings can be set manually:
+```php
+\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+\Genesis\Config::setToken('<enter_your_token>');
+```
+
+```php
+# Supported values: sandbox or production
+environment         = sandbox
+
+# Supported values: test, testing, staging or live, prod, production
+endpoint            = ENTER_YOUR_ENDPOINT
+
+# Credentials
+username            = ENTER_YOUR_USERNAME
+password            = ENTER_YOUR_PASSWORD
+
+# Optional for WPF requests
+token               = ENTER_YOUR_TOKEN
+
+# Smart Router endpoint for Financial Transactions
+# Doesn't require token
+force_smart_routing = off
+
+# Optional token for Billing Transactions API requests
+billing_api_token   = ENTER_YOUR_TOKEN
+
+[Interfaces]
+# Supported values: curl or stream
+network             = curl
+```
+
 ### Transactions
 
 ```php
@@ -1371,6 +1412,9 @@ NonFinancial\TokenizationApi\UpdateToken
 NonFinancial\TokenizationApi\ValidateToken
 NonFinancial\TokenizationApi\DeleteToken
 NonFinancial\TokenizationApi\GetCard
+
+// Billing Transactions API
+NonFinancial\BillingApi\Transaction
 ```
 
 More information about each one of the request types can be found in the Genesis API Documentation and the Wiki

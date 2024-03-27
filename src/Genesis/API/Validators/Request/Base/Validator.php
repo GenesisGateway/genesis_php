@@ -25,6 +25,8 @@
 
 namespace Genesis\API\Validators\Request\Base;
 
+use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -98,7 +100,7 @@ abstract class Validator
                 ? sprintf($this->message, $this->field)
                 : "Please check input data for errors. '{$this->field}' has invalid format";
 
-        throw new \Genesis\Exceptions\InvalidArgument($exceptionMessage);
+        throw new InvalidArgument($exceptionMessage);
     }
 
     /**
@@ -108,7 +110,7 @@ abstract class Validator
     protected function getRequestValue()
     {
         if (!property_exists($this->request, $this->field)) {
-            throw new \Genesis\Exceptions\ErrorParameter("Property {$this->field} not found in API Request");
+            throw new ErrorParameter("Property {$this->field} not found in API Request");
         }
 
         $method = CommonUtils::snakeCaseToCamelCase($this->field);

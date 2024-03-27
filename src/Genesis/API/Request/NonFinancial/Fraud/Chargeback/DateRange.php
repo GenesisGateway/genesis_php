@@ -28,6 +28,7 @@ namespace Genesis\API\Request\NonFinancial\Fraud\Chargeback;
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ExternallyProcessed;
 use Genesis\API\Constants\NonFinancial\Fraud\Chargeback\ProcessingTypes;
+use Genesis\API\Traits\Request\NonFinancial\PagingAttributes;
 use Genesis\Exceptions\ErrorParameter;
 
 /**
@@ -36,13 +37,13 @@ use Genesis\Exceptions\ErrorParameter;
  * @package    Genesis
  * @subpackage Request
  *
- * @method getPage() Get the page within the paginated result
- * @method getPerPage() Get number of entities on page
  * @method getExternallyProcessed() Filters chargebacks by being externally processed or being native to Genesis
  * @method getProcessingType() Filters chargebacks by being card present or card not present
  */
 class DateRange extends \Genesis\API\Request
 {
+    use PagingAttributes;
+
     /**
      * start of the requested date range
      *
@@ -63,24 +64,6 @@ class DateRange extends \Genesis\API\Request
      * @var \DateTime
      */
     protected $import_date;
-
-    /**
-     * the page within the paginated result
-     *
-     * default: 1
-     *
-     * @var int $page
-     */
-    protected $page;
-
-    /**
-     * Number of entities per page
-     *
-     * default: 100
-     *
-     * @var int $per_page
-     */
-    protected $per_page;
 
     /**
      * Filters chargebacks by being externally processed or being native to Genesis
@@ -161,32 +144,6 @@ class DateRange extends \Genesis\API\Request
             (string) $value,
             'Invalid format for import_date.'
         );
-    }
-
-    /**
-     * the within the paginated result
-     *
-     * @param $value
-     * @return $this
-     */
-    public function setPage($value)
-    {
-        $this->page = (int) $value;
-
-        return $this;
-    }
-
-    /**
-     * Number of entities on page, default to 100
-     *
-     * @param $value
-     * @return $this
-     */
-    public function setPerPage($value)
-    {
-        $this->per_page = (int) $value;
-
-        return $this;
     }
 
     /**

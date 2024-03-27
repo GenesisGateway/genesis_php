@@ -52,11 +52,7 @@ class CardTypes
      */
     public static function isValidCardType($cardType)
     {
-        if (@constant('self::' . strtoupper($cardType))) {
-            return true;
-        }
-
-        return false;
+        return defined('self::' . strtoupper($cardType));
     }
 
     /**

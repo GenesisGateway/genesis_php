@@ -27,6 +27,7 @@ namespace Genesis\API\Request\Base\NonFinancial;
 
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\API\Request;
+use Genesis\API\Traits\Request\NonFinancial\PagingAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Common;
 
@@ -36,6 +37,8 @@ use Genesis\Utils\Common;
  */
 abstract class DateRangeRequest extends Request
 {
+    use PagingAttributes;
+
     /**
      * start of the requested date range
      *
@@ -49,22 +52,6 @@ abstract class DateRangeRequest extends Request
      * @var \DateTime $end_date
      */
     protected $end_date;
-
-    /**
-     * the page within the paginated result
-     * defaults to 1
-     *
-     * @var integer $page
-     */
-    protected $page;
-
-    /**
-     * Number of entities on page
-     * default to 100
-     *
-     * @var integer $per_page
-     */
-    protected $per_page;
 
     /**
      * Start of requested date range
@@ -110,32 +97,6 @@ abstract class DateRangeRequest extends Request
             (string)$value,
             'Invalid format for end_date'
         );
-    }
-
-    /**
-     * the page within the paginated result, defaults to 1
-     *
-     * @param $value
-     * @return $this
-     */
-    public function setPage($value)
-    {
-        $this->page = (int) $value;
-
-        return $this;
-    }
-
-    /**
-     * Number of entities on page, default to 100
-     *
-     * @param $value
-     * @return $this
-     */
-    public function setPerPage($value)
-    {
-        $this->per_page = (int) $value;
-
-        return $this;
     }
 
     /**

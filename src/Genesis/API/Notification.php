@@ -24,6 +24,11 @@
  */
 namespace Genesis\API;
 
+use \LogicException;
+use Genesis\Builder;
+use Genesis\Genesis;
+use Genesis\Exceptions\InvalidArgument;
+
 /**
  * Notification - process/validate incoming Async notifications
  *
@@ -103,7 +108,7 @@ class Notification
         }
 
         if ($authenticate && !$this->isAuthentic()) {
-            throw new \Genesis\Exceptions\InvalidArgument('Invalid Genesis Notification!');
+            throw new InvalidArgument('Invalid Genesis Notification!');
         }
     }
 
@@ -123,7 +128,7 @@ class Notification
             $type = 'WPF\Reconcile';
         }
 
-        $request = new \Genesis\Genesis($type);
+        $request = new Genesis($type);
 
         try {
             $request->request()->setUniqueId($this->unique_id);
@@ -145,7 +150,7 @@ class Notification
     public function isAuthentic()
     {
         if (!isset($this->unique_id) || !isset($this->notificationObj->signature)) {
-            throw new \Genesis\Exceptions\InvalidArgument(
+            throw new InvalidArgument(
                 'Missing field(s), required for validation!'
             );
         }
@@ -237,7 +242,7 @@ class Notification
             ]
         ];
 
-        $builder = new \Genesis\Builder('xml');
+        $builder = new Builder('xml');
         $builder->parseStructure($structure);
 
         return $builder->getDocument();
@@ -256,7 +261,7 @@ class Notification
             case $this->isKYCNotification():
                 return 'reference_id';
             default:
-                throw new \LogicException('Unknown notification type');
+                throw new LogicException('Unknown notification type');
         }
     }
 

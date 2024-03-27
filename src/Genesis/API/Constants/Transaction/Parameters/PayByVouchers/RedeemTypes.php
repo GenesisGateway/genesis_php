@@ -53,11 +53,7 @@ class RedeemTypes
      */
     public static function isValidRedeemType($redeemType)
     {
-        if (@constant('self::' . strtoupper($redeemType))) {
-            return true;
-        }
-
-        return false;
+        return defined('self::' . strtoupper($redeemType));
     }
 
     /**

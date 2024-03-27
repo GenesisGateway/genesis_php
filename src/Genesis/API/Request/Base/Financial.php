@@ -139,6 +139,6 @@ abstract class Financial extends \Genesis\API\Request
      */
     protected function initializeSmartRouter()
     {
-        $this->initApiGatewayConfiguration('transactions', false, 'smart_router');
+        $this->initApiGatewayConfiguration('transactions', false, 'api_service');
     }
 }

@@ -34,4 +34,9 @@ class cURLStub extends cURL
 
         list($this->responseHeaders, $this->responseBody) = explode("\r\n\r\n", $this->response, 2);
     }
+
+    public function authorization($requestData)
+    {
+        return parent::authorization($requestData);
+    }
 }

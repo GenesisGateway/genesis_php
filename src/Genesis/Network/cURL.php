@@ -25,6 +25,7 @@
 namespace Genesis\Network;
 
 use Genesis\API\Request;
+use Genesis\Exceptions\ErrorNetwork;
 
 /**
  * cURL Network Interface
@@ -76,11 +77,10 @@ class cURL extends Base
             CURLOPT_URL            => $requestData['url'],
             CURLOPT_TIMEOUT        => $requestData['timeout'],
             CURLOPT_USERAGENT      => $requestData['user_agent'],
-            CURLOPT_USERPWD        => $requestData['user_login'],
-            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_ENCODING       => 'gzip',
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: ' . $this->getRequestContentType($requestData['format']),
+                $this->authorization($requestData),
                 // Workaround to prevent cURL from parsing HTTP 100 as separate request
                 'Expect:'
             ],
@@ -134,7 +134,7 @@ class cURL extends Base
         $errStr = curl_error($this->curlHandle);
 
         if ($errNo > 0) {
-            throw new \Genesis\Exceptions\ErrorNetwork($errStr, $errNo);
+            throw new ErrorNetwork($errStr, $errNo);
         }
     }
 
@@ -158,6 +158,20 @@ class cURL extends Base
                 ];
             default:
                 return [];
+        }
+    }
+
+    /**
+     * @param $requestData
+     * @return string
+     */
+    protected function authorization($requestData)
+    {
+        switch ($requestData['authorization']) {
+            case Request::AUTH_TYPE_TOKEN:
+                return 'Authorization: Bearer ' . $requestData['token'];
+            default:
+                return 'Authorization: Basic ' . base64_encode($requestData['user_login']);
         }
     }
 }

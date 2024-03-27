@@ -38,17 +38,19 @@ use Genesis\Exceptions\InvalidArgument;
  * @method static string getPassword()          Get the Password, set in the configuration
  * @method static string getToken()             Get the Terminal Token, set in configuration
  * @method static bool   getForceSmartRouting() Get whether Smart Routing endpoint will be used for Financial types
+ * @method static string getBillingApiToken()   Get the Billing API Token, set in configuration
  *
- * @method static null setUsername($value)  Set the Username
- * @method static null setPassword($value)  Set the Password
- * @method static null setToken($value)     Set the Terminal
+ * @method static null setUsername($value)        Set the Username
+ * @method static null setPassword($value)        Set the Password
+ * @method static null setToken($value)           Set the Terminal
+ * @method static null setBillingApiToken($value) Set the Billing API Token
  */
 final class Config
 {
     /**
      * Library Version
      */
-    const VERSION = '1.24.4';
+    const VERSION = '1.24.5';
 
     /**
      * Core configuration settings
@@ -61,7 +63,8 @@ final class Config
         'password'            => null,
         'token'               => null,
         'environment'         => \Genesis\API\Constants\Environments::STAGING,
-        'force_smart_routing' => false
+        'force_smart_routing' => false,
+        'billing_api_token'   => null
     ];
 
     /**
@@ -94,7 +97,7 @@ final class Config
             'production' => 'kyc.',
             'sandbox'    => 'staging.kyc.'
         ],
-        'smart_router' => [
+        'api_service'  => [
             'production' => 'prod.api.',
             'sandbox'    => 'staging.api.'
         ]

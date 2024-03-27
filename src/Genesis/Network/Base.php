@@ -127,4 +127,9 @@ abstract class Base
      * @return mixed
      */
     abstract public function execute();
+
+    /**
+     * @return mixed
+     */
+    abstract protected function authorization($requestData);
 }

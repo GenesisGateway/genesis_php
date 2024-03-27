@@ -60,7 +60,7 @@ class BankCodeParameters
             Banks::SP
         ],
         'EUR' => [
-            Banks::PF, Banks::BCT
+            Banks::PF, Banks::BCT, Banks::TRL
         ],
         'THB' => [
             Banks::BBL_IB_U, Banks::KBANK_PAYPLUS, Banks::BAY_IB_U, Banks::KTB_IB_U,
@@ -119,6 +119,9 @@ class BankCodeParameters
         ],
         'PLN' => [
             Banks::BLK
+        ],
+        'GBP' => [
+            Banks::TRL
         ]
     ];
 

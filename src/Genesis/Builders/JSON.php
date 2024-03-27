@@ -24,6 +24,8 @@
  */
 namespace Genesis\Builders;
 
+use Genesis\Exceptions\InvalidArgument;
+
 /**
  * Class JSON
  *
@@ -64,7 +66,7 @@ final class JSON implements \Genesis\Interfaces\Builder
         try {
             $this->output = json_encode($structure);
         } catch (\Exception $e) {
-            throw new \Genesis\Exceptions\InvalidArgument('Invalid data/tree');
+            throw new InvalidArgument('Invalid data/tree');
         }
     }
 }

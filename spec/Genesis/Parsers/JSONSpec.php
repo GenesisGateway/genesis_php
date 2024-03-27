@@ -22,4 +22,15 @@ class JSONSpec extends ObjectBehavior
         $this->getObject()->details->shouldBeArray();
         $this->getObject()->details[0]->risk_score->shouldBe(98);
     }
+
+    public function it_should_parse_graphql_response()
+    {
+        $json = file_get_contents('spec/fixtures/JSON/billing_api_success_response.json');
+
+        $this->parseDocument($json);
+
+        $this->getObject()->data->billingTransactions->items->shouldBeArray();
+        $this->getObject()->data->billingTransactions->items[0]->billingStatementId->shouldBe(10001);
+        $this->getObject()->data->billingTransactions->paging->page->shouldBe(1);
+    }
 }

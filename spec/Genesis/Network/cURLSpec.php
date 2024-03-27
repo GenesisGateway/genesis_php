@@ -7,11 +7,15 @@ use Genesis\Builder;
 use PhpSpec\ObjectBehavior;
 use Genesis\Config;
 use spec\Genesis\Network\Stubs\cURLStub;
+use spec\Genesis\Network\Stubs\Traits\GraphQLServiceUrl;
+use spec\SharedExamples\Genesis\Network\GraphQLConnectionExample;
 
 // @codingStandardsIgnoreStart
 class cURLSpec extends ObjectBehavior
 // @codingStandardsIgnoreEnd
 {
+    use GraphQLServiceUrl, GraphQLConnectionExample;
+
     public function let()
     {
         $this->beAnInstanceOf(cURLStub::class);
@@ -130,20 +134,39 @@ class cURLSpec extends ObjectBehavior
         );
     }
 
-    protected function sendRemoteConnection($remote_url)
+    protected function sendRemoteConnection($remote_url, $authorization = Request::AUTH_TYPE_BASIC, $token = null)
     {
         $faker = \Faker\Factory::create();
 
         $faker->addProvider(new \Faker\Provider\UserAgent($faker));
 
-        $options = array(
-            'body'       => '',
-            'type'       => Request::METHOD_GET,
-            'url'        => $remote_url,
-            'timeout'    => Config::getNetworkTimeout(),
-            'user_login' => Config::getUsername() . ':' . Config::getPassword(),
-            'user_agent' => $faker->userAgent,
-            'format'     => Builder::XML
+        switch ($authorization) {
+            case Request::AUTH_TYPE_TOKEN:
+                $additionalOptions = [
+                    'authorization' => Request::AUTH_TYPE_TOKEN,
+                    'token'         => $token,
+                    'type'          => Request::METHOD_POST,
+                    'format'        => Builder::JSON
+                ];
+                break;
+            default:
+                $additionalOptions = [
+                    'authorization' => Request::AUTH_TYPE_BASIC,
+                    'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
+                    'type'          => Request::METHOD_GET,
+                    'format'        => Builder::XML
+                ];
+        }
+
+        $options = array_merge(
+            [
+                'body'          => '',
+                'url'           => $remote_url,
+                'timeout'       => Config::getNetworkTimeout(),
+                'user_agent'    => $faker->userAgent
+
+            ],
+            $additionalOptions
         );
 
         $this->prepareRequestBody($options);

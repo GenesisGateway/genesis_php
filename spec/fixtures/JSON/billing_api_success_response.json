@@ -1,0 +1,35 @@
+{
+  "data":
+    {
+      "billingTransactions":
+        {
+          "items": [
+            {
+              "uniqueId":"2c2d472c6024ea8940622503d07398cb",
+              "billingStatementId":10001,
+              "billingStatementDisplayId":"stmt-0001",
+              "transactionType":"Sale Approved",
+              "transactionDate":"2023-12-20 10:51:22",
+              "transactionCurrency":"GBP",
+              "transactionAmount":660.50
+            },
+            {
+              "uniqueId":"b3fa3195ba650d2cc680a16a9f824302",
+              "billingStatementId":10001,
+              "billingStatementDisplayId":"stmt-0001",
+              "transactionType":"Sale Approved",
+              "transactionDate":"2023-12-20 11:06:24",
+              "transactionCurrency":"EUR",
+              "transactionAmount":99.00
+            }
+          ],
+          "paging":
+            {
+              "page":1,
+              "perPage":2,
+              "pagesCount":7,
+              "totalCount":13
+            }
+        }
+    }
+}

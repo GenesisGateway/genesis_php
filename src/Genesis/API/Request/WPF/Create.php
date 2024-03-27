@@ -71,7 +71,7 @@ use Genesis\Utils\Common as CommonUtils;
  * @method mixed  getWebPaymentFormId()       The unique ID of the web payment form configuration to be displayed for the current payment.
  * @codingStandardsIgnoreEnd
  *
- * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Create extends \Genesis\API\Request
 {
@@ -397,7 +397,7 @@ class Create extends \Genesis\API\Request
     protected function verifyTransactionType($transactionType, $parameters = [])
     {
         if (!Types::isValidWPFTransactionType($transactionType)) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Transaction type (%s) is not valid. Valid WPF transactions are: %s.',
                     $transactionType,
@@ -417,7 +417,7 @@ class Create extends \Genesis\API\Request
         $txnCustomRequiredParams = static::validateNativeCustomParameters($transactionType, $txnCustomRequiredParams);
 
         if (CommonUtils::isValidArray($txnCustomRequiredParams) && !CommonUtils::isValidArray($parameters)) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Custom transaction parameters (%s) are required and none are set.',
                     implode(', ', array_keys($txnCustomRequiredParams))
@@ -504,7 +504,7 @@ class Create extends \Genesis\API\Request
     private function checkIsParamSet($transactionType, $parameters, $paramValues)
     {
         if (!in_array($parameters, $paramValues)) {
-            throw new \Genesis\Exceptions\ErrorParameter(
+            throw new ErrorParameter(
                 sprintf(
                     'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
                     $parameters,
@@ -543,7 +543,7 @@ class Create extends \Genesis\API\Request
             }
         }
 
-        throw new \Genesis\Exceptions\ErrorParameter(
+        throw new ErrorParameter(
             sprintf(
                 'Empty (null) required parameter: %s for transaction type %s',
                 $customRequiredParam,

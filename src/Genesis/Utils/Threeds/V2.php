@@ -30,6 +30,8 @@ namespace Genesis\Utils\Threeds;
  *
  * Class V2
  * @package Genesis\Utils\Threeds
+ *
+ * @SuppressWarnings(PHPMD.ShortClassName)
  */
 final class V2
 {

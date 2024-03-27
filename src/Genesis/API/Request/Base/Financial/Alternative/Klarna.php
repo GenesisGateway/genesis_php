@@ -27,6 +27,7 @@ namespace Genesis\API\Request\Base\Financial\Alternative;
 
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Request\Financial\Alternatives\Klarna\Items;
+use Genesis\Exceptions\ErrorParameter;
 
 /**
  * Class Klarna
@@ -89,7 +90,7 @@ abstract class Klarna extends \Genesis\API\Request\Base\Financial
 
         // verify there is at least one item added
         if (empty($this->items) || $this->items->count() === 0) {
-            throw new \Genesis\Exceptions\ErrorParameter('Empty (null) required parameter: items');
+            throw new ErrorParameter('Empty (null) required parameter: items');
         }
     }
 }

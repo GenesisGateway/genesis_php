@@ -776,6 +776,8 @@ class Types
      * @param $type
      *
      * @return bool|string
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public static function getFinancialRequestClassForTrxType($type)
     {

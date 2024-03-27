@@ -1,3 +1,15 @@
+1.24.5
+-----
+**Features**:
+
+* Added Billing Transactions API support
+* Added TRL bank code for Online Banking payment method
+* Added Purpose of Payment parameters support to the following transaction requests:
+  * `Financial\Cards\Credit`
+  * `Financial\Cards\Payout`
+* Improved PHP 8 compatibility and code styles
+* Added Merchant Website parameter support to eZeeWallet transaction request
+
 1.24.4
 -----
 **Fixes**:

@@ -989,6 +989,11 @@ class Banks
     const BLK = 'BLK';
 
     /**
+     * TrueLayer
+     */
+    const TRL = 'TRL';
+
+    /**
      * Retrieve list of all Bank Codes
      *
      * @return array

@@ -24,6 +24,8 @@
  */
 namespace Genesis\Utils;
 
+use \Exception;
+
 /**
  * Check the system for dependencies
  *
@@ -80,7 +82,7 @@ final class Requirements
     public static function checkSystemVersion()
     {
         if (\Genesis\Utils\Common::compareVersions(self::$minPHPVersion, '<')) {
-            throw new \Exception(self::getErrorMessage('system'));
+            throw new Exception(self::getErrorMessage('system'));
         }
     }
 
@@ -94,7 +96,7 @@ final class Requirements
     public static function isFunctionExists($function, $error)
     {
         if (!function_exists($function)) {
-            throw new \Exception($error);
+            throw new Exception($error);
         }
     }
 
@@ -109,7 +111,7 @@ final class Requirements
     public static function isMethodExists($method, $class, $error)
     {
         if (!method_exists($method, $class)) {
-            throw new \Exception($error);
+            throw new Exception($error);
         }
     }
 
@@ -123,7 +125,7 @@ final class Requirements
     public static function isClassExists($class, $error)
     {
         if (!class_exists($class)) {
-            throw new \Exception($error);
+            throw new Exception($error);
         }
     }
 

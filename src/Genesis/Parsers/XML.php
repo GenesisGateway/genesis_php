@@ -24,6 +24,9 @@
  */
 namespace Genesis\Parsers;
 
+use \ArrayObject;
+use \stdClass;
+use \XMLReader;
 use Genesis\Parser;
 
 /**
@@ -88,7 +91,7 @@ final class XML implements \Genesis\Interfaces\Parser
     {
         $hasAttributes = false;
 
-        $reader = new \XMLReader();
+        $reader = new XMLReader();
         $reader->XML($xmlDocument);
 
         if ($this->skipRootNode) {
@@ -109,7 +112,7 @@ final class XML implements \Genesis\Interfaces\Parser
      */
     public function readerLoop($reader, $processRootAttributes = false)
     {
-        $tree = new \stdClass();
+        $tree = new stdClass();
 
         if ($processRootAttributes === true) {
             $this->processNodeAttributes($reader, $tree);
@@ -155,7 +158,7 @@ final class XML implements \Genesis\Interfaces\Parser
             if (is_a($tree->$name, 'stdClass')) {
                 $currentEl = $tree->$name;
 
-                $tree->$name = new \ArrayObject();
+                $tree->$name = new ArrayObject();
 
                 $tree->$name->append($currentEl);
             }
@@ -180,9 +183,9 @@ final class XML implements \Genesis\Interfaces\Parser
     {
         $name = $reader->name;
 
-        $node = new \stdClass();
+        $node = new stdClass();
 
-        $node->attr = new \stdClass();
+        $node->attr = new stdClass();
 
         while ($reader->moveToNextAttribute()) {
             $node->attr->{$reader->name} = $reader->value;
@@ -209,7 +212,7 @@ final class XML implements \Genesis\Interfaces\Parser
      */
     public function processNodeAttributes(&$reader, &$tree)
     {
-        $node = new \stdClass();
+        $node = new stdClass();
 
         while ($reader->moveToNextAttribute()) {
             $node->{$reader->name} = $reader->value;

@@ -31,4 +31,9 @@ class BaseStub extends Base
     {
         return $this->getRequestContentType($requestDataFormat);
     }
+
+    public function authorization($requestData)
+    {
+        // TODO: Implement authorization() method.
+    }
 }

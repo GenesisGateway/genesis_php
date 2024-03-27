@@ -2,8 +2,10 @@
 
 namespace spec\Genesis\API\Request\Financial\Wallets;
 
-use Genesis\API\Request\Financial\Wallets\eZeeWallet;
 use PhpSpec\ObjectBehavior;
+use Genesis\API\Request\Financial\Wallets\eZeeWallet;
+use Genesis\Exceptions\InvalidArgument;
+use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 
 // @codingStandardsIgnoreStart
@@ -48,6 +50,48 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->getDocument()->shouldContain($password);
     }
 
+    public function it_should_accept_valid_url_for_merchant_website()
+    {
+        $this->shouldNotThrow()->during('setMerchantWebsite',
+            [Faker::getInstance()->url()]
+        );
+    }
+
+    public function it_should_fail_with_invalid_url_for_merchant_website()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setMerchantWebsite',
+            [Faker::getInstance()->word()]
+        );
+    }
+
+    public function it_should_not_fail_with_null_value_for_merchant_website()
+    {
+        $this->shouldNotThrow()->during('setMerchantWebsite', [null]);
+    }
+
+    public function it_should_contain_merchant_website()
+    {
+        $this->setRequestParameters();
+
+        $this->setMerchantWebsite(Faker::getInstance()->url);
+        $this->getDocument()->shouldContain('<merchant_website>');
+    }
+
+    public function getMatchers(): array
+    {
+        return array(
+            'beEmpty'       => function ($subject) {
+                return empty($subject);
+            },
+            'beDecodedLike' => function ($subject, $arg) {
+                return strcasecmp($subject, base64_decode($arg));
+            },
+            'contain'       => function ($subject, $arg) {
+                return (stripos($subject, $arg) !== false);
+            },
+        );
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
@@ -66,20 +110,5 @@ class eZeeWalletSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setNotificationUrl($faker->url);
-    }
-
-    public function getMatchers(): array
-    {
-        return array(
-            'beEmpty'       => function ($subject) {
-                return empty($subject);
-            },
-            'beDecodedLike' => function ($subject, $arg) {
-                return strcasecmp($subject, base64_decode($arg));
-            },
-            'contain'       => function ($subject, $arg) {
-                return (stripos($subject, $arg) !== false);
-            },
-        );
     }
 }

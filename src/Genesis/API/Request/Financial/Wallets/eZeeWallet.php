@@ -28,6 +28,8 @@ namespace Genesis\API\Request\Financial\Wallets;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class eZeeWallet
@@ -38,6 +40,7 @@ use Genesis\API\Traits\Request\Financial\AsyncAttributes;
  *
  * @method eZeeWallet setSourceWalletId($value) Set Email address of consumer who owns the source wallet
  * @method eZeeWallet setSourceWalletPwd($value) Set the Password of consumer who owns the source wallet
+ * @method string     getMerchantWebsite() Get the Merchant Website URL
  */
 // @codingStandardsIgnoreStart
 class eZeeWallet extends \Genesis\API\Request\Base\Financial
@@ -58,6 +61,37 @@ class eZeeWallet extends \Genesis\API\Request\Base\Financial
      * @var string
      */
     protected $source_wallet_pwd;
+
+    /**
+     * Website URL of the merchant initiating the wallet transfer
+     *
+     * @var string
+     */
+    protected $merchant_website;
+
+    /**
+     * Set merchant_website URL
+     *
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMerchantWebsite($value)
+    {
+        if (empty($value)) {
+            $this->merchant_website = null;
+
+            return $this;
+        }
+
+        if (!CommonUtils::isValidUrl($value)) {
+            throw new InvalidArgument('Invalid merchant_website URL is given.');
+        }
+
+        $this->merchant_website = $value;
+
+        return $this;
+    }
 
     /**
      * Returns the Request transaction type
@@ -102,10 +136,10 @@ class eZeeWallet extends \Genesis\API\Request\Base\Financial
             'return_failure_url' => $this->return_failure_url,
             'notification_url'   => $this->notification_url,
             'source_wallet_id'   => $this->source_wallet_id,
-            'source_wallet_pwd'  => $this->transformWalletPassword($this->source_wallet_pwd)
+            'source_wallet_pwd'  => $this->transformWalletPassword($this->source_wallet_pwd),
+            'merchant_website'   => $this->merchant_website
         ];
     }
-
 
     /**
      * Apply transformation:

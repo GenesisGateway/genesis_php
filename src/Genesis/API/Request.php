@@ -54,6 +54,9 @@ abstract class Request
     const METHOD_GET     = 'GET';
     const METHOD_PUT     = 'PUT';
 
+    const AUTH_TYPE_BASIC = 'basic';
+    const AUTH_TYPE_TOKEN = 'bearer';
+
     /**
      * Store Request's configuration, like URL, Request Type, Transport Layer
      *
@@ -119,7 +122,7 @@ abstract class Request
         $this->processRequestParameters();
 
         if ($this->treeStructure instanceof \ArrayObject) {
-            $this->builderContext = new \Genesis\Builder($this->builderInterface);
+            $this->builderContext = new Builder($this->builderInterface);
             $this->builderContext->parseStructure($this->treeStructure->getArrayCopy());
 
             return $this->builderContext->getDocument();
@@ -295,10 +298,11 @@ abstract class Request
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => Request::PROTOCOL_HTTPS,
-                'port'     => Request::PORT_HTTPS,
-                'type'     => Request::METHOD_POST,
-                'format'   => Builder::XML
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_POST,
+                'format'        => Builder::XML,
+                'authorization' => Request::AUTH_TYPE_BASIC
             ]
         );
     }
@@ -312,10 +316,11 @@ abstract class Request
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => Request::PROTOCOL_HTTPS,
-                'port'     => Request::PORT_HTTPS,
-                'type'     => Request::METHOD_POST,
-                'format'   => Builder::JSON
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_POST,
+                'format'        => Builder::JSON,
+                'authorization' => Request::AUTH_TYPE_BASIC
             ]
         );
     }
@@ -329,10 +334,30 @@ abstract class Request
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => Request::PROTOCOL_HTTPS,
-                'port'     => Request::PORT_HTTPS,
-                'type'     => Request::METHOD_POST,
-                'format'   => Builder::FORM
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_POST,
+                'format'        => Builder::FORM,
+                'authorization' => Request::AUTH_TYPE_BASIC
+            ]
+        );
+    }
+
+    /**
+     * Configures a Secure Post Request with GraphQL body
+     *
+     * @return void
+     */
+    protected function initGraphqlConfiguration()
+    {
+        $this->config = CommonUtils::createArrayObject(
+            [
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_POST,
+                'format'        => Builder::JSON,
+                'authorization' => Request::AUTH_TYPE_TOKEN,
+                'bearer_token'  => null
             ]
         );
     }
