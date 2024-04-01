@@ -23,7 +23,7 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\API\Traits\Request\Financial\OnlineBankingPayments;
+namespace Genesis\API\Traits\Request\Financial;
 
 use Genesis\API\Constants\DateTimeFormat;
 use Genesis\Exceptions\InvalidArgument;
@@ -35,11 +35,9 @@ use Genesis\Exceptions\InvalidArgument;
  * @method $this  setCompanyType($value)
  * @method $this  setCompanyActivity($value)
  * @method $this  setMothersName($value)
- * @method $this  setPixKey($value)
  * @method string getCompanyType()
  * @method string getCompanyActivity()
  * @method string getMothersName()
- * @method string getPixKey()
  */
 trait CustomerAttributes
 {
@@ -70,13 +68,6 @@ trait CustomerAttributes
      * @var string $mothers_name
      */
     protected $mothers_name;
-
-    /**
-     * PIX key of the customer.
-     *
-     * @var string $pix_key
-     */
-    protected $pix_key;
 
     /**
      * Get incorporation date of the customer
@@ -124,8 +115,7 @@ trait CustomerAttributes
             'company_type'       => $this->company_type,
             'company_activity'   => $this->company_activity,
             'incorporation_date' => $this->getIncorporationDate(),
-            'mothers_name'       => $this->mothers_name,
-            'pix_key'            => $this->pix_key
+            'mothers_name'       => $this->mothers_name
         ];
     }
 }

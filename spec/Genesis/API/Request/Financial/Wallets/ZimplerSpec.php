@@ -7,10 +7,11 @@ use Faker\Generator;
 use Genesis\API\Request\Financial\Wallets\Zimpler;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class ZimplerSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

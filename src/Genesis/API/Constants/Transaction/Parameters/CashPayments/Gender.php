@@ -22,22 +22,43 @@
  * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
-namespace Genesis\Exceptions;
+
+namespace Genesis\API\Constants\Transaction\Parameters\CashPayments;
+
+use Genesis\Utils\Common;
 
 /**
- * Class InvalidMethod
- *
- * @package Genesis\Exceptions
+ * Class Gender
+ * @package Genesis\API\Constants\Transaction\Parameters\CashPayments
  */
-class InvalidMethod extends Exception
+class Gender
 {
     /**
-     * @return string
+     * Male
+     *
+     * @var int
      */
-    protected function getCustomMessage()
+    const MALE = 0;
+
+    /**
+     * Female
+     *
+     * @var int
+     */
+    const FEMALE = 1;
+
+    /**
+     * Other
+     *
+     * @var int
+     */
+    const OTHER = 2;
+
+    /**
+     * @return array
+     */
+    public static function getAll()
     {
-        return ($this->getMessage()) ?
-            $this->getMessage() : 'You\'re trying to call a non-existent method!' . PHP_EOL .
-               'For proper usage, please refer to the documentation!';
+        return Common::getClassConstants(self::class);
     }
 }

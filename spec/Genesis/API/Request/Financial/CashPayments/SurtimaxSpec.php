@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Financial\CashPayments;
 use Genesis\API\Request\Financial\CashPayments\Surtimax;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class SurtimaxSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

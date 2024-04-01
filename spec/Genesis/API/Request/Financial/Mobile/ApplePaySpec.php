@@ -13,11 +13,13 @@ use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class ApplePaySpec extends ObjectBehavior
 {
     use RequestExamples, ApplePayAttributes, CryptoAttributesExamples, BirthDateAttributesExample,
-        BusinessAttributesExample, DocumentAttributesExample, DescriptorAttributesExample;
+        BusinessAttributesExample, DocumentAttributesExample, DescriptorAttributesExample,
+        NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

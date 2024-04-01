@@ -15,10 +15,11 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
-    use RequestExamples, BirthDateAttributesExample;
+    use RequestExamples, BirthDateAttributesExample, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -247,6 +248,11 @@ class PayoutSpec extends ObjectBehavior
         foreach ($attributes as $attribute) {
             $this->getDocument()->shouldContain($attribute);
         }
+    }
+
+    public function it_should_set_pix_key_correctly()
+    {
+        $this->shouldNotThrow()->during('setPixKey', ['abcdef']);
     }
 
     protected function setRequestParameters()

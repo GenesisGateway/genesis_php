@@ -22,6 +22,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExam
 use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class SaleSpec extends ObjectBehavior
 {
@@ -30,7 +31,7 @@ class SaleSpec extends ObjectBehavior
         CredentialOnFileAttributesExamples, UcofAttributesExamples, ScaAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
         RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples,
-        AccountOwnerAttributesExamples;
+        AccountOwnerAttributesExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -36,6 +36,7 @@ namespace Genesis\API\Traits\Request\CustomerAddress;
  * @method $this setShippingZipCode($value) Set Customer's Shipping Address: ZIP
  * @method $this setShippingCity($value) Set Customer's Shipping Address: City
  * @method $this setShippingState($value) Set Customer's Shipping Address: State
+ * @method $this setShippingNeighborhood($value) Set Customer's Shipping Address: Neighborhood
  * @method $this setShippingCountry($value) Set Customer's Shipping Address: Country
  */
 trait ShippingInfoAttributes
@@ -92,6 +93,13 @@ trait ShippingInfoAttributes
     protected $shipping_state;
 
     /**
+     * Customer's Shipping Address: Neighborhood
+     *
+     * @var string
+     */
+    protected $shipping_neighborhood;
+
+    /**
      * Customer's Shipping Address
      *
      * format: ISO-3166
@@ -108,14 +116,15 @@ trait ShippingInfoAttributes
     protected function getShippingAddressParamsStructure()
     {
         return [
-            'first_name' => $this->shipping_first_name,
-            'last_name'  => $this->shipping_last_name,
-            'address1'   => $this->shipping_address1,
-            'address2'   => $this->shipping_address2,
-            'zip_code'   => $this->shipping_zip_code,
-            'city'       => $this->shipping_city,
-            'state'      => $this->shipping_state,
-            'country'    => $this->shipping_country
+            'first_name'   => $this->shipping_first_name,
+            'last_name'    => $this->shipping_last_name,
+            'address1'     => $this->shipping_address1,
+            'address2'     => $this->shipping_address2,
+            'zip_code'     => $this->shipping_zip_code,
+            'city'         => $this->shipping_city,
+            'state'        => $this->shipping_state,
+            'neighborhood' => $this->shipping_neighborhood,
+            'country'      => $this->shipping_country
         ];
     }
 }

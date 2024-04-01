@@ -11,10 +11,11 @@ use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class PayPalSpec extends ObjectBehavior
 {
-    use RequestExamples, BusinessAttributesExample, DocumentAttributesExample;
+    use RequestExamples, BusinessAttributesExample, DocumentAttributesExample, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

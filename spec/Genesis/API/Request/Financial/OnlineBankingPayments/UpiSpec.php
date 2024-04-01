@@ -8,10 +8,11 @@ use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\OnlineBankingPayments\UserCategoryAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class UpiSpec extends ObjectBehavior
 {
-    use RequestExamples, DocumentAttributesExample, UserCategoryAttributesExamples;
+    use RequestExamples, DocumentAttributesExample, UserCategoryAttributesExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

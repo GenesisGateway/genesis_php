@@ -6,10 +6,11 @@ use Genesis\API\Request\Financial\OnlineBankingPayments\AstropayDirect;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class AstropayDirectSpec extends ObjectBehavior
 {
-    use RequestExamples, AsyncAttributesExample;
+    use RequestExamples, AsyncAttributesExample, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

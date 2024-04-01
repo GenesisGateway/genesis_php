@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Genesis\API\Traits\Request\Financial\OnlineBankingPayments;
+namespace spec\Genesis\API\Traits\Request\Financial;
 
 use Genesis\API\Constants\DateTimeFormat;
 use PhpSpec\ObjectBehavior;
@@ -28,11 +28,6 @@ class CustomerAttributesSpec extends ObjectBehavior
     {
         $faker = Faker::getInstance();
         $this->shouldNotThrow()->during('setMothersName', ["{$faker->firstNameFemale()} {$faker->lastName()}"]);
-    }
-
-    public function it_should_set_pix_key_correctly()
-    {
-        $this->shouldNotThrow()->during('setPixKey', ['abcdef']);
     }
 
     public function it_should_set_incorporation_date()

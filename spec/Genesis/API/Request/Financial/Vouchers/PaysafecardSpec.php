@@ -6,10 +6,11 @@ use Genesis\API\Request\Financial\Vouchers\Paysafecard;
 use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class PaysafecardSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     private $allowedCountries = [
         'AU', 'AT', 'BE', 'BG', 'CA', 'HR', 'CY', 'CZ', 'DK', 'FI', 'FR',

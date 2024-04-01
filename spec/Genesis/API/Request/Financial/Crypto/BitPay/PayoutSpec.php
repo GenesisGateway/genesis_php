@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Financial\Crypto\BitPay;
 use Genesis\API\Request\Financial\Crypto\BitPay\Payout;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

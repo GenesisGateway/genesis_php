@@ -8,11 +8,12 @@ use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesEx
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class BancoDoBrasilSpec extends ObjectBehavior
 {
     use RequestExamples, AsyncAttributesExample, PendingPaymentAttributesExamples,
-        BirthDateAttributesExample;
+        BirthDateAttributesExample, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

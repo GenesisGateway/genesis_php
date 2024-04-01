@@ -8,10 +8,12 @@ use spec\SharedExamples\Genesis\API\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\Financial\SupportedCountryCodesExample;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class SantanderSpec extends ObjectBehavior
 {
-    use RequestExamples, SupportedCountryCodesExample, AsyncAttributesExample, PendingPaymentAttributesExamples;
+    use RequestExamples, SupportedCountryCodesExample, AsyncAttributesExample, PendingPaymentAttributesExamples,
+        NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

@@ -8,10 +8,11 @@ use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class P24Spec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     private $invalidBankCode = 123456789;
 

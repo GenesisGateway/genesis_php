@@ -36,6 +36,7 @@ namespace Genesis\API\Traits\Request\CustomerAddress;
  * @method $this setBillingZipCode($value) Set Customer's Billing Address: ZIP
  * @method $this setBillingCity($value) Set Customer's Billing Address: City
  * @method $this setBillingState($value) Set Customer's Billing Address: State
+ * @method $this setBillingNeighborhood($value) Set Customer's Billing Address: Neighborhood
  * @method $this setBillingCountry($value) Set Customer's Billing Address: Country
  */
 trait BillingInfoAttributes
@@ -91,6 +92,13 @@ trait BillingInfoAttributes
     protected $billing_state;
 
     /**
+     * Customer's Billing Address: Neighborhood
+     *
+     * @var string
+     */
+    protected $billing_neighborhood;
+
+    /**
      * Customer's Billing Address: Country
      *
      * format: ISO-3166
@@ -107,14 +115,15 @@ trait BillingInfoAttributes
     protected function getBillingAddressParamsStructure()
     {
         return [
-            'first_name' => $this->billing_first_name,
-            'last_name'  => $this->billing_last_name,
-            'address1'   => $this->billing_address1,
-            'address2'   => $this->billing_address2,
-            'zip_code'   => $this->billing_zip_code,
-            'city'       => $this->billing_city,
-            'state'      => $this->billing_state,
-            'country'    => $this->billing_country
+            'first_name'   => $this->billing_first_name,
+            'last_name'    => $this->billing_last_name,
+            'address1'     => $this->billing_address1,
+            'address2'     => $this->billing_address2,
+            'zip_code'     => $this->billing_zip_code,
+            'city'         => $this->billing_city,
+            'state'        => $this->billing_state,
+            'neighborhood' => $this->billing_neighborhood,
+            'country'      => $this->billing_country
         ];
     }
 }

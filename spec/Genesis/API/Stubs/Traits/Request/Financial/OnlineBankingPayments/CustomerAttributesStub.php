@@ -3,7 +3,7 @@
 namespace spec\Genesis\API\Stubs\Traits\Request\Financial\OnlineBankingPayments;
 
 use Genesis\API\Traits\MagicAccessors;
-use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\CustomerAttributes;
+use Genesis\API\Traits\Request\Financial\CustomerAttributes;
 use Genesis\API\Traits\RestrictedSetter;
 
 /**

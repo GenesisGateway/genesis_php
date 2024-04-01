@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Financial\Payout;
 use Genesis\API\Request\Financial\Payout\RussianMobilePayout;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class RussianMobilePayoutSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     public function is_it_initializable()
     {

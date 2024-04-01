@@ -12,10 +12,11 @@ use spec\SharedExamples\Genesis\API\Request\Financial\Business\BusinessAttribute
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use Genesis\Utils\Country;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class SaleSpec extends ObjectBehavior
 {
-    use RequestExamples, BirthDateAttributesExample, BusinessAttributesExample;
+    use RequestExamples, BirthDateAttributesExample, BusinessAttributesExample, NeighborhoodAttributesExamples;
 
     public $allowed_country = [
         'AT', 'BE', 'CZ', 'DK', 'EE', 'FI', 'DE', 'LV', 'LT', 'NL', 'NO', 'PL',

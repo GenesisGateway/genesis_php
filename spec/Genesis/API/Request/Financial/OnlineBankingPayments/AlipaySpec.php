@@ -6,10 +6,11 @@ use Genesis\API\Request\Financial\OnlineBankingPayments\Alipay;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\Financial\BirthDateAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class AlipaySpec extends ObjectBehavior
 {
-    use RequestExamples, BirthDateAttributesExample;
+    use RequestExamples, BirthDateAttributesExample, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

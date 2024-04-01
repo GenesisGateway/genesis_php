@@ -23,6 +23,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\TokenizationAttributesExam
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class Authorize3DSpec extends ObjectBehavior
 {
@@ -31,7 +32,7 @@ class Authorize3DSpec extends ObjectBehavior
         BusinessAttributesExample, ThreedsV2AttributesExamples, CredentialOnFileAttributesExamples,
         AllowedZeroAmount, CreditCardAttributesExamples, DocumentAttributesExample, ManagedRecurringAttributesExample,
         RecurringTypeAttributesExample, RecurringCategoryAttributesExample, FundingAttributesExamples,
-        AccountOwnerAttributesExamples;
+        AccountOwnerAttributesExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

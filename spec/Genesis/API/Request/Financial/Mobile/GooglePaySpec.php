@@ -14,11 +14,12 @@ use spec\SharedExamples\Genesis\API\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\API\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class GooglePaySpec extends ObjectBehavior
 {
     use RequestExamples, DocumentAttributesExample, DescriptorAttributesExample, ThreedsV2AttributesExamples,
-        AsyncAttributesExample, NotificationAttributesExamples;
+        AsyncAttributesExample, NotificationAttributesExamples, NeighborhoodAttributesExamples;
 
     public function is_it_initializable()
     {

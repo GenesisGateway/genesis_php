@@ -24,6 +24,7 @@ use spec\SharedExamples\Genesis\API\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
 use spec\SharedExamples\Genesis\API\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\API\Request\Financial\AccountOwnerAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class AuthorizeSpec extends ObjectBehavior
 {
@@ -31,7 +32,8 @@ class AuthorizeSpec extends ObjectBehavior
         TokenizationAttributesExamples, BusinessAttributesExample, CredentialOnFileAttributesExamples,
         UcofAttributesExamples, ScaAttributesExamples, AllowedZeroAmount, CreditCardAttributesExamples,
         DocumentAttributesExample, ManagedRecurringAttributesExample, RecurringTypeAttributesExample,
-        RecurringCategoryAttributesExample, FundingAttributesExamples, AccountOwnerAttributesExamples;
+        RecurringCategoryAttributesExample, FundingAttributesExamples, AccountOwnerAttributesExamples,
+        NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

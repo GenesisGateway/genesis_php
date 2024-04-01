@@ -5,10 +5,11 @@ namespace spec\Genesis\API\Request\Financial\Alternatives;
 use Genesis\API\Request\Financial\Alternatives\POLi;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\NeighborhoodAttributesExamples;
 
 class POLiSpec extends ObjectBehavior
 {
-    use RequestExamples;
+    use RequestExamples, NeighborhoodAttributesExamples;
 
     public function it_is_initializable()
     {

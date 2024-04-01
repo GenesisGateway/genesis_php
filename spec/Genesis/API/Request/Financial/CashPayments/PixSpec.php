@@ -3,8 +3,12 @@
 namespace spec\Genesis\API\Request\Financial\CashPayments;
 
 use Genesis\API\Request\Financial\CashPayments\Pix;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\Gender;
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\MaritalStatuses;
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\CompanyTypes;
 
 class PixSpec extends ObjectBehavior
 {
@@ -36,6 +40,44 @@ class PixSpec extends ObjectBehavior
     {
         $this->setDocumentId('123ABC');
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_set_parameters()
+    {
+        $faker = $this->getFaker();
+
+        $this->setRequestParameters();
+
+        $this->setBirthDate($faker->date());
+        $this->setBirthCity($faker->city());
+        $this->setBirthState($faker->state());
+        $this->setGender($faker->randomElement(Gender::getAll()));
+        $this->setMaritalStatus($faker->randomElement(MaritalStatuses::getAll()));
+        $this->setSenderOccupation('occupation');
+        $this->setNationality('nationality');
+        $this->setCountryOfOrigin($faker->country());
+        $this->setCompanyType($faker->randomElement(CompanyTypes::getAll()));
+        $this->setCompanyActivity('activity');
+        $this->setIncorporationDate($faker->date());
+        $this->setMothersName($faker->firstName('female'));
+        $this->setReturnPendingUrl($faker->url());
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_with_invalid_gender()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setGender', [11111]);
+    }
+
+    public function it_should_fail_with_invalid_company_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setCompanyType', [11111]);
+    }
+
+    public function it_should_fail_with_invalid_marital_status()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during('setMaritalStatus', [11111]);
     }
 
     protected function setRequestParameters()

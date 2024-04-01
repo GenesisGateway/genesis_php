@@ -26,15 +26,15 @@
 namespace Genesis\API\Request\Financial\OnlineBankingPayments\OnlineBanking;
 
 use Genesis\API\Constants\BankAccountTypes;
+use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankCodeParameters;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutPaymentTypesParameters;
-use Genesis\API\Constants\Transaction\Parameters\OnlineBanking\PayoutBankCodeParameters;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
 use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
+use Genesis\API\Traits\Request\Financial\CustomerAttributes;
 use Genesis\API\Traits\Request\Financial\NotificationAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
-use Genesis\API\Traits\Request\Financial\OnlineBankingPayments\CustomerAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Exceptions\InvalidClassMethod;
@@ -53,7 +53,9 @@ use Genesis\Utils\Common;
  * @method Payout setBankCode($value) Set Customer’s bank code
  * @method Payout setBankBranch($value) Set Customer’s bank branch
  * @method Payout setBankProvince($value) Set Name of the province that the bank is located
+ * @method Payout setPixKey($value)
  * @method string getPaymentType() Get Payment type
+ * @method string getPixKey()
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
@@ -177,6 +179,13 @@ class Payout extends \Genesis\API\Request\Base\Financial
      * @var string protected $payment_type;
      */
     protected $payment_type;
+
+    /**
+     * PIX key of the customer.
+     *
+     * @var string $pix_key
+     */
+    protected $pix_key;
 
     protected function getTransactionType()
     {
@@ -425,7 +434,8 @@ class Payout extends \Genesis\API\Request\Base\Financial
                 'birth_date'                      => $this->getBirthDate(),
                 'payment_type'                    => $this->payment_type,
                 'billing_address'                 => $this->getBillingAddressParamsStructure(),
-                'shipping_address'                => $this->getShippingAddressParamsStructure()
+                'shipping_address'                => $this->getShippingAddressParamsStructure(),
+                'pix_key'                         => $this->pix_key
             ],
             $this->getCustomerParamsStructure()
         );

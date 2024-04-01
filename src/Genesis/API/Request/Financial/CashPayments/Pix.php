@@ -25,12 +25,18 @@
 
 namespace Genesis\API\Request\Financial\CashPayments;
 
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\CompanyTypes;
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\Gender;
+use Genesis\API\Constants\Transaction\Parameters\CashPayments\MaritalStatuses;
 use Genesis\API\Constants\Transaction\Types;
 use Genesis\API\Request\Base\Financial;
 use Genesis\API\Traits\Request\AddressInfoAttributes;
 use Genesis\API\Traits\Request\DocumentAttributes;
 use Genesis\API\Traits\Request\Financial\AsyncAttributes;
+use Genesis\API\Traits\Request\Financial\BirthDateAttributes;
+use Genesis\API\Traits\Request\Financial\CustomerAttributes;
 use Genesis\API\Traits\Request\Financial\PaymentAttributes;
+use Genesis\API\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -46,15 +52,78 @@ use Genesis\Utils\Common as CommonUtils;
  * @method mixed   getAmount()
  * @method string  getCurrency()
  * @method string  getDocumentId()
+ * @method int     getGender()
+ * @method int     getMaritalStatus()
+ * @method string  getSenderOccupation()
+ * @method string  getNationality()
+ * @method string  getCountryOfOrigin()
+ * @method string  getBirthCity()
+ * @method string  getBirthState()
  * @method $this   setTransactionId($value)
  * @method $this   setAmount($value)
  * @method $this   setCurrency($value)
  * @method $this   setDocumentId($documentId)
+ * @method $this   setSenderOccupation($value)
+ * @method $this   setNationality($value)
+ * @method $this   setCountryOfOrigin($value)
+ * @method $this   setBirthState($value)
  *
  */
 class Pix extends Financial
 {
-    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes;
+    use AsyncAttributes, PaymentAttributes, AddressInfoAttributes, DocumentAttributes, PendingPaymentAttributes,
+        CustomerAttributes, BirthDateAttributes;
+
+    /**
+     * Gender
+     * 0 = Male, 1 = Female, 2 = Other
+     *
+     * @var $gender
+     */
+    protected $gender;
+
+    /**
+     * Marital status
+     * 0 = NotMarried, 1 = Married, 2 = Divorced, 3 = Separate, 4 = Widower, 5 = Single, 6 = Other
+     *
+     * @var $marital_status
+     */
+    protected $marital_status;
+
+    /**
+     * Occupation of the recipient
+     *
+     * @var string $sender_occupation
+     */
+    protected $sender_occupation;
+
+    /**
+     * Nationality of the payer
+     *
+     * @var string $nationality
+     */
+    protected $nationality;
+
+    /**
+     * Country of origin of the payer. Two-letter iso codes
+     *
+     * @var string $country_of_origin
+     */
+    protected $country_of_origin;
+
+    /**
+     * City of birth of the payer
+     *
+     * @var string $birth_city
+     */
+    protected $birth_city;
+
+    /**
+     * Birth state of the payer
+     *
+     * @var string $birth_state
+     */
+    protected $birth_state;
 
     /**
      * Returns the Request transaction type
@@ -73,6 +142,46 @@ class Pix extends Financial
     protected function getAllowedBillingCountries()
     {
         return ['BR'];
+    }
+
+    /**
+     * @param $value
+     * @return Pix
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setGender($value)
+    {
+        return $this->allowedOptionsSetter(
+            'gender',
+            Gender::getAll(),
+            $value,
+            'Invalid value for parameter gender provided.'
+        );
+    }
+
+    /**
+     * @param $value
+     * @return Pix
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setMaritalStatus($value)
+    {
+        return $this->allowedOptionsSetter(
+            'marital_status',
+            MaritalStatuses::getAll(),
+            $value,
+            'Invalid value for marital status parameter provided.'
+        );
+    }
+
+    public function setCompanyType($value)
+    {
+        return $this->allowedOptionsSetter(
+            'company_type',
+            CompanyTypes::getAll(),
+            $value,
+            'Invalid value for company type parameter provided.'
+        );
     }
 
     /**
@@ -109,15 +218,28 @@ class Pix extends Financial
      */
     protected function getPaymentTransactionStructure()
     {
-        return [
-            'return_success_url' => $this->return_success_url,
-            'return_failure_url' => $this->return_failure_url,
-            'amount'             => $this->transformAmount($this->amount, $this->currency),
-            'currency'           => $this->currency,
-            'customer_email'     => $this->customer_email,
-            'document_id'        => $this->document_id,
-            'billing_address'    => $this->getBillingAddressParamsStructure(),
-            'shipping_address'   => $this->getShippingAddressParamsStructure(),
-        ];
+        return array_merge(
+            [
+                'return_success_url' => $this->return_success_url,
+                'return_failure_url' => $this->return_failure_url,
+                'return_pending_url' => $this->getReturnPendingUrl(),
+                'amount'             => $this->transformAmount($this->amount, $this->currency),
+                'currency'           => $this->currency,
+                'customer_email'     => $this->customer_email,
+                'document_id'        => $this->document_id,
+                'billing_address'    => $this->getBillingAddressParamsStructure(),
+                'shipping_address'   => $this->getShippingAddressParamsStructure(),
+                'birth_date'         => $this->getBirthDate(),
+                'birth_city'         => $this->birth_city,
+                'birth_state'        => $this->birth_state,
+                'gender'             => $this->gender,
+                'marital_status'     => $this->marital_status,
+                'sender_occupation'  => $this->sender_occupation,
+                'nationality'        => $this->nationality,
+                'country_of_origin'  => $this->country_of_origin
+
+            ],
+            $this->getCustomerParamsStructure()
+        );
     }
 }

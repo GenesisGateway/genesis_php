@@ -1,3 +1,28 @@
+1.24.6
+-----
+**Features**:
+
+* Added new attributes support to the PIX transaction request:
+  * Mothers Name
+  * Gender
+  * Marital Status
+  * Sender Occupation
+  * Nationality
+  * Country of Origin
+  * Birth City
+  * Birth State
+  * Company Type
+  * Company Activity
+  * Birth Date
+  * Incorporation Date
+* Added neighborhood attribute support for Billing and Shipping addresses via Processing and Web Payment Form transaction requests
+* Updated Web Payment Form Lifetime attribute with a maximum allowed value of 3 months in minutes (131487)
+* Improved Invalid Method Exception messages
+
+**Fixes**:
+
+* Fixed Web Payment Form custom attributes validations
+
 1.24.5
 -----
 **Features**:

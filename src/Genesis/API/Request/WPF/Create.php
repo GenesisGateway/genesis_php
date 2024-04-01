@@ -140,7 +140,7 @@ class Create extends \Genesis\API\Request
     /**
      * Number of minutes determining how long the WPF will be valid.
      * Will be set to 30 minutes by default.
-     * Valid value ranges between 1 minute and 31 days given in minutes
+     * Valid value ranges between 1 minute and 3 months given in minutes
      *
      * @var int $lifetime
      */
@@ -226,8 +226,10 @@ class Create extends \Genesis\API\Request
     {
         $lifetime = intval($lifetime);
 
-        if ($lifetime < 1 || $lifetime > 44640) {
-            throw new InvalidArgument('Valid value ranges between 1 minute and 31 days given in minutes');
+        if ($lifetime < 1 || $lifetime > 131487) {
+            throw new InvalidArgument(
+                'Valid value ranges between 1 minute and 3 months given in minutes (131487)'
+            );
         }
 
         $this->lifetime = $lifetime;
@@ -414,8 +416,6 @@ class Create extends \Genesis\API\Request
             return;
         }
 
-        $txnCustomRequiredParams = static::validateNativeCustomParameters($transactionType, $txnCustomRequiredParams);
-
         if (CommonUtils::isValidArray($txnCustomRequiredParams) && !CommonUtils::isValidArray($parameters)) {
             throw new ErrorParameter(
                 sprintf(
@@ -433,30 +433,6 @@ class Create extends \Genesis\API\Request
                 $parameters
             );
         }
-    }
-
-    /**
-     * @param string $transactionType
-     * @param array $txnCustomRequiredParams
-     *
-     * @return array
-     */
-    protected function validateNativeCustomParameters($transactionType, $txnCustomRequiredParams)
-    {
-        foreach ($txnCustomRequiredParams as $customRequiredParam => $customRequiredParamValues) {
-            if (property_exists($this, $customRequiredParam)) {
-                $this->validateRequiredParameter(
-                    $transactionType,
-                    $customRequiredParam,
-                    $customRequiredParamValues,
-                    [ $customRequiredParam => $this->{$customRequiredParam} ]
-                );
-
-                unset($txnCustomRequiredParams[$customRequiredParam]);
-            }
-        }
-
-        return $txnCustomRequiredParams;
     }
 
     protected function validateRequiredParameter(
@@ -479,7 +455,8 @@ class Create extends \Genesis\API\Request
             $this->checkIsParamSet(
                 $transactionType,
                 $parameters[$customRequiredParam],
-                $customRequiredParamValues
+                $customRequiredParamValues,
+                $customRequiredParam
             );
 
             return;
@@ -488,8 +465,9 @@ class Create extends \Genesis\API\Request
         foreach ($parameters as $parameter) {
             $this->checkIsParamSet(
                 $transactionType,
-                $parameter[$customRequiredParam],
-                $customRequiredParamValues
+                $parameter,
+                $customRequiredParamValues,
+                $customRequiredParam
             );
         }
     }
@@ -498,17 +476,19 @@ class Create extends \Genesis\API\Request
      * @param string $transactionType
      * @param array $parameters
      * @param mixed $paramValues
+     * @param string $paramName
      *
      * @throws \Genesis\Exceptions\ErrorParameter
      */
-    private function checkIsParamSet($transactionType, $parameters, $paramValues)
+    private function checkIsParamSet($transactionType, $parameters, $paramValues, $paramName)
     {
         if (!in_array($parameters, $paramValues)) {
             throw new ErrorParameter(
                 sprintf(
-                    'Invalid value (%s) for required parameter: %s (Transaction type: %s)',
-                    $parameters,
-                    $paramValues,
+                    'Invalid value (%s) for required parameter: %s. Allowed values: %s. (Transaction type: %s)',
+                    is_array($parameters) ? implode(', ', $parameters) : $parameters,
+                    $paramName,
+                    is_array($paramValues) ? implode(', ', $paramValues) : $paramValues,
                     $transactionType
                 )
             );
