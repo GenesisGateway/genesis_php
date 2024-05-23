@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +26,8 @@
 
 namespace Genesis;
 
-use Genesis\API\Constants\Transaction\Types;
-use Genesis\API\Request;
-use Genesis\API\Response;
+use Genesis\Api\Constants\Transaction\Types;
+use Genesis\Api\Response;
 use Genesis\Exceptions\DeprecatedMethod;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Exceptions\InvalidMethod;
@@ -41,7 +41,7 @@ use Genesis\Utils\Requirements;
  */
 class Genesis
 {
-    const REQUEST_NAMESPACE = '\Genesis\API\Request\\';
+    const REQUEST_NAMESPACE = '\Genesis\Api\Request\\';
 
     /**
      * Store the Network Request Instance
@@ -71,7 +71,6 @@ class Genesis
      *
      * @throws InvalidMethod
      * @throws DeprecatedMethod
-     * @throws InvalidArgument
      */
     public function __construct($request)
     {
@@ -206,7 +205,6 @@ class Genesis
     /**
      * Send the request
      *
-     * @throws Exceptions\ErrorAPI
      * @throws Exceptions\ErrorParameter
      * @throws Exceptions\InvalidClassMethod
      * @throws Exceptions\InvalidResponse

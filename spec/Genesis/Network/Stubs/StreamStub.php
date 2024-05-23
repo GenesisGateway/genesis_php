@@ -9,7 +9,7 @@ class StreamStub extends Stream
 {
     use NetworkAdapter;
 
-    protected $fixtures_path = 'spec/fixtures/API/Response/Network/1.1/';
+    protected $fixtures_path = 'spec/Fixtures/Api/Response/Network/1.1/';
 
     public function execute()
     {
@@ -25,5 +25,14 @@ class StreamStub extends Stream
     public function authorization($requestData)
     {
         return parent::authorization($requestData);
+    }
+
+    public function getStatus()
+    {
+        if (preg_match('#HTTP/[0-9.]+\s+([0-9]+)#', $this->getResponseHeaders(), $result)) {
+            return (int) $result[1];
+        }
+
+        return 0;
     }
 }

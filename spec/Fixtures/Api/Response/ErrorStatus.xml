@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment_response>
+    <status>error</status>
+    <code>{{{status}}}</code>
+    <message>{{{message}}}</message>
+    <technical_message>{{{technical_message}}}</technical_message>
+</payment_response>

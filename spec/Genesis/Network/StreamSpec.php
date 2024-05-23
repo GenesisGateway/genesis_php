@@ -2,17 +2,20 @@
 
 namespace spec\Genesis\Network;
 
-use Genesis\API\Request;
+use Genesis\Api\Request;
 use Genesis\Builder;
-use PhpSpec\ObjectBehavior;
 use Genesis\Config;
+use PhpSpec\ObjectBehavior;
 use spec\Genesis\Network\Stubs\StreamStub;
-use spec\Genesis\Network\Stubs\Traits\GraphQLServiceUrl;
-use spec\SharedExamples\Genesis\Network\GraphQLConnectionExample;
+use spec\Genesis\Network\Stubs\Traits\GraphqlServiceUrl;
+use spec\SharedExamples\Genesis\Network\GraphqlConnectionExample;
+use spec\SharedExamples\Genesis\Network\HttpStatusExample;
 
 class StreamSpec extends ObjectBehavior
 {
-    use GraphQLServiceUrl, GraphQLConnectionExample;
+    use GraphqlConnectionExample;
+    use GraphqlServiceUrl;
+    use HttpStatusExample;
 
     public function let()
     {
@@ -30,12 +33,12 @@ class StreamSpec extends ObjectBehavior
         $this->getWrappedObject()->is_prod = false;
 
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         Config::setEnvironment(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         foreach ($endpoints as $endpoint) {
@@ -53,12 +56,12 @@ class StreamSpec extends ObjectBehavior
         $this->getWrappedObject()->is_prod = false;
 
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         Config::setEnvironment(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         foreach ($endpoints as $endpoint) {
@@ -76,12 +79,12 @@ class StreamSpec extends ObjectBehavior
         $this->getWrappedObject()->is_prod = true;
 
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         Config::setEnvironment(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         foreach ($endpoints as $endpoint) {
@@ -99,12 +102,12 @@ class StreamSpec extends ObjectBehavior
         $this->getWrappedObject()->is_prod = true;
 
         $endpoints = array(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING,
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING,
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         Config::setEnvironment(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         foreach ($endpoints as $endpoint) {
@@ -116,7 +119,7 @@ class StreamSpec extends ObjectBehavior
         }
     }
 
-    protected function sendRemoteConnection($remote_url, $authorization = Request::AUTH_TYPE_BASIC, $token = null)
+    protected function sendRemoteConnection($remote_url, $authorization = Request::AUTH_TYPE_BASIC, $token = null, $status = 200)
     {
         $faker = \Faker\Factory::create();
 
@@ -160,7 +163,7 @@ class StreamSpec extends ObjectBehavior
         if (strpos($remote_url, 'gate.')) {
             $this->getResponseBody()->shouldNotBeOlder();
         }
-        $this->getStatus()->shouldBe(200);
+        $this->getStatus()->shouldBe($status);
     }
 
     public function getMatchers(): array

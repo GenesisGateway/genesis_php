@@ -2,8 +2,8 @@
 
 namespace spec\SharedExamples;
 
-use \Faker\Factory;
-use \Faker\Generator;
+use Faker\Factory;
+use Faker\Generator;
 
 /**
  * Class Faker

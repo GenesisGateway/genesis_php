@@ -1,0 +1,23 @@
+HTTP/1.1 401 Unauthorized
+Date: Wed, 17 Apr 2024 11:37:57 GMT
+Server: thin
+Status: Unauthorized
+WWW-Authenticate: Basic realm="Web Password"
+Content-Type: application/xml; charset=utf-8
+Vary: Accept
+X-Request-Id: 4492f1ef-59c7-4114-b3f6-1dbdc6b5e6b7
+X-Runtime: 0.031292
+Strict-Transport-Security: max-age=16416000
+X-Frame-Options: ALLOWALL
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Content-Security-Policy: default-src https: 'self'; font-src 'self' data:; img-src https: 'self' data:; script-src https: 'self' 'unsafe-inline' js-agent.newrelic.com bam.nr-data.net; style-src https: 'self' 'unsafe-inline'; report-uri https://emerchantpay.report-uri.io/r/default/csp/enforce
+Via: 1.1 gate.e-comprocessing.net
+Public-Key-Pins: pin-sha256="toinGJxbfmwU2Pakg2Q/jTJL0kxqZDhNbkuHm21xcZg="; pin-sha256="Hsy85ebDlmdGqfD2eRNHh683TIAZ60kfyy7RuwiUktk="; max-age=604800
+Cache-Control: no-cache, no-store
+Transfer-Encoding: chunked
+
+
+|*DATE*|

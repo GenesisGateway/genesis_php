@@ -2,8 +2,8 @@
 
 namespace spec\Genesis;
 
-use Genesis\API\Constants\Endpoints;
-use Genesis\API\Constants\Environments;
+use Genesis\Api\Constants\Endpoints;
+use Genesis\Api\Constants\Environments;
 use Genesis\Config;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
@@ -18,26 +18,26 @@ class ConfigSpec extends ObjectBehavior
     public function it_should_have_default_environment_sandbox()
     {
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
     }
 
     public function it_should_set_environment()
     {
         $this::setEnvironment(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         $this::setEnvironment(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
     }
 
@@ -46,37 +46,37 @@ class ConfigSpec extends ObjectBehavior
         $this::setEnvironment('live');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         $this::setEnvironment('prod');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         $this::setEnvironment('production');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::PRODUCTION
+            \Genesis\Api\Constants\Environments::PRODUCTION
         );
 
         $this::setEnvironment('test');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         $this::setEnvironment('testing');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
 
         $this::setEnvironment('staging');
 
         $this::getEnvironment()->shouldBe(
-            \Genesis\API\Constants\Environments::STAGING
+            \Genesis\Api\Constants\Environments::STAGING
         );
     }
 
@@ -107,16 +107,16 @@ class ConfigSpec extends ObjectBehavior
 
     public function it_should_set_endpoint()
     {
-        $this::setEndpoint(\Genesis\API\Constants\Endpoints::ECOMPROCESSING);
+        $this::setEndpoint(\Genesis\Api\Constants\Endpoints::ECOMPROCESSING);
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING
         );
 
-        $this::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+        $this::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
     }
 
@@ -125,37 +125,37 @@ class ConfigSpec extends ObjectBehavior
         $this::setEndpoint('ecp');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING
         );
 
         $this::setEndpoint('e-comprocessing');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING
         );
 
         $this::setEndpoint('www.e-comprocessing.com');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING
         );
 
         $this::setEndpoint('emp');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         $this::setEndpoint('emerchantpay');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
 
         $this::setEndpoint('www.emerchantpay.com');
 
         $this::getEndpoint()->shouldBe(
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
         );
     }
 
@@ -252,7 +252,7 @@ class ConfigSpec extends ObjectBehavior
 
     public function it_should_load_settings_with_ini_file()
     {
-        $settings_fixture = dirname(__DIR__) . '/fixtures/settings.ini';
+        $settings_fixture = dirname(__DIR__) . '/Fixtures/settings.ini';
 
         $this::loadSettings($settings_fixture);
 

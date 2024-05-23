@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\Utils\Threeds;
 
-use Genesis\API\Constants\DateTimeFormat;
+use Genesis\Api\Constants\DateTimeFormat;
 use Genesis\Utils\Threeds\V2;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;

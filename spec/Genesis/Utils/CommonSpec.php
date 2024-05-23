@@ -2,9 +2,9 @@
 
 namespace spec\Genesis\Utils;
 
-use Genesis\API\Validators\Request\RegexValidator;
-use PhpSpec\ObjectBehavior;
+use Genesis\Api\Validators\Request\RegexValidator;
 use Genesis\Exceptions\Exception;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @mixin \Genesis\Utils\Common

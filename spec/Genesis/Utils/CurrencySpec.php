@@ -4,7 +4,6 @@ namespace spec\Genesis\Utils;
 
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CurrencySpec extends ObjectBehavior
 {

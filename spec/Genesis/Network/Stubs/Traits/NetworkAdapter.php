@@ -13,6 +13,10 @@ trait NetworkAdapter
 
     public $is_billing_api = false;
 
+    public $is_401_status = false;
+
+    public $is_422_status = false;
+
     private function fetch_response()
     {
         if ($this->is_wpf) {
@@ -20,6 +24,14 @@ trait NetworkAdapter
         }
         if ($this->is_billing_api) {
             return $this->billingApi();
+        }
+
+        if ($this->is_401_status) {
+            return $this->statusError(401);
+        }
+
+        if ($this->is_422_status) {
+            return $this->statusError(422);
         }
 
         return $this->transactionApi();
@@ -58,6 +70,26 @@ trait NetworkAdapter
             '|*DATE*|',
             date('Y-m-d H:i:s') . 'UTC',
             file_get_contents("{$this->fixtures_path}{$file}")
+        );
+    }
+
+    private function statusError($status)
+    {
+        $fixtures_path = 'spec/Fixtures/Api/Response/Network/ErrorStatuses/';
+
+        switch ($status) {
+            case 422:
+                $file = $this->is_prod ? 'ProdError422' : 'StagingError422';
+                break;
+            default:
+                $file = $this->is_prod ? 'ProdError401' : 'StagingError401';
+        }
+
+        // Prevent actual request
+        return str_replace(
+            '|*DATE*|',
+            date('Y-m-d H:i:s') . 'UTC',
+            file_get_contents("{$fixtures_path}{$file}")
         );
     }
 }

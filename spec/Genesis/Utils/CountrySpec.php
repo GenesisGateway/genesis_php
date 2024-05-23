@@ -3,7 +3,6 @@
 namespace spec\Genesis\Utils;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CountrySpec extends ObjectBehavior
 {

@@ -1,7 +1,6 @@
 Genesis PHP
 ===========
 
-[![Build Status](https://img.shields.io/travis/GenesisGateway/genesis_php.svg?style=flat)](https://travis-ci.org/GenesisGateway/genesis_php)
 [![Latest Stable Version](https://poser.pugx.org/genesisgateway/genesis_php/v/stable)](https://packagist.org/packages/genesisgateway/genesis_php)
 [![Total Downloads](https://img.shields.io/packagist/dt/GenesisGateway/genesis_php.svg?style=flat)](https://packagist.org/packages/GenesisGateway/genesis_php)
 [![Software License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE)
@@ -9,7 +8,7 @@ Genesis PHP
 Overview
 --------
 
-Client Library for processing payments through Genesis Payment Processing Gateway. Its highly recommended to checkout "Genesis Payment Gateway API Documentation" first, in order to get an overview of Genesis's Payment Gateway API and functionality.
+Client Library for processing payments through Genesis Payment Processing Gateway. It's highly recommended to check out "Genesis Payment Gateway API Documentation" first, in order to get an overview of Genesis's Payment Gateway API and functionality.
 
 Requirements
 ------------
@@ -61,8 +60,8 @@ A sample configuration file settings_sample.ini is provided. The configuration f
 ```
 Or the configuration settings can be set manually:
 ```php
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -105,8 +104,8 @@ try {
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -148,11 +147,13 @@ $genesis
 
     // Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
+
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -190,17 +191,17 @@ try {
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 // Create a new Genesis instance with Web Payment Form transaction request
 /** @var \Genesis\Genesis $genesis */
-$genesis = new Genesis('WPF\Create');
+$genesis = new Genesis('Wpf\Create');
 
 // Assign $request variable. In some editors, auto-completion will guide you with the request building
-/** @var \Genesis\API\Request\WPF\Create $request */
+/** @var \Genesis\Api\Request\Wpf\Create $request */
 $request = $genesis->request();
 
 // Set request parameters
@@ -234,28 +235,30 @@ $request
     ->setBillingCountry('US')
 
     // Web Payment Form language, default is EN if no language is provided
-    ->setLanguage(\Genesis\API\Constants\i18n::EN)
+    ->setLanguage(\Genesis\Api\Constants\i18n::EN)
 
     // Set the Web Payment Form time to live, default value 30 minutes if no value is provided
     ->setLifetime(30)
 
     // Transaction Type without Custom Attribute
-    ->addTransactionType(\Genesis\API\Constants\Transaction\Types::SALE_3D)
-    ->addTransactionType(\Genesis\API\Constants\Transaction\Types::AUTHORIZE_3D)
+    ->addTransactionType(\Genesis\Api\Constants\Transaction\Types::SALE_3D)
+    ->addTransactionType(\Genesis\Api\Constants\Transaction\Types::AUTHORIZE_3D)
 
     // Transaction Type with Custom Attribute
-    ->addTransactionType(\Genesis\API\Constants\Transaction\Types::PAYSAFECARD, ['customer_id' => '123456']);
+    ->addTransactionType(\Genesis\Api\Constants\Transaction\Types::PAYSAFECARD, ['customer_id' => '123456']);
 
     // Send the request
     $genesis->execute();
 
     // Successfully completed the transaction - redirect the customer to the provided URL
     echo $genesis->response()->getResponseObject()->redirect_url;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
+
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -281,6 +284,42 @@ catch (\Genesis\Exceptions\InvalidMethod $error) {
 ```
 
 Full list with the available Custom Attributes for every Transaction Type can be found [here](https://emerchantpay.github.io/gateway-api-docs/#wpf-transaction-types).
+
+### Response
+
+After Request execution (`$genesis->execute()`) a Response object can be accessed `$genesis->response()`.
+
+The Response contains the original response from the Gateway:
+```php
+$genesis->response()->getResponseRaw()
+```
+
+The Response contains the parsed response from the Gateway:
+```php
+$genesis->response()->getResponseObject()
+```
+
+The HTTP response status code of the request is also available:
+```php
+$genesis->response()->getResponseCode()
+```
+
+A request that reached the Genesis payment gateway successfully can have an error status if there was a problem during the transaction execution i.e. the HTTP response status code was 200 but the transaction was declined/unsuccessful. In this case the Response will contain the payment gateway internal error `code`, additional `message` and more detailed `technical_message`. 
+The full list of the possible error codes can be found [here](https://emerchantpay.github.io/gateway-api-docs/?php#error-codes-tables).
+
+#### Transaction states
+
+There are predefined checks for validating the status of the received response. Every available status received from the Genesis gateway can be checked in the following way:
+```php
+if ($genesis->response()->isNew())...
+...
+$genesis->response()->isApproved()
+$genesis->response()->isDeclined()
+$genesis->response()->isError()
+$genesis->response()->isPendingAsync()
+...
+```
+*Check [Transactions API States](https://emerchantpay.github.io/gateway-api-docs/?php#transaction-states) and [Web Payment Form States](https://emerchantpay.github.io/gateway-api-docs/?php#wpf-states) for more information about the possible transaction states.*
 
 Smart Router
 -------------
@@ -321,8 +360,8 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -331,7 +370,7 @@ try {
     // Create a new Genesis instance with desired API request
     $genesis = new \Genesis\Genesis('Financial\Cards\Sale3D');
     
-    /** @var \Genesis\API\Request\Financial\Cards\Sale3D $sale_3ds_v2_request */
+    /** @var \Genesis\Api\Request\Financial\Cards\Sale3D $sale_3ds_v2_request */
     $sale_3ds_v2_request = $genesis->request();
     
     // Set request parameters
@@ -346,7 +385,7 @@ try {
         ->setReturnSuccessUrl('https://example.com/return?type=success')
         ->setReturnFailureUrl('https://example.com/return?type=cancel')
         // Customer Details
-        ->setCustomerEmail('jhon@example.com')
+        ->setCustomerEmail('john@example.com')
         ->setCustomerPhone('1987987987987')
         // Credit Card Details
         ->setCardHolder('FirstName LastName')
@@ -363,7 +402,7 @@ try {
         ->setExpirationYear('2020')
         ->setCvv('123')
         // Billing/Invoice Details
-        ->setBillingFirstName('Jhon')
+        ->setBillingFirstName('John')
         ->setBillingLastName('Smith')
         ->setBillingAddress1('Muster Str. 12')
         ->setBillingZipCode('10178')
@@ -377,55 +416,55 @@ try {
         ->setThreedsV2MethodCallbackUrl('https://www.example.com/threeds/threeds_method/callback')
         
         // 3DSv2 Control Attributes
-        ->setThreedsV2ControlDeviceType(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\DeviceTypes::BROWSER)
-        ->setThreedsV2ControlChallengeWindowSize(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeWindowSizes::FULLSCREEN)
-        ->setThreedsV2ControlChallengeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators::PREFERENCE)
+        ->setThreedsV2ControlDeviceType(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Control\DeviceTypes::BROWSER)
+        ->setThreedsV2ControlChallengeWindowSize(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeWindowSizes::FULLSCREEN)
+        ->setThreedsV2ControlChallengeIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators::PREFERENCE)
         
         // 3DSv2 Purchase Attributes
-        ->setThreedsV2PurchaseCategory(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Purchase\Categories::SERVICE)
+        ->setThreedsV2PurchaseCategory(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Purchase\Categories::SERVICE)
         
         // 3DSv2 Merchant Risk Attributes
-        ->setThreedsV2MerchantRiskShippingIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ShippingIndicators::VERIFIED_ADDRESS)
-        ->setThreedsV2MerchantRiskDeliveryTimeframe(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\DeliveryTimeframes::ELECTRONICS)
-        ->setThreedsV2MerchantRiskReorderItemsIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ReorderItemIndicators::REORDERED)
-        ->setThreedsV2MerchantRiskPreOrderPurchaseIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\PreOrderPurchaseIndicators::MERCHANDISE_AVAILABLE)
+        ->setThreedsV2MerchantRiskShippingIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ShippingIndicators::VERIFIED_ADDRESS)
+        ->setThreedsV2MerchantRiskDeliveryTimeframe(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\DeliveryTimeframes::ELECTRONICS)
+        ->setThreedsV2MerchantRiskReorderItemsIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ReorderItemIndicators::REORDERED)
+        ->setThreedsV2MerchantRiskPreOrderPurchaseIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\PreOrderPurchaseIndicators::MERCHANDISE_AVAILABLE)
         ->setThreedsV2MerchantRiskPreOrderDate('31-12-2030')
         ->setThreedsV2MerchantRiskGiftCard(true) // Boolean attribute. Accepts values like `on`, `off`, `yes`, `no`, `true`, `false`, etc...
         ->setThreedsV2MerchantRiskGiftCardCount(99)
         
-        // 3DSSv2 Card Holder Account Attributes
+        // 3DSv2 Cardholder Account Attributes
         ->setThreedsV2CardHolderAccountCreationDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountUpdateIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountUpdateIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators::FROM_30_TO_60_DAYS)
         ->setThreedsV2CardHolderAccountLastChangeDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountPasswordChangeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\PasswordChangeIndicators::NO_CHANGE)
+        ->setThreedsV2CardHolderAccountPasswordChangeIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\PasswordChangeIndicators::NO_CHANGE)
         ->setThreedsV2CardHolderAccountPasswordChangeDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountShippingAddressUsageIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators::CURRENT_TRANSACTION)
+        ->setThreedsV2CardHolderAccountShippingAddressUsageIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators::CURRENT_TRANSACTION)
         ->setThreedsV2CardHolderAccountShippingAddressDateFirstUsed('31-12-2019')
         ->setThreedsV2CardHolderAccountTransactionsActivityLast24Hours(2)
         ->setThreedsV2CardHolderAccountTransactionsActivityPreviousYear(10)
         ->setThreedsV2CardHolderAccountProvisionAttemptsLast24Hours(1)
         ->setThreedsV2CardHolderAccountPurchasesCountLast6Months(5)
-        ->setThreedsV2CardHolderAccountSuspiciousActivityIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators::NO_SUSPICIOUS_OBSERVED)
-        ->setThreedsV2CardHolderAccountRegistrationIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\RegistrationIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountSuspiciousActivityIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators::NO_SUSPICIOUS_OBSERVED)
+        ->setThreedsV2CardHolderAccountRegistrationIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\RegistrationIndicators::FROM_30_TO_60_DAYS)
         ->setThreedsV2CardHolderAccountRegistrationDate('31-12-2019')
         
         // 3DSv2 Browser Attributes
         ->setThreedsV2BrowserAcceptHeader('*/*') // Exact content of the HTTP accept headers as sent to the 3DS Requester from the Cardholder browser
         ->setThreedsV2BrowserJavaEnabled(false) // Boolean attribute. Accepts values like `on`, `off`, `yes`, `no`, `true`, `false`, etc...
         ->setThreedsV2BrowserLanguage('en-GB')
-        ->setThreedsV2BrowserColorDepth(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Browser\ColorDepths::BITS_32)
+        ->setThreedsV2BrowserColorDepth(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Browser\ColorDepths::BITS_32)
         ->setThreedsV2BrowserScreenHeight(900)
         ->setThreedsV2BrowserScreenWidth(1440)
         ->setThreedsV2BrowserTimeZoneOffset(-120)
         ->setThreedsV2BrowserUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36')
         
         // 3DSv2 SDK Attributes
-        ->setThreedsV2SdkInterface(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\Interfaces::NATIVE)
+        ->setThreedsV2SdkInterface(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Sdk\Interfaces::NATIVE)
         ->setThreedsV2SdkUiTypes( // Also accepts a single string value ->setThreedsV2SdkUiTypes('text')
             [
-                \Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::SINGLE_SELECT,
-                \Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::MULTI_SELECT,
-                \Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::TEXT
+                \Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::SINGLE_SELECT,
+                \Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::MULTI_SELECT,
+                \Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Sdk\UiTypes::TEXT
             ]
         )
         ->setThreedsV2SdkApplicationId('fc1650c0-5778-0138-8205-2cbc32a32d65')
@@ -443,18 +482,26 @@ try {
     // Send the request
     $genesis->execute();
 
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
     // Un/Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-    
-    // Status of the initial request
-    echo $genesis->response()->getResponseObject()->status;
 
-    switch ($genesis->response()->getResponseObject()->status) {
-        case \Genesis\API\Constants\Transaction\States::APPROVED:
+    // Status of the initial request
+    $status = $genesis->response()->getResponseObject()->status ?? '';
+    echo $status;
+
+    switch ($status) {
+        case \Genesis\Api\Constants\Transaction\States::APPROVED:
             // Transaction approved no customer action required
             // Test Case: Synchronous 3DSv2 Request with Frictionless flow
             break;
-        case \Genesis\API\Constants\Transaction\States::PENDING_ASYNC:
+        case \Genesis\Api\Constants\Transaction\States::PENDING_ASYNC:
             // Additional Actions Required
             if (isset($genesis->response()->getResponseObject()->redirect_url)) {
                 // An interaction between consumer and issuer is required
@@ -468,24 +515,24 @@ try {
 
             if (isset($genesis->response()->getResponseObject()->threeds_method_url)) {
                 // 3DS-Method submission is required
-                // Generate 3DSv2-Method Signature token used for Threeds Method Continue Request. It's not required when the 3DS-Method continue request is built by the initial request's response object.
+                // Generate 3DSv2-Method Signature token used for 3DS-Method Continue Request. It's not required when the 3DS-Method continue request is built by the initial request's response object.
                 echo $sale_3ds_v2_request->generateThreedsV2Signature();
 
                 // Execute 3DS-Method Continue Request after initiating the 3DS-Method submission
                 // The new request is loaded from the response object of the initial request
-                $genesis_3ds_v2_continue = \Genesis\API\Request\Financial\Cards\Threeds\V2\MethodContinue::buildFromResponseObject(
+                $genesis_3ds_v2_continue = \Genesis\Api\Request\Financial\Cards\Threeds\V2\MethodContinue::buildFromResponseObject(
                     $genesis->response()->getResponseObject()
                 );
                 $genesis_3ds_v2_continue->execute();
 
                 print_r($genesis_3ds_v2_continue->response()->getResponseObject());
 
-                if ($genesis_3ds_v2_continue->response()->getResponseObject()->status === \Genesis\API\Constants\Transaction\States::APPROVED) {
+                if ($genesis_3ds_v2_continue->response()->isApproved()) {
                     // Transaction APPROVED no customer action required
                     // Test Case: Asynchronous 3DSv2 Request with 3DS-Method and Frictionless flow
                 }
 
-                if ($genesis_3ds_v2_continue->response()->getResponseObject()->status === \Genesis\API\Constants\Transaction\States::PENDING_ASYNC) {
+                if ($genesis_3ds_v2_continue->response()->isPendingAsync()) {
                     // Customer action required
                     if (isset($genesis_3ds_v2_continue->response()->getResponseObject()->redirect_url)) {
                         // Test Case: Asynchronous 3DSv2 Request with 3DS-Method Challenge flow
@@ -496,16 +543,11 @@ try {
                 }
             }
             break;
-        case \Genesis\API\Constants\Transaction\States::DECLINED:
+        case \Genesis\Api\Constants\Transaction\States::DECLINED:
             // Transaction declined no customer action required
             // Synchronous 3DSv2 Request with Frictionless flow
             break;
     }    
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -534,16 +576,16 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 try {   
     // Create a new Genesis instance with desired API request
-    $genesis = new \Genesis\Genesis('WPF\Create');
+    $genesis = new \Genesis\Genesis('Wpf\Create');
     
-    /** @var \Genesis\API\Request\WPF\Create $wpf_3ds_v2_request */
+    /** @var \Genesis\Api\Request\Wpf\Create $wpf_3ds_v2_request */
     $wpf_3ds_v2_request = $genesis->request();
 
     $wpf_3ds_v2_request
@@ -562,11 +604,11 @@ try {
         ->setReturnPendingUrl('https://example.com/return?type=pending')
 
         // Customer Details
-        ->setCustomerEmail('jhon@example.com')
+        ->setCustomerEmail('john@example.com')
         ->setCustomerPhone('1987987987987')
         
         // Billing/Invoice Details
-        ->setBillingFirstName('Jhon')
+        ->setBillingFirstName('John')
         ->setBillingLastName('Smith')
         ->setBillingAddress1('Muster Str. 12')
         ->setBillingZipCode('10178')
@@ -581,35 +623,35 @@ try {
         ->addTransactionType('sale3d')
 
         // 3DSv2 Control Attributes
-        ->setThreedsV2ControlChallengeWindowSize(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeWindowSizes::FULLSCREEN)
-        ->setThreedsV2ControlChallengeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators::PREFERENCE)
+        ->setThreedsV2ControlChallengeWindowSize(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeWindowSizes::FULLSCREEN)
+        ->setThreedsV2ControlChallengeIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Control\ChallengeIndicators::PREFERENCE)
  
         // 3DSv2 Purchase Attributes
-        ->setThreedsV2PurchaseCategory(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\Purchase\Categories::SERVICE)
+        ->setThreedsV2PurchaseCategory(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\Purchase\Categories::SERVICE)
         
         // 3DSv2 Merchant Risk Attributes
-        ->setThreedsV2MerchantRiskShippingIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ShippingIndicators::VERIFIED_ADDRESS)
-        ->setThreedsV2MerchantRiskDeliveryTimeframe(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\DeliveryTimeframes::ELECTRONICS)
-        ->setThreedsV2MerchantRiskReorderItemsIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ReorderItemIndicators::REORDERED)
-        ->setThreedsV2MerchantRiskPreOrderPurchaseIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\PreOrderPurchaseIndicators::MERCHANDISE_AVAILABLE)
+        ->setThreedsV2MerchantRiskShippingIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ShippingIndicators::VERIFIED_ADDRESS)
+        ->setThreedsV2MerchantRiskDeliveryTimeframe(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\DeliveryTimeframes::ELECTRONICS)
+        ->setThreedsV2MerchantRiskReorderItemsIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\ReorderItemIndicators::REORDERED)
+        ->setThreedsV2MerchantRiskPreOrderPurchaseIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\MerchantRisk\PreOrderPurchaseIndicators::MERCHANDISE_AVAILABLE)
         ->setThreedsV2MerchantRiskPreOrderDate('31-12-2030') // For a pre-ordered purchase, the expected date that the merchandise will be available.
         ->setThreedsV2MerchantRiskGiftCard(true) // Boolean attribute. Accepts values like `on`, `off`, `yes`, `no`, `true`, `false`, etc...
         ->setThreedsV2MerchantRiskGiftCardCount(99)
         
-        // 3DSSv2 Card Holder Account Attributes
+        // 3DSSv2 Cardholder Account Attributes
         ->setThreedsV2CardHolderAccountCreationDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountUpdateIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountUpdateIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators::FROM_30_TO_60_DAYS)
         ->setThreedsV2CardHolderAccountLastChangeDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountPasswordChangeIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\PasswordChangeIndicators::NO_CHANGE)
+        ->setThreedsV2CardHolderAccountPasswordChangeIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\PasswordChangeIndicators::NO_CHANGE)
         ->setThreedsV2CardHolderAccountPasswordChangeDate('31-12-2019')
-        ->setThreedsV2CardHolderAccountShippingAddressUsageIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators::CURRENT_TRANSACTION)
+        ->setThreedsV2CardHolderAccountShippingAddressUsageIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators::CURRENT_TRANSACTION)
         ->setThreedsV2CardHolderAccountShippingAddressDateFirstUsed('31-12-2019')
         ->setThreedsV2CardHolderAccountTransactionsActivityLast24Hours(2)
         ->setThreedsV2CardHolderAccountTransactionsActivityPreviousYear(10)
         ->setThreedsV2CardHolderAccountProvisionAttemptsLast24Hours(1)
         ->setThreedsV2CardHolderAccountPurchasesCountLast6Months(5)
-        ->setThreedsV2CardHolderAccountSuspiciousActivityIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators::NO_SUSPICIOUS_OBSERVED)
-        ->setThreedsV2CardHolderAccountRegistrationIndicator(\Genesis\API\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\RegistrationIndicators::FROM_30_TO_60_DAYS)
+        ->setThreedsV2CardHolderAccountSuspiciousActivityIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators::NO_SUSPICIOUS_OBSERVED)
+        ->setThreedsV2CardHolderAccountRegistrationIndicator(\Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\RegistrationIndicators::FROM_30_TO_60_DAYS)
         ->setThreedsV2CardHolderAccountRegistrationDate('31-12-2019')
 
         // 3DSv2 Recurring Attributes
@@ -619,18 +661,20 @@ try {
 
     // Send the request
     $genesis->execute();
-    
-    // Upon successful `$genesis->response()->getResponseObject()->status === 'new'`
+
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
+    // Upon successful `$genesis->response()->isNew()`
     // Redirect to the Web Payment Form
     echo $genesis->response()->getResponseObject()->redirect_url;
     
     // ThreedsV2 Signature
     echo $genesis->request()->generateThreedsV2Signature();  
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -658,8 +702,8 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -668,7 +712,7 @@ try {
     // Create a new Genesis instance with desired API request
     $genesis_3ds_v2_continue = new \Genesis\Genesis('Financial\Cards\Threeds\V2\MethodContinue');
 
-    /** @var \Genesis\API\Request\Financial\Cards\Threeds\V2\MethodContinue $continueRequest */
+    /** @var \Genesis\Api\Request\Financial\Cards\Threeds\V2\MethodContinue $continueRequest */
     $genesis_3ds_v2_continue_request = $genesis_3ds_v2_continue->request();
 
     $genesis_3ds_v2_continue_request
@@ -689,19 +733,27 @@ try {
         // String representation of the timestamp
         // ->setTransactionTimestamp(
         //     $responseObject->timestamp->format(
-        //         \Genesis\API\Constants\DateTimeFormat::YYYY_MM_DD_H_I_S_ZULU
+        //         \Genesis\Api\Constants\DateTimeFormat::YYYY_MM_DD_H_I_S_ZULU
         //     )
         // )
         ->setTransactionTimestamp('2020-12-31T23:59:59Z');
 
     $genesis_3ds_v2_continue->execute();
 
-    switch ($genesis_3ds_v2_continue->response()->getResponseObject()->status) {
-        case \Genesis\API\Constants\Transaction\States::APPROVED:
+    // If there is an error - display the error information
+    if (!$genesis_3ds_v2_continue->response()->isSuccessful()) {
+        echo "Error code: {$genesis_3ds_v2_continue->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis_3ds_v2_continue->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis_3ds_v2_continue->response()->getResponseObject()->technical_message}\n";
+    }
+
+    $status = $genesis_3ds_v2_continue->response()->getResponseObject()->status ?? '';
+
+    switch ($status) {
             // Asynchronous 3DSv2 Request with 3DS-Method and Frictionless flow
             // Transaction approved no customer action required
             break;
-        case \Genesis\API\Constants\Transaction\States::PENDING_ASYNC:
+        case \Genesis\Api\Constants\Transaction\States::PENDING_ASYNC:
             // Customer action required
             if (isset($genesis_3ds_v2_continue->response()->getResponseObject()->redirect_url)) {
                 // Asynchronous 3DSv2 Request with 3DS-Method Challenge flow
@@ -711,11 +763,6 @@ try {
             }
             break;
     }
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -743,8 +790,8 @@ require 'vendor/autoload.php';
 // Load the pre-configured ini file...
 \Genesis\Config::loadSettings('/path/to/config.ini');
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -767,13 +814,13 @@ $genesis->request()
     ->setTokenSignatures($decodedToken['intermediateSigningKey']['signatures']) // Token Signatures accepts array value
     // Set request parameters
     ->setTransactionId('43671')
-    ->setPaymentSubtype(\Genesis\API\Constants\Transaction\Parameters\Mobile\GooglePay\PaymentTypes::SALE)
+    ->setPaymentSubtype(\Genesis\Api\Constants\Transaction\Parameters\Mobile\GooglePay\PaymentTypes::SALE)
     ->setUsage('40208 concert tickets')
     ->setRemoteIp('245.253.2.12')
     ->setAmount('50')
     ->setCurrency('USD')
     // Customer Details
-    ->setCustomerEmail('emil@example.com')
+    ->setCustomerEmail('travis@example.com')
     ->setCustomerPhone('1987987987987')
     // Billing/Invoice Details
     ->setBillingFirstName('Travis')
@@ -796,13 +843,15 @@ try {
     // Send the request
     $genesis->execute();
 
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
     // Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -827,13 +876,13 @@ require 'vendor/autoload.php';
 // Load the pre-configured ini file...
 \Genesis\Config::loadSettings('/path/to/config.ini');
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 // Create a new Genesis instance with Web Payment Form request
-$genesis = new Genesis('WPF\Create');
+$genesis = new Genesis('Wpf\Create');
 
 // Set request parameters
 $genesis
@@ -845,7 +894,7 @@ $genesis
     ->setCurrency('USD')
 
     // Customer Details
-    ->setCustomerEmail('emil@example.com')
+    ->setCustomerEmail('travis@example.com')
     ->setCustomerPhone('1987987987987')
 
     ->setNotificationUrl('https://example.com/notification')
@@ -870,20 +919,22 @@ $genesis
     ->setShippingCity('Los Angeles')
     ->setShippingState('CA')
     ->setShippingCountry('US')
-    ->setLanguage(\Genesis\API\Constants\i18n::EN)
+    ->setLanguage(\Genesis\Api\Constants\i18n::EN)
     ->addTransactionType('google_pay', ['payment_subtype' => 'sale']);
 
 try {
     // Send the request
     $genesis->execute();
 
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
     // Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -910,8 +961,8 @@ require 'vendor/autoload.php';
 // Load the pre-configured ini file...
 \Genesis\Config::loadSettings('/path/to/config.ini');
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 \Genesis\Config::setToken('<enter_your_token>');
@@ -939,13 +990,13 @@ $genesis->request()
     ->setTokenTransactionIdentifier($decodedToken['transactionIdentifier'])
     // Set request parameters
     ->setTransactionId('43671')
-    ->setPaymentSubtype(\Genesis\API\Constants\Transaction\Parameters\Mobile\ApplePay\PaymentTypes::SALE)
+    ->setPaymentSubtype(\Genesis\Api\Constants\Transaction\Parameters\Mobile\ApplePay\PaymentTypes::SALE)
     ->setUsage('40208 concert tickets')
     ->setRemoteIp('245.253.2.12')
     ->setAmount('50')
     ->setCurrency('USD')
     // Customer Details
-    ->setCustomerEmail('emil@example.com')
+    ->setCustomerEmail('travis@example.com')
     ->setCustomerPhone('1987987987987')
     // Billing/Invoice Details
     ->setBillingFirstName('Travis')
@@ -968,13 +1019,15 @@ try {
     // Send the request
     $genesis->execute();
 
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
     // Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -999,13 +1052,13 @@ require 'vendor/autoload.php';
 // Load the pre-configured ini file...
 \Genesis\Config::loadSettings('/path/to/config.ini');
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 // Create a new Genesis instance with Web Payment Form request
-$genesis = new Genesis('WPF\Create');
+$genesis = new Genesis('Wpf\Create');
 
 // Set request parameters
 $genesis
@@ -1017,7 +1070,7 @@ $genesis
     ->setCurrency('USD')
 
     // Customer Details
-    ->setCustomerEmail('emil@example.com')
+    ->setCustomerEmail('travis@example.com')
     ->setCustomerPhone('1987987987987')
 
     ->setNotificationUrl('https://example.com/notification')
@@ -1042,20 +1095,22 @@ $genesis
     ->setShippingCity('Los Angeles')
     ->setShippingState('CA')
     ->setShippingCountry('US')
-    ->setLanguage(\Genesis\API\Constants\i18n::EN)
+    ->setLanguage(\Genesis\Api\Constants\i18n::EN)
     ->addTransactionType('apple_pay', ['payment_subtype' => 'sale']);
 
 try {
     // Send the request
     $genesis->execute();
 
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
     // Successfully completed the transaction - display the gateway unique id
     echo $genesis->response()->getResponseObject()->unique_id;
-}
-// Log/handle API errors
-// Example: Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -1086,16 +1141,16 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 try {
     // Create a new Genesis instance with desired API request
-    $genesis = new \Genesis\Genesis('WPF\Create');
+    $genesis = new \Genesis\Genesis('Wpf\Create');
 
-    /** @var \Genesis\API\Request\WPF\Create $wpf_recurring_request */
+    /** @var \Genesis\Api\Request\Wpf\Create $wpf_recurring_request */
     $wpf_recurring_request = $genesis->request();
     $wpf_recurring_request
         ->setTransactionId('43671')
@@ -1111,11 +1166,11 @@ try {
         // Optional Url used for specific cases
         ->setReturnPendingUrl('https://example.com/return?type=pending')
         // Customer Details
-        ->setCustomerEmail('jhon@example.com')
+        ->setCustomerEmail('john@example.com')
         ->setCustomerPhone('1987987987987')
 
         // Billing/Invoice Details
-        ->setBillingFirstName('Jhon')
+        ->setBillingFirstName('John')
         ->setBillingLastName('Smith')
         ->setBillingAddress1('Muster Str. 12')
         ->setBillingZipCode('10178')
@@ -1134,14 +1189,16 @@ try {
     // Send the request
     $genesis->execute();
 
-    // Upon successful `$genesis->response()->getResponseObject()->status === 'new'`
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
+    // Upon successful `$genesis->response()->isNew()`
     // Redirect to the Web Payment Form
     echo $genesis->response()->getResponseObject()->redirect_url;
-}
-// Log/handle API errors
-// Example: Declined transaction, Invalid data, Invalid configuration
-catch (\Genesis\Exceptions\ErrorAPI $api) {
-    error_log($api->getMessage());
 }
 // Log/handle invalid parameters
 // Example: Empty (required) parameter
@@ -1172,16 +1229,16 @@ require 'vendor/autoload.php';
 \Genesis\Config::loadSettings('/path/to/config.ini');
 
 // ...OR, optionally, you can set the credentials manually
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
-\Genesis\Config::setEnvironment(\Genesis\API\Constants\Environments::STAGING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
 \Genesis\Config::setUsername('<enter_your_username>');
 \Genesis\Config::setPassword('<enter_your_password>');
 
 // Add your Terminal Token for all Non-WPF (Web Payment Form/Checkout) requests
-\Genesis\Config::setToken('<enter_your_password>');
+\Genesis\Config::setToken('<enter_your_token>');
 
 try {
-    $notification = new \Genesis\API\Notification($_POST);
+    $notification = new \Genesis\Api\Notification($_POST);
 
     // Reconciliation is generally optional, but
     // it's a recommended practice to ensure
@@ -1212,12 +1269,12 @@ For example:
 
 - You can set the Endpoint to ```E-ComProcessing```, thus all the requests will go to ```E-ComProcessing```s Genesis instance:
 ```php
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::ECOMPROCESSING);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::ECOMPROCESSING);
 ```
 
 - You can set the Endpoint to ```emerchantpay```, thus all the requests will go to ```emerchantpay```s Genesis instance:
 ```php
-\Genesis\Config::setEndpoint(\Genesis\API\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
 ```
 
 Request types
@@ -1233,8 +1290,8 @@ Financial\Cancel
 
 // Alternative Payment Methods transactions
 Financial\Alternatives\P24
-Financial\Alternatives\POLi
-Financial\Alternatives\PPRO
+Financial\Alternatives\Poli
+Financial\Alternatives\Ppro
 Financial\Alternatives\Sofort
 Financial\Alternatives\Klarna\Authorize
 Financial\Alternatives\Klarna\Capture
@@ -1278,7 +1335,7 @@ Financial\Crypto\BitPay\Payout
 // Gift Cards transactions
 Financial\GiftCards\Intersolve
 Financial\GiftCards\Fashioncheque
-Financial\GiftCards\TCS
+Financial\GiftCards\Tcs
 
 // Mobile
 Financial\Mobile\ApplePay
@@ -1287,11 +1344,11 @@ Financial\Mobile\RussianMobileSale
 Financial\Mobile\AfricanMobileSale
 
 //Sepa Direct Debit transactions
-Financial\SCT\Payout
-Financial\SDD\Sale
-Financial\SDD\Refund
-Financial\SDD\Recurring\InitRecurringSale
-Financial\SDD\Recurring\RecurringSale
+Financial\Sct\Payout
+Financial\Sdd\Sale
+Financial\Sdd\Refund
+Financial\Sdd\Recurring\InitRecurringSale
+Financial\Sdd\Recurring\RecurringSale
 
 //Online Banking Payments
 Financial\OnlineBankingPayments\BancoDoBrasil
@@ -1301,8 +1358,8 @@ Financial\OnlineBankingPayments\Davivienda
 Financial\OnlineBankingPayments\Eps
 Financial\OnlineBankingPayments\GiroPay
 Financial\OnlineBankingPayments\Ideal
-Financial\OnlineBankingPayments\iDebit\Payin
-Financial\OnlineBankingPayments\iDebit\Payout
+Financial\OnlineBankingPayments\Idebit\Payin
+Financial\OnlineBankingPayments\Idebit\Payout
 Financial\OnlineBankingPayments\InstaDebit\Payin
 Financial\OnlineBankingPayments\InstaDebit\Payout
 Financial\OnlineBankingPayments\Itau
@@ -1335,13 +1392,12 @@ Financial\Vouchers\Neosurf
 Financial\Vouchers\Paysafecard
 
 // Electronic Wallets transactions
-Financial\Wallets\eZeeWallet
+Financial\Wallets\EzeeWallet
 Financial\Wallets\PayPal
 Financial\Wallets\Neteller
 Financial\Wallets\WebMoney
 
 // Generic (Non-Financial) requests
-NonFinancial\AccountVerification
 NonFinancial\Blacklist
 
 // Consumers API requests
@@ -1371,14 +1427,14 @@ NonFinancial\Fx\GetRate
 NonFinancial\Fx\SearchRate
 
 // KYC requests
-NonFinancial\KYC\Call\Create
-NonFinancial\KYC\Call\Update
-NonFinancial\KYC\ConsumerRegistration\Create
-NonFinancial\KYC\ConsumerRegistration\Update
-NonFinancial\KYC\IdentityDocument\Download
-NonFinancial\KYC\IdentityDocument\Upload
-NonFinancial\KYC\Transaction\Create
-NonFinancial\KYC\Transaction\Update
+NonFinancial\Kyc\Call\Create
+NonFinancial\Kyc\Call\Update
+NonFinancial\Kyc\ConsumerRegistration\Create
+NonFinancial\Kyc\ConsumerRegistration\Update
+NonFinancial\Kyc\IdentityDocument\Download
+NonFinancial\Kyc\IdentityDocument\Upload
+NonFinancial\Kyc\Transaction\Create
+NonFinancial\Kyc\Transaction\Update
 
 // Reconcile requests
 NonFinancial\Reconcile\DateRange
@@ -1396,8 +1452,8 @@ NonFinancial\ProcessedTransactions\PostDateRange
 NonFinancial\Alternatives\TransferTo\Payers
 
 // Web Payment Form (Checkout) requests
-WPF\Create
-WPF\Reconcile
+Wpf\Create
+Wpf\Reconcile
 
 // Transaction API
 NonFinancial\TransactionApi\CardExpiryDateUpdate
@@ -1439,6 +1495,6 @@ php composer.phar install
 php vendor/bin/phpspec run
 ```
 
-Note: The specs are intended to run with PHP v7.4
+Note: The specs are intended to run with PHP v8.1
 
 [Composer]: https://getcomposer.org/

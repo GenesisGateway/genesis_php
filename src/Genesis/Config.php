@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +23,11 @@
  * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis;
 
-use Genesis\Utils\Common as CommonUtils;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class Config
@@ -50,7 +52,7 @@ final class Config
     /**
      * Library Version
      */
-    const VERSION = '1.24.6';
+    const VERSION = '2.0.0';
 
     /**
      * Core configuration settings
@@ -62,7 +64,7 @@ final class Config
         'username'            => null,
         'password'            => null,
         'token'               => null,
-        'environment'         => \Genesis\API\Constants\Environments::STAGING,
+        'environment'         => \Genesis\Api\Constants\Environments::STAGING,
         'force_smart_routing' => false,
         'billing_api_token'   => null
     ];
@@ -187,17 +189,17 @@ final class Config
         $environmentArg = strtolower(trim($environmentArg));
 
         $aliases = [
-            \Genesis\API\Constants\Environments::STAGING    => [
+            \Genesis\Api\Constants\Environments::STAGING    => [
                 'test',
                 'testing',
                 'staging',
-                \Genesis\API\Constants\Environments::STAGING
+                \Genesis\Api\Constants\Environments::STAGING
             ],
-            \Genesis\API\Constants\Environments::PRODUCTION => [
+            \Genesis\Api\Constants\Environments::PRODUCTION => [
                 'live',
                 'prod',
                 'production',
-                \Genesis\API\Constants\Environments::PRODUCTION
+                \Genesis\Api\Constants\Environments::PRODUCTION
             ]
         ];
 
@@ -237,16 +239,16 @@ final class Config
         $endpointArg = strtolower(trim($endpointArg));
 
         $aliases = [
-            \Genesis\API\Constants\Endpoints::EMERCHANTPAY      => [
+            \Genesis\Api\Constants\Endpoints::EMERCHANTPAY      => [
                 'emp',
                 'emerchantpay',
-                \Genesis\API\Constants\Endpoints::EMERCHANTPAY
+                \Genesis\Api\Constants\Endpoints::EMERCHANTPAY
             ],
-            \Genesis\API\Constants\Endpoints::ECOMPROCESSING    => [
+            \Genesis\Api\Constants\Endpoints::ECOMPROCESSING    => [
                 'ecp',
                 'ecomprocessing',
                 'e-comprocessing',
-                \Genesis\API\Constants\Endpoints::ECOMPROCESSING
+                \Genesis\Api\Constants\Endpoints::ECOMPROCESSING
             ]
         ];
 

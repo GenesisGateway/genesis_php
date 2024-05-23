@@ -3,7 +3,6 @@
 namespace spec\Genesis\Exceptions;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class EnvironmentNotSetSpec extends ObjectBehavior
 {

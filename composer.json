@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "1.24.6",
+  "version": "2.0.0",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -60,7 +60,6 @@
     "idebit",
     "idebit_payin",
     "idebit_payout",
-    "inpay",
     "insta_debit",
     "insta_debit_payin",
     "insta_debit_payout",
@@ -75,7 +74,6 @@
     "p24",
     "pagofacil",
     "paypal",
-    "paypal_express",
     "pay_pal",
     "paysafecard",
     "paysec",
@@ -104,7 +102,6 @@
     "transfer_to",
     "trustly",
     "trustly_sale",
-    "trustpay",
     "webmoney",
     "webpay",
     "wechat",
@@ -125,17 +122,46 @@
     "ext-openssl": "*"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.20",
-    "phpspec/phpspec": "7.2.*@stable"
+    "fakerphp/faker": ">=1.0",
+    "phpspec/phpspec": ">=4.3",
+    "squizlabs/php_codesniffer": "^3.7.2",
+    "phpmd/phpmd": "^2.15.0"
   },
   "autoload": {
-    "psr-0": {
-      "Genesis": "src/"
+    "psr-4": {
+      "Genesis\\": "src/Genesis/"
     }
   },
   "autoload-dev": {
     "psr-4": {
       "spec\\": "spec/"
     }
+  },
+  "scripts": {
+    "test": [
+      "@php-spec"
+    ],
+    "php-spec": [
+      "vendor/bin/phpspec run --format=pretty"
+    ],
+    "php-cs": [
+      "vendor/bin/phpcs . --report=summary --standard=.phpcs.xml"
+    ],
+    "php-md": [
+      "vendor/bin/phpmd . ansi ./.phpmd.xml --not-strict"
+    ],
+    "php-spec-jenkins": [
+      "vendor/bin/phpspec run --format=junit > phpspec_report.xml"
+    ],
+    "php-cs-jenkins": [
+      "vendor/bin/phpcs . --standard=.phpcs.xml --report=checkstyle --report-file=phpcs_report.xml"
+    ],
+    "php-md-jenkins": [
+      "vendor/bin/phpmd . xml ./.phpmd.xml --reportfile phpmd_report.xml"
+    ],
+    "styles": [
+      "@php-cs",
+      "@php-md"
+    ]
   }
 }

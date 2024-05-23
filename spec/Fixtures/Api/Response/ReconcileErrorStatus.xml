@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment_response>
+    <transaction_type>refund</transaction_type>
+    <status>error</status>
+    <unique_id>1234567890</unique_id>
+    <transaction_id>987654321</transaction_id>
+    <code>440</code>
+    <technical_message>amount exceeds amount of reference transaction</technical_message>
+    <message>Something went wrong, please contact support!</message>
+    <mode>test</mode>
+    <timestamp>2024-04-23T09:06:09Z</timestamp>
+    <descriptor>test</descriptor>
+    <amount>5000</amount>
+    <currency>EUR</currency>
+    <sent_to_acquirer>false</sent_to_acquirer>
+    <reference_transaction_unique_id>abc1234567890</reference_transaction_unique_id>
+    <card_brand>visa</card_brand>
+    <card_number>40120000...0085</card_number>
+    <card_type>CREDIT</card_type>
+    <card_subtype>TRADITIONAL</card_subtype>
+    <card_issuing_bank>VISA PRODUCTION SUPPORT CLIENT BID 1</card_issuing_bank>
+    <card_issuing_country>United States</card_issuing_country>
+    <card_holder>John Smith</card_holder>
+    <expiration_year>2020</expiration_year>
+    <expiration_month>1</expiration_month>
+</payment_response>

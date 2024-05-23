@@ -3,7 +3,6 @@
 namespace spec\Genesis;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class BuilderSpec extends ObjectBehavior
 {

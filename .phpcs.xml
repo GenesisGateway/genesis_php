@@ -2,7 +2,9 @@
 <ruleset name="Genesis PHP Coding Standards">
     <description>Generally-applicable sniffs for Genesis PHP</description>
 
-    <rule ref="PSR2" />
+    <rule ref="PSR12">
+        <exclude name="PSR12.Properties.ConstantVisibility"/>
+    </rule>
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/spec/*</exclude-pattern>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +23,13 @@
  * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis\Utils;
 
-use \ArrayObject;
-use \ReflectionClass;
+use ArrayObject;
 use Genesis\Exceptions\Exception;
 use Genesis\Exceptions\InvalidArgument;
+use ReflectionClass;
 
 /**
  * Various helper functions used across the project
@@ -348,7 +350,8 @@ final class Common
      */
     public static function isBase64Encoded($input)
     {
-        if ($input
+        if (
+            $input
             && base64_decode($input, true)
             && base64_encode(base64_decode($input)) === $input
         ) {

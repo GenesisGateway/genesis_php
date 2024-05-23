@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +23,11 @@
  * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
+
 namespace Genesis;
 
-use Genesis\Parsers\JSON;
-use Genesis\Parsers\XML;
+use Genesis\Parsers\Json;
+use Genesis\Parsers\Xml;
 
 /**
  * Parser handler
@@ -57,10 +59,10 @@ class Parser
         switch ($interface) {
             default:
             case self::XML_INTERFACE:
-                $this->context = new XML();
+                $this->context = new Xml();
                 break;
             case self::JSON_INTERFACE:
-                $this->context = new JSON();
+                $this->context = new Json();
                 break;
         }
     }

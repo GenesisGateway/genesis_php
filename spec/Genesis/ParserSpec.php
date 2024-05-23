@@ -3,7 +3,6 @@
 namespace spec\Genesis;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ParserSpec extends ObjectBehavior
 {
@@ -61,8 +60,8 @@ XML;
         $this->shouldThrow()->during('parseDocument', array($xml));
     }
 
-    public function it_should_throw_on_null()
+    public function it_should_not_throw_on_null()
     {
-        $this->shouldThrow()->during('parseDocument', array(null));
+        $this->shouldNotThrow()->during('parseDocument', array(null));
     }
 }

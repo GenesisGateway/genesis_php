@@ -1,3 +1,51 @@
+2.0.0
+-----
+*Features**:
+
+* Refactored code to PSR-12 Coding Style Guide
+* Refactored code to PSR-4 Autoloader: all filenames and namespaces are now in PascalCase.
+* Changed Genesis PHP SDK behaviour when the transaction state is an error: it no longer throws exceptions and if there is a response from the Genesis Gateway it is always returned despite its state
+* Added handling for Gateway HTTP error codes 400+ instead of throwing an `Unknown Network Error` exception
+* Removed `Genesis\Exceptions\ErrorAPI`
+* Added magic method for transaction status checks in the Response class
+  * ->response()->isApproved()
+  * ->response()->isPendingAsync()
+  * ->response()->isError()
+  * etc, check [README.md](https://github.com/GenesisGateway/genesis_php/blob/master/README.md)
+* Updated PHPSpec compatibility with PHP 8.1
+* Added composer scripts used for development
+* Removed code related to the following deprecated payment methods:
+  * AVS
+  * ABN iDeal
+  * Account Verification
+  * Alipay
+  * Astropay Card
+  * Astropay Direct
+  * Banamex
+  * Citadel PayIn
+  * Citadel PayOut
+  * Earthport
+  * Emprese de Energia
+  * Entercash
+  * Hipercard
+  * INPay
+  * InstantTransfer
+  * PayByVoucher Sale
+  * PayByVoucher Yeepay
+  * PayPal Express Checkout
+  * QIWI
+  * Santander Cash
+  * Surtimax
+  * Trustly Withdrawal
+  * TrustPay
+  * Zimpler
+* Added CPF and CNPJ check requests to KYC services
+* Added `protocol_sub_version` parameter to 3DSv2 credit card transactions
+
+**Fixes**:
+
+* Fixed various specs
+
 1.24.6
 -----
 **Features**:
