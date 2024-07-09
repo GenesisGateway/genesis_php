@@ -121,7 +121,6 @@ class TypesSpec extends ObjectBehavior
             $typesObject::EFECTY,
             $typesObject::EPS,
             $typesObject::FASHIONCHEQUE,
-            $typesObject::GIROPAY,
             $typesObject::GOOGLE_PAY,
             $typesObject::IDEAL,
             $typesObject::IDEBIT_PAYIN,

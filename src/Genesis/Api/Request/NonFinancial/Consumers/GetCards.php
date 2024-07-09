@@ -24,70 +24,69 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Traits\Request\Financial;
+namespace Genesis\Api\Request\NonFinancial\Consumers;
 
-use Genesis\Api\Validators\Request\RegexValidator;
-use Genesis\Exceptions\ErrorParameter;
+use Genesis\Api\Request\Base\NonFinancial\Consumers\BaseRequest as ConsumerBaseRequest;
 
 /**
- * Trait BankAttributes
+ * Class GetCards
  *
- * @package Genesis\Api\Traits\Request\Financial
+ * Get previously tokenized card details for a consumer.
  *
- * @method string getBic() Valid BIC string. Must be 8 or 11 characters long
- * @method string getIban() String must start with "DE" followed by 20 digits
- * @method $this  setIban($value) String must start with "DE" followed by 20 digits
+ * @package Genesis\Api\Request\NonFinancial\Consumers
+ *
+ * @method $this  setConsumerId($value)
+ * @method string getConsumerId()
+ * @method $this  setEmail($value)
+ * @method string getEmail()
  */
-trait BankAttributes
+class GetCards extends ConsumerBaseRequest
 {
     /**
-     * @return array
+     * Consumer email address
+     *
+     * @var string
      */
-    public function getAllowedBicSizes()
+    protected $email;
+
+    /**
+     * Consumer unique reference
+     *
+     * @var string
+     */
+    protected $consumer_id;
+
+    /**
+     * Class constructor
+     */
+    public function __construct()
     {
-        return [8, 11];
+        parent::__construct('get_consumer_cards');
     }
 
     /**
-     * Must contain valid IBAN, check
-     * in the official API documentation
+     * Set the required fields
      *
-     * @var string
+     * @return void
      */
-    protected $iban;
-
-    /**
-     * Must contain valid BIC, check
-     * in the official API documentation
-     *
-     * @var string
-     */
-    protected $bic;
-
-    /**
-     * SWIFT/BIC code of the customer’s bank
-     *
-     * @param $value
-     *
-     * @return $this
-     * @throws ErrorParameter
-     */
-    public function setBic($value)
+    protected function setRequiredFields()
     {
-        if (empty($value)) {
-            $this->bic = null;
+        $requiredFields = [
+            'email',
+            'consumer_id'
+        ];
 
-            return $this;
-        }
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+    }
 
-        if (in_array(strlen($value), $this->getAllowedBicSizes()) === false) {
-            throw new ErrorParameter(
-                'Bic must be with one of these lengths: ' . implode(', ', $this->getAllowedBicSizes())
-            );
-        }
-
-        $this->bic = $value;
-
-        return $this;
+    /**
+     * @return array
+     */
+    protected function getRequestStructure()
+    {
+        return [
+            'email'       => $this->email,
+            'consumer_id' => $this->consumer_id
+        ];
     }
 }

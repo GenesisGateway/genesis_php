@@ -185,12 +185,6 @@ class Ppro extends \Genesis\Api\Request\Base\Financial
                         'currency'        => 'EUR'
                     ]
                 ],
-                PaymentMethods::GIRO_PAY   => [
-                    [
-                        'billing_country' => 'DE',
-                        'currency'        => 'EUR'
-                    ]
-                ],
                 PaymentMethods::BCMC       => [
                     [
                         'billing_country' => 'BE',
@@ -207,29 +201,6 @@ class Ppro extends \Genesis\Api\Request\Base\Financial
         ];
 
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldValuesConditional);
-    }
-
-    /**
-     * Add iban conditional validation if it is present
-     *
-     * @return void
-     *
-     * @throws InvalidArgument
-     * @throws \Genesis\Exceptions\ErrorParameter
-     * @throws \Genesis\Exceptions\InvalidClassMethod
-     */
-    protected function checkRequirements()
-    {
-        if ($this->payment_type === PaymentMethods::GIRO_PAY) {
-            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
-                array_merge(
-                    (array)$this->requiredFieldValuesConditional,
-                    $this->getIbanConditions()
-                )
-            );
-        }
-
-        parent::checkRequirements();
     }
 
     /**

@@ -1,3 +1,18 @@
+2.0.1
+-----
+**Features**:
+
+* Added Get Consumer Cards API support
+* Added support for the following Klarna API services:
+  * Release Remaining Authorization
+  * Resend Invoice
+  * Update Order Items
+  * Update Order Address
+* Added Processed Batches API support via e-comprocessing endpoint
+* Added Trustly Select Account API support
+* Added Trustly Register Account API support
+* Removed Giropay support through the Web Payment Form and standalone transaction request
+
 2.0.0
 -----
 *Features**:

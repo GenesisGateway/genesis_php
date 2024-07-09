@@ -54,11 +54,6 @@ class RegexValidator extends \Genesis\Api\Validators\Request\Base\Validator
     const PATTERN_NEOSURF_VOUCHER_NUMBER = '/^[A-Za-z0-9]{1,10}$/';
 
     /**
-     * DE IBAN validation. Used in PPRO GiroPay
-     */
-    const PATTERN_DE_IBAN = '/^DE[0-9]{20}$/';
-
-    /**
      * Numeric value - 4 digits only; It cannot start with 0;
      */
     const PATTERN_KYC_CALL_SECURITY_CODE = '/^[1-9][0-9]{3}$/';

@@ -24,67 +24,81 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Payment;
+namespace Genesis\Api\Constants\NonFinancial\Alternatives\Trustly;
+
+use Genesis\Utils\Common;
 
 /**
- * Class Methods
- *
- * Payment methods for Genesis Transactions
- *
- * @package Genesis\Api\Constants\Transaction
+ * Class ClearingHouses
+ * @package Genesis\Api\Constants\NonFinancial\Alternatives\Trustly
  */
-class Methods
+class ClearingHouses
 {
-    /**
-     * e-payment standard
-     *
-     * PPRO transaction
-     */
-    const EPS = 'eps';
+    const AUSTRIA = 'AUSTRIA';
+
+    const BELGIUM = 'BELGIUM';
+
+    const BULGARIA = 'BULGARIA';
+
+    const CROATIA = 'CROATIA';
+
+    const CYPRUS = 'CYPRUS';
+
+    const CZECH_REPUBLIC = 'CZECH_REPUBLIC';
+
+    const DENMARK = 'DENMARK';
+
+    const ESTONIA = 'ESTONIA';
+
+    const FINLAND = 'FINLAND';
+
+    const FRANCE = 'FRANCE';
+
+    const GERMANY = 'GERMANY';
+
+    const GREECE = 'GREECE';
+
+    const HUNGARY = 'HUNGARY';
+
+    const IRELAND = 'IRELAND';
+
+    const ITALY = 'ITALY';
+
+    const LATVIA = 'LATVIA';
+
+    const LITHUANIA = 'LITHUANIA';
+
+    const LUXEMBOURG = 'LUXEMBOURG';
+
+    const MALTA = 'MALTA';
+
+    const NETHERLANDS = 'NETHERLANDS';
+
+    const NORWAY = 'NORWAY';
+
+    const POLAND = 'POLAND';
+
+    const PORTUGAL = 'PORTUGAL';
+
+    const ROMANIA = 'ROMANIA';
+
+    const SLOVAKIA = 'SLOVAKIA';
+
+    const SLOVENIA = 'SLOVENIA';
+
+    const SPAIN = 'SPAIN';
+
+    const SWEDEN = 'SWEDEN';
+
+    const UNITED_KINGDOM = 'UNITED_KINGDOM';
 
     /**
-     * iDEAL
+     * Retrieve all clearing houses
      *
-     * PPRO transaction
-     */
-    const IDEAL = 'ideal';
-
-    /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Mr.Cash
-     *
-     * PPRO transaction
-     */
-    const BCMC = 'bcmc';
-
-    /**
-     * MyBank
-     *
-     * PPRO transaction
-     */
-    const MYBANK = 'mybank';
-
-    /**
-     * Returns all available payment methods
      * @return array
      */
-    public static function getMethods()
+    public static function getAll()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
-
-        return array_values($methods);
+        return array_values(Common::getClassConstants(self::class));
     }
 }

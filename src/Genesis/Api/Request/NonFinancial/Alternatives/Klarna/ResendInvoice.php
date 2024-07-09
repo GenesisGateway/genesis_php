@@ -24,67 +24,33 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Payment;
+namespace Genesis\Api\Request\NonFinancial\Alternatives\Klarna;
+
+use Genesis\Api\Request\Base\NonFinancial\Alternatives\Klarna\BaseRequest;
 
 /**
- * Class Methods
- *
- * Payment methods for Genesis Transactions
- *
- * @package Genesis\Api\Constants\Transaction
+ * Class ResendInvoice
+ * @package Genesis\Api\Request\NonFinancial\Alternatives\Klarna
  */
-class Methods
+class ResendInvoice extends BaseRequest
 {
-    /**
-     * e-payment standard
-     *
-     * PPRO transaction
-     */
-    const EPS = 'eps';
-
-    /**
-     * iDEAL
-     *
-     * PPRO transaction
-     */
-    const IDEAL = 'ideal';
-
-    /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Mr.Cash
-     *
-     * PPRO transaction
-     */
-    const BCMC = 'bcmc';
-
-    /**
-     * MyBank
-     *
-     * PPRO transaction
-     */
-    const MYBANK = 'mybank';
-
-    /**
-     * Returns all available payment methods
-     * @return array
-     */
-    public static function getMethods()
+    protected function initConfiguration()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+        parent::initBaseConfiguration('klarna/resend_invoice');
+    }
 
-        return array_values($methods);
+    protected function getRequestStructure()
+    {
+        return [];
+    }
+
+    protected function getParentNode()
+    {
+        return 'resend_invoice_request';
+    }
+
+    protected function setRequestRequiredFields()
+    {
+        return [];
     }
 }

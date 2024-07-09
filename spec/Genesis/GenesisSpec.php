@@ -2,8 +2,10 @@
 
 namespace spec\Genesis;
 
+use Genesis\Api\Constants\Endpoints;
 use Genesis\Api\Constants\Transaction\Types;
 use Genesis\Api\Response;
+use Genesis\Config;
 use Genesis\Exceptions\DeprecatedMethod;
 use Genesis\Network;
 use PhpSpec\ObjectBehavior;
@@ -130,5 +132,13 @@ class GenesisSpec extends ObjectBehavior
         $this->beConstructedWith('Non\Existing\Transaction');
 
         $this->shouldThrow('\Genesis\Exceptions\InvalidMethod')->duringInstantiation();
+    }
+
+    public function it_can_load_ecompocessing_endpoint_request()
+    {
+        Config::setEndpoint(Endpoints::ECOMPROCESSING);
+        $this->beConstructedWith('NonFinancial\ProcessedBatches\PostDateRange');
+
+        $this->request()->shouldHaveType('\Genesis\Api\Request\NonFinancial\ProcessedBatches\PostDateRange');
     }
 }

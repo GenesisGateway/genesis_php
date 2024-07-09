@@ -30,7 +30,7 @@ class PproSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
 
-        $this->setPaymentType('giropay');
+        $this->setPaymentType('safetypay');
         $this->setCurrency('EUR');
         $this->setBillingCountry('DE');
         $this->setBic('AGB3SSWI');
@@ -38,18 +38,6 @@ class PproSpec extends ObjectBehavior
 
         $this->setIban('DE12345678901234567890');
         $this->getDocument()->shouldContain('<iban>DE12345678901234567890</iban>');
-    }
-
-    public function it_should_fail_with_improper_iban()
-    {
-        $this->setRequestParameters();
-
-        $this->setPaymentType('giropay');
-        $this->setCurrency('EUR');
-        $this->setBillingCountry('DE');
-
-        $this->setIban('BG12345678901234567890');
-        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_contain_proper_structure_without_optional_parameters()
@@ -60,7 +48,7 @@ class PproSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setPaymentType('giropay');
+        $this->setPaymentType('safetypay');
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setCurrency('EUR');

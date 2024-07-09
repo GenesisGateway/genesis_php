@@ -1356,7 +1356,6 @@ Financial\OnlineBankingPayments\Bancomer
 Financial\OnlineBankingPayments\Bradesco
 Financial\OnlineBankingPayments\Davivienda
 Financial\OnlineBankingPayments\Eps
-Financial\OnlineBankingPayments\GiroPay
 Financial\OnlineBankingPayments\Ideal
 Financial\OnlineBankingPayments\Idebit\Payin
 Financial\OnlineBankingPayments\Idebit\Payout
@@ -1406,6 +1405,7 @@ NonFinancial\Consumers\Retrieve
 NonFinancial\Consumers\Update
 NonFinancial\Consumers\Disable
 NonFinancial\Consumers\Enable
+NonFinancial\Consumers\GetCards
 
 // Chargeback information request
 NonFinancial\Fraud\Chargeback\DateRange
@@ -1471,6 +1471,19 @@ NonFinancial\TokenizationApi\GetCard
 
 // Billing Transactions API
 NonFinancial\BillingApi\Transaction
+
+// APM Klarna Services
+NonFinancial\Alternatives\Klarna\ReleaseAuthorization
+NonFinancial\Alternatives\Klarna\ResendInvoice
+NonFinancial\Alternatives\Klarna\UpdateAddress
+NonFinancial\Alternatives\Klarna\UpdateItems
+
+// Processed Batches API - Available only via E-Comprocessing endpoint
+NonFinancial\ProcessedBatches\PostDateRange
+
+// Trustly APM Services
+NonFinancial\Alternatives\Trustly\RegisterAccount
+NonFinancial\Alternatives\Trustly\SelectAccount
 ```
 
 More information about each one of the request types can be found in the Genesis API Documentation and the Wiki

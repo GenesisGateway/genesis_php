@@ -132,7 +132,7 @@ class Types
     const PAYSAFECARD = 'paysafecard';
 
     /**
-     * Supports payments via EPS, SafetyPay, TrustPay, ELV, Przelewy24, and GiroPay
+     * Supports payments via EPS, SafetyPay, TrustPay, ELV, Przelewy24
      */
     const PPRO = 'ppro';
 
@@ -159,13 +159,6 @@ class Types
      * Direct PPRO transaction
      */
     const EPS = 'eps';
-
-    /**
-     * GiroPay
-     *
-     * Direct PPRO transaction
-     */
-    const GIROPAY = 'giropay';
 
     /**
      * Bank transfer payment, popular in Germany
@@ -650,7 +643,6 @@ class Types
             self::BRADESCO                => 'OnlineBankingPayments\Bradesco',
             self::DAVIVIENDA              => 'OnlineBankingPayments\Davivienda',
             self::EPS                     => 'OnlineBankingPayments\Eps',
-            self::GIROPAY                 => 'OnlineBankingPayments\Giropay',
             self::IDEAL                   => 'OnlineBankingPayments\Ideal',
             self::IDEBIT_PAYIN            => 'OnlineBankingPayments\Idebit\Payin',
             self::IDEBIT_PAYOUT           => 'OnlineBankingPayments\Idebit\Payout',
@@ -736,7 +728,6 @@ class Types
             self::EPS,
             self::EZEEWALLET,
             self::FASHIONCHEQUE,
-            self::GIROPAY,
             self::GOOGLE_PAY,
             self::IDEAL,
             self::IDEBIT_PAYIN,
@@ -868,7 +859,6 @@ class Types
             self::EFECTY,
             self::EPS,
             self::FASHIONCHEQUE,
-            self::GIROPAY,
             self::IDEAL,
             self::IDEBIT_PAYIN,
             self::INIT_RECURRING_SALE,

@@ -24,67 +24,44 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Payment;
+namespace Genesis\Api\Request\NonFinancial\Alternatives\Klarna;
+
+use Genesis\Api\Request\Base\NonFinancial\Alternatives\Klarna\BaseRequest;
+use Genesis\Api\Traits\Request\CustomerAddress\BillingInfoAttributes;
+use Genesis\Api\Traits\Request\CustomerAddress\ShippingInfoAttributes;
 
 /**
- * Class Methods
- *
- * Payment methods for Genesis Transactions
- *
- * @package Genesis\Api\Constants\Transaction
+ * Class UpdateAddress
+ * @package Genesis\Api\Request\NonFinancial\Alternatives\Klarna
  */
-class Methods
+class UpdateAddress extends BaseRequest
 {
-    /**
-     * e-payment standard
-     *
-     * PPRO transaction
-     */
-    const EPS = 'eps';
+    use BillingInfoAttributes;
+    use ShippingInfoAttributes;
 
-    /**
-     * iDEAL
-     *
-     * PPRO transaction
-     */
-    const IDEAL = 'ideal';
-
-    /**
-     * Przelewy24
-     *
-     * PPRO transaction
-     */
-    const PRZELEWY24 = 'przelewy24';
-
-    /**
-     * SafetyPay
-     *
-     * PPRO transaction
-     */
-    const SAFETY_PAY = 'safetypay';
-
-    /**
-     * Mr.Cash
-     *
-     * PPRO transaction
-     */
-    const BCMC = 'bcmc';
-
-    /**
-     * MyBank
-     *
-     * PPRO transaction
-     */
-    const MYBANK = 'mybank';
-
-    /**
-     * Returns all available payment methods
-     * @return array
-     */
-    public static function getMethods()
+    protected function initConfiguration()
     {
-        $methods = \Genesis\Utils\Common::getClassConstants(__CLASS__);
+        parent::initBaseConfiguration('klarna/update_order_address');
+    }
 
-        return array_values($methods);
+    protected function getRequestStructure()
+    {
+        return [
+            'billing_address'  => $this->getBillingAddressParamsStructure(),
+            'shipping_address' => $this->getShippingAddressParamsStructure()
+        ];
+    }
+
+    protected function getParentNode()
+    {
+        return 'update_order_address_request';
+    }
+
+    protected function setRequestRequiredFields()
+    {
+        return [
+            'billing_country',
+            'shipping_country'
+        ];
     }
 }

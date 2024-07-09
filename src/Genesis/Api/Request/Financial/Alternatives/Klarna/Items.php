@@ -56,9 +56,11 @@ class Items
      * Items constructor.
      * @param $currency
      */
-    public function __construct($currency)
+    public function __construct($currency = '')
     {
-        $this->currency = $currency;
+        if (!empty($currency)) {
+            $this->currency = $currency;
+        }
     }
 
     /**
@@ -69,8 +71,10 @@ class Items
      */
     public function addItem(Item $item)
     {
-        // set currency, so amounts transformations can be done
-        $item->setCurrency($this->currency);
+        if (!empty($this->currency)) {
+            // set currency, so amounts transformations can be done
+            $item->setCurrency($this->currency);
+        }
 
         array_push($this->items, $item);
         return $this;
@@ -116,7 +120,9 @@ class Items
     public function toArray()
     {
         return [
-            'order_tax_amount' => CurrencyUtils::amountToExponent($this->getOrderTaxAmount(), $this->currency),
+            'order_tax_amount' => (!empty($this->currency)) ?
+                CurrencyUtils::amountToExponent($this->getOrderTaxAmount(), $this->currency) :
+                $this->getOrderTaxAmount(),
             'items'            => array_map(
                 function ($item) {
                     return ['item' => $item->toArray()];

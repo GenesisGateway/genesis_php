@@ -47,6 +47,49 @@ class Item
     use MagicAccessors;
 
     /**
+     * Item type physical
+     * @const string
+     */
+    const ITEM_TYPE_PHYSICAL = 'physical';
+
+    /**
+     * Item type discount
+     * @const string
+     */
+    const ITEM_TYPE_DISCOUNT = 'discount';
+
+    /**
+     * Item type shipping_fee
+     * @const string
+     */
+    const ITEM_TYPE_SHIPPING_FEE = 'shipping_fee';
+
+    /**
+     * Item type digital
+     * @const string
+     */
+    const ITEM_TYPE_DIGITAL = 'digital';
+
+    /**
+     * Item type gift_card
+     * @const string
+     */
+    const ITEM_TYPE_GIFT_CARD = 'gift_card';
+
+    /**
+     * Item type store_credit
+     * @const string
+     */
+    const ITEM_TYPE_STORE_CREDIT = 'store_credit';
+
+    /**
+     * Item type surcharge
+     * @const string
+     */
+    const ITEM_TYPE_SURCHARGE = 'surcharge';
+
+
+    /**
      * Currency code in ISO-4217
      *
      * @var string
@@ -126,48 +169,6 @@ class Item
     protected $marketplace_seller_info = [];
 
     /**
-     * Item type physical
-     * @const string
-     */
-    const ITEM_TYPE_PHYSICAL = 'physical';
-
-    /**
-     * Item type discount
-     * @const string
-     */
-    const ITEM_TYPE_DISCOUNT = 'discount';
-
-    /**
-     * Item type shipping_fee
-     * @const string
-     */
-    const ITEM_TYPE_SHIPPING_FEE = 'shipping_fee';
-
-    /**
-     * Item type digital
-     * @const string
-     */
-    const ITEM_TYPE_DIGITAL = 'digital';
-
-    /**
-     * Item type gift_card
-     * @const string
-     */
-    const ITEM_TYPE_GIFT_CARD = 'gift_card';
-
-    /**
-     * Item type store_credit
-     * @const string
-     */
-    const ITEM_TYPE_STORE_CREDIT = 'store_credit';
-
-    /**
-     * Item type surcharge
-     * @const string
-     */
-    const ITEM_TYPE_SURCHARGE = 'surcharge';
-
-    /**
      * Item constructor.
      * @param $name
      * @param $item_type
@@ -180,7 +181,7 @@ class Item
      * @param $product_url
      * @param $quantity_unit
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function __construct(
         $name,
@@ -207,88 +208,11 @@ class Item
     }
 
     /**
-     * Verify required field
-     *
-     * @param $field
-     * @param $value
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyRequiredField($field, $value)
-    {
-        if (empty($value)) {
-            throw new ErrorParameter(
-                sprintf(
-                    'Empty (null) item required parameter: %s',
-                    $field
-                )
-            );
-        }
-    }
-
-    /**
-     * Verify non-negative filed
-     *
-     * @param $field
-     * @param $value
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyNonNegativeField($field, $value)
-    {
-        if (!empty($value) && $value <= 0) {
-            throw new ErrorParameter(
-                sprintf(
-                    'Item parameter %s is set to %s, but expected to be positive number',
-                    $field,
-                    $value
-                )
-            );
-        }
-    }
-
-    /**
-     * Verify negative filed
-     *
-     * @param $field
-     * @param $value
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyNegativeField($field, $value)
-    {
-        if (!empty($value) && $value > 0) {
-            throw new ErrorParameter(
-                sprintf(
-                    'Item parameter %s is set to %s, but expected to be negative number',
-                    $field,
-                    $value
-                )
-            );
-        }
-    }
-
-    /**
-     * Verify unit_price filed
-     *
-     * @param $value
-     * @throws \Genesis\Exceptions\ErrorParameter
-     */
-    protected function verifyUnitPriceField($value)
-    {
-        $this->verifyRequiredField('unit_price', $value);
-
-        if (in_array($this->item_type, [self::ITEM_TYPE_DISCOUNT, self::ITEM_TYPE_STORE_CREDIT])) {
-            $this->verifyNegativeField('unit_price', $value);
-            return;
-        }
-
-        $this->verifyNonNegativeField('unit_price', $value);
-    }
-
-    /**
      * Set name
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setName($value)
     {
@@ -303,7 +227,7 @@ class Item
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setUnitPrice($value)
     {
@@ -318,7 +242,7 @@ class Item
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setQuantity($value)
     {
@@ -334,7 +258,7 @@ class Item
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setTaxRate($value)
     {
@@ -348,7 +272,7 @@ class Item
      * Set total discount amount
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setTotalDiscountAmount($value)
     {
@@ -363,22 +287,15 @@ class Item
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setItemType($value)
     {
         $this->verifyRequiredField('item_type', $value);
 
         // check if it is valid type
-        $item_types = array(
-            self::ITEM_TYPE_PHYSICAL,
-            self::ITEM_TYPE_DISCOUNT,
-            self::ITEM_TYPE_SHIPPING_FEE,
-            self::ITEM_TYPE_DIGITAL,
-            self::ITEM_TYPE_GIFT_CARD,
-            self::ITEM_TYPE_STORE_CREDIT,
-            self::ITEM_TYPE_SURCHARGE
-        );
+        $item_types = CommonUtils::getClassConstants(__CLASS__);
+
         if (!in_array($value, $item_types)) {
             throw new ErrorParameter(
                 sprintf(
@@ -401,7 +318,7 @@ class Item
      *
      * @param $value
      * @return $this
-     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws ErrorParameter
      */
     public function setQuantityUnit($value)
     {
@@ -442,14 +359,18 @@ class Item
     public function getTotalTaxAmount()
     {
         // Convert to minor units for more accurate calculations
-        $total_amount = CurrencyUtils::amountToExponent($this->getTotalAmount(), $this->currency);
-        $tax_rate     = CurrencyUtils::amountToExponent($this->tax_rate, $this->currency);
+        $total_amount = $this->getAmountInProperUnit($this->getTotalAmount());
+        $tax_rate     = $this->getAmountInProperUnit($this->tax_rate);
 
         $total_tax_amount = ceil(
             $total_amount - ( ($total_amount * 10000) / (10000 + $tax_rate) )
         );
 
-        return CurrencyUtils::exponentToAmount($total_tax_amount, $this->currency);
+        if (!empty($this->currency)) {
+            return CurrencyUtils::exponentToAmount($total_tax_amount, $this->currency);
+        }
+
+        return $total_tax_amount;
     }
 
     /**
@@ -463,11 +384,11 @@ class Item
             'name'                  => $this->name,
             'item_type'             => $this->item_type,
             'quantity'              => $this->quantity,
-            'unit_price'            => CurrencyUtils::amountToExponent($this->unit_price, $this->currency),
-            'tax_rate'              => CurrencyUtils::amountToExponent($this->tax_rate, $this->currency),
-            'total_discount_amount' => CurrencyUtils::amountToExponent($this->total_discount_amount, $this->currency),
-            'total_amount'          => CurrencyUtils::amountToExponent($this->getTotalAmount(), $this->currency),
-            'total_tax_amount'      => CurrencyUtils::amountToExponent($this->getTotalTaxAmount(), $this->currency),
+            'unit_price'            => $this->getAmountInProperUnit($this->unit_price),
+            'tax_rate'              => $this->getAmountInProperUnit($this->tax_rate),
+            'total_discount_amount' => $this->getAmountInProperUnit($this->total_discount_amount),
+            'total_amount'          => $this->getAmountInProperUnit($this->getTotalAmount()),
+            'total_tax_amount'      => $this->getAmountInProperUnit($this->getTotalTaxAmount()),
             'reference'             => $this->reference,
             'image_url'             => $this->image_url,
             'product_url'           => $this->product_url,
@@ -490,6 +411,97 @@ class Item
     }
 
     /**
+     * Add merchant data: marketplace seller info
+     *
+     * @param $value
+     * @return $this
+     */
+    public function addMerchantMarketplaceSellerInfo($value)
+    {
+        array_push($this->marketplace_seller_info, $value);
+
+        return $this;
+    }
+
+    /**
+     * Verify required field
+     *
+     * @param $field
+     * @param $value
+     * @throws ErrorParameter
+     */
+    protected function verifyRequiredField($field, $value)
+    {
+        if (empty($value)) {
+            throw new ErrorParameter(
+                sprintf(
+                    'Empty (null) item required parameter: %s',
+                    $field
+                )
+            );
+        }
+    }
+
+    /**
+     * Verify non-negative filed
+     *
+     * @param $field
+     * @param $value
+     * @throws ErrorParameter
+     */
+    protected function verifyNonNegativeField($field, $value)
+    {
+        if (!empty($value) && $value <= 0) {
+            throw new ErrorParameter(
+                sprintf(
+                    'Item parameter %s is set to %s, but expected to be positive number',
+                    $field,
+                    $value
+                )
+            );
+        }
+    }
+
+    /**
+     * Verify negative filed
+     *
+     * @param $field
+     * @param $value
+     * @throws ErrorParameter
+     */
+    protected function verifyNegativeField($field, $value)
+    {
+        if (!empty($value) && $value > 0) {
+            throw new ErrorParameter(
+                sprintf(
+                    'Item parameter %s is set to %s, but expected to be negative number',
+                    $field,
+                    $value
+                )
+            );
+        }
+    }
+
+    /**
+     * Verify unit_price filed
+     *
+     * @param $value
+     * @throws ErrorParameter
+     */
+    protected function verifyUnitPriceField($value)
+    {
+        $this->verifyRequiredField('unit_price', $value);
+
+        if (in_array($this->item_type, [self::ITEM_TYPE_DISCOUNT, self::ITEM_TYPE_STORE_CREDIT])) {
+            $this->verifyNegativeField('unit_price', $value);
+
+            return;
+        }
+
+        $this->verifyNonNegativeField('unit_price', $value);
+    }
+
+    /**
      * Builds an array list with all product identifiers params
      *
      * @return array
@@ -499,19 +511,8 @@ class Item
         if ($this->product_identifiers instanceof ProductIdentifiers) {
             return $this->product_identifiers->toArray();
         }
-        return [];
-    }
 
-    /**
-     * Add merchant data: marketplace seller info
-     *
-     * @param $value
-     * @return $this
-     */
-    public function addMerchantMarketplaceSellerInfo($value)
-    {
-        array_push($this->marketplace_seller_info, $value);
-        return $this;
+        return [];
     }
 
     /**
@@ -527,5 +528,21 @@ class Item
             },
             $this->marketplace_seller_info
         );
+    }
+
+    /**
+     * If the currency is set and the amount is in major unit convert it to minor
+     *
+     * @param mixed $value
+     * @return mixed
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    private function getAmountInProperUnit($value)
+    {
+        if (!empty($this->currency)) {
+            return CurrencyUtils::amountToExponent($value, $this->currency);
+        }
+
+        return $value;
     }
 }

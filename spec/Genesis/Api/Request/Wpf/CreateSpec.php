@@ -373,7 +373,7 @@ class CreateSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new ErrorParameter('Invalid value (test) for required parameter: payment_method. ' .
-                'Allowed values: eps, giropay, ideal, przelewy24, safetypay, bcmc, mybank. (Transaction type: ppro)'
+                'Allowed values: eps, ideal, przelewy24, safetypay, bcmc, mybank. (Transaction type: ppro)'
             )
         )->during(
             'addTransactionType',
@@ -385,7 +385,7 @@ class CreateSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new ErrorParameter('Invalid value (bcmc, test) for required parameter: payment_method. ' .
-                'Allowed values: eps, giropay, ideal, przelewy24, safetypay, bcmc, mybank. (Transaction type: ppro)'
+                'Allowed values: eps, ideal, przelewy24, safetypay, bcmc, mybank. (Transaction type: ppro)'
             )
         )->during(
             'addTransactionType',

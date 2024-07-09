@@ -72,7 +72,6 @@ class Names
         Types::EZEECARD_PAYOUT         => 'eZeeCard Payout',
         Types::EZEEWALLET              => 'eZeeWallet',
         Types::FASHIONCHEQUE           => 'Fashioncheque',
-        Types::GIROPAY                 => 'GiroPay',
         Types::GOOGLE_PAY              => 'Google Pay',
         Types::IDEAL                   => 'iDeal',
         Types::IDEBIT_PAYIN            => 'iDebit PayIn',
