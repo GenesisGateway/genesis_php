@@ -34,9 +34,8 @@ class TransactionSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_filters()
     {
         $this->setRequestParameters();
-        $this->setUniqueId(null);
 
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+        $this->shouldThrow(InvalidArgument::class)->during('setUniqueId', [null]);
     }
     public function it_should_set_request_filters()
     {
@@ -107,16 +106,16 @@ class TransactionSpec extends ObjectBehavior
     protected function setRequestParameters()
     {
         $this->setResponseFields($this->getResponseFieldsAllowedValues());
-        $this->setUniqueId('unique_id');
+        $this->setUniqueId(['unique_id']);
     }
 
     private function getOrderByFieldAllowedValues()
     {
         $faker = Faker::getInstance();
 
-        $values = ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount',
-            'terminalId', 'exchangeRate', 'billingAmount', 'transactionFeeAmount', 'commissionPercent',
-            'commissionAmount', 'commissionRuleId', 'interchangeFee', 'region', 'settlementStatus'];
+        $values = ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
+            'billingAmount', 'transactionFeeAmount', 'commissionPercent', 'commissionAmount', 'interchangeFee',
+            'region', 'settlementStatus'];
 
         return $faker->randomElement($values);
     }

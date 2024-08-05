@@ -698,32 +698,36 @@ final class Errors
         switch (strval($issuerResponseCode)) {
             case '00':
                 return 'Approved or completed successfully';
+            case '01':
+                return 'Refer to card issuer';
             case '02':
-                return 'Refer to card issue';
+                return 'Refer to card issuer, special condition';
             case '03':
                 return 'Invalid merchant';
             case '04':
-                return 'Pick-up card';
+                return 'Pickup card (no fraud) / Capture card';
             case '05':
                 return 'Do not honour';
             case '06':
-                return 'Invalid Transaction for Terminal';
+                return 'Error';
             case '07':
-                return 'Honour with ID';
+                return 'Pick up card, special condition (fraud account)';
             case '08':
-                return 'Time-Out';
+                return 'Honour with ID';
             case '09':
                 return 'No Original';
             case '10':
-                return 'Unable to Reverse';
-            case '11':
                 return 'Partial Approval';
+            case '11':
+                return 'Approved (V.I.P)';
             case '12':
                 return 'Invalid transaction card / issuer / acquirer';
             case '13':
-                return 'Invalid amount';
+                return 'Invalid amount or currency conversion field overflow';
             case '14':
-                return 'Invalid card number';
+                return 'Invalid account number (no such number) / Invalid card number';
+            case '15':
+                return 'No such issuer';
             case '17':
                 return 'Invalid Capture date (terminal business date)';
             case '19':
@@ -731,91 +735,116 @@ final class Errors
             case '20':
                 return 'No From Account';
             case '21':
-                return 'No To Account';
+                return 'No action taken';
             case '22':
                 return 'No Checking Account';
             case '23':
                 return 'No Saving Account';
             case '24':
                 return 'No Credit Account';
+            case '25':
+                return 'Unable to locate record in file';
+            case '28':
+                return 'File temporarily not available for update or unquiry';
             case '30':
                 return 'Format error';
             case '34':
                 return 'Implausible card data';
             case '39':
-                return 'Transaction Not Allowed';
+                return 'No credit account';
             case '41':
-                return 'Pick-up card';
+                return 'Lost card, pick up (fraud account)';
             case '42':
                 return 'Special Pickup';
             case '43':
-                return 'Hot Card, Pickup (if possible)';
+                return 'Stolen card, pick up (fraud account)';
             case '44':
                 return 'Pickup Card';
             case '45':
                 return 'Transaction Back Off';
+            case '46':
+                return 'Closed account';
             case '51':
                 return 'Not sufficient funds';
+            case '52':
+                return 'No checking account';
+            case '53':
+                return 'No savings account';
             case '54':
-                return 'Expired card';
+                return 'Expired card or expiration date is missing';
             case '55':
-                return 'Incorrect PIN; Re-enter';
+                return 'Incorrect PIN or PIN missing';
             case '57':
-                return 'Not permitted on card';
+                return 'Transaction not permitted to issuer/cardholder';
             case '58':
-                return 'Txn Not Permitted On Term';
+                return 'Transaction not allowed at acquirer/terminal';
+            case '59':
+                return 'Suspected fraud';
             case '61':
-                return 'Exceeds amount limit';
+                return 'Exceeds approval amount limit';
             case '62':
-                return 'Restricted card';
+                return 'Restricted card (card invalid in this region or country)';
             case '63':
-                return 'MAC Key Error';
+                return 'Security violation (source is not correct issuer)';
+            case '64':
+                return 'Transaction does not fulfil AML requirement';
             case '65':
-                return 'Exceeds frequency limit';
+                return 'Exceeds withdrawal count limit OR Identity Check Soft-Decline of EMV 3DS Authentication ' .
+                    '(merchant should Resubmit authentication with 3DS)';
             case '66':
                 return 'Exceeds Acquirer Limit';
             case '67':
                 return 'Retain Card; no reason specified';
             case '68':
                 return 'Response received too late';
+            case '70':
+                return 'PIN data required / Contact Card Issuer';
+            case '71':
+                return 'PIN Not Changed';
+            case '74':
+                return 'Different value than that used for PIN encryption errors';
             case '75':
-                return 'Exceeds PIN Retry';
+                return 'Allowable number of PIN entry tries exceeded';
             case '76':
-                return 'Invalid Account';
+                return 'Unsolicited reversal / Invalid/nonexistent To Account specified';
             case '77':
-                return 'Issuer Does Not Participate In The Service';
+                return 'Issuer Does Not Participate In The Service / Invalid/nonexistent From Account specified';
             case '78':
-                return 'Function Not Available';
+                return 'Blocked, first used — Transaction from new cardholder, and card not properly unblocked';
             case '79':
-                return 'Key Validation Error';
+                return 'Already reversed (by Switch) / Life cycle';
             case '80':
-                return 'Approval for Purchase Amount Only';
+                return 'No financial impact / System not available';
             case '81':
-                return 'Unable to Verify PIN';
+                return 'Cryptographic error found in PIN / Domestic Debit Transaction Not Allowed (Regional use only)';
             case '82':
-                return 'Invalid Card Verification Value';
+                return 'Negative CAM, dCVV, iCVV, or CVV results';
             case '83':
                 return 'Not declined (AVS Only)';
             case '84':
                 return 'Invalid Life Cycle of transaction';
             case '85':
-                return 'No Keys To Use';
+                return 'No reason to decline a request for address verification, CVV2 verification, or a credit ' .
+                    'voucher or merchandise return';
             case '86':
-                return 'K M E Sync Error';
+                return 'Cannot verify PIN; for example, no PVV';
             case '87':
-                return 'PIN Key Error';
+                return 'PIN Key Error / Purchase Amount Only, No Cash Back Allowed';
             case '88':
-                return 'MAC sync Error';
+                return 'MAC sync Error / Cryptographic failure';
             case '89':
-                return 'Security Violation';
+                return 'Ineligible to receive financial position information (GIV) / Unacceptable PIN—Transaction';
+            case '90':
+                return 'Cutoff is in progress';
             case '91':
-                return 'Issuer not available';
+                return 'Issuer or switch inoperative and STIP not applicable or not available for this transaction';
             case '92':
-                return 'Invalid Issuer';
+                return 'Financial institution or intermediate network facility cannot be found for routing ' .
+                    '(receiving institution ID is invalid)';
             case '93':
-                return 'Transaction cannot be completed';
+                return 'Transaction cannot be completed - violation of law';
             case '94':
-                return 'Invalid originator';
+                return 'Invalid originator / Duplication transaction detected';
             case '96':
                 return 'System malfunction';
             case '97':
@@ -824,18 +853,44 @@ final class Errors
                 return 'Duplicate Reversal';
             case '99':
                 return 'Duplicate Transaction';
+            case '1A':
+                return 'Additional customer authentication required. Soft decline';
+            case '1Z':
+                return 'Authorization System or issuer system inoperative';
+            case '6P':
+                return 'Verification data failed';
+            case 'B1':
+                return 'Surcharge amount not permitted on Visa cards or EBT food stamps (U.S. acquirers only)';
+            case 'B2':
+                return 'Surcharge amount not supported by debit network issuer.';
+            case 'N0':
+                return 'Force STIP';
             case 'N3':
                 return 'Cash Service Not Available';
             case 'N4':
-                return 'Cash Back Request Exceeds Issuer Limit';
+                return 'Cash request exceeds issuer or approved limit';
+            case 'N5':
+                return 'Ineligible for resubmission';
             case 'N7':
-                return 'CVV2 Failure';
+                return 'Decline for CVV2 failure';
+            case 'N8':
+                return 'Transaction amount exceeds preauthorized approval amount';
+            case 'P5':
+                return 'Denied PIN unblock—PIN change or unblock request declined by issuer';
+            case 'P6':
+                return 'Denied PIN change—requested PIN unsafe';
+            case 'Q1':
+                return 'Card Authentication failed';
             case 'R0':
                 return 'Stop Payment Order';
             case 'R1':
                 return 'Revocation of Authorisation Order';
+            case 'R2':
+                return 'Transaction does not qualify for Visa PIN';
             case 'R3':
                 return 'Revocation of all Authorisations Order';
+            case 'Z3':
+                return 'Unable to go online; offline-declined';
         }
 
         return false;

@@ -1,3 +1,11 @@
+2.0.2
+-----
+**Features**:
+
+* Added Latipay (PID) bank code support through Online Banking PayIn transaction request
+* Updated Response Scheme codes and messages
+* Updated Billing API filter attributes
+
 2.0.1
 -----
 **Features**:

@@ -995,6 +995,11 @@ class Banks
     const TRL = 'TRL';
 
     /**
+     * Latipay
+     */
+    const PID = 'PID';
+
+    /**
      * Retrieve list of all Bank Codes
      *
      * @return array

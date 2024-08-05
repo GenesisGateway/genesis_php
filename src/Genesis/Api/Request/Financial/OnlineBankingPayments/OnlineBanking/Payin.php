@@ -222,6 +222,9 @@ class Payin extends Financial
                 'PLN' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('PLN')]
                 ],
+                'AUD' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('AUD')]
+                ]
             ]
         ];
 

@@ -41,6 +41,9 @@ class BankCodeParameters
      * @var array $codes
      */
     private static $codes = [
+        'AUD' => [
+            Banks::PID
+        ],
         'BRL' => [
             Banks::CA
         ],

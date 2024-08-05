@@ -40,9 +40,8 @@ use Genesis\Utils\Common as CommonUtils;
  * Billing Transactions API request
  * @package Genesis\Api\Request\NonFinancial\BillingApi
  *
- * @method $this  setUniqueId($value)
- * @method string getUniqueId()
  * @method string getOrderByField()
+ * @method string getTransactionType()
  */
 class Transaction extends GraphqlRequest
 {
@@ -50,13 +49,16 @@ class Transaction extends GraphqlRequest
     use OrderByDirection;
     use PagingAttributes;
 
-    const MAX_COUNT_BILLING_STATEMENTS_FILTER = 10;
+    const MAX_COUNT_BILLING_STATEMENT_ID    = 10;
+    const MAX_COUNT_UNIQUE_ID               = 10000;
+    const MAX_COUNT_MERCHANT_TRANSACTION_ID = 10000;
+    const MAX_COUNT_MASTER_ACCOUNT_NAME     = 10;
 
     /**
      * Request filter parameter:
-     * Billing transaction unique ID
+     * List of billing transaction unique IDs. Max number of elements is 10000.
      *
-     * @var string
+     * @var string[]
      */
     protected $unique_id;
 
@@ -64,9 +66,33 @@ class Transaction extends GraphqlRequest
      * Request filter parameter:
      * List of billing statement IDs. Max number of elements allowed is 10.
      *
-     * @var array
+     * @var string[]
      */
     protected $billing_statement_id = [];
+
+    /**
+     * Request filter parameter:
+     * List of merchant transaction IDs. Max number of elements allowed is 10000.
+     *
+     * @var string[]
+     */
+    protected $merchant_transaction_id = [];
+
+    /**
+     * Request filter parameter:
+     * List of master account names. Max number of elements allowed is 100.
+     *
+     * @var string[]
+     */
+    protected $master_account_name = [];
+
+    /**
+     * Request filter parameter:
+     * Transaction type. See available transaction types. To be passed with spaces and capital letters if any.
+     *
+     * @var string
+     */
+    protected $transaction_type;
 
     /**
      * Field result collection is sorted by.
@@ -82,23 +108,41 @@ class Transaction extends GraphqlRequest
     }
 
     /**
-     * Set the list of billing statement IDs in the filter
+     * Set the list of unique IDs in the filter
      *
      * @param array $value
      * @return $this
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws InvalidArgument
+     */
+    public function setUniqueId($value)
+    {
+        return $this->setStringArray($value, 'unique_id', 'UniqueId');
+    }
+
+    /**
+     * Return a formatted string with the Unique IDs
+     *
+     * @return string
+     */
+    public function getUniqueId()
+    {
+        if (empty($this->unique_id)) {
+            return '';
+        }
+
+        return sprintf('[%s]', implode(',', $this->unique_id));
+    }
+
+    /**
+     * Set the list of Billing statement IDs in the filter
+     *
+     * @param array $value
+     * @return $this
+     * @throws InvalidArgument
      */
     public function setBillingStatementId($value)
     {
-        if (CommonUtils::isValidArray($value)) {
-            $this->billing_statement_id = array_map('intval', $value);
-
-            return $this;
-        }
-
-        throw new InvalidArgument(
-            'BillingStatementId should be an array of integers'
-        );
+        return $this->setStringArray($value, 'billing_statement_id', 'BillingStatementId');
     }
 
     /**
@@ -113,6 +157,76 @@ class Transaction extends GraphqlRequest
         }
 
         return sprintf('[%s]', implode(',', $this->billing_statement_id));
+    }
+
+    /**
+     * Set the list of Merchant transaction IDs in the filter
+     *
+     * @param array $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMerchantTransactionId($value)
+    {
+        return $this->setStringArray($value, 'merchant_transaction_id', 'MerchantTransactionId');
+    }
+
+    /**
+     * Return a formatted string with the Merchant IDs
+     *
+     * @return string
+     */
+    public function getMerchantTransactionId()
+    {
+        if (empty($this->merchant_transaction_id)) {
+            return '';
+        }
+
+        return sprintf('[%s]', implode(',', $this->merchant_transaction_id));
+    }
+
+    /**
+     * Set the list of Master Account Names in the filter
+     *
+     * @param array $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMasterAccountName($value)
+    {
+        return $this->setStringArray($value, 'master_account_name', 'MasterAccountName');
+    }
+
+    /**
+     * Return a formatted string with the Master Account Names
+     *
+     * @return string
+     */
+    public function getMasterAccountName()
+    {
+        if (empty($this->master_account_name)) {
+            return '';
+        }
+
+        return sprintf('[%s]', implode(',', $this->master_account_name));
+    }
+
+    /**
+     * Set transaction type parameter
+     *
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setTransactionType($value)
+    {
+        return $this->allowedOptionsSetter(
+            'transaction_type',
+            $this->getTransactionTypeAllowedValues(),
+            $value,
+            'Invalid value given for transactionType. Allowed values: ' .
+            implode(', ', $this->getTransactionTypeAllowedValues())
+        );
     }
 
     /**
@@ -131,34 +245,6 @@ class Transaction extends GraphqlRequest
             'Invalid value given for orderByField. Allowed values: ' .
             implode(', ', $this->getOrderByFieldAllowedValues())
         );
-    }
-
-    /**
-     * List of allowed response fields
-     *
-     * @return string[]
-     */
-    protected function getResponseFieldsAllowedValues()
-    {
-        return ['uniqueId', 'billingStatementId', 'billingStatementDisplayId', 'transactionType',
-            'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency',
-            'billingAmount', 'transactionFeeCurrency', 'transactionFeeAmount', 'commissionAmount', 'commissionRuleId',
-            'transactionFeeChargedOnBillingStatementId', 'commissionPercent',  'interchangeFee', 'interchangeCurrency',
-            'isInterchangeplusplus', 'interchangeplusplusChargedOnBillingStatementId', 'schemeFee', 'vatAmount',
-            'vatRate', 'schemeFeeCurrency', 'standardDebitCardRate', 'gstAmount', 'gstRate', 'terminalId', 'region',
-            'settlementStatements', 'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'valueDate'];
-    }
-
-    /**
-     * List of allowed fields for response sorting
-     *
-     * @return string[]
-     */
-    protected function getOrderByFieldAllowedValues()
-    {
-        return ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount',
-            'terminalId', 'exchangeRate', 'billingAmount', 'transactionFeeAmount', 'commissionPercent',
-            'commissionAmount', 'commissionRuleId', 'interchangeFee', 'region', 'settlementStatus'];
     }
 
     /**
@@ -210,7 +296,10 @@ class Transaction extends GraphqlRequest
                 'start_date',
                 'end_date',
                 'unique_id',
-                'billing_statement_id'
+                'billing_statement_id',
+                'merchant_transaction_id',
+                'master_account_name',
+                'transaction_type'
             ]
         ];
         $this->requiredFieldsGroups = \Genesis\Utils\Common::createArrayObject($requiredFieldsGroups);
@@ -249,24 +338,126 @@ class Transaction extends GraphqlRequest
     }
 
     /**
-     * Validate max number of billingStatementId elements
+     * Validate max number of filter elements
      *
      * @return void
      * @throws ErrorParameter
      */
     protected function validateStatementsMaxCount()
     {
-        if (
-            !empty($this->billing_statement_id)
-            && count($this->billing_statement_id) > self::MAX_COUNT_BILLING_STATEMENTS_FILTER
-        ) {
+        $this->checkArrayMaxSize(
+            $this->billing_statement_id,
+            self::MAX_COUNT_BILLING_STATEMENT_ID,
+            'billingStatementId'
+        );
+
+        $this->checkArrayMaxSize(
+            $this->unique_id,
+            self::MAX_COUNT_UNIQUE_ID,
+            'uniqueId'
+        );
+
+        $this->checkArrayMaxSize(
+            $this->merchant_transaction_id,
+            self::MAX_COUNT_MERCHANT_TRANSACTION_ID,
+            'merchantTransactionId'
+        );
+
+        $this->checkArrayMaxSize(
+            $this->master_account_name,
+            self::MAX_COUNT_MASTER_ACCOUNT_NAME,
+            'masterAccountName'
+        );
+    }
+
+    /**
+     * Validate max number of elements in array
+     *
+     * @param array  $var     - the array variable
+     * @param int    $maxSize - max size of the array
+     * @param string $message - text for the error message
+     *
+     * @return void
+     * @throws ErrorParameter
+     */
+    protected function checkArrayMaxSize($var, $maxSize, $message)
+    {
+        if (!empty($var) && count($var) > $maxSize) {
             throw new ErrorParameter(
                 sprintf(
-                    'Max number of billingStatementID elements allowed is %s.',
-                    self::MAX_COUNT_BILLING_STATEMENTS_FILTER
+                    'Max number of %s elements allowed is %s.',
+                    $message,
+                    $maxSize
                 )
             );
         }
+    }
+
+    /**
+     * Set parameter of type array of strings
+     *
+     * @param array $value    - value to be set
+     * @param string $name    - name of the array variable
+     * @param string $message - the message of the exception
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    protected function setStringArray($value, $name, $message)
+    {
+        if (CommonUtils::isValidArray($value)) {
+            $this->{$name} = array_map('strval', $value);
+
+            return $this;
+        }
+
+        throw new InvalidArgument(
+            "$message should be an array of strings"
+        );
+    }
+
+    /**
+     * List of allowed response fields
+     *
+     * @return string[]
+     */
+    protected function getResponseFieldsAllowedValues()
+    {
+        return ['uniqueId', 'billingStatementId', 'billingStatementDisplayId', 'transactionType',
+            'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency',
+            'billingAmount', 'transactionFeeCurrency', 'transactionFeeAmount', 'commissionAmount', 'commissionRuleId',
+            'transactionFeeChargedOnBillingStatementId', 'commissionPercent',  'interchangeFee', 'interchangeCurrency',
+            'isInterchangeplusplus', 'interchangeplusplusChargedOnBillingStatementId', 'schemeFee', 'vatAmount',
+            'vatRate', 'schemeFeeCurrency', 'standardDebitCardRate', 'gstAmount', 'gstRate', 'terminalId', 'region',
+            'settlementStatements', 'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'valueDate'];
+    }
+
+    /**
+     * List of allowed fields for response sorting
+     *
+     * @return string[]
+     */
+    protected function getOrderByFieldAllowedValues()
+    {
+        return ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
+            'billingAmount', 'transactionFeeAmount', 'commissionPercent', 'commissionAmount', 'interchangeFee',
+            'region', 'settlementStatus'];
+    }
+
+    /**
+     * List of allowed values for transaction_type parameter
+     *
+     * @return string[]
+     */
+    protected function getTransactionTypeAllowedValues()
+    {
+        return ['Authorisation Approved', 'Authorisation Declined', 'Settlement Approved', 'Settlement Declined',
+            'Sale Approved', 'Sale Declined', 'Refund Approved', 'Refund Declined', 'Payout Approved',
+            'Payout Declined', 'CFT Other Approved', 'CFT Declined', 'Chargeback', 'Chargeback Reversal',
+            'Chargeback Representment', 'Retrieval Request', 'Void', 'Visa EU Intraregional Fraud Chargeback',
+            'MasterCard EU Region Chargeback', 'Second Chargeback', 'CFT Visa Approved', 'CFT MasterCard Approved',
+            'Visa RDR', 'RDR Reversal', 'Gateway Transaction Fee', 'Risk Management Transaction Fee',
+            'Fraud Engine Transaction Fee'];
     }
 
     /**
@@ -277,10 +468,13 @@ class Transaction extends GraphqlRequest
     protected function getRequestFilters()
     {
         $filters = [
-            'uniqueId'           => $this->getUniqueId(),
-            'startDate'          => $this->getStartDate(),
-            'endDate'            => $this->getEndDate(),
-            'billingStatementId' => $this->getBillingStatementId()
+            'uniqueId'              => $this->getUniqueId(),
+            'startDate'             => $this->getStartDate(),
+            'endDate'               => $this->getEndDate(),
+            'billingStatementId'    => $this->getBillingStatementId(),
+            'merchantTransactionId' => $this->getMerchantTransactionId(),
+            'masterAccountName'     => $this->getMasterAccountName(),
+            'transactionType'       => $this->getTransactionType()
         ];
 
         $filters = array_filter($filters);
