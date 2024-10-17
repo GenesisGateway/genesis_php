@@ -34,6 +34,7 @@ use Genesis\Api\Traits\Request\DocumentAttributes;
 use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
@@ -62,6 +63,7 @@ class GooglePay extends Financial
     use GooglePayAttributes;
     use NotificationAttributes;
     use PaymentAttributes;
+    use RecurringTypeAttributes;
 
     /**
      * Used in Google token for signatures array
@@ -135,7 +137,10 @@ class GooglePay extends Financial
      */
     protected function checkRequirements()
     {
-        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
+        $this->validateThreedsCarHolderDates();
+
+        $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations() +
+            $this->requiredRecurringInitialTypesFieldValuesConditional();
 
         if ($this->document_id) {
             $requiredFieldsValuesConditional = array_merge_recursive(
@@ -175,6 +180,7 @@ class GooglePay extends Financial
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'document_id'               => $this->document_id,
             'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
+            'recurring_type'            => $this->getRecurringType()
         ];
     }
 
@@ -190,7 +196,8 @@ class GooglePay extends Financial
     protected function allowedEmptyNotNullFields()
     {
         return array(
-                'threeds_v2_browser_time_zone_offset' => 'time_zone_offset'
+            'amount'                              => 'amount',
+            'threeds_v2_browser_time_zone_offset' => 'time_zone_offset'
         );
     }
 

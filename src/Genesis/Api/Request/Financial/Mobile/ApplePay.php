@@ -31,12 +31,14 @@ use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\DocumentAttributes;
 use Genesis\Api\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\Currency;
 
 /**
  * Class ApplePay
@@ -55,6 +57,7 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
     use DescriptorAttributes;
     use DocumentAttributes;
     use PaymentAttributes;
+    use RecurringTypeAttributes;
 
     /**
      * Sets ApplePay token
@@ -112,7 +115,7 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'currency'        => \Genesis\Utils\Currency::getList(),
+            'currency'        => Currency::getList(),
             'payment_subtype' => ApplePaySubtypes::getAllowedPaymentTypes()
         ];
 
@@ -123,19 +126,41 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
      * Add document_id conditional validation if it is present
      *
      * @return void
+     *
      * @throws InvalidArgument
      * @throws \Genesis\Exceptions\ErrorParameter
      * @throws \Genesis\Exceptions\InvalidClassMethod
      */
     protected function checkRequirements()
     {
+        $requiredFieldsValuesConditional = $this->requiredRecurringInitialTypesFieldValuesConditional();
+
         if ($this->document_id) {
-            $this->requiredFieldValuesConditional = CommonUtils::createArrayObject(
+            $requiredFieldsValuesConditional = array_merge_recursive(
+                $requiredFieldsValuesConditional,
                 $this->getDocumentIdConditions()
             );
         }
 
+        $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
+
         parent::checkRequirements();
+    }
+
+    /**
+     * Return the required parameters keys which values could evaluate as empty
+     * Example value:
+     * array(
+     *     'class_property' => 'request_structure_key'
+     * )
+     *
+     * @return array
+     */
+    protected function allowedEmptyNotNullFields()
+    {
+        return array(
+            'amount' => 'amount'
+        );
     }
 
     /**
@@ -160,6 +185,7 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
             'crypto'                    => $this->crypto,
             'business_attributes'       => $this->getBusinessAttributesStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+            'recurring_type'            => $this->getRecurringType()
         ];
     }
 }

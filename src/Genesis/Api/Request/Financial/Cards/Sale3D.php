@@ -143,6 +143,8 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
      */
     protected function checkRequirements()
     {
+        $this->validateThreedsCarHolderDates();
+
         $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations() +
             $this->requiredRecurringInitialTypesFieldValuesConditional();
 

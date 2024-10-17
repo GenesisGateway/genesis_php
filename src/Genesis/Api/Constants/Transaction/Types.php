@@ -286,30 +286,6 @@ class Types
     const INTERSOLVE = 'intersolve';
 
     /**
-     * With Klarna Authorize transactions, you can confirm that an order is successful.
-     * After settling the transaction (e.g. shipping the goods), you should use klarna_capture transaction
-     * type to capture the amount.
-     * Klarna authorize transaction will automatically be cancelled after a certain time frame, most likely two weeks.
-     */
-    const KLARNA_AUTHORIZE = 'klarna_authorize';
-
-    /**
-     * Klarna capture settles a klarna_authorize transaction.
-     * Do this when you are shipping goods, for example. A klarna_capture can only be used after an
-     * klarna_authorize on the same transaction.
-     * Therefore, the reference id of the klarna authorize transaction is mandatory.
-     */
-    const KLARNA_CAPTURE = 'klarna_capture';
-
-    /**
-     * Klarna Refunds allow to return already billed amounts to customers.
-     * The amount can be fully or partially refunded. Klarna refunds can only be done on former klarna_capture(settled)
-     * transactions.
-     * Therefore, the reference id for the corresponding transaction is mandatory
-     */
-    const KLARNA_REFUND = 'klarna_refund';
-
-    /**
      * Banco do Brasil offers online bank transfer payment service.
      */
     const BANCO_DO_BRASIL = 'banco_do_brasil';
@@ -570,6 +546,35 @@ class Types
     const PIX = 'pix';
 
     /**
+     * Cash payment methods allow customers to pay bills and online purchases in cash at convenient physical
+     * locations such as stores, banks, ATMs, even pharmacies in some countries. Usually, at checkout a voucher
+     * is generated with a barcode or another payment reference and the shopper can go to one of the supported
+     * shops/locations for the specific payment method and pay this voucher in cash.
+     */
+    const CASH = 'cash';
+
+    /**
+     * Klarna is a Swedish e-commerce company that provides payment services for online stores.
+     */
+    const INVOICE = 'invoice';
+
+    /**
+     * You can also use invoice capture for partial amount of the initial invoice authorize amount
+     * but invoice capture amount should be the same as the sum of items total amount. However, you
+     * cannot capture a higher amount than initially authorized.
+     */
+    const INVOICE_CAPTURE = 'invoice_capture';
+
+    //TODO: Copied from Klarna Refund, fix the description
+    /**
+     * Klarna Refunds allow to return already billed amounts to customers.
+     * The amount can be fully or partially refunded. Klarna refunds can only be done on former klarna_capture(settled)
+     * transactions.
+     * Therefore, the reference id for the corresponding transaction is mandatory
+     */
+    const INVOICE_REFUND = 'invoice_refund';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -592,9 +597,6 @@ class Types
             self::VOID                    => 'Cancel',
             self::CAPTURE                 => 'Capture',
             self::REFUND                  => 'Refund',
-            self::KLARNA_AUTHORIZE        => 'Alternatives\Klarna\Authorize',
-            self::KLARNA_CAPTURE          => 'Alternatives\Klarna\Capture',
-            self::KLARNA_REFUND           => 'Alternatives\Klarna\Refund',
             self::P24                     => 'Alternatives\P24',
             self::POLI                    => 'Alternatives\Poli',
             self::PPRO                    => 'Alternatives\Ppro',
@@ -627,6 +629,7 @@ class Types
             self::OXXO                    => 'CashPayments\Oxxo',
             self::PAGO_FACIL              => 'CashPayments\PagoFacil',
             self::PIX                     => 'CashPayments\Pix',
+            self::CASH                    => 'CashPayments\Cash',
             self::REDPAGOS                => 'CashPayments\Redpagos',
             self::BITPAY_PAYOUT           => 'Crypto\BitPay\Payout',
             self::BITPAY_REFUND           => 'Crypto\BitPay\Refund',
@@ -634,6 +637,9 @@ class Types
             self::TCS                     => 'GiftCards\Tcs',
             self::FASHIONCHEQUE           => 'GiftCards\Fashioncheque',
             self::INTERSOLVE              => 'GiftCards\Intersolve',
+            self::INVOICE                 => 'Alternatives\Invoice\Authorize',
+            self::INVOICE_CAPTURE         => 'Alternatives\Invoice\Capture',
+            self::INVOICE_REFUND          => 'Alternatives\Invoice\Refund',
             self::APPLE_PAY               => 'Mobile\ApplePay',
             self::GOOGLE_PAY              => 'Mobile\GooglePay',
             self::RUSSIAN_MOBILE_SALE     => 'Mobile\RussianMobileSale',
@@ -720,6 +726,7 @@ class Types
             self::BOLETO,
             self::BRADESCO,
             self::CABAL,
+            self::CASH,
             self::CASHU,
             self::CENCOSUD,
             self::DAVIVIENDA,
@@ -736,7 +743,6 @@ class Types
             self::INSTA_DEBIT_PAYIN,
             self::INTERSOLVE,
             self::ITAU,
-            self::KLARNA_AUTHORIZE,
             self::MULTIBANCO,
             self::MY_BANK,
             self::NARANJA,
@@ -825,10 +831,10 @@ class Types
         $transactionTypesList = [
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
-            self::KLARNA_AUTHORIZE,
             self::APPLE_PAY,
             self::GOOGLE_PAY,
-            self::PAY_PAL
+            self::PAY_PAL,
+            self::INVOICE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -854,6 +860,7 @@ class Types
             self::BOLETO,
             self::BRADESCO,
             self::CAPTURE,
+            self::CASH,
             self::CASHU,
             self::DAVIVIENDA,
             self::EFECTY,
@@ -864,7 +871,7 @@ class Types
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
             self::ITAU,
-            self::KLARNA_CAPTURE,
+            self::INVOICE,
             self::MY_BANK,
             self::MY_BANK,
             self::NEOSURF,
@@ -922,7 +929,9 @@ class Types
             self::SALE,
             self::SALE_3D,
             self::GOOGLE_PAY,
-            self::PAY_PAL
+            self::PAY_PAL,
+            self::CASH,
+            self::INVOICE,
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -948,7 +957,7 @@ class Types
         $transactionTypesList = [
             self::AUTHORIZE,
             self::AUTHORIZE_3D,
-            self::KLARNA_AUTHORIZE
+            self::INVOICE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -963,7 +972,7 @@ class Types
     {
         $transactionTypesList = [
             self::CAPTURE,
-            self::KLARNA_CAPTURE
+            self::INVOICE_CAPTURE
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -979,8 +988,8 @@ class Types
         $transactionTypesList = [
             self::REFUND,
             self::SDD_REFUND,
-            self::KLARNA_REFUND,
-            self::BITPAY_REFUND
+            self::BITPAY_REFUND,
+            self::INVOICE_REFUND
         ];
 
         return in_array(strtolower($type), $transactionTypesList);
@@ -995,11 +1004,10 @@ class Types
     public static function getCaptureTransactionClass($authorizeType)
     {
         switch ($authorizeType) {
-            case self::KLARNA_AUTHORIZE:
-                return 'Financial\Alternatives\Klarna\Capture';
+            case self::INVOICE:
+                return 'Financial\Alternatives\Invoice\Capture';
             default:
                 return 'Financial\Capture';
-            break;
         }
     }
 
@@ -1012,18 +1020,16 @@ class Types
     public static function getRefundTransactionClass($captureType)
     {
         switch ($captureType) {
-            case self::KLARNA_CAPTURE:
-                return 'Financial\Alternatives\Klarna\Refund';
+            case self::INVOICE_CAPTURE:
+                return 'Financial\Alternatives\Invoice\Refund';
             case self::BITPAY_SALE:
                 return 'Financial\Crypto\BitPay\Refund';
             case self::SDD_SALE:
             case self::SDD_RECURRING_SALE:
             case self::SDD_INIT_RECURRING_SALE:
                 return 'Financial\SDD\Refund';
-                break;
             default:
                 return 'Financial\Refund';
-                break;
         }
     }
 

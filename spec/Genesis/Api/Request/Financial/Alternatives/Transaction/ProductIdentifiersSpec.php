@@ -1,14 +1,15 @@
 <?php
 
-namespace spec\Genesis\Api\Request\Financial\Alternatives\Klarna;
+namespace spec\Genesis\Api\Request\Financial\Alternatives\Transaction;
 
+use Genesis\Api\Request\Financial\Alternatives\Transaction\ProductIdentifiers;
 use PhpSpec\ObjectBehavior;
 
 class ProductIdentifiersSpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(\Genesis\Api\Request\Financial\Alternatives\Klarna\ProductIdentifiers::class);
+        $this->shouldHaveType(ProductIdentifiers::class);
     }
 
     public function it_can_build_structure()

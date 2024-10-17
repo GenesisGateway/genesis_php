@@ -1129,7 +1129,7 @@ final class Currency
         }
 
         self::validateCurrencyExponent($amount, $exp, $iso);
-        return ($exp > 0) ? bcmul($amount, pow(10, $exp), 0) : strval($amount);
+        return ($exp > 0) ? bcmul((string)$amount, pow(10, $exp), 0) : strval($amount);
     }
 
     /**
@@ -1149,7 +1149,7 @@ final class Currency
             return strval($amount);
         }
 
-        return ($exp > 0) ? bcdiv($amount, pow(10, $exp), $exp) : strval($amount);
+        return ($exp > 0) ? bcdiv((string)$amount, pow(10, $exp), $exp) : strval($amount);
     }
 
     /**
@@ -1184,7 +1184,7 @@ final class Currency
      */
     public static function validateCurrencyExponent($amount, $exp, $currency)
     {
-        $parts = explode('.', $amount);
+        $parts = explode('.', (string)$amount);
         if (!empty($parts[1]) && mb_strlen($parts[1]) > $exp) {
             throw new InvalidArgument(
                 sprintf(

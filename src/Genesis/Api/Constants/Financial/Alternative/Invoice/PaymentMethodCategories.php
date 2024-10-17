@@ -24,50 +24,29 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Transaction\Parameters\OnlineBanking;
+namespace Genesis\Api\Constants\Financial\Alternative\Invoice;
 
 use Genesis\Utils\Common;
 
 /**
- * Used for Online Banking PayIn Payment Types
+ * Class PaymentMethodCategories
  *
- * Class PaymentTypes
- * @package Genesis\Api\Constants\Transaction\Parameters\OnlineBanking
+ * @package Genesis\Api\Constants\Financial\Alternative\Invoice
  */
-class PaymentTypes
+class PaymentMethodCategories
 {
     /**
-     * Payment Type Online Banking
+     * Payment method category: pay later
      */
-    const ONLINE_BANKING = 'online_banking';
+    const PAY_LATER = 'pay_later';
 
     /**
-     * Payment Type Qr Payment
+     * Payment method category: pay over time
      */
-    const PAYMENT        = 'qr_payment';
+    const PAY_OVER_TIME = 'pay_over_time';
 
     /**
-     * Payment Type Quick Payment
-     */
-    const QUICK_PAYMENT  = 'quick_payment';
-
-    /**
-     * Payment Type Netbanking
-     */
-    const NETBANKING     = 'netbanking';
-
-    /**
-     * Payment Type AliPay QR
-     */
-    const ALIPAY_QR      = 'alipay_qr';
-
-    /**
-     * Payment Type Scotiabank
-     */
-    const SCOTIABANK     = 'scotiabank';
-
-    /**
-     * Get all available Payment Types
+     * Retrieve all constants
      *
      * @return array
      */

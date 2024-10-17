@@ -1,3 +1,16 @@
+2.0.3
+-----
+**Features**
+
+* Added **3Dsv2** **Card Holder** DateTime parameters
+* Added zero-amount support for **GooglePay** and **ApplePay** transactions
+* Added mobile tokenized recurring flow to **GooglePay** and **ApplePay** transaction requests.
+* Added **Scotiabank** to **Online Banking** payment types
+* Improved **ApplePay** documentation and tests
+* Improved PHP v8.2 and above compatibility
+* Added **Cash** payment request
+* Added **Invoice** transaction request
+
 2.0.2
 -----
 **Features**:

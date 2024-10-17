@@ -24,18 +24,22 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\Alternatives\Klarna;
+namespace Genesis\Api\Request\Financial\Alternatives\Invoice;
 
+use Genesis\Api\Constants\Transaction\Types;
+use Genesis\Api\Request\Base\Financial\Alternative\Invoice;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common;
 
 /**
  * Class Refund
  *
  * Alternative payment method
  *
- * @package Genesis\Api\Request\Financial\Alternatives\Klarna
+ * @package Genesis\Api\Request\Financial\Alternatives\Invoice
  */
-class Refund extends \Genesis\Api\Request\Base\Financial\Alternative\Klarna
+class Refund extends Invoice
 {
     use ReferenceAttributes;
 
@@ -45,7 +49,7 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Alternative\Klarna
      */
     protected function getTransactionType()
     {
-        return \Genesis\Api\Constants\Transaction\Types::KLARNA_REFUND;
+        return Types::INVOICE_REFUND;
     }
 
     /**
@@ -57,18 +61,19 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Alternative\Klarna
     {
         $requiredFields = [
             'transaction_id',
-            'remote_ip',
             'amount',
             'currency',
             'reference_id'
         ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
     }
 
     /**
      * Return additional request attributes
+     *
      * @return array
+     *
+     * @throws InvalidArgument
      */
     protected function getPaymentTransactionStructure()
     {

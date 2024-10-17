@@ -133,6 +133,8 @@ class InitRecurringSale3D extends \Genesis\Api\Request\Base\Financial\Cards\Cred
      */
     protected function checkRequirements()
     {
+        $this->validateThreedsCarHolderDates();
+
         $requiredFieldsValuesConditional = $this->getThreedsV2FieldValuesValidations();
 
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);

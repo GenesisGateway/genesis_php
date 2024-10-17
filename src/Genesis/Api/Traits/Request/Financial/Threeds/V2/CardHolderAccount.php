@@ -32,6 +32,8 @@ use Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\Re
 use Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\ShippingAddressUsageIndicators;
 use Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\SuspiciousActivityIndicators;
 use Genesis\Api\Constants\Transaction\Parameters\Threeds\V2\CardHolderAccount\UpdateIndicators;
+use Genesis\Exceptions\ErrorParameter;
+use DateTime;
 
 /**
  * Trait CardHolderAccount
@@ -431,6 +433,7 @@ trait CardHolderAccount
         ];
     }
 
+
     /**
      * Get the Card Holder Account Attributes
      *
@@ -457,5 +460,34 @@ trait CardHolderAccount
             'registration_indicator'              => $this->getThreedsV2CardHolderAccountRegistrationIndicator(),
             'registration_date'                   => $this->getThreedsV2CardHolderAccountRegistrationDate()
         ];
+    }
+
+    /**
+     * Check if the provided dates are not in the future.
+     *
+     * @throws ErrorParameter If any date is in the future.
+     */
+    protected function validateThreedsCarHolderDates()
+    {
+        $today = new DateTime();
+        $today->setTime(23, 59, 59);
+
+        if ($this->threeds_v2_card_holder_account_creation_date > $today) {
+            throw new ErrorParameter("Account create date must be a valid date in the past.");
+        }
+        if ($this->threeds_v2_card_holder_account_last_change_date > $today) {
+            throw new ErrorParameter("Account last change date must be a valid date in the past.");
+        }
+        if ($this->threeds_v2_card_holder_account_password_change_date > $today) {
+            throw new ErrorParameter("Account password change date must be a valid date in the past.");
+        }
+        if ($this->threeds_v2_card_holder_account_shipping_address_date_first_used > $today) {
+            throw new ErrorParameter(
+                "Account shipping address date first used must be a valid date in the past."
+            );
+        }
+        if ($this->threeds_v2_card_holder_account_registration_date > $today) {
+            throw new ErrorParameter("Account registration date must be a valid date in the past.");
+        }
     }
 }

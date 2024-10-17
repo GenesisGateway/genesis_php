@@ -26,72 +26,86 @@
 
 namespace Genesis\Api\Request\Base\Financial\Alternative;
 
-use Genesis\Api\Request\Financial\Alternatives\Klarna\Items;
+use Genesis\Api\Request\Base\Financial;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Item;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Items;
+use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
-use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Currency;
 
 /**
- * Class Klarna
+ * Class Invoice
  *
- * Alternative payment method
+ * Base class for all Invoice requests
  *
- * @package Genesis\Api\Request\Financial\Alternatives\Klarna
- *
- * @method $this setCustomerGender($value) Set gender of the customer
+ * @package Genesis\Api\Request\Base\Financial\Alternative
+ * @method void   setPaymentType(string $value) Set the payment provider type (e.g., 'klarna', 'secure_invoice')
+ * @method string getPaymentType()              Get the payment provider type
+ * @method Items  getItems()                    Get the list of items for the invoice
  */
-abstract class Klarna extends \Genesis\Api\Request\Base\Financial
+abstract class Invoice extends Financial
 {
+    use AddressInfoAttributes;
+    use AsyncAttributes;
     use PaymentAttributes;
 
     /**
-     * Items list
+     * Payment provider type: klarna / secure_invoice
+     *
+     * @var string
+     */
+    protected $payment_type;
+
+    /**
+     * List with items
      *
      * @var Items
      */
     protected $items;
 
     /**
-     * Set items
+     * Add item
      *
-     * @param Items $items
+     * @param Item $item
      *
      * @return $this
      */
-    public function setItems(Items $items)
+    public function addItem(Item $item)
     {
-        $this->items = $items;
+        $this->items->addItem($item);
+
+        return $this;
+    }
+
+    /**
+     * Clear items
+     *
+     * @return $this
+     */
+    public function clearItems()
+    {
+        $this->items = [];
 
         return $this;
     }
 
     /**
      * Return additional request attributes
+     *
      * @return array
+     *
+     * @throws InvalidArgument
      */
     protected function getPaymentTransactionStructure()
     {
         return array_merge(
             [
-                'amount'   => \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency),
+                'amount'   => Currency::amountToExponent($this->amount, $this->currency),
                 'currency' => $this->currency,
             ],
             $this->items instanceof Items ? $this->items->toArray() : []
         );
-    }
-
-    /**
-     * Perform field validation
-     *
-     * @throws \Genesis\Exceptions\ErrorParameter
-     * @return void
-     */
-    protected function checkRequirements()
-    {
-        parent::checkRequirements();
-
-        // verify there is at least one item added
-        if (empty($this->items) || $this->items->count() === 0) {
-            throw new ErrorParameter('Empty (null) required parameter: items');
-        }
     }
 }

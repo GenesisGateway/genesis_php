@@ -33,7 +33,7 @@ use Genesis\Api\Validators\Request\RegexValidator;
  * @package Genesis\Api\Traits\Request
  *
  * @method string getDocumentId()
- * @method $this setDocumentId($value)
+ * @method $this  setDocumentId($value)
  */
 trait DocumentAttributes
 {

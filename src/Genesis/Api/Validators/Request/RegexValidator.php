@@ -119,6 +119,11 @@ class RegexValidator extends \Genesis\Api\Validators\Request\Base\Validator
     const REGEXP_DOCUMENT_ID_UY = '/^[0-9]{6,8}$/';
 
     /**
+     * IBAN pattern
+     */
+    const PATTERN_IBAN = '/^([A-Z]{2}[0-9]{2})(?: ?[A-Z0-9]{4}){2,7}(?: ?[A-Z0-9]{1,2})?$/';
+
+    /**
      * Regex expression
      *
      * @var string

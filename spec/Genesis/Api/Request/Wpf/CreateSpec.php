@@ -14,6 +14,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PendingPaymentAttributesExamples;
@@ -30,6 +31,7 @@ class CreateSpec extends ObjectBehavior
     use PendingPaymentAttributesExamples;
     use RecurringCategoryAttributesExample;
     use ThreedsV2AttributesExamples;
+    use ThreedsV2DatesExamples;
 
     public function it_is_initializable()
     {

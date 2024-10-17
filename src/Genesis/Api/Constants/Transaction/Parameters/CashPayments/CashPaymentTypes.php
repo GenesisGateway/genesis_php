@@ -24,55 +24,66 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Transaction\Parameters\OnlineBanking;
+namespace Genesis\Api\Constants\Transaction\Parameters\CashPayments;
 
 use Genesis\Utils\Common;
 
 /**
- * Used for Online Banking PayIn Payment Types
+ * Class CashTransactionTypes
  *
- * Class PaymentTypes
- * @package Genesis\Api\Constants\Transaction\Parameters\OnlineBanking
+ * @package Genesis\Api\Constants\Transaction\Parameters\CashPayments
  */
-class PaymentTypes
+class CashPaymentTypes
 {
     /**
-     * Payment Type Online Banking
+     * 7 Eleven
+     *
+     * @var string
      */
-    const ONLINE_BANKING = 'online_banking';
+    const SEVEN_ELEVEN = 'seven_eleven';
 
     /**
-     * Payment Type Qr Payment
+     * Bancomer
+     *
+     * @var string
      */
-    const PAYMENT        = 'qr_payment';
+    const BANCOMER = 'bancomer';
 
     /**
-     * Payment Type Quick Payment
+     * Farmacias del Dr. Ahorro
+     *
+     * @var string
      */
-    const QUICK_PAYMENT  = 'quick_payment';
+    const PHARMACIES_DEL_DR_AHORRO = 'pharmacies_del_dr_ahorro';
 
     /**
-     * Payment Type Netbanking
+     * Farmacias Santa Maria
+     *
+     * @var string
      */
-    const NETBANKING     = 'netbanking';
+    const PHARMACIES_SANTA_MARIA = 'pharmacies_santa_maria';
 
     /**
-     * Payment Type AliPay QR
+     * OXXO
+     *
+     * @var string
      */
-    const ALIPAY_QR      = 'alipay_qr';
+    const OXXO = 'oxxo';
 
     /**
-     * Payment Type Scotiabank
+     * Scotiabank
+     *
+     * @var string
      */
-    const SCOTIABANK     = 'scotiabank';
+    const SCOTIABANK = 'scotiabank';
 
     /**
-     * Get all available Payment Types
+     * Get all Cash Transaction Types
      *
      * @return array
      */
     public static function getAll()
     {
-        return array_values(Common::getClassConstants(self::class));
+        return Common::getClassConstants(self::class);
     }
 }

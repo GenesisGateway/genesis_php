@@ -1,20 +1,21 @@
 <?php
 
-namespace spec\Genesis\Api\Request\Financial\Alternatives\Klarna;
+namespace spec\Genesis\Api\Request\Financial\Alternatives\Transaction;
 
+use Faker\Factory;
+use Genesis\Api\Constants\Financial\Alternative\Transaction\ItemTypes;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Item as InvoiceItem;
+use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class ItemSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $faker = \Faker\Factory::create();
-        $this->beConstructedWith($faker->name, $this->ITEM_TYPE_PHYSICAL, $faker->numberBetween(1, 10), $faker->numberBetween(1, 20));
-    }
+    use RequestExamples;
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(\Genesis\Api\Request\Financial\Alternatives\Klarna\Item::class);
+        $this->shouldHaveType(InvoiceItem::class);
     }
 
     public function it_can_build_structure()
@@ -23,34 +24,19 @@ class ItemSpec extends ObjectBehavior
         $this->toArray()->shouldNotBeEmpty();
     }
 
-    public function it_should_fail_when_missing_required_name_param()
+    public function it_should_fail_when_missing_required_params()
     {
-        $this->setRequestParameters();
-        $this->shouldThrow()->duringSetName(null);
-    }
-
-    public function it_should_fail_when_missing_required_item_type_param()
-    {
-        $this->setRequestParameters();
-        $this->shouldThrow()->duringSetItemType(null);
+        $this->testMissingRequiredParameters([
+            'name',
+            'item_type',
+        ]);
     }
 
     public function it_should_fail_when_wrong_item_type_param()
     {
         $this->setRequestParameters();
-        $this->shouldThrow()->duringSetItemType('not-valid-item-type');
-    }
-
-    public function it_should_fail_when_missing_required_quantity_param()
-    {
-        $this->setRequestParameters();
-        $this->shouldThrow()->duringSetQuantity(null);
-    }
-
-    public function it_should_fail_when_missing_required_unit_price_param()
-    {
-        $this->setRequestParameters();
-        $this->shouldThrow()->duringSetUnitPrice(null);
+        $this->setItemType('not-valid-item-type');
+        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_fail_when_wrong_quantity_param()
@@ -82,8 +68,8 @@ class ItemSpec extends ObjectBehavior
         $this->setRequestParameters();
 
         $quantity              = 5;
-        $unit_price            = 10;
-        $total_discount_amount = 5;
+        $unit_price            = 10.00;
+        $total_discount_amount = 5.00;
         $total_amount          = $this->calculateTotalAmount($quantity, $unit_price, $total_discount_amount);
 
         $this->setQuantity($quantity);
@@ -112,12 +98,29 @@ class ItemSpec extends ObjectBehavior
         $this->getTotalTaxAmount()->shouldBe($total_tax_amount);
     }
 
+    public function it_should_validate()
+    {
+        $this->setRequestParameters();
+        $this->shouldNotThrow()->during('validate');
+    }
+
+    public function it_should_throw_when_wrong_parameter()
+    {
+        $this->setRequestParameters();
+        $this->setItemType('invalid-item-type');
+        $this->shouldThrow()->during('validate');
+    }
+
     protected function setRequestParameters()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
+        $this->setName($faker->word);
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setQuantity($faker->numberBetween(1, 10));
+        $this->setQuantityUnit('pcs');
         $this->setCurrency('EUR');
-
+        $this->setUnitPrice($faker->numberBetween(1, 100));
         $this->setTaxRate($faker->numberBetween(0, 100));
     }
 
@@ -129,14 +132,14 @@ class ItemSpec extends ObjectBehavior
     protected function calculateTotalTaxAmount($total_amount, $tax_rate)
     {
         $currency     = $this->getCurrency()->getWrappedObject();
-        $total_amount = \Genesis\Utils\Currency::amountToExponent($total_amount, $currency);
-        $tax_rate     = \Genesis\Utils\Currency::amountToExponent($tax_rate, $currency);
+        $total_amount = Currency::amountToExponent($total_amount, $currency);
+        $tax_rate     = Currency::amountToExponent($tax_rate, $currency);
 
         $total_tax_amount = ceil(
             $total_amount - ($total_amount * 10000)/(10000 + $tax_rate)
         );
 
-        return \Genesis\Utils\Currency::exponentToAmount($total_tax_amount, $currency);
+        return Currency::exponentToAmount($total_tax_amount, $currency);
     }
 
     public function getMatchers(): array

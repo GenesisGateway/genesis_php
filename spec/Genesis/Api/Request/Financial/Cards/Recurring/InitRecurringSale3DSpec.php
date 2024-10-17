@@ -9,6 +9,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
@@ -39,6 +40,7 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use ScaAttributesExamples;
     use ThreedsV2AttributesExamples;
     use TokenizationAttributesExamples;
+    use ThreedsV2DatesExamples;
 
     public function it_is_initializable()
     {

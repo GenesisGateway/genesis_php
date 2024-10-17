@@ -8,6 +8,7 @@ use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
@@ -17,7 +18,6 @@ use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\BirthDateAttributes
 
 class ApplePaySpec extends ObjectBehavior
 {
-    use ApplePayAttributes;
     use BirthDateAttributesExample;
     use BusinessAttributesExample;
     use CryptoAttributesExamples;
@@ -25,6 +25,7 @@ class ApplePaySpec extends ObjectBehavior
     use DocumentAttributesExample;
     use NeighborhoodAttributesExamples;
     use RequestExamples;
+    use RecurringTypeAttributesExample;
 
     public function it_is_initializable()
     {
@@ -108,6 +109,26 @@ class ApplePaySpec extends ObjectBehavior
 
         $this->getDocument()->shouldNotContain('applicationData');
         $this->getDocument()->shouldNotContain('wrappedKey');
+    }
+
+    public function it_should_not_fail_when_zero_amount()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(0);
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_when_null_amount()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_when_set_negative_amount()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('setAmount', [-10]);
     }
 
     protected function setRequestParameters()

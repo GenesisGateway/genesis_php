@@ -968,7 +968,7 @@ require 'vendor/autoload.php';
 \Genesis\Config::setToken('<enter_your_token>');
 
 // Apple Pay token
-$jsonToken = "{\"protocolVersion\":\"ECv2\",\"signature\":\"MEQCIH6Q4OwQ0jAceFEkGF0JID6sJNXxOEi4r+mA7biRxqBQAiAondqoUpU\/bdsrAOpZIsrHQS9nwiiNwOrr24RyPeHA0Q\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\": \"{\\\"keyExpiration\\\":\\\"1542323393147\\\",\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE\/1+3HBVSbdv+j7NaArdgMyoSAM43yRydzqdg1TxodSzA96Dj4Mc1EiKroxxunavVIvdxGnJeFViTzFvzFRxyCw\\u003d\\u003d\\\"}\", \"signatures\": [\"MEYCIQCO2EIi48s8VTH+ilMEpoXLFfkxAwHjfPSCVED\/QDSHmQIhALLJmrUlNAY8hDQRV\/y1iKZGsWpeNmIP+z+tCQHQxP0v\"]},\"signedMessage\":\"{\\\"tag\\\":\\\"jpGz1F1Bcoi\/fCNxI9n7Qrsw7i7KHrGtTf3NrRclt+U\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BJatyFvFPPD21l8\/uLP46Ta1hsKHndf8Z+tAgk+DEPQgYTkhHy19cF3h\/bXs0tWTmZtnNm+vlVrKbRU9K8+7cZs\\u003d\\\",\\\"encryptedMessage\\\":\\\"mKOoXwi8OavZ\\\"}\"}";
+$jsonToken = '{"paymentData":{"version":"EC_v1","data":"MgcrhHr/uhfRy7zxMOvahhf5sp+ZfUsWADlG5OhvZ8vEAybEouyk4tT8oYaOqlfNTdkJZl2tmCgyLReibOjW2RiXzw5S9ZtA6ISnEBjNFla9Hju1KJnxQ+QFIdSlhEDOqN/Wk9kSFz2mnT8wajaG6mytpXhzCxvl5ElCp0gm0wMb82lvpf6my5TIu+CuANPZ2g/kslqKUGEjQHhO3FVqmiEj2YpkrlhXcvFu1GalTOWgjnLVCMz8l8DCQek/UIZQ3ZiJEoQTlEZRzXlwG8FlEp/QwbLiIlQfDLCtu3pBH0EaOeQ1OwupXs64EYfL+DEzYKdpi7dE9Y93zcXR6y2qsawBC8lCeI8zGc+kRFQJ5IrPd81BRZep3xsHwh1uki2dfx2taLyjxyCWWKaUWCzYI1p/u7YsypYEMj3np+MHfg==","signature":"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","header":{"wrappedKey": "wrapped key", "ephemeralPublicKey":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEJsaMBlzR3D0H7xKwDncLNGOEcsl6Jilx5d+MDI/1QFxuIf6a0fY5qgOwnuLgZepqc3AVeU1RV8enPCQSWfFKRg==","publicKeyHash":"QOmvMaoCNYk5tv+69KC1i2UCFQcOl6LYPIJfYAT+SLQ=","transactionId":"ccedaf3f32efcc971259694f0efd0dcaa0ed545e7a31a0f7ec8e1c110656c25b"}},"paymentMethod":{"displayName":"Visa 0225","network":"Visa","type":"debit"},"transactionIdentifier":"CCEDAF3F32EFCC971259694F0EFD0DCAA0ED545E7A31A0F7EC8E1C110656C25B"}';
 $decodedToken = json_decode($jsonToken, true);
 
 // Create a new Genesis instance with Apple Pay API request
@@ -1125,6 +1125,113 @@ catch (\Genesis\Exceptions\ErrorNetwork $network) {
 
 ```
 </details>
+
+Example Invoice
+-------
+
+<details>
+<summary>Authorize</summary>
+
+```php
+<?php
+
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+
+$transaction_id = uniqid();
+
+try {
+    $genesis = new Genesis('Financial\Alternatives\Invoice\Authorize');
+    $request = $genesis->request();
+
+    $request
+        ->setTransactionId($transaction_id)
+        ->setPaymentType('secure_invoice')
+        ->setUsage('40208 concert tickets')
+        ->setPaymentMethodCategory('pay_over_time')
+        ->setReturnSuccessUrl('http://www.example.com/success')
+        ->setReturnFailureUrl('http://www.example.com/failure')
+        ->setUsage('40208 concert tickets')
+        ->setRemoteIp('245.253.2.12')
+        ->setCurrency('EUR')
+         // amount in major unit format ex 434.96 for EUR currency
+        ->setAmount('414.96')
+        ->setCustomerPhone('1987987987987')
+        ->setCustomerEmail('travis@example.com')
+        ->setCustomerGender('male')
+        ->setCustomerBirthdate('1990-03-20')
+        ->setCustomerReferenceNumber('123')
+
+        // Billing Address
+        ->setBillingFirstName('Travis')
+        ->setBillingLastName('Pastrana')
+        ->setBillingAddress1('Muster Str. 12')
+        ->setBillingZipCode('10178')
+        ->setBillingCity('Berlin')
+        ->setBillingNeighborhood('Lichtenberg')
+        ->setBillingState('Berlin')
+        ->setBillingCountry('DE')
+
+
+        // Shipping Address
+        ->setShippingFirstName('Travis')
+        ->setShippingLastName('Pastrana')
+        ->setShippingAddress1('Muster Str. 12')
+        ->setShippingZipCode('10178')
+        ->setShippingCity('Berlin')
+        ->setShippingNeighborhood('Lichtenberg')
+        ->setShippingState('Berlin')
+        ->setShippingCountry('DE');
+
+    // Transaction Items
+    $item  = new \Genesis\Api\Request\Financial\Alternatives\Transaction\Item();
+    $item
+        ->setName('BatteryPowerPack')
+        ->setItemType('physical')
+        ->setQuantity('1')
+        // UnitPrice in major unit format ex 59.99 for EUR currency
+        ->setUnitPrice('59.99')
+        // Non-negative. In percent, two implicit decimals. I.e 2500 = 25.00 percent
+        ->setTaxRate('0.05')
+        // TotalDiscountAmount in major unit format ex 0.10 for EUR currency
+        ->setTotalDiscountAmount('0.10')
+        ->setReference('19-402-USA')
+        ->setImageUrl('https://example.com/image_url')
+        ->setProductUrl('https://example.com/product_url')
+        ->setQuantityUnit('pcs')
+        ->addMerchantMarketplaceSellerInfo('Electronic gadgets');
+    $productIdentifiers = new ProductIdentifiers();
+    $productIdentifiers->setBrand('Brand');
+    $productIdentifiers->setCategoryPath('Category Path');
+    $productIdentifiers->setGlobalTradeItemNumber('GTIN');
+    $productIdentifiers->setManufacturerPartNumber('MPN');
+    $item->setProductIdentifiers($productIdentifiers);
+
+    $request->addItem($item);
+
+    $item  = new \Genesis\Api\Request\Financial\Alternatives\Transaction\Item();
+    $item
+        ->setName('Massager')
+        ->setItemType('physical')
+        ->setQuantity('3')
+        // UnitPrice in major unit format ex 124.99 for EUR currency
+        ->setUnitPrice('124.99')
+        // Non-negative. In percent, two implicit decimals. I.e 2500 = 25.00 percent
+        ->setTaxRate('0.05')
+        // TotalDiscountAmount major unit format ex 0.10 for EUR currency
+        ->setTotalDiscountAmount('0.10')
+        ->setReference('19-402-USA')
+        ->setImageUrl('https://example.com/image_url')
+        ->setProductUrl('https://example.com/product_url')
+        ->setQuantityUnit('pcs')
+        ->addMerchantMarketplaceSellerInfo('Electronic gadgets');
+
+    $request->addItem($item);
+
+    $genesis->execute();
+````
+</details>
+
 
 Example Web Payment Form transaction request with Zero Amount
 -------------
@@ -1289,13 +1396,11 @@ Financial\Refund
 Financial\Cancel
 
 // Alternative Payment Methods transactions
+Financial\Alternatives\Invoice\Authorize
 Financial\Alternatives\P24
 Financial\Alternatives\Poli
 Financial\Alternatives\Ppro
 Financial\Alternatives\Sofort
-Financial\Alternatives\Klarna\Authorize
-Financial\Alternatives\Klarna\Capture
-Financial\Alternatives\Klarna\Refund
 Financial\Alternatives\TransferTo\Payout
 Financial\Alternatives\Trustly\Sale
 
@@ -1321,6 +1426,7 @@ Financial\Cards\TarjetaShopping
 Financial\CashPayments\Baloto
 Financial\CashPayments\BancoDeOccidente
 Financial\CashPayments\Boleto
+Financial\CashPayments\Cash
 Financial\CashPayments\Efecty
 Financial\CashPayments\Oxxo
 Financial\CashPayments\PagoFacil

@@ -24,55 +24,47 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Constants\Transaction\Parameters\OnlineBanking;
+namespace Genesis\Api\Traits\Request\Financial\Alternatives\Invoice;
 
-use Genesis\Utils\Common;
+use Genesis\Exceptions\ErrorParameter;
 
 /**
- * Used for Online Banking PayIn Payment Types
+ * Trait Items
  *
- * Class PaymentTypes
- * @package Genesis\Api\Constants\Transaction\Parameters\OnlineBanking
+ * @package Genesis\Api\Traits\Request\Financial\Alternatives\Invoice
  */
-class PaymentTypes
+trait InvoiceValidation
 {
     /**
-     * Payment Type Online Banking
-     */
-    const ONLINE_BANKING = 'online_banking';
-
-    /**
-     * Payment Type Qr Payment
-     */
-    const PAYMENT        = 'qr_payment';
-
-    /**
-     * Payment Type Quick Payment
-     */
-    const QUICK_PAYMENT  = 'quick_payment';
-
-    /**
-     * Payment Type Netbanking
-     */
-    const NETBANKING     = 'netbanking';
-
-    /**
-     * Payment Type AliPay QR
-     */
-    const ALIPAY_QR      = 'alipay_qr';
-
-    /**
-     * Payment Type Scotiabank
-     */
-    const SCOTIABANK     = 'scotiabank';
-
-    /**
-     * Get all available Payment Types
+     * Common items validation
      *
-     * @return array
+     * @return void
+     *
+     * @throws ErrorParameter
      */
-    public static function getAll()
+    public function validateItems()
     {
-        return array_values(Common::getClassConstants(self::class));
+        // verify there is at least one item added
+        if (empty($this->items) || $this->items->count() === 0) {
+            throw new ErrorParameter('Empty (null) required parameter: items');
+        }
+
+        $this->items->validate();
+    }
+
+    /**
+     * Validate the amount
+     *
+     * @return void
+     *
+     * @throws ErrorParameter
+     */
+    public function validateAmount()
+    {
+        if ((float)$this->amount !== (float)$this->items->getAmount()) {
+            throw new ErrorParameter(
+                'Amount must be equal to the sum of the items amount'
+            );
+        }
     }
 }

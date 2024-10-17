@@ -48,7 +48,6 @@ class TypesSpec extends ObjectBehavior
         $this->getCustomRequiredParameters(Types::PPRO)->shouldNotBe(false);
         $this->getCustomRequiredParameters(Types::INSTA_DEBIT_PAYIN)->shouldNotBe(false);
         $this->getCustomRequiredParameters(Types::IDEBIT_PAYIN)->shouldNotBe(false);
-        $this->getCustomRequiredParameters(Types::KLARNA_AUTHORIZE)->shouldNotBe(false);
     }
 
     public function it_should_return_array_with_all_transaction_types()
@@ -87,7 +86,8 @@ class TypesSpec extends ObjectBehavior
             $typesObject::SALE,
             $typesObject::SALE_3D,
             $typesObject::TCS,
-            $typesObject::TRUSTLY_SALE
+            $typesObject::TRUSTLY_SALE,
+            $typesObject::INVOICE
         ];
 
         foreach ($voidableTypes as $type) {
@@ -127,7 +127,7 @@ class TypesSpec extends ObjectBehavior
             $typesObject::INIT_RECURRING_SALE,
             $typesObject::INIT_RECURRING_SALE_3D,
             $typesObject::ITAU,
-            $typesObject::KLARNA_CAPTURE,
+            $typesObject::INVOICE,
             $typesObject::MY_BANK,
             $typesObject::MY_BANK,
             $typesObject::NEOSURF,
@@ -177,8 +177,8 @@ class TypesSpec extends ObjectBehavior
             $typesObject::AUTHORIZE,
             $typesObject::AUTHORIZE_3D,
             $typesObject::GOOGLE_PAY,
-            $typesObject::KLARNA_AUTHORIZE,
-            $typesObject::PAY_PAL
+            $typesObject::PAY_PAL,
+            $typesObject::INVOICE
         ];
 
         foreach ($capturableTypes as $type) {

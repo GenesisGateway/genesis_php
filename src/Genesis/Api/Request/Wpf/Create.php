@@ -500,6 +500,8 @@ class Create extends \Genesis\Api\Request
         parent::checkRequirements();
 
         $this->validateReminders();
+
+        $this->validateThreedsCarHolderDates();
     }
 
     /**

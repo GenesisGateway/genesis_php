@@ -9,6 +9,8 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AsyncAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NotificationAttributesExamples;
@@ -25,6 +27,8 @@ class GooglePaySpec extends ObjectBehavior
     use NotificationAttributesExamples;
     use RequestExamples;
     use ThreedsV2AttributesExamples;
+    use ThreedsV2DatesExamples;
+    use RecurringTypeAttributesExample;
 
     public function is_it_initializable()
     {
@@ -101,6 +105,26 @@ class GooglePaySpec extends ObjectBehavior
 
         $this->setJsonToken($token);
         $this->getDocument()->shouldContain('protocolVersion');
+    }
+
+    public function it_should_not_fail_when_zero_amount()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(0);
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_when_null_amount()
+    {
+        $this->setRequestParameters();
+        $this->setAmount(null);
+        $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_when_set_negative_amount()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('setAmount', [-10]);
     }
 
     protected function setRequestParameters()

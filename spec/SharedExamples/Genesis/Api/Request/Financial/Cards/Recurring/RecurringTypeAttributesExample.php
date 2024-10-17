@@ -6,6 +6,8 @@ use Genesis\Api\Constants\Transaction\Parameters\ManagedRecurring\Modes;
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Request\Financial\Cards\Authorize3D;
 use Genesis\Api\Request\Financial\Cards\Sale3D;
+use Genesis\API\Request\Financial\Mobile\ApplePay;
+use Genesis\Api\Request\Financial\Mobile\GooglePay;
 use Genesis\Api\Request\Wpf\Create as WpfCreate;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\Exception\Example\SkippingException;
@@ -46,7 +48,10 @@ trait RecurringTypeAttributesExample
 
     public function it_should_not_fail_with_managed_type_when_managed_recurring_available_for_every_transaction()
     {
-        if ($this->getWrappedObject() instanceof WpfCreate) {
+        if ($this->getWrappedObject() instanceof WpfCreate
+            || $this->getWrappedObject() instanceof ApplePay
+            || $this->getWrappedObject() instanceof GooglePay
+        ) {
             throw new SkippingException(
                 get_class($this->getWrappedObject()) . ' doesn\'t support Managed Recurring Attributes'
             );
@@ -61,7 +66,10 @@ trait RecurringTypeAttributesExample
 
     public function it_should_fail_with_managed_type_when_managed_recurring_missing_for_every_transaction()
     {
-        if ($this->getWrappedObject() instanceof WpfCreate) {
+        if ($this->getWrappedObject() instanceof WpfCreate
+            || $this->getWrappedObject() instanceof ApplePay
+            || $this->getWrappedObject() instanceof GooglePay
+        ) {
             throw new SkippingException(
                 get_class($this->getWrappedObject()) . ' doesn\'t support Managed Recurring Attributes'
             );
@@ -105,6 +113,8 @@ trait RecurringTypeAttributesExample
         if (
             $this->getWrappedObject() instanceof Authorize3D ||
             $this->getWrappedObject() instanceof Sale3D ||
+            $this->getWrappedObject() instanceof ApplePay ||
+            $this->getWrappedObject() instanceof GooglePay ||
             $this->getWrappedObject() instanceof WpfCreate
         ) {
             throw new SkippingException(

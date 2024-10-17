@@ -57,7 +57,7 @@ class SelectAccountSpec extends ObjectBehavior
     public function it_should_fail_with_invalid_country()
     {
         $this->setRequestParameters();
-        $this->setCountry(`invalid_country`);
+        $this->setCountry('invalid_country');
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }

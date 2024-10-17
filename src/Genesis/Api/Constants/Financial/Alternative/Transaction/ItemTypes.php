@@ -24,59 +24,73 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\Alternatives\Klarna;
+namespace Genesis\Api\Constants\Financial\Alternative\Transaction;
 
-use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
+use Genesis\Utils\Common;
 
 /**
- * Class Capture
+ * Class ItemTypes
  *
- * Alternative payment method
- *
- * @package Genesis\Api\Request\Financial\Alternatives\Klarna
+ * @package Genesis\Api\Constants\Financial\Alternative\Transaction
  */
-class Capture extends \Genesis\Api\Request\Base\Financial\Alternative\Klarna
+class ItemTypes
 {
-    use ReferenceAttributes;
-
     /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\Api\Constants\Transaction\Types::KLARNA_CAPTURE;
-    }
-
-    /**
-     * Set the required fields
+     * Item type physical
      *
-     * @return void
+     * @const string
      */
-    protected function setRequiredFields()
-    {
-        $requiredFields = [
-            'transaction_id',
-            'remote_ip',
-            'amount',
-            'currency',
-            'reference_id'
-        ];
-
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
-    }
+    const PHYSICAL = 'physical';
 
     /**
-     * Return additional request attributes
+     * Item type discount
+     *
+     * @const string
+     */
+    const DISCOUNT = 'discount';
+
+    /**
+     * Item type shipping_fee
+     *
+     * @const string
+     */
+    const SHIPPING_FEE = 'shipping_fee';
+
+    /**
+     * Item type digital
+     *
+     * @const string
+     */
+    const DIGITAL = 'digital';
+
+    /**
+     * Item type gift_card
+     *
+     * @const string
+     */
+    const GIFT_CARD = 'gift_card';
+
+    /**
+     * Item type store_credit
+     *
+     * @const string
+     */
+    const STORE_CREDIT = 'store_credit';
+
+    /**
+     * Item type surcharge
+     *
+     * @const string
+     */
+    const SURCHARGE = 'surcharge';
+
+    /**
+     * Retrieve all constants
+     *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    public static function getAll()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            [
-                'reference_id' => $this->reference_id
-            ]
-        );
+        return array_values(Common::getClassConstants(self::class));
     }
 }
