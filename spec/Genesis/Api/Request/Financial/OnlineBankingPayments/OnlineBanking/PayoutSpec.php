@@ -4,7 +4,6 @@ namespace spec\Genesis\Api\Request\Financial\OnlineBankingPayments\OnlineBanking
 
 use Genesis\Api\Constants\BankAccountTypes;
 use Genesis\Api\Constants\DateTimeFormat;
-use Genesis\Api\Constants\Transaction\Parameters\OnlineBanking\PayoutBankCodeParameters;
 use Genesis\Api\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\Api\Constants\Transaction\Parameters\OnlineBanking\PayoutPaymentTypesParameters;
 use Genesis\Api\Request\Financial\OnlineBankingPayments\OnlineBanking\Payout;
@@ -14,6 +13,7 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\BirthDateAttributesExample;
 
@@ -22,6 +22,7 @@ class PayoutSpec extends ObjectBehavior
     use BirthDateAttributesExample;
     use NeighborhoodAttributesExamples;
     use RequestExamples;
+    use UcofAttributesExamples;
 
     public function it_is_initializable()
     {

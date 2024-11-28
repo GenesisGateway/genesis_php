@@ -24,73 +24,62 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\Alternatives\Klarna;
+namespace Genesis\Api\Traits\Request\Financial\Alternatives\Invoice;
+
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Item;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Items;
 
 /**
- * Class ProductIdentifiers
+ * Trait InvoiceItemsTrait
  *
- * Alternative payment method
- *
- * @package Genesis\Api\Request\Financial\Alternatives\Klarn
+ * @package Genesis\Api\Traits\Request\Financial\Alternatives\Invoice
  */
-class ProductIdentifiers
+trait InvoiceItemsTrait
 {
     /**
-     * Brand
-     * @var string
+     * List with items
+     *
+     * @var Items
      */
-    protected $brand;
+    protected $items;
 
     /**
-     * Category path
-     * @var string
+     * Add item
+     *
+     * @param Item $item
+     *
+     * @return $this
      */
-    protected $category_path;
+    public function addItem(Item $item)
+    {
+        $this->items->addItem($item);
+
+        return $this;
+    }
 
     /**
-     * Global trade item number
-     * @var string
+     * Clear items
+     *
+     * @return $this
      */
-    protected $global_trade_item_number;
+    public function clearItems()
+    {
+        $this->items = [];
+
+        return $this;
+    }
 
     /**
-     * Manufacturer part number
-     * @var string
+     * Set items
+     *
+     * @param Items $items
+     *
+     * @return $this
      */
-    protected $manufacturer_part_number;
-
-
-    public function setBrand($value)
+    public function setItems(Items $items)
     {
-        $this->brand = $value;
+        $this->items = $items;
+
         return $this;
-    }
-
-    public function setCategoryPath($value)
-    {
-        $this->category_path = $value;
-        return $this;
-    }
-
-    public function setGlobalTradeItemNumber($value)
-    {
-        $this->global_trade_item_number = $value;
-        return $this;
-    }
-
-    public function setManufacturerPartNumber($value)
-    {
-        $this->manufacturer_part_number = $value;
-        return $this;
-    }
-
-    public function toArray()
-    {
-        return [
-            'brand'                    => $this->brand,
-            'category_path'            => $this->category_path,
-            'global_trade_item_number' => $this->global_trade_item_number,
-            'manufacturer_part_number' => $this->manufacturer_part_number
-        ];
     }
 }

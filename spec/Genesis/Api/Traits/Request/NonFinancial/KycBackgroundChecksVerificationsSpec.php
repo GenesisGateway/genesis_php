@@ -2,6 +2,8 @@
 
 namespace spec\Genesis\Api\Traits\Request\NonFinancial;
 
+use Genesis\Api\Constants\NonFinancial\Kyc\VerificationAmlFilters;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\Api\Stubs\Traits\Request\NonFinancial\KycBackgroundChecksVerificationsStub;
 use spec\SharedExamples\Faker;
@@ -69,6 +71,54 @@ class KycBackgroundChecksVerificationsSpec extends ObjectBehavior
         $this->shouldNotThrow()->during(
             'setBackgroundChecksAsyncUpdate',
             [1]
+        );
+    }
+
+    public function it_should_fail_when_set_wrong_aml_filters()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('setBackgroundChecksFilters', [['wrong_value']]);
+    }
+
+    public function it_should_fail_when_add_wrong_aml_filters()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->during('addBackgroundChecksFilters', ['wrong_value']);
+    }
+    public function it_should_set_valid_aml_filters()
+    {
+        $faker = Faker::getInstance();
+        $filter = [$faker->randomElement(VerificationAmlFilters::getAll())];
+        $this->shouldNotThrow()
+            ->during('setBackgroundChecksFilters', [$filter]);
+    }
+
+    public function it_should_add_valid_aml_filters()
+    {
+        $faker = Faker::getInstance();
+        $filter = $faker->randomElement(VerificationAmlFilters::getAll());
+        $this->shouldNotThrow()
+            ->during('addBackgroundChecksFilters', [$filter]);
+    }
+
+    public function it_should_set_valid_match_score()
+    {
+        $this->shouldNotThrow()->during(
+            'setBackgroundChecksMatchScore',
+            [Faker::getInstance()->randomNumber(3)]
+        );
+    }
+
+    public function it_should_fail_when_incorrect_match_score()
+    {
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setBackgroundChecksMatchScore',
+            [-124]
+        );
+
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setBackgroundChecksMatchScore',
+            ['string']
         );
     }
 }

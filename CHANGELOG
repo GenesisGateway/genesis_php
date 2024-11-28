@@ -1,3 +1,22 @@
+2.0.4
+-----
+**Features**
+
+* Added **POLI** Bank code to Online banking PayIn
+* Added support for **UCOF** parameters to Online Banking PayOut request
+* Added **KYC** background check filter parameters
+* Added support for **Dynamic descriptor geo coordinates**
+* Improved **PHP-8.1** compatibility
+* Updated **MyBank** allowed currencies
+* Updated **KYC** verification params
+* Updated **funding parameters** support for VISA transaction
+* Updated Klarna UpdateItems API request attributes
+
+**Fixes**
+
+* Fixed canRefund allowed transaction types in Types utility class
+
+
 2.0.3
 -----
 **Features**

@@ -14,6 +14,8 @@ class PproSpec extends ObjectBehavior
     use PendingPaymentAttributesExamples;
     use RequestExamples;
 
+    private $allowedCountries = ['IT', 'BE', 'PT', 'ES'];
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(Ppro::class);
@@ -107,6 +109,27 @@ class PproSpec extends ObjectBehavior
         $this->setPaymentType('trustpay');
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_not_fail_with_valid_country()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType(Methods::MYBANK);
+
+        foreach ($this->allowedCountries as $country) {
+            $this->setBillingCountry($country);
+
+            $this->shouldNotThrow()->during('getDocument');
+        }
+    }
+
+    public function it_should_throw_with_unsupported_country()
+    {
+        $this->setRequestParameters();
+        $this->setPaymentType(Methods::MYBANK);
+
+        $this->setBillingCountry('AU');
+        $this->shouldThrow()->during('getDocument');
     }
 
     protected function setRequestParameters()

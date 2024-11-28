@@ -26,6 +26,7 @@
 
 namespace Genesis\Api\Traits\Request\Financial;
 
+use Genesis\Api\Constants\Transaction\Parameters\Funding\BusinessApplicationIdentifierTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\IdentifierTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\ReceiverAccountTypes;
 use Genesis\Exceptions\InvalidArgument;
@@ -44,6 +45,26 @@ use Genesis\Utils\Country;
  * @method $this  setFundingReceiverAccountNumber($value)
  * @method string getFundingReceiverAccountNumber()
  * @method string getFundingReceiverAccountNumberType()
+ * @method string getFundingBusinessApplicationIdentifier()
+ * @method $this  setFundingReceiverAddress($value)
+ * @method string getFundingReceiverAddress()
+ * @method $this  setFundingReceiverState($value)
+ * @method string getFundingReceiverState()
+ * @method $this  setFundingReceiverCity($value)
+ * @method string getFundingReceiverCity()
+ * @method $this  setFundingSenderName($value)
+ * @method string getFundingSenderName()
+ * @method $this  setFundingSenderReferenceNumber($value)
+ * @method string getFundingSenderReferenceNumber()
+ * @method $this  setFundingSenderCountry($value)
+ * @method string getFundingSenderCountry()
+ * @method $this  setFundingSenderAddress($value)
+ * @method string getFundingSenderAddress()
+ * @method $this  setFundingSenderState($value)
+ * @method string getFundingSenderState()
+ * @method $this  setFundingSenderCity($value)
+ * @method string getFundingSenderCity()
+ *
  */
 trait FundingAttributes
 {
@@ -90,6 +111,76 @@ trait FundingAttributes
     protected $funding_receiver_account_number_type;
 
     /**
+     * Business application identifier
+     *
+     * @var string
+     */
+    protected $funding_business_application_identifier;
+
+    /**
+     * Receiver address
+     *
+     * @var string
+     */
+    protected $funding_receiver_address;
+
+    /**
+     * Receiver state
+     *
+     * @var string
+     */
+    protected $funding_receiver_state;
+
+    /**
+     * Receiver city
+     *
+     * @var string
+     */
+    protected $funding_receiver_city;
+
+    /**
+     * Sender name
+     *
+     * @var string
+     */
+    protected $funding_sender_name;
+
+    /**
+     * Sender reference number
+     *
+     * @var string
+     */
+    protected $funding_sender_reference_number;
+
+    /**
+     * Sender country
+     *
+     * @var string
+     */
+    protected $funding_sender_country;
+
+    /**
+     * Sender address
+     *
+     * @var string
+     */
+    protected $funding_sender_address;
+
+    /**
+     * Sender state
+     *
+     * @var string
+     */
+    protected $funding_sender_state;
+
+    /**
+     * Sender city
+     *
+     * @var string
+     */
+    protected $funding_sender_city;
+
+    /**
      * Validate funding_identifier_type param
      *
      * @param $value
@@ -111,7 +202,7 @@ trait FundingAttributes
      *
      * @param $value
      * @return $this
-     * @throws ErrorParameter
+     * @throws InvalidArgument
      */
     public function setFundingReceiverAccountNumberType($value)
     {
@@ -141,6 +232,23 @@ trait FundingAttributes
     }
 
     /**
+     * Validate funding_business_application_identifier param
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFundingBusinessApplicationIdentifier($value)
+    {
+        return $this->allowedOptionsSetter(
+            'funding_business_application_identifier',
+            BusinessApplicationIdentifierTypes::getAll(),
+            $value,
+            'Parameter Funding Business Application Identifier not valid!'
+        );
+    }
+
+    /**
      * Get Funding Attributes structure
      *
      * @return array
@@ -148,13 +256,25 @@ trait FundingAttributes
     protected function getFundingAttributesStructure()
     {
         return [
-            'identifier_type'         => $this->funding_identifier_type,
-            'receiver'                => [
+            'identifier_type'                 => $this->funding_identifier_type,
+            'business_application_identifier' => $this->funding_business_application_identifier,
+            'receiver'                        => [
                 'first_name'          => $this->funding_receiver_first_name,
                 'last_name'           => $this->funding_receiver_last_name,
                 'country'             => $this->funding_receiver_country,
                 'account_number'      => $this->funding_receiver_account_number,
-                'account_number_type' => $this->funding_receiver_account_number_type
+                'account_number_type' => $this->funding_receiver_account_number_type,
+                'address'             => $this->funding_receiver_address,
+                'state'               => $this->funding_receiver_state,
+                'city'                => $this->funding_receiver_city,
+            ],
+            'sender'                          => [
+                'name'             => $this->funding_sender_name,
+                'reference_number' => $this->funding_sender_reference_number,
+                'country'          => $this->funding_sender_country,
+                'address'          => $this->funding_sender_address,
+                'state'            => $this->funding_sender_state,
+                'city'             => $this->funding_sender_city
             ]
         ];
     }

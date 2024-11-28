@@ -120,9 +120,7 @@ class Verify extends KYCBaseRequest
     protected function setRequiredFields()
     {
         $requiredFields = [
-            'email',
-            'redirect_url',
-            'document_supported_types',
+            'email'
         ];
 
         $this->requiredFields = Common::createArrayObject($requiredFields);

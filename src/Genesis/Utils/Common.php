@@ -435,8 +435,8 @@ final class Common
     /**
      * Checks if $str ends with $suffix.
      *
-     * @param $str
-     * @param $suffix
+     * @param string $str
+     * @param string $suffix
      *
      * @return bool
      */

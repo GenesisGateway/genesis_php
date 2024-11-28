@@ -2,6 +2,7 @@
 
 namespace spec\SharedExamples\Genesis\Api\Request\Financial;
 
+use Genesis\Exceptions\InvalidArgument;
 use spec\SharedExamples\Faker;
 
 trait DescriptorAttributesExample
@@ -41,5 +42,37 @@ trait DescriptorAttributesExample
         $this->setRequestParameters();
 
         $this->getDocument()->shouldNotContain("<dynamic_descriptor_params>");
+    }
+
+    public function it_should_contain_dynamic_descriptor_merchant_geo_coordinates()
+    {
+        $this->setRequestParameters();
+        $this->setDynamicMerchantGeoCoordinates('40.73061,-73.93524');
+        $this->getDocument()->shouldContain('merchant_geo_coordinates');
+    }
+
+    public function it_should_contain_dynamic_descriptor_merchant_service_geo_coordinates()
+    {
+        $this->setRequestParameters();
+        $this->setDynamicMerchantServiceGeoCoordinates('40.73061,-73.93524');
+        $this->getDocument()->shouldContain('merchant_service_geo_coordinates');
+    }
+
+    public function it_should_throw_when_dynamic_descriptor_merchant_geo_coordinates_is_invalid()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setDynamicMerchantGeoCoordinates',
+            ['12345678901234567890123']
+        );
+    }
+
+    public function it_should_throw_when_dynamic_descriptor_merchant_service_geo_coordinates_is_invalid()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow(InvalidArgument::class)->during(
+            'setDynamicMerchantServiceGeoCoordinates',
+            ['12345678901234567890123']
+        );
     }
 }

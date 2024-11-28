@@ -23,8 +23,7 @@ class VerifySpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_parameters()
     {
         $this->testMissingRequiredParameters([
-            'email',
-            'redirect_url'
+            'email'
         ]);
     }
 
@@ -74,14 +73,6 @@ class VerifySpec extends ObjectBehavior
     {
         $this->setFaceCheckDuplicateRequest('0');
         $this->getFaceCheckDuplicateRequest()->shouldNotEqual(true);
-    }
-
-    public function it_should_fail_without_document_types()
-    {
-        $this->setEmail($this->getFaker()->email());
-        $this->setRedirectUrl('https://example.com');
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
     public function it_should_fail_when_wrong_document_verification_type()

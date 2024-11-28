@@ -224,6 +224,12 @@ class Payin extends Financial
                 ],
                 'AUD' => [
                     ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('AUD')]
+                ],
+                'GBP' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('GBP')]
+                ],
+                'NZD' => [
+                    ['bank_code' => BankCodeParameters::getBankCodesPerCurrency('NZD')]
                 ]
             ]
         ];

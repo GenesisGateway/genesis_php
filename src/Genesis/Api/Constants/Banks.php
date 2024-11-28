@@ -1000,6 +1000,12 @@ class Banks
     const PID = 'PID';
 
     /**
+     * Latipay
+     *
+     */
+    const POLI = 'POLI';
+
+    /**
      * Retrieve list of all Bank Codes
      *
      * @return array

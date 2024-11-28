@@ -366,9 +366,9 @@ class Payout extends Financial
      */
     public function setCustomerEmail($value)
     {
-        $customerEmail = trim($value);
+        $customerEmail = trim((string)$value);
 
-        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+        if (filter_var($customerEmail, FILTER_VALIDATE_EMAIL) === false) {
             throw new InvalidArgument(
                 'Please, enter a valid Customer Email'
             );

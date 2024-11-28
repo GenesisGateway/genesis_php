@@ -871,7 +871,7 @@ class Types
             self::INIT_RECURRING_SALE,
             self::INIT_RECURRING_SALE_3D,
             self::ITAU,
-            self::INVOICE,
+            self::INVOICE_CAPTURE,
             self::MY_BANK,
             self::MY_BANK,
             self::NEOSURF,

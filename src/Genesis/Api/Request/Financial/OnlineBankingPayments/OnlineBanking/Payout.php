@@ -39,6 +39,7 @@ use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Exceptions\InvalidClassMethod;
 use Genesis\Utils\Common;
+use Genesis\Api\Traits\Request\Financial\UcofAttributes;
 
 /**
  * Class Payout
@@ -65,6 +66,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     use CustomerAttributes;
     use NotificationAttributes;
     use PaymentAttributes;
+    use UcofAttributes;
 
     const ID_CARD_NUMBER_MAX_LENGTH          = 30;
     const PAYER_BANK_PHONE_NUMBER_MAX_LENGTH = 11;
@@ -439,7 +441,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial
                 'shipping_address'                => $this->getShippingAddressParamsStructure(),
                 'pix_key'                         => $this->pix_key
             ],
-            $this->getCustomerParamsStructure()
+            $this->getCustomerParamsStructure(),
+            $this->getUcofAttributesStructure()
         );
     }
 

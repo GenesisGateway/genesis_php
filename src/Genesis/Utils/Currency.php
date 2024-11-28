@@ -1203,7 +1203,8 @@ final class Currency
      */
     public static function fetchCurrencyExponent($currencyCode)
     {
-        $currencyCode = strtoupper($currencyCode);
+        $currencyCode = strtoupper((string)$currencyCode);
+
         return (array_key_exists($currencyCode, self::$iso4217))
             ? intval(self::$iso4217[$currencyCode]['exponent'])
             : null;

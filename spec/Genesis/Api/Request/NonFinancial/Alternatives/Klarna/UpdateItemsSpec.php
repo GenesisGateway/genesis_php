@@ -2,13 +2,14 @@
 
 namespace spec\Genesis\Api\Request\NonFinancial\Alternatives\Klarna;
 
-use Genesis\Api\Request\Financial\Alternatives\Klarna\Item as KlarnaItem;
-use Genesis\Api\Request\Financial\Alternatives\Klarna\Items as KlarnaItems;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Items as KlarnaItems;
 use Genesis\Api\Request\NonFinancial\Alternatives\Klarna\UpdateItems;
 use Genesis\Builder;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Alternatives\Transaction\ItemsExample;
 
 /**
  * Class UpdateItemsSpec
@@ -17,6 +18,9 @@ use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 class UpdateItemsSpec extends ObjectBehavior
 {
     use RequestExamples;
+    use ItemsExample;
+
+    private $currency = 'EUR';
 
     public function it_is_initializable()
     {
@@ -49,26 +53,22 @@ class UpdateItemsSpec extends ObjectBehavior
         ]);
     }
 
+    /**
+     * @throws InvalidArgument
+     * @throws ErrorParameter
+     */
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
-
-        $item  = new KlarnaItem(
-            $faker->name,
-            KlarnaItem::ITEM_TYPE_PHYSICAL,
-            1,
-            10,
-            25
-        );
-
-        $items = new KlarnaItems();
-        $items->addItem($item);
-
+        $this->setCurrency($this->currency);
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
 
-        $this->setAmount($items->getAmount());
-        $this->setCurrency('');
+        $items = new KlarnaItems();
+        $items->setCurrency($this->currency);
 
-        $this->setItems($items);
+        $item = $this->setItem();
+        $item->setTotalDiscountAmount('0.09');
+        $this->addItem($item);
+        $this->setAmount('9.81');
     }
 }

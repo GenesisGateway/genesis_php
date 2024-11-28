@@ -126,6 +126,9 @@ class BankCodeParameters
         ],
         'GBP' => [
             Banks::TRL
+        ],
+        'NZD' => [
+            Banks::POLI
         ]
     ];
 

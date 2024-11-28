@@ -27,10 +27,14 @@
 namespace Genesis\Api\Request\NonFinancial\Alternatives\Klarna;
 
 use Genesis\Api\Request\Base\NonFinancial\Alternatives\Klarna\BaseRequest;
-use Genesis\Api\Request\Financial\Alternatives\Klarna\Items;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Items;
+use Genesis\Api\Traits\Request\Financial\Alternatives\Invoice\InvoiceItemsTrait;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Builder;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Api\Traits\Request\Financial\Alternatives\Invoice\InvoiceValidation;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Exceptions\InvalidClassMethod;
 
 /**
  * Class UpdateItems
@@ -41,35 +45,41 @@ use Genesis\Exceptions\InvalidArgument;
 class UpdateItems extends BaseRequest
 {
     use PaymentAttributes;
+    use InvoiceValidation;
+    use InvoiceItemsTrait;
 
     /**
-     * Items list
+     * UpdateItems constructor.
      *
-     * @var Items
+     * @param string $builderInterface
      */
-    protected $items;
-
-    /**
-     * Set items
-     *
-     * @param Items $items
-     *
-     * @return $this
-     */
-    public function setItems(Items $items)
+    public function __construct($builderInterface = Builder::XML)
     {
-        $this->items = $items;
+        parent::__construct($builderInterface);
 
-        return $this;
+        $this->items = new Items();
     }
 
+    /**
+     * Init configuration
+     *
+     * @return void
+     */
     protected function initConfiguration()
     {
         parent::initBaseConfiguration('klarna/update_order_items');
     }
 
+    /**
+     * Return the structure of the request
+     *
+     * @throws InvalidArgument
+     * @throws ErrorParameter
+     */
     protected function getRequestStructure()
     {
+        $this->items->setCurrency($this->currency);
+
         return array_merge(
             [
                 'amount'   => \Genesis\Utils\Currency::amountToExponent($this->amount, $this->currency)
@@ -78,11 +88,21 @@ class UpdateItems extends BaseRequest
         );
     }
 
+    /**
+     * Return the parent node
+     *
+     * @return string
+     */
     protected function getParentNode()
     {
         return 'update_order_items_request';
     }
 
+    /**
+     * Set the required fields for the request
+     *
+     * @return array
+     */
     protected function setRequestRequiredFields()
     {
         return [
@@ -90,13 +110,19 @@ class UpdateItems extends BaseRequest
         ];
     }
 
+    /**
+     * Check if the items are valid
+     *
+     * @return void
+     * @throws ErrorParameter
+     * @throws InvalidArgument
+     * @throws InvalidClassMethod
+     */
     protected function checkRequirements()
     {
+        $this->items->setCurrency($this->currency);
         parent::checkRequirements();
 
-        // verify there is at least one item added
-        if (empty($this->items) || $this->items->count() === 0) {
-            throw new ErrorParameter('Empty (null) required parameter: items');
-        }
+        $this->validateItems();
     }
 }

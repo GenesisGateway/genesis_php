@@ -26,6 +26,8 @@
 
 namespace Genesis\Api\Traits\Request\Financial;
 
+use Genesis\Api\Traits\RestrictedSetter;
+
 /**
  * Trait DescriptorAttributes
  *
@@ -47,9 +49,27 @@ namespace Genesis\Api\Traits\Request\Financial;
  * @method $this setDynamicMerchantServiceState( $value ) Dynamically override the merchant service subdivision code
  * @method $this setDynamicMerchantServiceZipCode( $value ) Dynamically override the merchant service zip/postal
  * @method $this setDynamicMerchantServicePhone( $value ) Dynamically override the merchant service phone number
+ * @method string getDynamicMerchantName() Dynamically override the charge descriptor
+ * @method string getDynamicMerchantCity() Dynamically override the merchant phone number
+ * @method string getDynamicSubMerchantId() Sub-merchant ID assigned by the Payment Facilitator
+ * @method string getDynamicMerchantCountry() Dynamically override the merchant country
+ * @method string getDynamicMerchantState() Dynamically override the merchant subdivision code
+ * @method string getDynamicMerchantZipCode() Dynamically override the merchant zip/postal code
+ * @method string getDynamicMerchantAddress() Dynamically override the merchant address
+ * @method string getDynamicMerchantUrl() Dynamically override the merchant URL
+ * @method string getDynamicMerchantPhone() Dynamically override the merchant phone number
+ * @method string getDynamicMerchantServiceCity() Dynamically override the merchant service city
+ * @method string getDynamicMerchantServiceCountry() Dynamically override the merchant service country
+ * @method string getDynamicMerchantServiceState() Dynamically override the merchant service subdivision code
+ * @method string getDynamicMerchantServiceZipCode() Dynamically override the merchant service zip/postal
+ * @method string getDynamicMerchantServicePhone() Dynamically override the merchant service phone number
+ * @method string getDynamicMerchantGeoCoordinates() Merchant service geographic coordinates
+ * @method string getDynamicMerchantServiceGeoCoordinates() Merchant service geographic coordinates
  */
 trait DescriptorAttributes
 {
+    use RestrictedSetter;
+
     /**
      * Allows to dynamically override the charge descriptor
      *
@@ -149,6 +169,64 @@ trait DescriptorAttributes
     protected $dynamic_merchant_service_phone;
 
     /**
+     * Merchant service geographic coordinates.
+     *
+     * Length of geographic coordinates is a range of 15-20 symbols. Latitude and Longitude separated by a comma.
+     * Example: 40.73061,-73.93524
+     *
+     * @var string $dynamic_merchant_geo_coordinates
+     */
+    protected $dynamic_merchant_geo_coordinates;
+
+    /**
+     * Merchant service geographic coordinates.
+     *
+     * Length of geographic coordinates is a range of 15-20 symbols. Latitude and Longitude separated by a comma.
+     * Example: 40.73061,-73.93524
+     *
+     * @var string $dynamic_merchant_service_geo_coordinates
+     */
+    protected $dynamic_merchant_service_geo_coordinates;
+
+    /**
+     * Sets the dynamic merchant geo coordinates
+     *
+     * @param $value
+     *
+     * @return $this
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setDynamicMerchantGeoCoordinates($value)
+    {
+        return $this->setLimitedString(
+            'dynamic_merchant_geo_coordinates',
+            $value,
+            null,
+            20
+        );
+    }
+
+    /**
+     * Sets the dynamic merchant service geo coordinates
+     *
+     * @param $value
+     *
+     * @return $this
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setDynamicMerchantServiceGeoCoordinates($value)
+    {
+        return $this->setLimitedString(
+            'dynamic_merchant_service_geo_coordinates',
+            $value,
+            null,
+            20
+        );
+    }
+
+    /**
      * Builds an array list with all Params
      *
      * @return array
@@ -156,20 +234,22 @@ trait DescriptorAttributes
     protected function getDynamicDescriptorParamsStructure()
     {
         return [
-            'merchant_name'             => $this->dynamic_merchant_name,
-            'merchant_city'             => $this->dynamic_merchant_city,
-            'sub_merchant_id'           => $this->dynamic_sub_merchant_id,
-            'merchant_country'          => $this->dynamic_merchant_country,
-            'merchant_state'            => $this->dynamic_merchant_state,
-            'merchant_zip_code'         => $this->dynamic_merchant_zip_code,
-            'merchant_address'          => $this->dynamic_merchant_address,
-            'merchant_url'              => $this->dynamic_merchant_url,
-            'merchant_phone'            => $this->dynamic_merchant_phone,
-            'merchant_service_city'     => $this->dynamic_merchant_service_city,
-            'merchant_service_country'  => $this->dynamic_merchant_service_country,
-            'merchant_service_state'    => $this->dynamic_merchant_service_state,
-            'merchant_service_zip_code' => $this->dynamic_merchant_service_zip_code,
-            'merchant_service_phone'    => $this->dynamic_merchant_service_phone
+            'merchant_name'                    => $this->dynamic_merchant_name,
+            'merchant_city'                    => $this->dynamic_merchant_city,
+            'sub_merchant_id'                  => $this->dynamic_sub_merchant_id,
+            'merchant_country'                 => $this->dynamic_merchant_country,
+            'merchant_state'                   => $this->dynamic_merchant_state,
+            'merchant_zip_code'                => $this->dynamic_merchant_zip_code,
+            'merchant_address'                 => $this->dynamic_merchant_address,
+            'merchant_url'                     => $this->dynamic_merchant_url,
+            'merchant_phone'                   => $this->dynamic_merchant_phone,
+            'merchant_service_city'            => $this->dynamic_merchant_service_city,
+            'merchant_service_country'         => $this->dynamic_merchant_service_country,
+            'merchant_service_state'           => $this->dynamic_merchant_service_state,
+            'merchant_service_zip_code'        => $this->dynamic_merchant_service_zip_code,
+            'merchant_service_phone'           => $this->dynamic_merchant_service_phone,
+            'merchant_geo_coordinates'         => $this->dynamic_merchant_geo_coordinates,
+            'merchant_service_geo_coordinates' => $this->dynamic_merchant_service_geo_coordinates
         ];
     }
 }

@@ -193,7 +193,7 @@ class Ppro extends \Genesis\Api\Request\Base\Financial
                 ],
                 PaymentMethods::MYBANK     => [
                     [
-                        'billing_country' => ['IT'],
+                        'billing_country' => ['IT', 'BE', 'PT', 'ES'],
                         'currency'        => 'EUR'
                     ]
                 ]

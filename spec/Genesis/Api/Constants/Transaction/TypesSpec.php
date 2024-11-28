@@ -127,7 +127,7 @@ class TypesSpec extends ObjectBehavior
             $typesObject::INIT_RECURRING_SALE,
             $typesObject::INIT_RECURRING_SALE_3D,
             $typesObject::ITAU,
-            $typesObject::INVOICE,
+            $typesObject::INVOICE_CAPTURE,
             $typesObject::MY_BANK,
             $typesObject::MY_BANK,
             $typesObject::NEOSURF,
