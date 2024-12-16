@@ -27,6 +27,7 @@
 namespace Genesis\Api;
 
 use Genesis\Builder;
+use Genesis\Config;
 use Genesis\Exceptions\DeprecatedMethod;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -50,6 +51,13 @@ class Notification
      * @var string
      */
     private $unique_id;
+
+    /**
+     * Store the Terminal Token of the transaction
+     *
+     * @var string
+     */
+    private $terminal_token;
 
     /**
      * Store the incoming notification as an object
@@ -102,17 +110,7 @@ class Notification
 
         $this->notificationObj = \Genesis\Utils\Common::createArrayObject($notification);
 
-        if ($this->isAPINotification()) {
-            $this->unique_id = (string)$this->notificationObj->unique_id;
-        }
-
-        if ($this->isWPFNotification()) {
-            $this->unique_id = (string)$this->notificationObj->wpf_unique_id;
-        }
-
-        if ($this->isKYCNotification()) {
-            $this->unique_id = (string)$this->notificationObj->reference_id;
-        }
+        $this->mapVariables();
 
         if ($authenticate && !$this->isAuthentic()) {
             throw new InvalidArgument('Invalid Genesis Notification!');
@@ -237,6 +235,26 @@ class Notification
     }
 
     /**
+     * Unique Id getter
+     *
+     * @return string
+     */
+    public function getUniqueId()
+    {
+        return $this->unique_id;
+    }
+
+    /**
+     * Terminal Token getter
+     *
+     * @return string
+     */
+    public function getTerminalToken()
+    {
+        return $this->terminal_token;
+    }
+
+    /**
      * Generate Builder response (Echo) required for acknowledging
      * Genesis's Notification
      *
@@ -288,5 +306,67 @@ class Notification
         ob_clean();
 
         echo $this->generateResponse();
+    }
+
+    /**
+     * Sets the Terminal Token to the Genesis Config. The case is useful with the Smart Router API
+     *
+     * @return void
+     */
+    private function assignTerminalToken()
+    {
+        if (!$this->terminal_token || !empty(Config::getToken())) {
+            return;
+        }
+
+        Config::setToken($this->terminal_token);
+    }
+
+    /**
+     * Map Notification params to class variables
+     *
+     * @return void
+     */
+    private function mapVariables()
+    {
+        switch (true) {
+            case $this->isAPINotification():
+                $this->assignAccessorValue('unique_id', 'unique_id');
+                $this->assignAccessorValue('terminal_token', 'terminal_token');
+                $this->assignTerminalToken();
+
+                break;
+            case $this->isWPFNotification():
+                $this->assignAccessorValue('unique_id', 'wpf_unique_id');
+                $this->assignAccessorValue('terminal_token', 'payment_transaction_terminal_token');
+
+                break;
+            case $this->isKYCNotification():
+                $this->assignAccessorValue('unique_id', 'reference_id');
+
+                break;
+            default:
+                $this->unique_id      = null;
+                $this->terminal_token = null;
+        }
+    }
+
+    /**
+     * Safe assign
+     *
+     * @param string $private_accessor
+     * @param string $notification_accessor
+     *
+     * @return void
+     */
+    private function assignAccessorValue($private_accessor, $notification_accessor)
+    {
+        if (!isset($this->notificationObj->{$notification_accessor})) {
+            $this->{$private_accessor} = null;
+
+            return;
+        }
+
+        $this->{$private_accessor} = $this->notificationObj->{$notification_accessor};
     }
 }

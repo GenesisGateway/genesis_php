@@ -7,6 +7,7 @@ use Genesis\Api\Request\NonFinancial\Alternatives\Trustly\RegisterAccount;
 use Genesis\Builder;
 use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 /**
@@ -15,6 +16,7 @@ use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
  */
 class RegisterAccountSpec extends ObjectBehavior
 {
+    use MissingTerminalTokenExamples;
     use RequestExamples;
 
     public function it_is_initializable()

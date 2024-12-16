@@ -1,3 +1,13 @@
+2.0.5
+-----
+**Features**:
+
+* Added terminal token automatic configuration in the Notification class required by the initReconciliation action. There is no need for Terminal Token configuration during notification handling and Smart Router used.
+
+**Fixes**:
+
+* Fixed missing 404 page returned from the Gateway for the requests which require a terminal token. InvalidArgument exception is thrown with an empty token configuration.
+
 2.0.4
 -----
 **Features**

@@ -10,6 +10,7 @@ use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Country;
 use DateTime;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 /**
@@ -18,6 +19,7 @@ use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
  */
 class SelectAccountSpec extends ObjectBehavior
 {
+    use MissingTerminalTokenExamples;
     use RequestExamples;
 
     public function it_is_initializable()

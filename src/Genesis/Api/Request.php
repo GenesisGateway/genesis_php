@@ -30,7 +30,9 @@ use Genesis\Api\Traits\MagicAccessors;
 use Genesis\Api\Traits\RestrictedSetter;
 use Genesis\Api\Traits\Validations\Request\Validations;
 use Genesis\Builder;
+use Genesis\Config;
 use Genesis\Exceptions\EnvironmentNotSet;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -93,6 +95,13 @@ abstract class Request
      * @var string
      */
     protected $builderInterface;
+
+    /**
+     * Indicates if the given request appends the terminal token to the endpoint
+     *
+     * @var bool
+     */
+    protected $isTokenRequest;
 
     /**
      * Bootstrap per-request configuration
@@ -182,6 +191,7 @@ abstract class Request
      */
     protected function checkRequirements()
     {
+        $this->validateConfig();
         $this->validate();
     }
 
@@ -254,9 +264,9 @@ abstract class Request
     {
         $protocol = ($this->getApiConfig('protocol')) ? $this->getApiConfig('protocol') : 'https';
 
-        $sub      = \Genesis\Config::getSubDomain($sub);
+        $sub      = Config::getSubDomain($sub);
 
-        $domain   = \Genesis\Config::getEndpoint();
+        $domain   = Config::getEndpoint();
 
         $port     = ($this->getApiConfig('port')) ? $this->getApiConfig('port') : Request::PORT_HTTPS;
 
@@ -377,14 +387,10 @@ abstract class Request
         $includeToken = true,
         $subdomain = 'gateway'
     ) {
-        $this->setApiConfig(
-            'url',
-            $this->buildRequestURL(
-                $subdomain,
-                $requestPath,
-                ($includeToken ? \Genesis\Config::getToken() : false)
-            )
-        );
+        $this->isTokenRequest = $includeToken;
+        $token                = $includeToken ? Config::getToken() : false;
+
+        $this->setApiConfig('url', $this->buildRequestURL($subdomain, $requestPath, $token));
     }
 
     /**
@@ -414,5 +420,21 @@ abstract class Request
     protected function allowedEmptyNotNullFields()
     {
         return array();
+    }
+
+    /**
+     * Validates the Config against the given Request
+     *
+     * @return void
+     *
+     * @throws InvalidArgument
+     */
+    protected function validateConfig()
+    {
+        if ($this->isTokenRequest && empty(Config::getToken())) {
+            $message = sprintf('Config Token missing! %s requires Token configuration.', static::class);
+
+            throw new InvalidArgument($message);
+        }
     }
 }

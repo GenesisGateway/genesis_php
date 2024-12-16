@@ -222,6 +222,13 @@ class Checker extends BaseVersionedRequest
         ];
     }
 
+    protected function initConfiguration()
+    {
+        parent::initConfiguration();
+
+        $this->initApiGatewayConfiguration("{$this->getVersion()}/sca/checker", true);
+    }
+
     /**
      * Transform Amount to Exponent
      *

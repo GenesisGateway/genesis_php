@@ -2,8 +2,10 @@
 
 namespace spec\SharedExamples\Genesis\Api\Request;
 
+use Genesis\Config;
 use Genesis\Utils\Common;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
 
 /**
  * Trait RequestExamples
@@ -12,6 +14,14 @@ use spec\SharedExamples\Faker;
 trait RequestExamples
 {
     private static $faker;
+
+    public function __construct()
+    {
+        Config::setUsername(Faker::getInstance()->uuid);
+        Config::setPassword(Faker::getInstance()->uuid);
+        Config::setToken(Faker::getInstance()->uuid);
+        Config::setForceSmartRouting(false);
+    }
 
     public function it_can_build_structure()
     {

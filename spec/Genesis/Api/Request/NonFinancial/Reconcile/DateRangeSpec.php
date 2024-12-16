@@ -5,10 +5,12 @@ namespace spec\Genesis\Api\Request\NonFinancial\Reconcile;
 use Genesis\Api\Request\NonFinancial\Reconcile\DateRange;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DateRangeSpec extends ObjectBehavior
 {
+    use MissingTerminalTokenExamples;
     use RequestExamples;
 
     public function it_is_initializable()

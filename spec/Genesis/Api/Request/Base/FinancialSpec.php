@@ -6,9 +6,16 @@ use Genesis\Api\Constants\Endpoints;
 use Genesis\Config;
 use spec\Genesis\Api\Stubs\Base\Request\FinancialStub;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class FinancialSpec extends \PhpSpec\ObjectBehavior
 {
+    use MissingTerminalTokenExamples;
+    use RequestExamples {
+        __construct as parentConstruct;
+    }
+
     private $faker_uuid;
 
     private $faker_usage;
@@ -17,6 +24,7 @@ class FinancialSpec extends \PhpSpec\ObjectBehavior
 
     public function __construct()
     {
+        $this->parentConstruct();
         $this->faker_uuid      = Faker::getInstance()->uuid;
         $this->faker_usage     = Faker::getInstance()->sentence;
         $this->faker_remote_ip = Faker::getInstance()->ipv4;
@@ -53,6 +61,7 @@ class FinancialSpec extends \PhpSpec\ObjectBehavior
     {
         Config::setToken($this->faker_uuid);
         Config::setEndpoint(Endpoints::EMERCHANTPAY);
+        $this->setRequestParameters();
 
         $this->getDocument();
 
@@ -65,6 +74,7 @@ class FinancialSpec extends \PhpSpec\ObjectBehavior
     {
         Config::setToken(Faker::getInstance()->uuid);
         Config::setEndpoint(Endpoints::EMERCHANTPAY);
+        $this->setRequestParameters();
         $this->setUseSmartRouter(true);
 
         $this->getDocument();
@@ -87,6 +97,12 @@ class FinancialSpec extends \PhpSpec\ObjectBehavior
 
     public function it_should_populate_proper_transaction_structure()
     {
+        $this->setRequestParameters();
         $this->getDocument()->shouldContain('<stub>financial</stub>');
+    }
+
+    protected function setRequestParameters()
+    {
+        $this->setTransactionId(Faker::getInstance()->uuid);
     }
 }

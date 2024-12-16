@@ -6,10 +6,13 @@ use Faker\Generator;
 use Genesis\Api\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\Api\Request\NonFinancial\Sca\Checker;
 use Genesis\Builder;
+use Genesis\Config;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\MissingTerminalTokenExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 /**
  * Class CheckerSpec
@@ -17,6 +20,9 @@ use spec\SharedExamples\Faker;
  */
 class CheckerSpec extends ObjectBehavior
 {
+    use MissingTerminalTokenExamples;
+    use RequestExamples;
+
     /**
      * @property Generator $faker
      */
@@ -218,6 +224,17 @@ class CheckerSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during('setTransactionAmount', ['23,45']);
     }
 
+    public function it_should_build_proper_url()
+    {
+        Config::setToken('123456');
+        Config::setEndpoint('emp');
+        Config::setEnvironment('staging');
+        $this->setRequestParameters();
+        $this->getDocument();
+
+        $this->getApiConfig('url')->shouldBe('https://staging.gate.emerchantpay.net:443/v1/sca/checker/123456/');
+    }
+
     /**
      * Helper Methods
      */
@@ -270,5 +287,10 @@ class CheckerSpec extends ObjectBehavior
         $exemptions = ScaExemptions::getAll();
 
         return $exemptions[array_rand($exemptions)];
+    }
+
+    protected function setRequestParameters()
+    {
+        $this->setDefaultRequestParameters();
     }
 }

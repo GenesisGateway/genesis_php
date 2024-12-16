@@ -9,23 +9,29 @@ use spec\SharedExamples\Faker;
 class NotificationSpec extends ObjectBehavior
 {
     private $password;
+    private $terminal_token;
+    private $unique_id;
+    private $wpf_unique_id;
 
     private $sample = array(
         'api'   => array(
-            'unique_id'     => '',
-            'signature'     => '',
-            'status'        => 'approved',
+            'unique_id'      => '',
+            'signature'      => '',
+            'status'         => 'approved',
+            'terminal_token' => ''
         ),
         'wpf'   => array(
-            'wpf_unique_id' => '',
-            'signature'     => '',
-            'status'        => 'approved',
+            'wpf_unique_id'                      => '',
+            'signature'                          => '',
+            'status'                             => 'approved',
+            'payment_transaction_terminal_token' => ''
         )
     );
 
     public function __construct()
     {
-        $this->password = Faker::getInstance()->uuid;
+        $this->password       = Faker::getInstance()->uuid;
+        $this->terminal_token = Faker::getInstance()->uuid;
 
         Config::setPassword($this->password);
 
@@ -33,19 +39,18 @@ class NotificationSpec extends ObjectBehavior
             $this->sample['api']['unique_id'] .= chr(mt_rand(97, 122));
         }
 
-        $this->sample['api']['signature'] = hash(
-            'sha1',
-            $this->sample['api']['unique_id'] . \Genesis\Config::getPassword()
-        );
+        $this->unique_id                  = $this->sample['api']['unique_id'];
+        $this->sample['api']['signature'] = hash('sha1', $this->unique_id . Config::getPassword());
 
         for ($i=0; $i < mt_rand(32, 48); $i++) {
             $this->sample['wpf']['wpf_unique_id'] .= chr(mt_rand(97, 122));
         }
 
-        $this->sample['wpf']['signature'] = hash(
-            'sha1',
-            $this->sample['wpf']['wpf_unique_id'] . \Genesis\Config::getPassword()
-        );
+        $this->wpf_unique_id              = $this->sample['wpf']['wpf_unique_id'];
+        $this->sample['wpf']['signature'] = hash('sha1', $this->wpf_unique_id . Config::getPassword());
+
+        $this->sample['api']['terminal_token']                     = $this->terminal_token;
+        $this->sample['wpf']['payment_transaction_terminal_token'] = $this->terminal_token;
     }
 
     public function it_is_initializable()
@@ -275,6 +280,50 @@ class NotificationSpec extends ObjectBehavior
         $this->generateResponse()->shouldBe(ob_get_clean());
     }
 
+    public function it_when_transaction_with_terminal_token_assignment()
+    {
+        $this->parseNotification($this->sample['api']);
+
+        $this->getTerminalToken()->shouldBe($this->terminal_token);
+    }
+
+    public function it_when_transaction_with_unique_id_assignment()
+    {
+        $this->parseNotification($this->sample['api']);
+
+        $this->getUniqueId()->shouldBe($this->unique_id);
+    }
+
+    public function it_when_wpf_with_terminal_token_assignment()
+    {
+        $this->parseNotification($this->sample['wpf']);
+
+        $this->getTerminalToken()->shouldBe($this->terminal_token);
+    }
+
+    public function it_when_wpf_with_unique_id_assignment()
+    {
+        $this->parseNotification($this->sample['wpf']);
+
+        $this->getUniqueId()->shouldBe($this->wpf_unique_id);
+    }
+
+    public function it_when_transaction_with_token_configuration()
+    {
+        Config::setToken(null);
+        $this->parseNotification($this->sample['api']);
+
+        $this->shouldBeTokenConfiguredWith($this->terminal_token);
+    }
+
+    public function it_when_transaction_with_previously_defined_token()
+    {
+        Config::setToken('123456');
+        $this->parseNotification($this->sample['api']);
+
+        $this->shouldBeTokenConfiguredWith('123456');
+    }
+
     public function getMatchers(): array
     {
         return array(
@@ -284,6 +333,9 @@ class NotificationSpec extends ObjectBehavior
             'contain' => function ($subject, $arg) {
                 return (stripos($subject, $arg) !== false);
             },
+            'beTokenConfiguredWith' => function($subject, $arg) {
+                return Config::getToken() === $arg;
+            }
         );
     }
 }
