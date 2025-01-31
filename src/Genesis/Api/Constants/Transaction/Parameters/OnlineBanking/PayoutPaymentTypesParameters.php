@@ -67,6 +67,16 @@ class PayoutPaymentTypesParameters
     const PIX_B2B = 'pix_b2b';
 
     /**
+     * Payment Type Clabe
+     */
+    const CLABE = 'clabe';
+
+    /**
+     * Payment Type Cellphone
+     */
+    const CELLPHONE = 'cellphone';
+
+    /**
      * Get all available Payment Types
      *
      * @return array

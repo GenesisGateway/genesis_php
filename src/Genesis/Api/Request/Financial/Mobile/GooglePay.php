@@ -36,6 +36,7 @@ use Genesis\Api\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
@@ -60,6 +61,7 @@ class GooglePay extends Financial
     use BusinessAttributes;
     use DescriptorAttributes;
     use DocumentAttributes;
+    use FundingAttributes;
     use GooglePayAttributes;
     use NotificationAttributes;
     use PaymentAttributes;
@@ -180,7 +182,8 @@ class GooglePay extends Financial
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'document_id'               => $this->document_id,
             'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
-            'recurring_type'            => $this->getRecurringType()
+            'recurring_type'            => $this->getRecurringType(),
+            'funding'                   => $this->getFundingAttributesStructure()
         ];
     }
 

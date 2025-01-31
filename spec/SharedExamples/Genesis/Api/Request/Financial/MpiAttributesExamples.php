@@ -80,16 +80,16 @@ trait MpiAttributesExamples
         $this->shouldThrow()->during('getDocument');
     }
 
-    public function it_should_contain_asc_transaction_id()
+    public function it_should_contain_acs_transaction_id()
     {
         $testUuid = Faker::getInstance()->uuid();
 
         $this->setRequestParameters();
         $this->setMpi3DSv2();
 
-        $this->setMpiAscTransactionId($testUuid);
+        $this->setMpiAcsTransactionId($testUuid);
 
-        $this->getDocument()->shouldContain("<asc_transaction_id>$testUuid</asc_transaction_id>");
+        $this->getDocument()->shouldContain("<acs_transaction_id>$testUuid</acs_transaction_id>");
     }
 
     public function it_should_contain_threeds_challenge_indicator()

@@ -3,12 +3,14 @@
 namespace spec\Genesis\Api\Request\Financial\Cards\Recurring;
 
 use Genesis\Api\Request\Financial\Cards\Recurring\InitRecurringSale3D;
+use Genesis\Api\Traits\Request\Financial\UcofAttributes;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenized3DExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
@@ -19,6 +21,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 
@@ -39,8 +42,10 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use RequestExamples;
     use ScaAttributesExamples;
     use ThreedsV2AttributesExamples;
-    use TokenizationAttributesExamples;
     use ThreedsV2DatesExamples;
+    use TokenizationAttributesExamples;
+    use UcofAttributesExamples;
+    use SchemeTokenized3DExamples;
 
     public function it_is_initializable()
     {

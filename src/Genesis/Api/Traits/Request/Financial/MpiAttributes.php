@@ -40,7 +40,7 @@ use Genesis\Exceptions\InvalidArgument;
  * @method $this setMpiEci($value) Set Electric Commerce Indicator as returned from the MPI.
  * @method $this setMpiXid($value) Set Transaction ID that uniquely identifies a 3D Secure check request
  * @method $this setMpiDirectoryServerId($value) Set the directory server ID used during 3DS authentication
- * @method $this setMpiAscTransactionId($value) Set the ASC Transaction ID
+ * @method $this setMpiAcsTransactionId($value) Set the ACS Transaction ID
  */
 trait MpiAttributes
 {
@@ -90,11 +90,12 @@ trait MpiAttributes
     protected $mpi_directory_server_id;
 
     /**
-     * Optional value for ASC Transaction ID. Highly recommended to increase approve ratio.
+     * The ACS Transaction ID and is optional for 3DS transactions, but highly recommended
+     * for increasing the approval ratio.
      *
      * @var string
      */
-    protected $mpi_asc_transaction_id;
+    protected $mpi_acs_transaction_id;
 
     /**
      * Optional value for 3DS challenge indicator. Highly recommended to increase approve ratio.
@@ -216,11 +217,16 @@ trait MpiAttributes
             'protocol_version'            => $this->mpi_protocol_version,
             'protocol_sub_version'        => $this->mpi_protocol_sub_version,
             'directory_server_id'         => $this->mpi_directory_server_id,
-            'asc_transaction_id'          => $this->mpi_asc_transaction_id,
+            'acs_transaction_id'          => $this->mpi_acs_transaction_id,
             'threeds_challenge_indicator' => $this->mpi_threeds_challenge_indicator
         ];
     }
 
+    /**
+     * Return required conditional MPI fields
+     *
+     * @return array
+     */
     protected function requiredMpiFieldsConditional()
     {
         return [

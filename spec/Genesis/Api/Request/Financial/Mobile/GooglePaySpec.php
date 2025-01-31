@@ -12,6 +12,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AsyncAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NotificationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
@@ -23,12 +24,13 @@ class GooglePaySpec extends ObjectBehavior
     use AsyncAttributesExample;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
     use NotificationAttributesExamples;
+    use RecurringTypeAttributesExample;
     use RequestExamples;
     use ThreedsV2AttributesExamples;
     use ThreedsV2DatesExamples;
-    use RecurringTypeAttributesExample;
 
     public function is_it_initializable()
     {

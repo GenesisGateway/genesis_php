@@ -32,7 +32,7 @@ use Genesis\Api\Traits\Request\NonFinancial\DateAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\PagingAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
-use Genesis\Utils\Common as CommonUtils;
+use Genesis\Exceptions\InvalidClassMethod;
 
 /**
  * Class Transaction
@@ -49,10 +49,11 @@ class Transaction extends GraphqlRequest
     use OrderByDirection;
     use PagingAttributes;
 
-    const MAX_COUNT_BILLING_STATEMENT_ID    = 10;
+    const MAX_COUNT_BILLING_STATEMENT       = 10;
     const MAX_COUNT_UNIQUE_ID               = 10000;
     const MAX_COUNT_MERCHANT_TRANSACTION_ID = 10000;
     const MAX_COUNT_MASTER_ACCOUNT_NAME     = 10;
+    const MAX_DAYS_DIFFERENCE               = 7;
 
     /**
      * Request filter parameter:
@@ -68,7 +69,7 @@ class Transaction extends GraphqlRequest
      *
      * @var string[]
      */
-    protected $billing_statement_id = [];
+    protected $billing_statement = [];
 
     /**
      * Request filter parameter:
@@ -102,6 +103,13 @@ class Transaction extends GraphqlRequest
      */
     protected $order_by_field;
 
+    /**
+     * Defines fields that must not be surrounded with quotes in the request
+     *
+     * @var string[]
+     */
+    private $filters_without_quotes = ['billingStatement', 'uniqueId', 'merchantTransactionId', 'masterAccountName'];
+
     public function __construct()
     {
         parent::__construct('billing_transactions', 'billingTransactions');
@@ -116,7 +124,7 @@ class Transaction extends GraphqlRequest
      */
     public function setUniqueId($value)
     {
-        return $this->setStringArray($value, 'unique_id', 'UniqueId');
+        return $this->parseArrayOfStrings('unique_id', $value, 'UniqueId');
     }
 
     /**
@@ -130,7 +138,7 @@ class Transaction extends GraphqlRequest
             return '';
         }
 
-        return sprintf('[%s]', implode(',', $this->unique_id));
+        return sprintf('["%s"]', implode('","', $this->unique_id));
     }
 
     /**
@@ -140,9 +148,9 @@ class Transaction extends GraphqlRequest
      * @return $this
      * @throws InvalidArgument
      */
-    public function setBillingStatementId($value)
+    public function setBillingStatement($value)
     {
-        return $this->setStringArray($value, 'billing_statement_id', 'BillingStatementId');
+        return $this->parseArrayOfStrings('billing_statement', $value, 'BillingStatement');
     }
 
     /**
@@ -150,13 +158,13 @@ class Transaction extends GraphqlRequest
      *
      * @return string
      */
-    public function getBillingStatementId()
+    public function getBillingStatement()
     {
-        if (empty($this->billing_statement_id)) {
+        if (empty($this->billing_statement)) {
             return '';
         }
 
-        return sprintf('[%s]', implode(',', $this->billing_statement_id));
+        return sprintf('["%s"]', implode('","', $this->billing_statement));
     }
 
     /**
@@ -168,7 +176,8 @@ class Transaction extends GraphqlRequest
      */
     public function setMerchantTransactionId($value)
     {
-        return $this->setStringArray($value, 'merchant_transaction_id', 'MerchantTransactionId');
+        return $this
+            ->parseArrayOfStrings('merchant_transaction_id', $value, 'MerchantTransactionId');
     }
 
     /**
@@ -182,7 +191,7 @@ class Transaction extends GraphqlRequest
             return '';
         }
 
-        return sprintf('[%s]', implode(',', $this->merchant_transaction_id));
+        return sprintf('["%s"]', implode('","', $this->merchant_transaction_id));
     }
 
     /**
@@ -194,7 +203,7 @@ class Transaction extends GraphqlRequest
      */
     public function setMasterAccountName($value)
     {
-        return $this->setStringArray($value, 'master_account_name', 'MasterAccountName');
+        return $this->parseArrayOfStrings('master_account_name', $value, 'MasterAccountName');
     }
 
     /**
@@ -208,7 +217,7 @@ class Transaction extends GraphqlRequest
             return '';
         }
 
-        return sprintf('[%s]', implode(',', $this->master_account_name));
+        return sprintf('["%s"]', implode('","', $this->master_account_name));
     }
 
     /**
@@ -296,7 +305,7 @@ class Transaction extends GraphqlRequest
                 'start_date',
                 'end_date',
                 'unique_id',
-                'billing_statement_id',
+                'billing_statement',
                 'merchant_transaction_id',
                 'master_account_name',
                 'transaction_type'
@@ -309,32 +318,15 @@ class Transaction extends GraphqlRequest
      * @return void
      * @throws ErrorParameter
      * @throws InvalidArgument
+     * @throws InvalidClassMethod
      */
     protected function checkRequirements()
     {
         parent::checkRequirements();
 
-        $this->validateConditionallyRequiredDates();
+        $this->validateGroupDateRequirements();
+        $this->validateDatesMaxDifference(self::MAX_DAYS_DIFFERENCE);
         $this->validateStatementsMaxCount();
-    }
-
-    /**
-     * Validate dates
-     * If startDate is provided, then endDate should also be provided and vice versa.
-     *
-     * @return void
-     * @throws ErrorParameter
-     */
-    protected function validateConditionallyRequiredDates()
-    {
-        if (
-            (!empty($this->start_date) && empty($this->end_date))
-            || (!empty($this->end_date) && empty($this->start_date))
-        ) {
-            throw new ErrorParameter(
-                'If filter startDate is provided, then endDate should also be provided and vice versa.'
-            );
-        }
     }
 
     /**
@@ -346,9 +338,9 @@ class Transaction extends GraphqlRequest
     protected function validateStatementsMaxCount()
     {
         $this->checkArrayMaxSize(
-            $this->billing_statement_id,
-            self::MAX_COUNT_BILLING_STATEMENT_ID,
-            'billingStatementId'
+            $this->billing_statement,
+            self::MAX_COUNT_BILLING_STATEMENT,
+            'billingStatement'
         );
 
         $this->checkArrayMaxSize(
@@ -394,42 +386,21 @@ class Transaction extends GraphqlRequest
     }
 
     /**
-     * Set parameter of type array of strings
-     *
-     * @param array $value    - value to be set
-     * @param string $name    - name of the array variable
-     * @param string $message - the message of the exception
-     *
-     * @return $this
-     * @throws InvalidArgument
-     */
-    protected function setStringArray($value, $name, $message)
-    {
-        if (CommonUtils::isValidArray($value)) {
-            $this->{$name} = array_map('strval', $value);
-
-            return $this;
-        }
-
-        throw new InvalidArgument(
-            "$message should be an array of strings"
-        );
-    }
-
-    /**
      * List of allowed response fields
      *
      * @return string[]
      */
     protected function getResponseFieldsAllowedValues()
     {
-        return ['uniqueId', 'billingStatementId', 'billingStatementDisplayId', 'transactionType',
-            'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency',
-            'billingAmount', 'transactionFeeCurrency', 'transactionFeeAmount', 'commissionAmount', 'commissionRuleId',
-            'transactionFeeChargedOnBillingStatementId', 'commissionPercent',  'interchangeFee', 'interchangeCurrency',
-            'isInterchangeplusplus', 'interchangeplusplusChargedOnBillingStatementId', 'schemeFee', 'vatAmount',
-            'vatRate', 'schemeFeeCurrency', 'standardDebitCardRate', 'gstAmount', 'gstRate', 'terminalId', 'region',
-            'settlementStatements', 'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'valueDate'];
+        return ['id', 'uniqueId', 'billingStatement', 'arn', 'transactionType', 'transactionDate',
+            'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency', 'billingAmount',
+            'transactionFeeCurrency', 'transactionFeeAmount', 'transactionFeeChargedOnBillingStatement',
+            'commissionPercent', 'commissionAmount', 'interchangeFee', 'interchangeCurrency', 'isInterchangeplusplus',
+            'interchangeplusplusChargedOnBillingStatement', 'schemeFee', 'schemeFeeCurrency', 'standardDebitCardRate',
+            'gstAmount', 'gstRate', 'vatAmount', 'vatRate', 'terminalName', 'region', 'settlementBillingStatements',
+            'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'merchantTransactionId',
+            'masterAccountName', 'valueDate', 'documentId', 'referenceId', 'authCode', 'paymentType', 'cardBrand',
+            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype'];
     }
 
     /**
@@ -439,7 +410,7 @@ class Transaction extends GraphqlRequest
      */
     protected function getOrderByFieldAllowedValues()
     {
-        return ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
+        return ['billingStatement', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
             'billingAmount', 'transactionFeeAmount', 'commissionPercent', 'commissionAmount', 'interchangeFee',
             'region', 'settlementStatus'];
     }
@@ -471,7 +442,7 @@ class Transaction extends GraphqlRequest
             'uniqueId'              => $this->getUniqueId(),
             'startDate'             => $this->getStartDate(),
             'endDate'               => $this->getEndDate(),
-            'billingStatementId'    => $this->getBillingStatementId(),
+            'billingStatement'      => $this->getBillingStatement(),
             'merchantTransactionId' => $this->getMerchantTransactionId(),
             'masterAccountName'     => $this->getMasterAccountName(),
             'transactionType'       => $this->getTransactionType()
@@ -483,7 +454,7 @@ class Transaction extends GraphqlRequest
             ', ',
             array_map(
                 function ($key, $value) {
-                    $format = ($key == 'billingStatementId') ? '%s: %s' : '%s: "%s"';
+                    $format = in_array($key, $this->filters_without_quotes) ? '%s: %s' : '%s: "%s"';
 
                     return sprintf($format, $key, $value);
                 },

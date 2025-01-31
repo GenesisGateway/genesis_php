@@ -28,6 +28,7 @@ namespace Genesis\Api\Traits\Request\NonFinancial;
 
 use Genesis\Api\Constants\DateTimeFormat;
 use Genesis\Api\Validators\Request\RegexValidator;
+use Genesis\Exceptions\ErrorParameter;
 
 /**
  * Trait DateAttributes
@@ -132,5 +133,49 @@ trait DateAttributes
             DateTimeFormat::YYYY_MM_DD_ISO_8601;
 
         return (empty($this->end_date)) ? null : $this->end_date->format($format);
+    }
+
+    /**
+     * Validate dates
+     * If startDate is provided, then endDate should also be provided and vice versa.
+     *
+     * @return void
+     * @throws ErrorParameter
+     */
+    protected function validateGroupDateRequirements()
+    {
+        if (
+            (!empty($this->start_date) && empty($this->end_date))
+            || (!empty($this->end_date) && empty($this->start_date))
+        ) {
+            throw new ErrorParameter(
+                'If filter startDate is provided, then endDate should also be provided and vice versa.'
+            );
+        }
+    }
+
+    /**
+     * Validates the max Difference between start and end dates
+     *
+     * @param integer $maxDaysDifference
+     *
+     * @return void
+     * @throws ErrorParameter
+     */
+    protected function validateDatesMaxDifference($maxDaysDifference)
+    {
+        if (!$this->start_date || !$this->end_date) {
+            return;
+        }
+
+        $interval = $this->start_date->diff($this->end_date);
+
+        if ($interval->days <= $maxDaysDifference) {
+            return;
+        }
+
+        throw new ErrorParameter(
+            'Max difference between startDate and endDate is ' . $maxDaysDifference . ' days'
+        );
     }
 }

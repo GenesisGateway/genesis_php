@@ -46,4 +46,10 @@ class FundingAttributesSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)
             ->duringSetFundingReceiverCountry(Faker::getInstance()->countryISOAlpha3());
     }
+
+    public function it_should_fail_with_invalid_country_code()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->duringSetFundingReceiverCountry(Faker::getInstance()->countryISOAlpha3);
+    }
 }

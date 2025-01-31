@@ -27,6 +27,7 @@
 namespace Genesis\Api\Traits;
 
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Trait RestrictedSetter
@@ -135,6 +136,27 @@ trait RestrictedSetter
             );
         }
         $this->{$field} = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set class variable with array of strings
+     *
+     * @param array $value    - value to be set
+     * @param string $field    - name of the array variable
+     * @param string $message - the message of the exception
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    protected function parseArrayOfStrings($field, $value, $message)
+    {
+        if (!CommonUtils::isValidArray($value)) {
+            throw new InvalidArgument("$message should be an array of strings");
+        }
+
+        $this->{$field} = array_map('strval', $value);
 
         return $this;
     }

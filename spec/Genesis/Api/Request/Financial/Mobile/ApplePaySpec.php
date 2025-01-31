@@ -11,6 +11,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttribute
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
@@ -23,9 +24,10 @@ class ApplePaySpec extends ObjectBehavior
     use CryptoAttributesExamples;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
-    use RequestExamples;
     use RecurringTypeAttributesExample;
+    use RequestExamples;
 
     public function it_is_initializable()
     {

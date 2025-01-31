@@ -34,6 +34,7 @@ use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;
 use Genesis\Api\Traits\Request\Payout\MoneyTransferPayoutAttributes;
+use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -56,6 +57,36 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
 
     const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
     const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
+
+    /**
+     * Payout doesn't support Scheme Tokenized parameter
+     *
+     * @throws InvalidMethod
+     */
+    public function setSchemeTokenized()
+    {
+        throw new InvalidMethod(
+            sprintf(
+                'You\'re trying to call a non-existent method setSchemeTokenized of class %s!',
+                static::class
+            )
+        );
+    }
+
+    /**
+     * Payout doesn't support Scheme Tokenized parameter
+     *
+     * @throws InvalidMethod
+     */
+    public function getSchemeTokenized()
+    {
+        throw new InvalidMethod(
+            sprintf(
+                'You\'re trying to call a non-existent method getSchemeTokenized of class %s!',
+                static::class
+            )
+        );
+    }
 
     /**
      * Returns the Request transaction type

@@ -1,3 +1,32 @@
+2.1.0
+-----
+**Features**:
+
+* Added UCOF parameters support to the following transaction requests:
+  * Authorize 3D
+  * Sale 3D
+  * Init Recurring Sale 3D
+* Added Funding Parameters support to the following transaction requests:
+  * Apple Pay
+  * Google Pay
+* Updated Billing Transaction API with the latest gateway requirements
+* Added Tokenized e-commerce support to the following transaction requests:
+  * Authorize
+  * Authorize 3D
+  * Sale
+  * Sale 3D
+  * Init Recurring Sale
+  * Init Recurring Sale 3D
+* Updated Online Banking Payout transaction request with:
+  * Added Document ID parameter support
+  * Updated allowed Payment Types
+* Added Recurring Type parameter support to SCA Checker API request and removed Recurring.
+
+**Fixes**:
+
+* Fixed PHP 8+ compatibility
+* Fixed Acs Transaction ID accessor which is part of MPI params
+
 2.0.5
 -----
 **Features**:

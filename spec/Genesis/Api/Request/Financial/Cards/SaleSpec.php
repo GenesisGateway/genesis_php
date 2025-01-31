@@ -11,6 +11,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttribute
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenizedExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
@@ -44,6 +45,7 @@ class SaleSpec extends ObjectBehavior
     use ScaAttributesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use SchemeTokenizedExamples;
 
     public function it_is_initializable()
     {

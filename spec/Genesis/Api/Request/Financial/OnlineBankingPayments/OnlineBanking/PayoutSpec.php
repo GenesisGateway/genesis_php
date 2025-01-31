@@ -15,11 +15,13 @@ use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\BirthDateAttributesExample;
 
 class PayoutSpec extends ObjectBehavior
 {
     use BirthDateAttributesExample;
+    use DocumentAttributesExample;
     use NeighborhoodAttributesExamples;
     use RequestExamples;
     use UcofAttributesExamples;

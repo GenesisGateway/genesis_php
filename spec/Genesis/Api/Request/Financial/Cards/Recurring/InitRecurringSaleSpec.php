@@ -9,6 +9,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\ManagedRecurringAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenizedExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
@@ -33,6 +34,7 @@ class InitRecurringSaleSpec extends ObjectBehavior
     use RecurringCategoryAttributesExample;
     use RequestExamples;
     use TokenizationAttributesExamples;
+    use SchemeTokenizedExamples;
 
     public function it_is_initializable()
     {

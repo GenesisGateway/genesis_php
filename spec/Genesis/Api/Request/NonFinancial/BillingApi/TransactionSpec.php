@@ -40,11 +40,20 @@ class TransactionSpec extends ObjectBehavior
     public function it_should_set_request_filters()
     {
         $this->setRequestParameters();
-        $this->setBillingStatementId(['123']);
+        $this->setBillingStatement(['123']);
         $this->setStartDate('2024-05-01');
-        $this->setEndDate('2024-05-10');
+        $this->setEndDate('2024-05-08');
 
         $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_when_max_days_difference_with_invalid_values()
+    {
+        $this->setRequestParameters();
+        $this->setStartDate('2024-05-01');
+        $this->setEndDate('2024-05-09');
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
     public function it_should_fail_with_start_date_and_missing_end_date()
@@ -68,7 +77,7 @@ class TransactionSpec extends ObjectBehavior
         $values = array_fill(0, 15, '100');
 
         $this->setRequestParameters();
-        $this->setBillingStatementId($values);
+        $this->setBillingStatement($values);
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
@@ -103,6 +112,38 @@ class TransactionSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('paging {');
     }
 
+    public function it_should_have_billing_statement_with_proper_format()
+    {
+        $this->setRequestParameters();
+        $this->setBillingStatement(['1', 2]);
+
+        $this->getDocument()->shouldContain(' billingStatement: [\"1\",\"2\"] }');
+    }
+
+    public function it_should_have_unique_id_with_proper_format()
+    {
+        $this->setRequestParameters();
+        $this->setUniqueId(['1', 2]);
+
+        $this->getDocument()->shouldContain(' uniqueId: [\"1\",\"2\"] }');
+    }
+
+    public function it_should_have_merchant_transaction_id_with_proper_format()
+    {
+        $this->setRequestParameters();
+        $this->setMerchantTransactionId(['1', 2]);
+
+        $this->getDocument()->shouldContain(' merchantTransactionId: [\"1\",\"2\"] }');
+    }
+
+    public function it_should_have_master_account_name_with_proper_format()
+    {
+        $this->setRequestParameters();
+        $this->setMasterAccountName(['Travis Pastrana']);
+
+        $this->getDocument()->shouldContain(' masterAccountName: [\"Travis Pastrana\"] }');
+    }
+
     protected function setRequestParameters()
     {
         $this->setResponseFields($this->getResponseFieldsAllowedValues());
@@ -113,7 +154,7 @@ class TransactionSpec extends ObjectBehavior
     {
         $faker = Faker::getInstance();
 
-        $values = ['billingStatementId', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
+        $values = ['billingStatement', 'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate',
             'billingAmount', 'transactionFeeAmount', 'commissionPercent', 'commissionAmount', 'interchangeFee',
             'region', 'settlementStatus'];
 
@@ -124,13 +165,15 @@ class TransactionSpec extends ObjectBehavior
     {
         $faker = Faker::getInstance();
 
-        $values = ['uniqueId', 'billingStatementId', 'billingStatementDisplayId', 'transactionType',
-            'transactionDate', 'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency',
-            'billingAmount', 'transactionFeeCurrency', 'transactionFeeAmount', 'commissionAmount', 'commissionRuleId',
-            'transactionFeeChargedOnBillingStatementId', 'commissionPercent',  'interchangeFee', 'interchangeCurrency',
-            'isInterchangeplusplus', 'interchangeplusplusChargedOnBillingStatementId', 'schemeFee', 'vatAmount',
-            'vatRate', 'schemeFeeCurrency', 'standardDebitCardRate', 'gstAmount', 'gstRate', 'terminalId', 'region',
-            'settlementStatements', 'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'valueDate'];
+        $values = ['id', 'uniqueId', 'billingStatement', 'arn', 'transactionType', 'transactionDate',
+            'transactionCurrency', 'transactionAmount', 'exchangeRate', 'billingCurrency', 'billingAmount',
+            'transactionFeeCurrency', 'transactionFeeAmount', 'transactionFeeChargedOnBillingStatement',
+            'commissionPercent', 'commissionAmount', 'interchangeFee', 'interchangeCurrency', 'isInterchangeplusplus',
+            'interchangeplusplusChargedOnBillingStatement', 'schemeFee', 'schemeFeeCurrency', 'standardDebitCardRate',
+            'gstAmount', 'gstRate', 'vatAmount', 'vatRate', 'terminalName', 'region', 'settlementBillingStatements',
+            'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'merchantTransactionId',
+            'masterAccountName', 'valueDate', 'documentId', 'referenceId', 'authCode', 'paymentType', 'cardBrand',
+            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype'];
 
         return $faker->randomElements($values, 5);
     }

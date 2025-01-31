@@ -71,10 +71,11 @@ class GetTier extends BaseRequest
     {
         $this->config = Common::createArrayObject(
             [
-                'protocol' => Request::PROTOCOL_HTTPS,
-                'port'     => Request::PORT_HTTPS,
-                'type'     => Request::METHOD_GET,
-                'format'   => Builder::JSON
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_GET,
+                'format'        => Builder::JSON,
+                'authorization' => Request::AUTH_TYPE_BASIC
             ]
         );
     }

@@ -170,7 +170,8 @@ class InitRecurringSale3D extends \Genesis\Api\Request\Base\Financial\Cards\Cred
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
-            $this->get3DSTransactionAttributes()
+            $this->get3DSTransactionAttributes(),
+            $this->getUcofAttributesStructure()
         );
     }
 }

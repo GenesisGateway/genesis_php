@@ -56,7 +56,6 @@ use Genesis\Utils\Country;
  * @method string getFundingSenderName()
  * @method $this  setFundingSenderReferenceNumber($value)
  * @method string getFundingSenderReferenceNumber()
- * @method $this  setFundingSenderCountry($value)
  * @method string getFundingSenderCountry()
  * @method $this  setFundingSenderAddress($value)
  * @method string getFundingSenderAddress()
@@ -245,6 +244,23 @@ trait FundingAttributes
             BusinessApplicationIdentifierTypes::getAll(),
             $value,
             'Parameter Funding Business Application Identifier not valid!'
+        );
+    }
+
+    /**
+     * Validate funding_receiver_country param
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFundingSenderCountry($value)
+    {
+        return $this->allowedOptionsSetter(
+            'funding_sender_country',
+            Country::getList(),
+            $value,
+            'Parameter Funding Sender Country not valid!'
         );
     }
 

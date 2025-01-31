@@ -37,6 +37,9 @@ use Genesis\Utils\Currency;
 
 /**
  * Class CreditCard
+ *
+ * @method bool getSchemeTokenized() Get the scheme tokenized
+ *
  * @package Genesis\Api\Request\Base\Financial\Cards
  */
 abstract class CreditCard extends Financial
@@ -48,6 +51,28 @@ abstract class CreditCard extends Financial
     use TokenizationAttributes;
 
     const REQUEST_KEY_AMOUNT = 'amount';
+
+    /**
+     * Required when the card_number is DPAN instead of Funding Primary Account Number,
+     * see Tokenized e-commerce for details
+     *
+     * @var bool
+     */
+    protected $scheme_tokenized;
+
+    /**
+     * Set Scheme tokenized value
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function setSchemeTokenized($value)
+    {
+        $this->scheme_tokenized = CommonUtils::toBoolean($value);
+
+        return $this;
+    }
 
     /**
      * Return additional request attributes
@@ -144,15 +169,14 @@ abstract class CreditCard extends Financial
 
     protected function getPaymentTransactionStructure()
     {
-        return array_merge(
-            [
+        return [
                 $this->getCCAttributesStructure(),
                 $this->getTokenizationStructure(),
                 $this->getPaymentAttributesStructure(),
                 $this->getTransactionAttributes(),
-                $this->getCredentialOnFileAttributesStructure()
-            ]
-        );
+                $this->getCredentialOnFileAttributesStructure(),
+                'scheme_tokenized' => $this->scheme_tokenized
+        ];
     }
 
     protected function requiredTokenizationFieldsConditional()

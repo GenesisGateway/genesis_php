@@ -87,10 +87,11 @@ class CardExpiryDateUpdate extends BaseVersionedRequest
     {
         $this->config = CommonUtils::createArrayObject(
             [
-                'protocol' => Request::PROTOCOL_HTTPS,
-                'port'     => Request::PORT_HTTPS,
-                'type'     => Request::METHOD_PUT,
-                'format'   => Builder::XML
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_PUT,
+                'format'        => Builder::XML,
+                'authorization' => Request::AUTH_TYPE_BASIC
             ]
         );
     }

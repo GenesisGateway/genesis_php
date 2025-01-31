@@ -72,11 +72,11 @@ class MpiAttributesSpec extends ObjectBehavior
         $this->returnMpiParamsStructure()->shouldHaveKey('directory_server_id');
     }
 
-    public function it_should_have_key_asc_transaction_id_when_threeds_v2()
+    public function it_should_have_key_acs_transaction_id_when_threeds_v2()
     {
         $this->setMpiProtocolVersion(MpiProtocolVersions::PROTOCOL_VERSION_2);
-        $this->setMpiAscTransactionId(Faker::getInstance()->uuid());
-        $this->returnMpiParamsStructure()->shouldHaveKey('asc_transaction_id');
+        $this->setMpiAcsTransactionId(Faker::getInstance()->uuid());
+        $this->returnMpiParamsStructure()->shouldHaveKey('acs_transaction_id');
     }
 
     public function it_should_have_key_threeds_challenge_indicator_when_threeds_v2()

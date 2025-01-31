@@ -94,6 +94,18 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDocument');
     }
 
+    public function it_should_throw_when_set_scheme_tokenized()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('setSchemeTokenized');
+    }
+
+    public function it_should_throw_when_get_scheme_tokenized()
+    {
+        $this->setRequestParameters();
+        $this->shouldThrow()->during('getSchemeTokenized');
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();

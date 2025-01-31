@@ -34,6 +34,7 @@ use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
+use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\Exceptions\InvalidArgument;
@@ -56,6 +57,7 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
     use CryptoAttributes;
     use DescriptorAttributes;
     use DocumentAttributes;
+    use FundingAttributes;
     use PaymentAttributes;
     use RecurringTypeAttributes;
 
@@ -185,7 +187,8 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
             'crypto'                    => $this->crypto,
             'business_attributes'       => $this->getBusinessAttributesStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'recurring_type'            => $this->getRecurringType()
+            'recurring_type'            => $this->getRecurringType(),
+            'funding'                   => $this->getFundingAttributesStructure()
         ];
     }
 }

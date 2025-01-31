@@ -20,7 +20,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow(InvalidArgument::class)->during(
             'publicAllowedOptionsSetter',
             [
-                'test_value',
+                'test_field',
                 ['val', 'val1', 'val2'],
                 'val',
                 'Error Message'
@@ -30,16 +30,16 @@ class RestrictedSetterSpec extends ObjectBehavior
 
     public function it_should_set_property_with_value_during_allowed_options_setter()
     {
-        $this->test_value = null;
+        $this->test_field = null;
 
         $this->publicAllowedOptionsSetter(
-            'test_value',
+            'test_field',
             ['val', 'val1', 'val2'],
             'val',
             'Error Message'
         );
 
-        $this->test_value->shouldBe('val');
+        $this->test_field->shouldBe('val');
     }
 
     public function it_should_fail_during_allowed_options_setter_with_not_proper_value()
@@ -47,7 +47,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'publicAllowedOptionsSetter',
             [
-                'test_value',
+                'test_field',
                 ['val', 'val1', 'val2'],
                 'val3',
                 'Error Message'
@@ -60,7 +60,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 null,
                 6
@@ -70,14 +70,14 @@ class RestrictedSetterSpec extends ObjectBehavior
 
     public function it_should_set_property_with_value_during_set_limted_string()
     {
-        $this->test_value = null;
+        $this->test_field = null;
 
         $this->publicSetLimitedString(
-            'test_value',
+            'test_field',
             '******'
         );
 
-        $this->test_value->shouldBe('******');
+        $this->test_field->shouldBe('******');
     }
 
     public function it_should_not_fail_during_limited_string_with_proper_min_value_without_max_value_length()
@@ -85,7 +85,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 6,
                 null
@@ -98,7 +98,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 6,
                 6
@@ -111,7 +111,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 7,
                 null
@@ -124,7 +124,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 null,
                 5
@@ -137,7 +137,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'publicSetLimitedString',
             [
-                'test_value',
+                'test_field',
                 '******',
                 1,
                 5
@@ -151,7 +151,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during(
             'publicParseDate',
             [
-                'test_value',
+                'test_field',
                 ['Y-m-d'],
                 $faker->dateTimeThisYear()->format('d-m-Y'),
                 'Error Message'
@@ -165,7 +165,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow()->during(
             'publicParseDate',
             [
-                'test_value',
+                'test_field',
                 ['Y-m-d'],
                 $faker->dateTimeThisYear()->format('Y-m-d'),
                 'Error Message'
@@ -175,16 +175,16 @@ class RestrictedSetterSpec extends ObjectBehavior
 
     public function it_should_set_property_with_date_time_instance_during_parse_date()
     {
-        $this->test_value = null;
+        $this->test_field = null;
 
         $faker = Faker::getInstance();
         $this->publicParseDate(
-            'test_value',
+            'test_field',
             ['Y-m-d'],
             $faker->dateTimeThisYear()->format('Y-m-d'),
             'Error Message'
         );
-        $this->test_value->shouldHaveType(DateTime::class);
+        $this->test_field->shouldHaveType(DateTime::class);
     }
 
     public function it_should_not_fail_with_more_than_one_valid_format_for_parse_date()
@@ -193,7 +193,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow()->during(
             'publicParseDate',
             [
-                'test_value',
+                'test_field',
                 ['Y-m-d', 'd-m-Y', 'd/m/Y'],
                 $faker->dateTimeThisYear()->format('d/m/Y'),
                 'Error Message'
@@ -203,7 +203,7 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow()->during(
             'publicParseDate',
             [
-                'test_value',
+                'test_field',
                 ['Y-m-d', 'd-m-Y', 'd/m/Y'],
                 $faker->dateTimeThisYear()->format('d-m-Y'),
                 'Error Message'
@@ -224,9 +224,41 @@ class RestrictedSetterSpec extends ObjectBehavior
         $this->shouldNotThrow()->during(
             'publicParseAmount',
             [
-                'test_value',
+                'test_field',
                 $faker->numberBetween(1, PHP_INT_MAX)
             ]
+        );
+    }
+
+    public function it_should_not_throw_when_parse_array_of_strings_with_valid_value()
+    {
+        $exampleArray = [1, '2'];
+
+        $this->shouldNotThrow()->duringPublicParseArrayOfStrings('test_field', $exampleArray, 'Error message');
+
+        $this->test_field->shouldBeArray();
+        $this->test_field->shouldContainArrayOfStringValues();
+    }
+
+    public function it_should_throw_when_parse_array_of_strings_with_invalid_value()
+    {
+        $this
+            ->shouldThrow(InvalidArgument::class)
+            ->duringPublicParseArrayOfStrings('test_field', 'non_array_value', 'Error message');
+    }
+
+    public function getMatchers(): array
+    {
+        return array(
+            'containArrayOfStringValues' => function ($subject) {
+                foreach($subject as $value) {
+                    if (!is_string($value)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         );
     }
 }

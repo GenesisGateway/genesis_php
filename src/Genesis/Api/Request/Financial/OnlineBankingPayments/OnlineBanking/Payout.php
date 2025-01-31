@@ -30,6 +30,7 @@ use Genesis\Api\Constants\BankAccountTypes;
 use Genesis\Api\Constants\Transaction\Parameters\OnlineBanking\PayoutBankParameters;
 use Genesis\Api\Constants\Transaction\Parameters\OnlineBanking\PayoutPaymentTypesParameters;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\DocumentAttributes;
 use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerAttributes;
@@ -64,6 +65,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     use AsyncAttributes;
     use BirthDateAttributes;
     use CustomerAttributes;
+    use DocumentAttributes;
     use NotificationAttributes;
     use PaymentAttributes;
     use UcofAttributes;
@@ -404,6 +406,11 @@ class Payout extends \Genesis\Api\Request\Base\Financial
             ]
         ];
 
+        $requiredFieldValuesConditional = array_merge(
+            $requiredFieldValuesConditional,
+            $this->getDocumentIdConditions()
+        );
+
         $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
     }
 
@@ -439,7 +446,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial
                 'payment_type'                    => $this->payment_type,
                 'billing_address'                 => $this->getBillingAddressParamsStructure(),
                 'shipping_address'                => $this->getShippingAddressParamsStructure(),
-                'pix_key'                         => $this->pix_key
+                'pix_key'                         => $this->pix_key,
+                'document_id'                     => $this->getDocumentId()
             ],
             $this->getCustomerParamsStructure(),
             $this->getUcofAttributesStructure()

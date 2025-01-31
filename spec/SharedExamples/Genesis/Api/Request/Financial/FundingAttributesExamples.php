@@ -6,6 +6,7 @@ use Genesis\Api\Constants\Transaction\Parameters\Funding\BusinessApplicationIden
 use Genesis\Api\Constants\Transaction\Parameters\Funding\IdentifierTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\ReceiverAccountTypes;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Utils\Country;
 use spec\SharedExamples\Faker;
 
 /**
@@ -127,10 +128,10 @@ trait FundingAttributesExamples
 
         $this->setRequestParameters();
 
-        $country = $faker->country();
+        $country = $faker->randomElement(Country::getList());
         $this->setFundingSenderCountry($country);
         $this->getDocument()->shouldMatch(
-            "/<sender>\s*<country>{$this->escapeParams($country)}<\/country>\s*<\/sender>/"
+            "/<sender>\s*<country>$country<\/country>\s*<\/sender>/"
         );
     }
 

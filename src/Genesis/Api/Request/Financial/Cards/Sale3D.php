@@ -185,7 +185,8 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
-            $this->get3DSTransactionAttributes()
+            $this->get3DSTransactionAttributes(),
+            $this->getUcofAttributesStructure()
         );
     }
 }

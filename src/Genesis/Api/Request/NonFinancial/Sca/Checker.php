@@ -26,8 +26,10 @@
 
 namespace Genesis\Api\Request\NonFinancial\Sca;
 
+use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\Api\Request\Base\BaseVersionedRequest;
+use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Validators\Request\RegexValidator;
 use Genesis\Builder;
 use Genesis\Config;
@@ -45,6 +47,8 @@ use Genesis\Utils\Currency;
  */
 class Checker extends BaseVersionedRequest
 {
+    use RecurringTypeAttributes;
+
     const CARD_NUMBER_MIN_LENGTH = 6;
     const CARD_NUMBER_MAX_LENGTH = 16;
 
@@ -82,13 +86,6 @@ class Checker extends BaseVersionedRequest
      * @var $mit
      */
     protected $mit;
-
-    /**
-     * Signifies whether a Recurring Sale transaction is performed
-     *
-     * @var $recurring
-     */
-    protected $recurring;
 
     public function setCardNumber($value)
     {
@@ -134,19 +131,6 @@ class Checker extends BaseVersionedRequest
     public function setMit($value)
     {
         $this->mit = Common::toBoolean($value);
-
-        return $this;
-    }
-
-    /**
-     * Signifies whether a Recurring Sale transaction is performed
-     *
-     * @param $value
-     * @return Checker
-     */
-    public function setRecurring($value)
-    {
-        $this->recurring = Common::toBoolean($value);
 
         return $this;
     }
@@ -217,8 +201,8 @@ class Checker extends BaseVersionedRequest
             'transaction_currency'  => $this->transaction_currency,
             'moto'                  => $this->moto,
             'mit'                   => $this->mit,
-            'recurring'             => $this->recurring,
-            'transaction_exemption' => $this->transaction_exemption
+            'transaction_exemption' => $this->transaction_exemption,
+            'recurring_type'        => $this->getRecurringType()
         ];
     }
 
@@ -227,6 +211,19 @@ class Checker extends BaseVersionedRequest
         parent::initConfiguration();
 
         $this->initApiGatewayConfiguration("{$this->getVersion()}/sca/checker", true);
+    }
+
+    protected function checkRequirements()
+    {
+        $this->requiredFieldValuesConditional = Common::createArrayObject([
+            'recurring_type' => [
+                $this->recurring_type => [
+                    ['recurring_type' => [Types::INITIAL, Types::SUBSEQUENT]]
+                ]
+            ]
+        ]);
+
+        parent::checkRequirements();
     }
 
     /**
