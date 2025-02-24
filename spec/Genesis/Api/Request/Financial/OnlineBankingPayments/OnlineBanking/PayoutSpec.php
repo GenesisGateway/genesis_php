@@ -258,6 +258,15 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('setPixKey', ['abcdef']);
     }
 
+    public function it_should_not_fail_when_specific_billing_country_without_document_id()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('UY');
+        $this->setDocumentId(null);
+
+        $this->shouldNotThrow()->duringGetDocument();
+    }
+
     protected function setRequestParameters()
     {
         $faker = Faker::getInstance();

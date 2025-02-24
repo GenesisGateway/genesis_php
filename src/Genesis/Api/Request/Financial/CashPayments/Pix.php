@@ -132,6 +132,27 @@ class Pix extends Financial
     protected $birth_state;
 
     /**
+     * The name of the beneficiary, either a Natural Person or Legal Person.
+     *
+     * @var string
+     */
+    protected $beneficiary_name;
+
+    /**
+     * The Document ID of the beneficiary, such as CPF or CNPJ for Brazilian entities.
+     *
+     * @var string
+     */
+    protected $beneficiary_document_id;
+
+    /**
+     * The PIX key associated with the beneficiary.
+     *
+     * @var string
+     */
+    protected $beneficiary_pix_key;
+
+    /**
      * Returns the Request transaction type
      * @return string
      */
@@ -218,6 +239,20 @@ class Pix extends Financial
     }
 
     /**
+     * Builds an array list with beneficiary params
+     *
+     * @return array
+     */
+    protected function getBeneficiaryParamsStructure()
+    {
+        return [
+            'beneficiary_name'        => $this->beneficiary_name,
+            'beneficiary_document_id' => $this->beneficiary_document_id,
+            'beneficiary_pix_key'     => $this->beneficiary_pix_key
+        ];
+    }
+
+    /**
      * Return additional request attributes
      *
      * @return array
@@ -242,8 +277,8 @@ class Pix extends Financial
                 'marital_status'     => $this->marital_status,
                 'sender_occupation'  => $this->sender_occupation,
                 'nationality'        => $this->nationality,
-                'country_of_origin'  => $this->country_of_origin
-
+                'country_of_origin'  => $this->country_of_origin,
+                'beneficiary'        => $this->getBeneficiaryParamsStructure()
             ],
             $this->getCustomerParamsStructure()
         );

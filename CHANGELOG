@@ -1,3 +1,18 @@
+2.1.1
+-----
+**Features**:
+
+* Added Beneficiary parameter support to PIX transaction request
+* Added Mode attribute support to the following API requests:
+  * Chargebacks
+  * Fraud
+  * Retrieval
+* Improved PHP 8.x+ compatibility
+
+**Fixes**:
+
+* Fixed issues in the Payout card transaction request
+
 2.1.0
 -----
 **Features**:

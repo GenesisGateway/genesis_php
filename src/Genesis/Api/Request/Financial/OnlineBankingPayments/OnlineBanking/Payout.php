@@ -406,11 +406,6 @@ class Payout extends \Genesis\Api\Request\Base\Financial
             ]
         ];
 
-        $requiredFieldValuesConditional = array_merge(
-            $requiredFieldValuesConditional,
-            $this->getDocumentIdConditions()
-        );
-
         $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
     }
 
@@ -465,6 +460,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     protected function checkRequirements()
     {
         $this->validateBRLCurrency();
+        $this->validateDocumentId();
         parent::checkRequirements();
     }
 
@@ -488,5 +484,26 @@ class Payout extends \Genesis\Api\Request\Base\Financial
         if (empty($this->bank_name)) {
             unset($this->requiredFieldValuesConditional['currency']['BRL']);
         }
+    }
+
+    /**
+     * Add Document ID validations only if document_id variable is set
+     *
+     * @return void
+     */
+    protected function validateDocumentId()
+    {
+        if (empty($this->document_id)) {
+            return;
+        }
+
+        $requiredFieldValuesConditional = (array) $this->requiredFieldValuesConditional;
+
+        $requiredFieldValuesConditional = array_merge(
+            $requiredFieldValuesConditional,
+            $this->getDocumentIdConditions()
+        );
+
+        $this->requiredFieldValuesConditional = Common::createArrayObject($requiredFieldValuesConditional);
     }
 }

@@ -63,7 +63,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
      *
      * @throws InvalidMethod
      */
-    public function setSchemeTokenized()
+    public function setSchemeTokenized($value)
     {
         throw new InvalidMethod(
             sprintf(

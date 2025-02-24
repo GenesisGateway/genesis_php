@@ -7,6 +7,8 @@ use Genesis\Utils\Common;
 
 class RequestStub extends Request
 {
+    protected $field;
+
     public function setResponse($value)
     {
         $this->response = $value;

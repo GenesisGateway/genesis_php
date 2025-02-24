@@ -26,6 +26,8 @@
 
 namespace Genesis\Api\Request\NonFinancial\Fraud\Reports;
 
+use Genesis\Api\Traits\Request\NonFinancial\ModeAttribute;
+
 /**
  * Fraud (SAFE/TC40) Report by arn/original_transaction_unique_id
  *
@@ -34,6 +36,8 @@ namespace Genesis\Api\Request\NonFinancial\Fraud\Reports;
  */
 class Transaction extends \Genesis\Api\Request
 {
+    use ModeAttribute;
+
     /**
      * Acquirer's Reference Number
      *
@@ -86,6 +90,7 @@ class Transaction extends \Genesis\Api\Request
             'fraud_report_request' => [
                 'arn'                            => $this->arn,
                 'original_transaction_unique_id' => $this->original_transaction_unique_id,
+                'mode'                           => $this->mode
             ]
         ];
 

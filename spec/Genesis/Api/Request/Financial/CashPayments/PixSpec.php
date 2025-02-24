@@ -80,6 +80,19 @@ class PixSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgument::class)->during('setMaritalStatus', [11111]);
     }
 
+    public function it_should_contain_beneficiary_attributes()
+    {
+        $this->setRequestParameters();
+
+        $this->setBeneficiaryName($this->getFaker()->name());
+        $this->setBeneficiaryDocumentId($this->getFaker()->numerify('############'));
+        $this->setBeneficiaryPixKey($this->getFaker()->uuid());
+
+        $this->getDocument()->shouldMatch('/<beneficiary_name>.*?<\/beneficiary_name>/');
+        $this->getDocument()->shouldMatch('/<beneficiary_document_id>.*?<\/beneficiary_document_id>/');
+        $this->getDocument()->shouldMatch('/<beneficiary_pix_key>.*?<\/beneficiary_pix_key>/');
+    }
+
     protected function setRequestParameters()
     {
         $this->setDefaultRequestParameters();

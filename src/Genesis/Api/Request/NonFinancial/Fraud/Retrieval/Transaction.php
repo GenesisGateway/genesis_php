@@ -26,6 +26,8 @@
 
 namespace Genesis\Api\Request\NonFinancial\Fraud\Retrieval;
 
+use Genesis\Api\Traits\Request\NonFinancial\ModeAttribute;
+
 /**
  * Retrieval request by ARN/Unique Transaction Id
  *
@@ -34,6 +36,8 @@ namespace Genesis\Api\Request\NonFinancial\Fraud\Retrieval;
  */
 class Transaction extends \Genesis\Api\Request
 {
+    use ModeAttribute;
+
     /**
      * Acquirer's Reference Number
      *
@@ -85,7 +89,8 @@ class Transaction extends \Genesis\Api\Request
         $treeStructure = [
             'retrieval_request_request' => [
                 'arn'                            => $this->arn,
-                'original_transaction_unique_id' => $this->original_transaction_unique_id
+                'original_transaction_unique_id' => $this->original_transaction_unique_id,
+                'mode'                           => $this->mode
             ]
         ];
 

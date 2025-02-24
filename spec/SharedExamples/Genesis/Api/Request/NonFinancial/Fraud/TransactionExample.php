@@ -2,6 +2,7 @@
 
 namespace spec\SharedExamples\Genesis\Api\Request\NonFinancial\Fraud;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait RequestExamples
@@ -42,6 +43,28 @@ trait TransactionExample
         $this->setArn($faker->uuid);
 
         $this->shouldNotThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_not_throw_when_mode_is_set()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldNotThrow(InvalidArgument::class)->during('setMode', ['list']);
+    }
+
+    public function it_should_throw_when_invalid_mode_is_set()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow(InvalidArgument::class)->during('setMode', ['invalid_value']);
+    }
+
+    public function it_should_not_throw_with_empty_mode_parameter()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldNotThrow(InvalidArgument::class)->during('setMode', ['']);
+        $this->shouldNotThrow(InvalidArgument::class)->during('setMode', [null]);
     }
 
     protected function setRequestParameters()
