@@ -20,11 +20,13 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\Api\Traits\Request\Financial\TravelData;
+
+use Genesis\Exceptions\InvalidArgument;
 
 /**
  * Trait ReferenceTicketAttributes
@@ -104,6 +106,8 @@ trait ReferenceTicketAttributes
      * @param $value
      *
      * @return $this
+     *
+     * @throws InvalidArgument
      */
     public function setAcType($value)
     {
@@ -114,6 +118,8 @@ trait ReferenceTicketAttributes
      * @param $value
      *
      * @return $this
+     *
+     * @throws InvalidArgument
      */
     public function setAcSubType($value)
     {
@@ -125,6 +131,8 @@ trait ReferenceTicketAttributes
      * @param $value
      *
      * @return $this
+     *
+     * @throws InvalidArgument
      */
     protected function setTravelType($field, $value)
     {

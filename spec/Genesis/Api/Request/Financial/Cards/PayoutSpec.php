@@ -4,6 +4,7 @@ namespace spec\Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferTypes;
 use Genesis\Api\Request\Financial\Cards\Payout;
+use Genesis\Exceptions\InvalidMethod;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\CustomerIdentificationExamples;
@@ -15,12 +16,14 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\SourceOfFundsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 
 class PayoutSpec extends ObjectBehavior
 {
     use AccountOwnerAttributesExamples;
+    use CredentialOnFileAttributesExamples;
     use CredentialOnFileAttributesExamples;
     use CreditCardAttributesExamples;
     use CustomerIdentificationExamples;
@@ -32,6 +35,7 @@ class PayoutSpec extends ObjectBehavior
     use RequestExamples;
     use SourceOfFundsAttributesExamples;
     use TokenizationAttributesExamples;
+    use UcofAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -104,6 +108,12 @@ class PayoutSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->shouldThrow()->during('getSchemeTokenized');
+    }
+
+    public function it_should_throw_when_credential_on_file_settlement_date()
+    {
+        $this->shouldThrow(InvalidMethod::class)->duringSetCredentialOnFileSettlementDate('value');
+        $this->shouldThrow(InvalidMethod::class)->duringGetCredentialOnFileSettlementDate();
     }
 
     protected function setRequestParameters()

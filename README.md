@@ -1549,6 +1549,10 @@ NonFinancial\Reconcile\Transaction
 // SCA Checker API
 NonFinancial\Sca\Checker
 
+// Installments API services
+NonFinancial\Installments\Fetch
+NonFinancial\Installments\Show
+
 // Processed Transactions API
 NonFinancial\ProcessedTransactions\Transaction
 NonFinancial\ProcessedTransactions\DateRange

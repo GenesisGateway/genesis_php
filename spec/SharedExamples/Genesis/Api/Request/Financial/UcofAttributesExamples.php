@@ -36,15 +36,21 @@ trait UcofAttributesExamples
         $this->getDocument()->shouldContain(
             "<credential_on_file_transaction_identifier>{$this->transaction_idetifier}</credential_on_file_transaction_identifier>"
         );
-        $this->getDocument()->shouldContain(
-            "<credential_on_file_settlement_date>{$this->settlement_date}</credential_on_file_settlement_date>"
-        );
+
+        if (!($this->getWrappedObject() instanceof \Genesis\Api\Request\Financial\Cards\Payout)) {
+            $this->getDocument()->shouldContain(
+                "<credential_on_file_settlement_date>{$this->settlement_date}</credential_on_file_settlement_date>"
+            );
+        }
     }
 
     protected function setUcofParameters()
     {
         $this->setCredentialOnFileTransactionIdentifier($this->transaction_idetifier);
-        $this->setCredentialOnFileSettlementDate($this->settlement_date);
+
+        if (!($this->getWrappedObject() instanceof \Genesis\Api\Request\Financial\Cards\Payout)) {
+            $this->setCredentialOnFileSettlementDate($this->settlement_date);
+        }
     }
 
     protected function it_should_not_fail_with_cof_indicator_and_ucof_attributes()

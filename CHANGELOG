@@ -1,3 +1,19 @@
+2.1.2
+-----
+**Features**
+
+* Added Installments API
+* Added Installments Transaction Params
+* Added support for COF and UCOF parameters to Cards\Payout request
+* Improved Online Banking Payout validations
+* Updated support for Level 3 Travel Data attributes
+* Updated KYC Create Transaction request parameters
+* Updated service_language values for KYC Make call request
+
+**Fixes**
+
+* Fixed Payer Bank Phone Number element in Online Banking Payout
+
 2.1.1
 -----
 **Features**:

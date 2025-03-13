@@ -3,7 +3,6 @@
 namespace spec\Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Request\Financial\Cards\Authorize3D;
-use Genesis\Api\Traits\Request\Financial\UcofAttributes;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
@@ -27,7 +26,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
-
+use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
 
 class Authorize3DSpec extends ObjectBehavior
 {
@@ -53,6 +52,7 @@ class Authorize3DSpec extends ObjectBehavior
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
     use SchemeTokenized3DExamples;
+    use InstallmentAttributesExamples;
 
     public function it_is_initializable()
     {

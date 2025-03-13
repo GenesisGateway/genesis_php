@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -28,11 +28,13 @@ namespace Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
+use Genesis\Api\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;
+use Genesis\Api\Traits\Request\Financial\UcofAttributes;
 use Genesis\Api\Traits\Request\Payout\MoneyTransferPayoutAttributes;
 use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Common as CommonUtils;
@@ -46,14 +48,16 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
 {
-    use AddressInfoAttributes;
     use AccountOwnerAttributes;
+    use AddressInfoAttributes;
+    use CredentialOnFileAttributes;
     use CustomerIdentificationData;
     use DescriptorAttributes;
     use FxRateAttributes;
     use MoneyTransferPayoutAttributes;
     use PurposeOfPaymentAttributes;
     use SourceOfFundsAttributes;
+    use UcofAttributes;
 
     const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
     const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
@@ -62,6 +66,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
      * Payout doesn't support Scheme Tokenized parameter
      *
      * @throws InvalidMethod
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setSchemeTokenized($value)
     {
@@ -89,6 +95,46 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     }
 
     /**
+     * Payout doesn't support CredentialOnFile Settlement Date attribute
+     *
+     * @return void
+     *
+     * @throws InvalidMethod
+     */
+    public function getCredentialOnFileSettlementDate()
+    {
+        throw new InvalidMethod(
+            sprintf(
+                'You\'re trying to call a non-existent method %s of class %s!',
+                static::class,
+                __FUNCTION__
+            )
+        );
+    }
+
+    /**
+     * Payout doesn't support CredentialOnFile Settlement Date attribute
+     *
+     * @param $value
+     *
+     * @return void
+     *
+     * @throws InvalidMethod
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function setCredentialOnFileSettlementDate($value)
+    {
+        throw new InvalidMethod(
+            sprintf(
+                'You\'re trying to call a non-existent method %s of class %s!',
+                static::class,
+                __FUNCTION__
+            )
+        );
+    }
+
+/**
      * Returns the Request transaction type
      * @return string
      */
@@ -133,7 +179,21 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'account_owner'             => $this->getAccountOwnerAttributesStructure(),
                 'purpose_of_payment'        => $this->purpose_of_payment
             ],
-            $this->getSourceOfFundsStructure()
+            $this->getSourceOfFundsStructure(),
+            $this->getCredentialOnFileAttributesStructure(),
+            $this->getUcofAttributesStructure()
         );
+    }
+
+    /**
+     * Returns Cards\Payout UCOF attributes structure
+     *
+     * @return array
+     */
+    protected function getUcofAttributesStructure()
+    {
+        return [
+            'credential_on_file_transaction_identifier' => $this->credential_on_file_transaction_identifier
+        ];
     }
 }

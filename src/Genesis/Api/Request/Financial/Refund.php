@@ -20,13 +20,14 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\Api\Request\Financial;
 
 use Genesis\Api\Traits\Request\Financial\BeneficiaryAttributes;
+use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
 use Genesis\Api\Traits\Request\Financial\Refund\BankAttributes;
 
 /**
@@ -40,6 +41,7 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
 {
     use BankAttributes;
     use BeneficiaryAttributes;
+    use InstallmentAttributes;
 
     const CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION   = 'A';
     const CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT         = 'B';
@@ -73,39 +75,6 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
     protected $ticket_change_indicator;
 
     /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return \Genesis\Api\Constants\Transaction\Types::REFUND;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getPaymentTransactionStructure()
-    {
-        $beneficiaryAttributes = $this->getBeneficiaryAttributesStructure();
-        $bankAttributes        = $this->getBankAttributesStructure();
-
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            [
-                'travel' => [
-                    'ticket' => [
-                        'credit_reason_indicator_1' => $this->credit_reason_indicator_1,
-                        'credit_reason_indicator_2' => $this->credit_reason_indicator_2,
-                        'ticket_change_indicator'   => $this->ticket_change_indicator,
-                    ]
-                ]
-            ],
-            $beneficiaryAttributes,
-            $bankAttributes
-        );
-    }
-
-    /**
      * @param $value
      *
      * @return Refund
@@ -125,6 +94,34 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
     public function setCreditReasonIndicator2($value)
     {
         return $this->setCreditReasonIndicator('credit_reason_indicator_2', $value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return Refund
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setTicketChangeIndicator($value)
+    {
+        return $this->allowedOptionsSetter(
+            'ticket_change_indicator',
+            [
+                self::TICKET_CHANGE_INDICATOR_TO_EXISTING,
+                self::TICKET_CHANGE_INDICATOR_TO_NEW
+            ],
+            $value,
+            'Invalid ticket change indicator.'
+        );
+    }
+
+    /**
+     * Returns the Request transaction type
+     * @return string
+     */
+    protected function getTransactionType()
+    {
+        return \Genesis\Api\Constants\Transaction\Types::REFUND;
     }
 
     /**
@@ -150,21 +147,26 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
     }
 
     /**
-     * @param $value
+     * Return the payment transaction structure
      *
-     * @return Refund
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @return array
      */
-    public function setTicketChangeIndicator($value)
+    protected function getPaymentTransactionStructure()
     {
-        return $this->allowedOptionsSetter(
-            'ticket_change_indicator',
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
             [
-                self::TICKET_CHANGE_INDICATOR_TO_EXISTING,
-                self::TICKET_CHANGE_INDICATOR_TO_NEW
+                'travel' => [
+                    'ticket' => [
+                        'credit_reason_indicator_1' => $this->credit_reason_indicator_1,
+                        'credit_reason_indicator_2' => $this->credit_reason_indicator_2,
+                        'ticket_change_indicator'   => $this->ticket_change_indicator,
+                    ]
+                ]
             ],
-            $value,
-            'Invalid ticket change indicator.'
+            $this->getBeneficiaryAttributesStructure(),
+            $this->getBankAttributesStructure(),
+            $this->getInstallmentAttributesStructure()
         );
     }
 }

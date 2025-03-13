@@ -70,7 +70,15 @@ class CreateSpec extends ObjectBehavior
         $this->setCustomerUniqueId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setTransactionUniqueId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setCustomerPhoneNumber('359878664488');
-        $this->setServiceLanguage('bg');
+        $this->setServiceLanguage(
+            $faker->randomElement(
+                [
+                    'a', 'zh-HK', 'ca', 'hr', 'cs', 'da', 'nl', 'en-AU', 'en-GB', 'en-US', 'et', 'fil', 'fi', 'fr',
+                    'fr-CA', 'de', 'el', 'he', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'lv', 'ln', 'lt', 'zh-CN',
+                    'no', 'pl', 'pt-BR', 'pt', 'ro', 'ru', 'sk', 'es', 'es-419', 'sv', 'th', 'tr', 'uk', 'vi'
+                ]
+            )
+        );
         $this->setSecurityCode(1234);
         $this->setServiceType(CallServiceTypes::SMS);
     }

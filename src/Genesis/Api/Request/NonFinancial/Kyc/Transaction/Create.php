@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -486,9 +486,6 @@ class Create extends BaseRequest
                 PaymentMethods::ECHECK      => [
                     'routing',
                     'account'
-                ],
-                PaymentMethods::EWALLET     => [
-                    'ewallet_id'
                 ]
             ]
         ];

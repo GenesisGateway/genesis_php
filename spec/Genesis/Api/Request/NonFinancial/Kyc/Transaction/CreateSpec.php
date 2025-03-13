@@ -61,7 +61,10 @@ class CreateSpec extends ObjectBehavior
 
     public function it_should_fail_when_missing_parameters_for_payment_method_echeck()
     {
-        $this->setRequestParameters();
+        $faker = Factory::create();
+        $this->setTransactionUniqueId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setTransactionCreatedAt($faker->date('Y-m-d H:i:s'));
+        $this->setCustomerIpAddress($faker->ipv4);
         $this->setPaymentMethod(PaymentMethods::ECHECK);
         $this->shouldThrow()->during('getDocument');
     }
@@ -70,7 +73,6 @@ class CreateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->setPaymentMethod(PaymentMethods::ECHECK);
-        $this->setEwalletId(null);
         $this->setRouting('88888');
         $this->setAccount('888888');
 
@@ -88,7 +90,6 @@ class CreateSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->setPaymentMethod(PaymentMethods::CREDIT_CARD);
-        $this->setEwalletId(null);
         $this->setBin('411111');
         $this->setTail('1111');
         $this->setHashedPan(hash('sha256', 'test'));
@@ -255,8 +256,9 @@ class CreateSpec extends ObjectBehavior
         $this->setTransactionUniqueId($faker->numberBetween(1, PHP_INT_MAX));
         $this->setTransactionCreatedAt($faker->date('Y-m-d H:i:s'));
         $this->setCustomerIpAddress($faker->ipv4);
-        $this->setPaymentMethod(PaymentMethods::EWALLET);
-        $this->setEwalletId($faker->email);
+        $this->setPaymentMethod(PaymentMethods::ECHECK);
+        $this->setRouting('88888');
+        $this->setAccount('888888');
     }
 
     public function getMatchers(): array

@@ -24,7 +24,6 @@ class PayoutSpec extends ObjectBehavior
     use DocumentAttributesExample;
     use NeighborhoodAttributesExamples;
     use RequestExamples;
-    use UcofAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -102,6 +101,16 @@ class PayoutSpec extends ObjectBehavior
         $faker = $this->getFaker();
         $this->shouldThrow(InvalidArgument::class)
             ->during('setBankAccountType', [$faker->asciify('**')]);
+    }
+
+    public function it_should_contain_payer_bank_phone_number()
+    {
+        $this->setRequestParameters();
+
+        $number = '+1234567890123';
+        $this->setPayerBankPhoneNumber($number);
+
+        $this->getDocument()->shouldContain("<payer_bank_phone_number>$number</payer_bank_phone_number>");
     }
 
     public function it_should_fail_with_invalid_document_type_length()
@@ -233,7 +242,7 @@ class PayoutSpec extends ObjectBehavior
             'bank_account_number',
             'bank_province',
             'id_card_number',
-            'payer_bank_account_number',
+            'payer_bank_phone_number',
             'bank_account_type',
             'document_type',
             'account_id',

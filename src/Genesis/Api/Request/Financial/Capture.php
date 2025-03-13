@@ -20,13 +20,14 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\Api\Request\Financial;
 
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
+use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
 
 /**
@@ -40,6 +41,7 @@ class Capture extends \Genesis\Api\Request\Base\Financial\Reference
 {
     use BusinessAttributes;
     use TravelDataAttributes;
+    use InstallmentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -60,7 +62,8 @@ class Capture extends \Genesis\Api\Request\Base\Financial\Reference
             [
                 'travel'              => $this->getTravelData(),
                 'business_attributes' => $this->getBusinessAttributesStructure()
-            ]
+            ],
+            $this->getInstallmentAttributesStructure()
         );
     }
 }

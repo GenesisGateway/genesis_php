@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -119,9 +119,9 @@ class Create extends BaseRequest
 
         $requiredFieldValues = [
             'service_language'      => [
-                'a', 'ar-EG', 'bg', 'zh-HK', 'ca', 'hr', 'cs', 'da', 'nl', 'en-AU', 'en-GB', 'en-US', 'et', 'fil',
-                'fi', 'fr', 'fr-CA', 'de', 'el', 'he', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'lv', 'ln', 'lt',
-                'zh-CN', 'no', 'pl', 'pt-BR', 'pt', 'ro', 'ru', 'sk', 'es', 'es-419', 'sv', 'th', 'tr', 'uk', 'vi'
+                'a', 'zh-HK', 'ca', 'hr', 'cs', 'da', 'nl', 'en-AU', 'en-GB', 'en-US', 'et', 'fil', 'fi', 'fr',
+                'fr-CA', 'de', 'el', 'he', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'lv', 'ln', 'lt', 'zh-CN',
+                'no', 'pl', 'pt-BR', 'pt', 'ro', 'ru', 'sk', 'es', 'es-419', 'sv', 'th', 'tr', 'uk', 'vi'
             ],
             'service_type'          => CallServiceTypes::getAll(),
             'security_code'         => new RegexValidator(RegexValidator::PATTERN_KYC_CALL_SECURITY_CODE),

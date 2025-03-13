@@ -17,6 +17,11 @@ class AirlineItineraryTaxesData extends AidAttributes
      */
     protected $feeType;
 
+    /**
+     * AirlineItineraryTaxesData constructor.
+     *
+     * @throws InvalidArgument
+     */
     public function __construct($feeAmount = null, $feeType = null)
     {
         $this->setFeeAmount($feeAmount);
@@ -27,7 +32,6 @@ class AirlineItineraryTaxesData extends AidAttributes
      * @param $value
      *
      * @return AirlineItineraryTaxesData
-     * @throws InvalidArgument
      */
     public function setFeeAmount($value)
     {
@@ -42,7 +46,8 @@ class AirlineItineraryTaxesData extends AidAttributes
     /**
      * @param $value
      *
-     * @return AirlineItineraryLegData
+     * @return AirlineItineraryTaxesData
+     *
      * @throws InvalidArgument
      */
     public function setFeeType($value)
@@ -56,6 +61,11 @@ class AirlineItineraryTaxesData extends AidAttributes
         return $this->setLimitedString('feeType', $value, 1, 8);
     }
 
+    /**
+     * Return the structure name
+     *
+     * @return string
+     */
     public function getStructureName()
     {
         return 'taxes';

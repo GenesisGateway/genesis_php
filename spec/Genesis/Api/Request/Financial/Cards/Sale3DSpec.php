@@ -27,6 +27,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
+use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
 
 class Sale3DSpec extends ObjectBehavior
 {
@@ -52,6 +53,7 @@ class Sale3DSpec extends ObjectBehavior
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
     use SchemeTokenized3DExamples;
+    use InstallmentAttributesExamples;
 
     public function it_is_initializable()
     {

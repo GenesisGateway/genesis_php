@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -38,6 +38,7 @@ use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\GamingAttributes;
+use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\Financial\ScaAttributes;
@@ -73,6 +74,7 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
     use RiskAttributes;
     use ScaAttributes;
     use TravelDataAttributes;
+    use InstallmentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -186,7 +188,8 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
             ],
             $this->getScaAttributesStructure(),
             $this->get3DSTransactionAttributes(),
-            $this->getUcofAttributesStructure()
+            $this->getUcofAttributesStructure(),
+            $this->getInstallmentAttributesStructure()
         );
     }
 }

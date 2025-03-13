@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2024 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -39,6 +39,7 @@ use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\GamingAttributes;
+use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\Financial\ScaAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
@@ -75,6 +76,7 @@ class Sale extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use ScaAttributes;
     use SubsequentRecurringTypeAttributes;
     use UcofAttributes;
+    use InstallmentAttributes;
 
     /**
      * Returns the Request transaction type
@@ -174,7 +176,8 @@ class Sale extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
             $this->getScaAttributesStructure(),
-            $this->getUcofAttributesStructure()
+            $this->getUcofAttributesStructure(),
+            $this->getInstallmentAttributesStructure()
         );
     }
 }

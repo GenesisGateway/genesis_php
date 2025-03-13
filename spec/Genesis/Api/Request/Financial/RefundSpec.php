@@ -5,11 +5,13 @@ namespace spec\Genesis\Api\Request\Financial;
 use Genesis\Api\Constants\Transaction\Parameters\Refund\BankAccountTypeParameters;
 use Genesis\Api\Request\Financial\Refund;
 use PhpSpec\ObjectBehavior;
+use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class RefundSpec extends ObjectBehavior
 {
     use RequestExamples;
+    use InstallmentAttributesExamples;
 
     private $creditIndicators = [
         Refund::CREDIT_REASON_INDICATOR_OTHER,
