@@ -26,6 +26,9 @@
 
 namespace Genesis\Api\Request\Financial\OnlineBankingPayments\InstaDebit;
 
+use Genesis\Utils\Common as CommonUtils;
+use Genesis\Api\Request\Financial\OnlineBankingPayments\Idebit\Payin as IdebitPayin;
+
 /**
  * Class Payin
  *
@@ -33,8 +36,15 @@ namespace Genesis\Api\Request\Financial\OnlineBankingPayments\InstaDebit;
  *
  * @package Genesis\Api\Request\Financial\OnlineBankingPayments\InstaDebit
  */
-class Payin extends \Genesis\Api\Request\Financial\OnlineBankingPayments\Idebit\Payin
+class Payin extends IdebitPayin
 {
+    /**
+     * Return url where customer is sent to after payment
+     *
+     * @var string
+     */
+    protected $return_url;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -53,11 +63,17 @@ class Payin extends \Genesis\Api\Request\Financial\OnlineBankingPayments\Idebit\
     {
         parent::setRequiredFields();
 
+        $required_fields = array_merge(
+            (array)$this->requiredFields,
+            ['return_url']
+        );
+        $this->requiredFields = CommonUtils::createArrayObject($required_fields);
+
         $requiredFieldValues = [
             'billing_country' => ['CA'],
             'currency'        => ['CAD', 'USD']
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
     }
 }

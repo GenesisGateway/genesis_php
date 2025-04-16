@@ -1,3 +1,13 @@
+2.1.3
+-----
+**Features**
+
+* Added **SPEI** payment type to **Online banking** request
+* Added **Payer** attributes to the **Bank PayOut** request
+* Added **Dynamic Descriptor** parameters to **SDD** requests
+* Added **Cryptogram** request, part of **Tokenization API** services
+* Removed Return Url attribute from iDebit\PayIn transaction request
+
 2.1.2
 -----
 **Features**

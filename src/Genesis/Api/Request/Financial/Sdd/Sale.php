@@ -29,6 +29,7 @@ namespace Genesis\Api\Request\Financial\Sdd;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\BankAttributes;
+use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\PendingPaymentAttributes;
 
@@ -46,6 +47,7 @@ class Sale extends \Genesis\Api\Request\Base\Financial
     use BankAttributes;
     use PaymentAttributes;
     use PendingPaymentAttributes;
+    use DescriptorAttributes;
 
     /**
      * Name of the company
@@ -108,19 +110,20 @@ class Sale extends \Genesis\Api\Request\Base\Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-            'amount'             => $this->transformAmount($this->amount, $this->currency),
-            'currency'           => $this->currency,
-            'iban'               => $this->iban,
-            'bic'                => $this->bic,
-            'customer_email'     => $this->customer_email,
-            'customer_phone'     => $this->customer_phone,
-            'company_name'       => $this->company_name,
-            'mandate_reference'  => $this->mandate_reference,
-            'billing_address'    => $this->getBillingAddressParamsStructure(),
-            'shipping_address'   => $this->getShippingAddressParamsStructure(),
-            'return_success_url' => $this->return_success_url,
-            'return_failure_url' => $this->return_failure_url,
-            'return_pending_url' => $this->getReturnPendingUrl()
+            'amount'                    => $this->transformAmount($this->amount, $this->currency),
+            'currency'                  => $this->currency,
+            'iban'                      => $this->iban,
+            'bic'                       => $this->bic,
+            'customer_email'            => $this->customer_email,
+            'customer_phone'            => $this->customer_phone,
+            'company_name'              => $this->company_name,
+            'mandate_reference'         => $this->mandate_reference,
+            'billing_address'           => $this->getBillingAddressParamsStructure(),
+            'shipping_address'          => $this->getShippingAddressParamsStructure(),
+            'return_success_url'        => $this->return_success_url,
+            'return_failure_url'        => $this->return_failure_url,
+            'return_pending_url'        => $this->getReturnPendingUrl(),
+            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
         ];
     }
 }

@@ -1578,6 +1578,7 @@ NonFinancial\TokenizationApi\UpdateToken
 NonFinancial\TokenizationApi\ValidateToken
 NonFinancial\TokenizationApi\DeleteToken
 NonFinancial\TokenizationApi\GetCard
+NonFinancial\TokenizationApi\Cryptogram
 
 // Billing Transactions API
 NonFinancial\BillingApi\Transaction

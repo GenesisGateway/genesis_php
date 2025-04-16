@@ -35,6 +35,7 @@ use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\BirthDateAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
+use Genesis\Api\Traits\Request\Financial\OnlineBankingPayments\PayerAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
@@ -68,9 +69,9 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     use DocumentAttributes;
     use NotificationAttributes;
     use PaymentAttributes;
+    use PayerAttributes;
 
     const ID_CARD_NUMBER_MAX_LENGTH          = 30;
-    const PAYER_BANK_PHONE_NUMBER_MAX_LENGTH = 14;
     const DOCUMENT_TYPE_MAX_LENGTH           = 10;
     const ACCOUNT_ID_MAX_LENGTH              = 255;
     const USER_ID_MAX_LENGTH                 = 255;
@@ -128,13 +129,6 @@ class Payout extends \Genesis\Api\Request\Base\Financial
      * @var string $id_card_number
      */
     protected $id_card_number;
-
-    /**
-     * Payer bank phone number
-     *
-     * @var string $payer_bank_phone_number
-     */
-    protected $payer_bank_phone_number;
 
     /**
      * The type of account.
@@ -211,23 +205,6 @@ class Payout extends \Genesis\Api\Request\Base\Financial
             $value,
             null,
             self::ID_CARD_NUMBER_MAX_LENGTH
-        );
-    }
-
-    /**
-     * Payer bank phone number
-     *
-     * @param $value
-     * @return Payout
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setPayerBankPhoneNumber($value)
-    {
-        return $this->setLimitedString(
-            'payer_bank_phone_number',
-            $value,
-            null,
-            self::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH
         );
     }
 
@@ -430,7 +407,6 @@ class Payout extends \Genesis\Api\Request\Base\Financial
                 'bank_account_number'             => $this->bank_account_number,
                 'bank_province'                   => $this->bank_province,
                 'id_card_number'                  => $this->id_card_number,
-                'payer_bank_phone_number'         => $this->payer_bank_phone_number,
                 'bank_account_type'               => $this->bank_account_type,
                 'bank_account_verification_digit' => $this->bank_account_verification_digit,
                 'document_type'                   => $this->document_type,
@@ -441,7 +417,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial
                 'billing_address'                 => $this->getBillingAddressParamsStructure(),
                 'shipping_address'                => $this->getShippingAddressParamsStructure(),
                 'pix_key'                         => $this->pix_key,
-                'document_id'                     => $this->getDocumentId()
+                'document_id'                     => $this->getDocumentId(),
+                'payer'                           => $this->getPayerParametersStructure()
             ],
             $this->getCustomerParamsStructure()
         );

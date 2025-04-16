@@ -4,6 +4,7 @@ namespace spec\Genesis\Api\Request\Financial\Sdd;
 
 use Genesis\Api\Request\Financial\Sdd\Sale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
@@ -13,6 +14,7 @@ class SaleSpec extends ObjectBehavior
     use NeighborhoodAttributesExamples;
     use PendingPaymentAttributesExamples;
     use RequestExamples;
+    use DescriptorAttributesExample;
 
     public function it_is_initializable()
     {

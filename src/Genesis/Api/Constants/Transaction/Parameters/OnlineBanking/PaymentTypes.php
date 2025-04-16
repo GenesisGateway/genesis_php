@@ -67,6 +67,11 @@ class PaymentTypes
     const SCOTIABANK     = 'scotiabank';
 
     /**
+     * Payment Type SPEI
+     */
+    const SPEI           = 'spei';
+
+    /**
      * Get all available Payment Types
      *
      * @return array

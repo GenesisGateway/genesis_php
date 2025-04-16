@@ -4,6 +4,7 @@ namespace spec\Genesis\Api\Request\Financial\Sdd\Recurring;
 
 use Genesis\Api\Request\Financial\Sdd\Recurring\InitRecurringSale;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
@@ -11,6 +12,7 @@ class InitRecurringSaleSpec extends ObjectBehavior
 {
     use NeighborhoodAttributesExamples;
     use RequestExamples;
+    use DescriptorAttributesExample;
 
     public function it_is_initializable()
     {

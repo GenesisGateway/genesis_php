@@ -83,34 +83,11 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('setIdCardNumber', [null]);
     }
 
-    public function it_should_fail_with_invalid_payer_bank_phone_number_length()
-    {
-        $this->testVariableStringSetter(
-            'setPayerBankPhoneNumber',
-            Payout::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH
-        );
-    }
-
-    public function it_should_not_fail_when_unset_payer_bank_phone_number()
-    {
-        $this->shouldNotThrow()->during('setPayerBankPhoneNumber', [null]);
-    }
-
     public function it_should_fail_with_not_proper_bank_account_value()
     {
         $faker = $this->getFaker();
         $this->shouldThrow(InvalidArgument::class)
             ->during('setBankAccountType', [$faker->asciify('**')]);
-    }
-
-    public function it_should_contain_payer_bank_phone_number()
-    {
-        $this->setRequestParameters();
-
-        $number = '+1234567890123';
-        $this->setPayerBankPhoneNumber($number);
-
-        $this->getDocument()->shouldContain("<payer_bank_phone_number>$number</payer_bank_phone_number>");
     }
 
     public function it_should_fail_with_invalid_document_type_length()
@@ -242,7 +219,6 @@ class PayoutSpec extends ObjectBehavior
             'bank_account_number',
             'bank_province',
             'id_card_number',
-            'payer_bank_phone_number',
             'bank_account_type',
             'document_type',
             'account_id',
@@ -254,7 +230,8 @@ class PayoutSpec extends ObjectBehavior
             'company_activity',
             'incorporation_date',
             'mothers_name',
-            'pix_key'
+            'pix_key',
+            'payer',
         ];
 
         foreach ($attributes as $attribute) {
@@ -308,11 +285,6 @@ class PayoutSpec extends ObjectBehavior
         $this->setIdcardNumber(
             $faker->asciify(str_repeat('*',mt_rand(1, Payout::ID_CARD_NUMBER_MAX_LENGTH)))
         );
-        $this->setPayerbankPhoneNumber(
-            $faker->asciify(
-                str_repeat('*',mt_rand(1, Payout::PAYER_BANK_PHONE_NUMBER_MAX_LENGTH))
-            )
-        );
         $this->setBankAccountType($faker->randomElement(BankAccountTypes::getAll()));
         $this->setDocumentType(
             $faker->asciify(str_repeat('*', mt_rand(1, Payout::DOCUMENT_TYPE_MAX_LENGTH)))
@@ -332,6 +304,12 @@ class PayoutSpec extends ObjectBehavior
         $this->setCompanyActivity(Faker::getInstance()->text(10));
         $this->setMothersName("{$faker->firstNameFemale()} {$faker->lastName()}");
         $this->setPixKey(Faker::getInstance()->text(5));
+        $this->setPayerDocumentId($faker->asciify(str_repeat('*', 11)));
+        $this->setPayerBankCode($faker->asciify(str_repeat('*', 11)));
+        $this->setPayerBankAccountNumber($faker->asciify(str_repeat('*', 33)));
+        $this->setPayerBankBranch($faker->asciify(str_repeat('*', 10)));
+        $this->setPayerBankAccountVerificationDigit('1');
+        $this->setPayerBankPhoneNumber($faker->asciify(str_repeat('*', 11)));
     }
 
     private function testVariableStringSetter($method, $length)

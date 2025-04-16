@@ -23,7 +23,6 @@ class PayinSpec extends ObjectBehavior
             'amount',
             'currency',
             'billing_country',
-            'return_url',
             'customer_account_id'
         ]);
     }
@@ -36,7 +35,6 @@ class PayinSpec extends ObjectBehavior
 
         $this->setUsage('Genesis PHP Client Automated Request');
         $this->setRemoteIp($faker->ipv4);
-        $this->setReturnUrl($faker->url);
         $this->setCustomerAccountId($faker->userName);
         $this->setCurrency('USD');
         $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));

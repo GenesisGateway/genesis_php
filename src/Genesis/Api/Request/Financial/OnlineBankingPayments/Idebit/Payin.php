@@ -28,6 +28,7 @@ namespace Genesis\Api\Request\Financial\OnlineBankingPayments\Idebit;
 
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Utils\Common;
 
 /**
  * Class Payin
@@ -78,19 +79,17 @@ class Payin extends \Genesis\Api\Request\Base\Financial
             'transaction_id',
             'amount',
             'currency',
-            'return_url',
             'customer_account_id',
             'billing_country'
         ];
 
-        $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
+        $this->requiredFields = Common::createArrayObject($requiredFields);
 
         $requiredFieldValues = [
-            'billing_country' => ['CA'],
-            'currency'        => ['CAD', 'USD', 'EUR', 'GBP', 'AUD']
+            'billing_country' => ['CA']
         ];
 
-        $this->requiredFieldValues = \Genesis\Utils\Common::createArrayObject($requiredFieldValues);
+        $this->requiredFieldValues = Common::createArrayObject($requiredFieldValues);
     }
 
     /**
@@ -103,7 +102,6 @@ class Payin extends \Genesis\Api\Request\Base\Financial
             'amount'              => $this->transformAmount($this->amount, $this->currency),
             'currency'            => $this->currency,
             'customer_account_id' => $this->customer_account_id,
-            'return_url'          => $this->return_url,
             'customer_email'      => $this->customer_email,
             'customer_phone'      => $this->customer_phone,
             'billing_address'     => $this->getBillingAddressParamsStructure(),
