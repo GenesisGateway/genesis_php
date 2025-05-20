@@ -4,11 +4,13 @@ namespace spec\Genesis\Api\Request\Financial\GiftCards;
 
 use Genesis\Api\Request\Financial\GiftCards\Fashioncheque;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\Financial\GiftCards\TokenAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class FashionchequeSpec extends ObjectBehavior
 {
     use RequestExamples;
+    use TokenAttributesExamples;
 
     public function it_is_initializable()
     {

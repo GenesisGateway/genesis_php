@@ -24,42 +24,59 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\GiftCards;
+namespace Genesis\Api\Constants\Transaction\Parameters;
 
-use Genesis\Api\Constants\Transaction\Types;
-use Genesis\Api\Request\Base\Financial\GiftCard;
-use Genesis\Api\Traits\Request\TokenizationAttributes;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
- * Class Intersolve
+ * Digital Asset Types
  *
- * Intersolve gift card Request
- *
- * @package Genesis\Api\Request\Financial\GiftCards
+ * @package Genesis\Api\Constants\Transaction\Parameters
  */
-class Intersolve extends GiftCard
+class DigitalAssetTypes
 {
-    use TokenizationAttributes;
-
-    /**
-     * Returns the Request transaction type
-     * @return string
+/**
+     * Default crypto flag
+     *
+     * @var string
      */
-    protected function getTransactionType()
-    {
-        return Types::INTERSOLVE;
-    }
+    const CRYPTO                  = 'crypto';
 
     /**
-     * Return request structure
+     * Central Bank Digital Currency or tokenized deposits
+     *
+     * @var string
+     */
+    const CBDC                    = 'cbdc';
+
+    /**
+     * Stablecoin (Fiat-backed)
+     *
+     * @var string
+     */
+    const STABLECOIN              = 'stablecoin';
+
+    /**
+     * Blockchain native token/coin
+     *
+     * @var string
+     */
+    const BLOCKCHAIN_NATIVE_TOKEN = 'blockchain_native_token';
+
+    /**
+     * Non-fungible token
+     *
+     * @var string
+     */
+    const NFT                     = 'nft';
+
+    /**
+     * Get All Digital Asset Types
      *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    public static function getAll()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getTokenizationStructure()
-        );
+        return CommonUtils::getClassConstants(self::class);
     }
 }

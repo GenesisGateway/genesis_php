@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Api\Request\Financial\Cards;
 
+use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferTypes;
 use Genesis\Api\Request\Financial\Cards\Payout;
 use Genesis\Exceptions\InvalidMethod;
@@ -10,14 +11,18 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\CustomerIdentificationExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CreditCardAttributesExamples;
+use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\SourceOfFundsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 
 class PayoutSpec extends ObjectBehavior
@@ -36,6 +41,10 @@ class PayoutSpec extends ObjectBehavior
     use SourceOfFundsAttributesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use DigitalAssetTypeAttributesExamples;
+    use CryptoAttributesExamples;
+    use GamingAttributesExamples;
+    use MotoAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -160,5 +169,6 @@ class PayoutSpec extends ObjectBehavior
         $this->setMoneyTransferSenderCity($faker->city);
         $this->setMoneyTransferSenderZipCode($faker->postcode);
         $this->setMoneyTransferSenderAddress1($faker->address);
+        $this->setDigitalAssetType($this->getFaker()->randomElement(DigitalAssetTypes::getAll()));
     }
 }

@@ -780,6 +780,8 @@ final class Errors
                 return 'Transaction not allowed at acquirer/terminal';
             case '59':
                 return 'Suspected fraud';
+            case '5C':
+                return 'Transaction not supported/blocked by issuer';
             case '61':
                 return 'Exceeds approval amount limit';
             case '62':
@@ -801,6 +803,8 @@ final class Errors
                 return 'PIN data required / Contact Card Issuer';
             case '71':
                 return 'PIN Not Changed';
+            case '72':
+                return 'Account Not Yet Activated';
             case '74':
                 return 'Different value than that used for PIN encryption errors';
             case '75':
@@ -853,6 +857,8 @@ final class Errors
                 return 'Duplicate Reversal';
             case '99':
                 return 'Duplicate Transaction';
+            case '9G':
+                return 'Blocked by cardholder/contact cardholder';
             case '1A':
                 return 'Additional customer authentication required. Soft decline';
             case '1Z':
@@ -862,7 +868,7 @@ final class Errors
             case 'B1':
                 return 'Surcharge amount not permitted on Visa cards or EBT food stamps (U.S. acquirers only)';
             case 'B2':
-                return 'Surcharge amount not supported by debit network issuer.';
+                return 'Surcharge amount not supported by debit network issuer';
             case 'N0':
                 return 'Force STIP';
             case 'N3':

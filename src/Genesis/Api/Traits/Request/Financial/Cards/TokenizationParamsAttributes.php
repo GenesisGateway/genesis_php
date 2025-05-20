@@ -24,42 +24,65 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\GiftCards;
+namespace Genesis\Api\Traits\Request\Financial\Cards;
 
-use Genesis\Api\Constants\Transaction\Types;
-use Genesis\Api\Request\Base\Financial\GiftCard;
-use Genesis\Api\Traits\Request\TokenizationAttributes;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
- * Class Intersolve
+ * Trait TokenizationParamsAttributes
  *
- * Intersolve gift card Request
+ * @package Genesis\Api\Traits\Request\Financial\Cards
  *
- * @package Genesis\Api\Request\Financial\GiftCards
+ * @method string getTokenizationTavv()
+ * @method string getTokenizationEci()
+ * @method setTokenizationTavv(string $tavv)
  */
-class Intersolve extends GiftCard
+trait TokenizationParamsAttributes
 {
-    use TokenizationAttributes;
+    /**
+     * Tokenization tavv
+     *
+     * @var string
+     */
+    protected $tokenization_tavv;
 
     /**
-     * Returns the Request transaction type
-     * @return string
+     * Tokenization eci
+     *
+     * @var string
      */
-    protected function getTransactionType()
+    protected $tokenization_eci;
+
+    /**
+     * Set the tokenization eci
+     *
+     * @param string $value
+     *
+     * @return $this
+     *
+     * @throws InvalidArgument
+     */
+    public function setTokenizationEci($value)
     {
-        return Types::INTERSOLVE;
+        if ($value === null) {
+            $this->tokenization_eci = null;
+
+            return $this;
+        }
+
+        return $this->setLimitedString('tokenization_eci', $value, null, 2);
     }
 
     /**
-     * Return request structure
+     * Return the tokenization parameters attributes structure
      *
      * @return array
      */
-    protected function getPaymentTransactionStructure()
+    protected function tokenizationParamsAttributesStructure()
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getTokenizationStructure()
-        );
+        return [
+            'tavv' => $this->tokenization_tavv,
+            'eci'  => $this->tokenization_eci
+        ];
     }
 }

@@ -27,14 +27,18 @@
 namespace Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\Api\Traits\Request\Financial\CredentialOnFileAttributes;
+use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
+use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;
 use Genesis\Api\Traits\Request\Financial\UcofAttributes;
+use Genesis\API\Traits\Request\MotoAttributes;
 use Genesis\Api\Traits\Request\Payout\MoneyTransferPayoutAttributes;
 use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Common as CommonUtils;
@@ -58,6 +62,10 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use PurposeOfPaymentAttributes;
     use SourceOfFundsAttributes;
     use UcofAttributes;
+    use DigitalAssetTypeAttributes;
+    use CryptoAttributes;
+    use MotoAttributes;
+    use GamingAttributes;
 
     const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
     const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
@@ -167,6 +175,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     {
         return array_merge(
             [
+                'moto'                      => $this->moto,
+                'gaming'                    => $this->gaming,
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
                 'document_id'               => $this->document_id,
@@ -177,7 +187,9 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'money_transfer'            => $this->getMoneyTransferPayoutStructure(),
                 'customer_identification'   => $this->getCustomerIdentificationDataStructure(),
                 'account_owner'             => $this->getAccountOwnerAttributesStructure(),
-                'purpose_of_payment'        => $this->purpose_of_payment
+                'purpose_of_payment'        => $this->purpose_of_payment,
+                'digital_asset_type'        => $this->digital_asset_type,
+                'crypto'                    => $this->crypto
             ],
             $this->getSourceOfFundsStructure(),
             $this->getCredentialOnFileAttributesStructure(),

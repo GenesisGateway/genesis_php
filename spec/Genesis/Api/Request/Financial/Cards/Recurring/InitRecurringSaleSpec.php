@@ -14,10 +14,12 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributes
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributesExamples;
 
 class InitRecurringSaleSpec extends ObjectBehavior
 {
@@ -35,6 +37,8 @@ class InitRecurringSaleSpec extends ObjectBehavior
     use RequestExamples;
     use TokenizationAttributesExamples;
     use SchemeTokenizedExamples;
+    use TokenizationParamsAttributesExamples;
+    use MotoAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -68,5 +72,7 @@ class InitRecurringSaleSpec extends ObjectBehavior
         $this->setBillingCity($faker->city);
         $this->setBillingState($faker->state);
         $this->setBillingCountry($faker->countryCode);
+        $this->setTokenizationTavv($faker->numberBetween(1, 9999999));
+        $this->setTokenizationEci($faker->numberBetween(1, 99));
     }
 }

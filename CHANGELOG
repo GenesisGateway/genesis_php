@@ -1,3 +1,38 @@
+2.1.4
+-----
+**Features**:
+
+* Added mandatory attribute support `transaction_reference` to Cryptogram Tokenization API request
+* Added XCG (Netherlands Antillean guilder) currency support
+* Updated Fraud by Date Range API request with additional attributes:
+  * `import_date`
+  * `report_start_date`
+  * `report_end_date`
+  * `per_page`
+* Added Scheme Tokenization parameters support to the following transaction requests:
+  * Authorize
+  * Authorize3D
+  * Sale
+  * Sale3D
+  * InitRecurringSale
+  * InitRecurringSale3D
+* Added Purpose of Payment attribute validation for allowed values
+* Added MTN operator support to African Mobile Sale transaction request
+* Added Token attributes support to the following transaction requests:
+  * Fashioncheque
+  * Intersolve
+  * TCS
+* Added Digital Asset Type attribute support to the following transaction requests:
+    * Authorize
+    * Authorize 3D
+    * Sale
+    * Sale 3D
+    * Credit (CFT)
+    * Payout
+    * Web Payment Form
+* Added Crypto attribute support to Credit transaction request
+* Added Crypto, Moto and Gaming attributes support to Payout transaction request
+
 2.1.3
 -----
 **Features**

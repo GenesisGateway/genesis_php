@@ -28,6 +28,7 @@ namespace Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
@@ -77,6 +78,7 @@ class Sale extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use SubsequentRecurringTypeAttributes;
     use UcofAttributes;
     use InstallmentAttributes;
+    use DigitalAssetTypeAttributes;
 
     /**
      * Returns the Request transaction type
@@ -157,6 +159,8 @@ class Sale extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
             [
                 'gaming'                    => $this->gaming,
                 'moto'                      => $this->moto,
+                'crypto'                    => $this->crypto,
+                'digital_asset_type'        => $this->digital_asset_type,
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
                 'document_id'               => $this->document_id,
@@ -167,7 +171,6 @@ class Sale extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'reference_id'              => $this->reference_id,
                 'travel'                    => $this->getTravelData(),
                 'fx_rate_id'                => $this->fx_rate_id,
-                'crypto'                    => $this->crypto,
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),

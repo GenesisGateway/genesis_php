@@ -26,11 +26,14 @@
 
 namespace Genesis\Api\Traits\Request\Financial;
 
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPayment;
+use Genesis\Exceptions\InvalidArgument;
+
 /**
  * Trait PurposeOfPaymentAttributes
+ *
  * @package Genesis\Api\Traits\Request\Financial
  *
- * @method $this setPurposeOfPayment($value)
  * @method string getPurposeOfPayment()
  */
 trait PurposeOfPaymentAttributes
@@ -42,4 +45,23 @@ trait PurposeOfPaymentAttributes
      * @var $purpose_of_payment
      */
     protected $purpose_of_payment;
+
+    /**
+     * Validate purpose_of_payment param
+     *
+     * @param $value
+     *
+     * @return $this
+     *
+     * @throws InvalidArgument
+    */
+    public function setPurposeOfPayment($value)
+    {
+        return $this->allowedOptionsSetter(
+            'purpose_of_payment',
+            PurposeOfPayment::getAll(),
+            $value,
+            'Parameter Purpose of Payment not valid!'
+        );
+    }
 }

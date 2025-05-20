@@ -2,6 +2,7 @@
 
 namespace spec\Genesis\Api\Request\Financial\Cards;
 
+use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Request\Financial\Cards\Sale;
 use PhpSpec\ObjectBehavior;
@@ -18,13 +19,17 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributesExamples;
 
 class SaleSpec extends ObjectBehavior
 {
@@ -48,6 +53,10 @@ class SaleSpec extends ObjectBehavior
     use UcofAttributesExamples;
     use SchemeTokenizedExamples;
     use InstallmentAttributesExamples;
+    use TokenizationParamsAttributesExamples;
+    use DigitalAssetTypeAttributesExamples;
+    use MotoAttributesExamples;
+    use GamingAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -102,5 +111,8 @@ class SaleSpec extends ObjectBehavior
         $this->setBillingZipCode($faker->postcode);
         $this->setBillingCity($faker->city);
         $this->setBillingCountry($faker->countryCode);
+        $this->setTokenizationTavv($faker->numberBetween(1, 9999999));
+        $this->setTokenizationEci($faker->numberBetween(1, 99));
+        $this->setDigitalAssetType($this->getFaker()->randomElement(DigitalAssetTypes::getAll()));
     }
 }

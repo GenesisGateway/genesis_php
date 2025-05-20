@@ -8,12 +8,14 @@ use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class RecurringSaleSpec extends ObjectBehavior
 {
     use BusinessAttributesExample;
     use RequestExamples;
+    use MotoAttributesExamples;
 
     public function it_is_initializable()
     {

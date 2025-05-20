@@ -24,42 +24,50 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\Financial\GiftCards;
+namespace Genesis\Api\Traits\Request;
 
-use Genesis\Api\Constants\Transaction\Types;
-use Genesis\Api\Request\Base\Financial\GiftCard;
-use Genesis\Api\Traits\Request\TokenizationAttributes;
+use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
+use Genesis\Exceptions\InvalidArgument;
 
 /**
- * Class Intersolve
+ * Digital Asset Type Attributes
  *
- * Intersolve gift card Request
+ * @package Genesis\Api\Traits\Request
  *
- * @package Genesis\Api\Request\Financial\GiftCards
+ * @method $string getDigitalAssetType()
  */
-class Intersolve extends GiftCard
+trait DigitalAssetTypeAttributes
 {
-    use TokenizationAttributes;
-
     /**
-     * Returns the Request transaction type
-     * @return string
-     */
-    protected function getTransactionType()
-    {
-        return Types::INTERSOLVE;
-    }
-
-    /**
-     * Return request structure
+     * The Digital Asset Type
      *
-     * @return array
+     * @var string $digital_asset_type
      */
-    protected function getPaymentTransactionStructure()
+    protected $digital_asset_type;
+
+    /**
+     * The Digital Asset Type
+     *
+     * @var string $digital_asset_type
+     *
+     * @return $this
+     *
+     * @throws InvalidArgument
+     */
+    public function setDigitalAssetType($value)
     {
-        return array_merge(
-            parent::getPaymentTransactionStructure(),
-            $this->getTokenizationStructure()
+        if (empty($value)) {
+            $this->digital_asset_type = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'digital_asset_type',
+            DigitalAssetTypes::getAll(),
+            $value,
+            'Invalid Digital Asset Type provided. Allowed values are: ' .
+            implode(', ', DigitalAssetTypes::getAll())
         );
     }
 }

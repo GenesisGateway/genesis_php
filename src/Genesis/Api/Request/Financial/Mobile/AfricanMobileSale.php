@@ -197,7 +197,7 @@ class AfricanMobileSale extends Financial
                 'UG' => [
                     [
                         'currency' => ['UGX'],
-                        'operator' => [AfricanMobileOperators::MTN]
+                        'operator' => [AfricanMobileOperators::MTN, AfricanMobileOperators::AIRTEL]
                     ]
                 ]
             ]

@@ -6,6 +6,19 @@ use Genesis\Api\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
 use Genesis\Api\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\Utils\Common as CommonUtils;
 
+/**
+ * Class Cryptogram
+ *
+ * Get cryptogram on behalf of a token that will be used for the authorization.
+ *
+ * @package Genesis\Api\Request\NonFinancial\TokenizationApi
+ *
+ * @method string getToken()                Plain-text token value
+ * @method string getTransactionReference() Unique transaction reference identifier defined by merchant
+ *
+ * @method $this setToken($value)                Plain-text token value
+ * @method $this setTransactionReference($value) Unique transaction reference identifier defined by merchant
+ */
 class Cryptogram extends BaseRequest
 {
     use TokenizationApiAttributes;
@@ -16,6 +29,13 @@ class Cryptogram extends BaseRequest
      * @var string
      */
     protected $token;
+
+    /**
+     * Unique transaction reference identifier defined by merchant
+     *
+     * @var string
+     */
+    protected $transaction_reference;
 
     /**
      * Cryptogram constructor
@@ -36,7 +56,8 @@ class Cryptogram extends BaseRequest
             'consumer_id',
             'email',
             'token',
-            'token_type'
+            'token_type',
+            'transaction_reference'
         ];
 
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
@@ -50,10 +71,11 @@ class Cryptogram extends BaseRequest
     protected function getRequestStructure()
     {
         return [
-            'consumer_id' => $this->consumer_id,
-            'email'       => $this->email,
-            'token'       => $this->token,
-            'token_type'  => $this->token_type
+            'consumer_id'           => $this->consumer_id,
+            'email'                 => $this->email,
+            'token'                 => $this->token,
+            'token_type'            => $this->token_type,
+            'transaction_reference' => $this->transaction_reference
         ];
     }
 }

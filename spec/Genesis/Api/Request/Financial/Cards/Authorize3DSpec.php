@@ -2,8 +2,10 @@
 
 namespace spec\Genesis\Api\Request\Financial\Cards;
 
+use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
 use Genesis\Api\Request\Financial\Cards\Authorize3D;
 use PhpSpec\ObjectBehavior;
+use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
@@ -18,6 +20,8 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
@@ -25,8 +29,9 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2Attrib
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
-use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributesExamples;
 
 class Authorize3DSpec extends ObjectBehavior
 {
@@ -53,6 +58,10 @@ class Authorize3DSpec extends ObjectBehavior
     use UcofAttributesExamples;
     use SchemeTokenized3DExamples;
     use InstallmentAttributesExamples;
+    use TokenizationParamsAttributesExamples;
+    use DigitalAssetTypeAttributesExamples;
+    use MotoAttributesExamples;
+    use GamingAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -133,5 +142,8 @@ class Authorize3DSpec extends ObjectBehavior
         $this->setNotificationUrl($faker->url);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setTokenizationTavv($faker->numberBetween(1, 9999999));
+        $this->setTokenizationEci($faker->numberBetween(1, 99));
+        $this->setDigitalAssetType($this->getFaker()->randomElement(DigitalAssetTypes::getAll()));
     }
 }

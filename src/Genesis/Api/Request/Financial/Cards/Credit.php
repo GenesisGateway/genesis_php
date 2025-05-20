@@ -26,7 +26,9 @@
 
 namespace Genesis\Api\Request\Financial\Cards;
 
+use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
+use Genesis\API\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;
@@ -44,6 +46,8 @@ class Credit extends \Genesis\Api\Request\Base\Financial\Reference
     use CustomerIdentificationData;
     use PurposeOfPaymentAttributes;
     use SourceOfFundsAttributes;
+    use DigitalAssetTypeAttributes;
+    use CryptoAttributes;
 
     /**
      * Set the required fields
@@ -98,11 +102,13 @@ class Credit extends \Genesis\Api\Request\Base\Financial\Reference
         return array_merge(
             $this->getSourceOfFundsStructure(),
             [
+                'digital_asset_type'      => $this->digital_asset_type,
                 'reference_id'            => $this->reference_id,
                 'amount'                  => $this->transformAmount($this->amount, $this->currency),
                 'customer_identification' => $this->getCustomerIdentificationDataStructure(),
                 'account_owner'           => $this->getAccountOwnerAttributesStructure(),
-                'purpose_of_payment'      => $this->purpose_of_payment
+                'purpose_of_payment'      => $this->purpose_of_payment,
+                'crypto'                  => $this->crypto
             ]
         );
     }

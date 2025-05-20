@@ -3,6 +3,7 @@
 namespace spec\Genesis\Api\Request\Wpf;
 
 use Genesis\Api\Constants\Payment\Methods;
+use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
 use Genesis\Api\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\Api\Constants\Transaction\Types;
 use Genesis\Api\Request\Wpf\Create;
@@ -19,6 +20,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
+use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 
 class CreateSpec extends ObjectBehavior
 {
@@ -32,6 +34,7 @@ class CreateSpec extends ObjectBehavior
     use RecurringCategoryAttributesExample;
     use ThreedsV2AttributesExamples;
     use ThreedsV2DatesExamples;
+    use DigitalAssetTypeAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -440,6 +443,7 @@ class CreateSpec extends ObjectBehavior
                 'wallet_pass' => 'password'
             )
         );
+        $this->setDigitalAssetType(Faker::getInstance()->randomElement(DigitalAssetTypes::getAll()));
     }
 
     public function getMatchers(): array

@@ -1036,6 +1036,12 @@ final class Currency
                 'country'     => 'INTERNATIONAL MONETARY FUND (IMF)Â ',
                 'exponent'    => 'N.A.'
             ],
+            'XCG' => [
+                'name'        => 'Netherlands Antillean guilder',
+                'code'        => '532',
+                'country'     => 'Curaçao (CW), Sint Maarten (SX)',
+                'exponent'    => '2'
+            ],
             'XOF' => [
                 'name'        => 'CFA Franc BCEAO',
                 'code'        => '952',

@@ -29,6 +29,7 @@ namespace Genesis\Api\Request\Base\Financial\Cards;
 use Genesis\Api\Request\Base\Financial;
 use Genesis\Api\Traits\Request\CreditCardAttributes;
 use Genesis\Api\Traits\Request\DocumentAttributes;
+use Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributes;
 use Genesis\Api\Traits\Request\Financial\CredentialOnFileAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\TokenizationAttributes;
@@ -49,6 +50,7 @@ abstract class CreditCard extends Financial
     use DocumentAttributes;
     use PaymentAttributes;
     use TokenizationAttributes;
+    use TokenizationParamsAttributes;
 
     const REQUEST_KEY_AMOUNT = 'amount';
 
@@ -170,12 +172,13 @@ abstract class CreditCard extends Financial
     protected function getPaymentTransactionStructure()
     {
         return [
-                $this->getCCAttributesStructure(),
-                $this->getTokenizationStructure(),
-                $this->getPaymentAttributesStructure(),
-                $this->getTransactionAttributes(),
-                $this->getCredentialOnFileAttributesStructure(),
-                'scheme_tokenized' => $this->scheme_tokenized
+            $this->getCCAttributesStructure(),
+            $this->getTokenizationStructure(),
+            $this->getPaymentAttributesStructure(),
+            $this->getTransactionAttributes(),
+            $this->getCredentialOnFileAttributesStructure(),
+            'scheme_tokenized'    => $this->scheme_tokenized,
+            'tokenization_params' => $this->tokenizationParamsAttributesStructure(),
         ];
     }
 

@@ -4,6 +4,7 @@ namespace spec\Genesis\Api\Request\Financial\GiftCards;
 
 use Genesis\Api\Request\Financial\GiftCards\Intersolve;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\Financial\GiftCards\TokenAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
@@ -11,6 +12,7 @@ class IntersolveSpec extends ObjectBehavior
 {
     use NeighborhoodAttributesExamples;
     use RequestExamples;
+    use TokenAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -50,6 +52,26 @@ class IntersolveSpec extends ObjectBehavior
         $this->setCurrency('CNY');
 
         $this->shouldThrow()->during('getDocument');
+    }
+
+    public function it_should_contain_remember_card_when_set()
+    {
+        $this->setRequestParameters();
+
+        $this->setRememberCard(true);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain('<remember_card>true</remember_card>');
+    }
+
+    public function it_should_contain_consumer_id_when_set()
+    {
+        $this->setRequestParameters();
+
+        $this->setConsumerId('consumer_id');
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain('<consumer_id>consumer_id</consumer_id>');
     }
 
     protected function setRequestParameters()

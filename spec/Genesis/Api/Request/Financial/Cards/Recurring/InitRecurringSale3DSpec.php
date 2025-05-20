@@ -16,6 +16,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributes
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
@@ -24,6 +25,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributesExamples;
 
 class InitRecurringSale3DSpec extends ObjectBehavior
 {
@@ -46,6 +48,8 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
     use SchemeTokenized3DExamples;
+    use TokenizationParamsAttributesExamples;
+    use MotoAttributesExamples;
 
     public function it_is_initializable()
     {
@@ -82,5 +86,7 @@ class InitRecurringSale3DSpec extends ObjectBehavior
         $this->setNotificationUrl($faker->url);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
+        $this->setTokenizationTavv($faker->numberBetween(1, 9999999));
+        $this->setTokenizationEci($faker->numberBetween(1, 99));
     }
 }

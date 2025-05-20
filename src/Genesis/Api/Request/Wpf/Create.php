@@ -30,6 +30,7 @@ use Genesis\Api\Constants\i18n;
 use Genesis\Api\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\Api\Request\Base\Financial\Cards\CreditCard;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
@@ -88,6 +89,7 @@ class Create extends \Genesis\Api\Request
     use RiskAttributes;
     use Validations;
     use WpfThreedsV2Attributes;
+    use DigitalAssetTypeAttributes;
 
     const REMINDERS_CHANNEL_EMAIL      = 'email';
     const REMINDERS_CHANNEL_SMS        = 'sms';
@@ -542,6 +544,7 @@ class Create extends \Genesis\Api\Request
                 'pay_later'                 => var_export($this->pay_later, true),
                 'reminder_language'         => $this->reminder_language,
                 'reminders'                 => $this->getRemindersStructure(),
+                'digital_asset_type'        => $this->digital_asset_type,
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'sca_preference'            => $this->sca_preference,
                 'sca_params'                => [

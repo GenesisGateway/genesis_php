@@ -28,6 +28,7 @@ namespace Genesis\Api\Request\Financial\GiftCards;
 
 use Genesis\Api\Constants\Transaction\Types;
 use Genesis\Api\Request\Base\Financial\GiftCard;
+use Genesis\Api\Traits\Request\NonFinancial\TokenizationApiTokenAttributes;
 
 /**
  * Class Tcs
@@ -38,6 +39,8 @@ use Genesis\Api\Request\Base\Financial\GiftCard;
  */
 class Tcs extends GiftCard
 {
+    use TokenizationApiTokenAttributes;
+
     /**
      * Returns the Request transaction type
      * @return string
@@ -45,5 +48,20 @@ class Tcs extends GiftCard
     protected function getTransactionType()
     {
         return Types::TCS;
+    }
+
+    /**
+     * Return request structure
+     *
+     * @return array
+     */
+    protected function getPaymentTransactionStructure()
+    {
+        return array_merge(
+            parent::getPaymentTransactionStructure(),
+            [
+                'token' => $this->token
+            ]
+        );
     }
 }

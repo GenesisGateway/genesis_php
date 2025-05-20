@@ -28,6 +28,7 @@ namespace Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
+use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
@@ -78,6 +79,7 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use TravelDataAttributes;
     use UcofAttributes;
     use InstallmentAttributes;
+    use DigitalAssetTypeAttributes;
 
     /**
      * Returns the Request transaction type
@@ -158,6 +160,8 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
             [
                 'gaming'                    => $this->gaming,
                 'moto'                      => $this->moto,
+                'crypto'                    => $this->crypto,
+                'digital_asset_type'        => $this->digital_asset_type,
                 'preauthorization'          => var_export($this->preauthorization, true),
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
@@ -168,7 +172,6 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
                 'travel'                    => $this->getTravelData(),
                 'fx_rate_id'                => $this->fx_rate_id,
-                'crypto'                    => $this->crypto,
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
