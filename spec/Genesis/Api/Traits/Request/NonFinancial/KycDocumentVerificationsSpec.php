@@ -69,24 +69,4 @@ class KycDocumentVerificationsSpec extends ObjectBehavior
             [1]
         );
     }
-
-    public function it_should_set_document_supported_types_correctly()
-    {
-        $allowed = VerificationDocumentTypes::getAll();
-
-        foreach ($allowed as $type) {
-            $this->shouldNotThrow()->during(
-                'setDocumentSupportedTypes',
-                [[$type]]
-            );
-        }
-    }
-
-    public function it_should_fail_when_document_supported_types_is_invalid()
-    {
-        $this->shouldThrow(InvalidArgument::class)->during(
-            'setDocumentSupportedTypes',
-            [['aaa']]
-        );
-    }
 }

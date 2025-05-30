@@ -6,13 +6,14 @@ use Genesis\Api\Constants\NonFinancial\Kyc\VerificationAddressesTypes;
 use Genesis\Api\Constants\NonFinancial\Kyc\VerificationDocumentTypes;
 use Genesis\Api\Constants\NonFinancial\Kyc\VerificationLanguages;
 use Genesis\Api\Request\NonFinancial\Kyc\ClientVerification\Verify;
-use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
+use spec\SharedExamples\Genesis\Api\Request\NonFinancial\Kyc\KycVerificationsExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class VerifySpec extends ObjectBehavior
 {
+    use KycVerificationsExamples;
     use RequestExamples;
 
     public function it_is_initializable()
@@ -33,12 +34,6 @@ class VerifySpec extends ObjectBehavior
              ->shouldContain('https://staging.kyc.emerchantpay.net:443/api/v1/verifications');
     }
 
-    public function it_should_fail_when_wrong_document_type()
-    {
-        $this->shouldThrow(InvalidArgument::class)
-             ->during('setDocumentSupportedTypes', [$this->getFaker()->uuid()]);
-    }
-
     public function it_should_fail_when_wrong_verification_mode()
     {
         $this->shouldThrow(InvalidArgument::class)
@@ -49,12 +44,6 @@ class VerifySpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidArgument::class)
              ->during('setAddressSupportedTypes', [$this->getFaker()->uuid()]);
-    }
-
-    public function it_should_fail_when_wrong_country()
-    {
-        $this->shouldThrow(InvalidArgument::class)
-             ->during('setCountry', [$this->getFaker()->uuid()]);
     }
 
     public function it_should_return_correct_string_when_allow_online()
@@ -73,12 +62,6 @@ class VerifySpec extends ObjectBehavior
     {
         $this->setFaceCheckDuplicateRequest('0');
         $this->getFaceCheckDuplicateRequest()->shouldNotEqual(true);
-    }
-
-    public function it_should_fail_when_wrong_document_verification_type()
-    {
-        $this->shouldThrow(InvalidArgument::class)
-             ->during('setDocumentSupportedTypes', ['wrong_value']);
     }
 
     public function it_should_not_fail_when_valid_document_verification_type()
@@ -114,18 +97,6 @@ class VerifySpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setLanguage($this->getFaker()->randomElement(VerificationLanguages::getAll()));
         $this->shouldNotThrow()->during('getDocument');
-    }
-
-    public function it_should_fail_when_reference_id_too_short()
-    {
-        $this->shouldThrow(InvalidArgument::class)
-             ->during('setReferenceId', [$this->getFaker()->randomNumber(3)]);
-    }
-
-    public function it_should_fail_when_reference_id_too_long()
-    {
-        $this->shouldThrow(InvalidArgument::class)
-             ->during('setReferenceId', [str_repeat('X', 260)]);
     }
 
     protected function setRequestParameters()

@@ -1535,8 +1535,14 @@ NonFinancial\Fx\SearchRate
 // KYC requests
 NonFinancial\Kyc\Call\Create
 NonFinancial\Kyc\Call\Update
+NonFinancial\Kyc\ClientVerification\Register
+NonFinancial\Kyc\ClientVerification\RemoteIdentity
+NonFinancial\Kyc\ClientVerification\Status
+NonFinancial\Kyc\ClientVerification\Verify
+NonFinancial\Kyc\Cnpj\Check
 NonFinancial\Kyc\ConsumerRegistration\Create
 NonFinancial\Kyc\ConsumerRegistration\Update
+NonFinancial\Kyc\Cpf\Check
 NonFinancial\Kyc\IdentityDocument\Download
 NonFinancial\Kyc\IdentityDocument\Upload
 NonFinancial\Kyc\Transaction\Create

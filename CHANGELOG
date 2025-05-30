@@ -1,3 +1,12 @@
+2.1.5
+-----
+**Features**:
+
+* Updated BitPay Payout transaction request by adding the following changes:
+  * Added Other allowed value for Crypto Wallet ID attribute
+  * Added mandatory Notification URL attribute
+* Added KYC Remote Identity Verification API request support
+
 2.1.4
 -----
 **Features**:

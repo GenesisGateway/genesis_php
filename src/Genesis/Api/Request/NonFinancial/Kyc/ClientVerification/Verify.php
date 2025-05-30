@@ -32,11 +32,11 @@ use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycBackgroundChecksVerifications
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycDocumentVerifications;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycFaceVerifications;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycVerifications;
-use Genesis\Exceptions\InvalidArgument;
+use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycVerificationsCommon;
 use Genesis\Utils\Common;
 
 /**
- * class Verify
+ * Class Verify
  *
  * The verification request will provide a link that will be used to redirect the customer.
  * The customer will provide the required documents and will be verified against them.
@@ -44,14 +44,10 @@ use Genesis\Utils\Common;
  *
  * @package Genesis\Api\Request\NonFinancial\Kyc\ClientVerification
  *
- * @method $this  setEmail($value);
  * @method $this  setRedirectUrl($value);
- * @method $this  setBacksideProofRequired($value);
  * @method $this  setAddressBacksideProofRequired($value);
  * @method $this  setAllowRetry($value);
- * @method string getEmail();
  * @method string getRedirectUrl();
- * @method bool   getBacksideProofRequired();
  * @method bool   getAddressBacksideProofRequired();
  * @method bool   getAllowRetry();
  */
@@ -61,17 +57,8 @@ class Verify extends KYCBaseRequest
     use KycDocumentVerifications;
     use KycFaceVerifications;
     use KycVerifications;
+    use KycVerificationsCommon;
     use ReferenceAttributes;
-
-    const REFERENCE_ID_MIN_LENGTH = 6;
-    const REFERENCE_ID_MAX_LENGTH = 250;
-
-    /**
-     * User's email
-     *
-     * @var string
-     */
-    protected $email;
 
     /**
      * URL where the customer is sent to after completing the verification process
@@ -142,29 +129,6 @@ class Verify extends KYCBaseRequest
             'face_allow_online'            => 'allow_online',
             'face_check_duplicate_request' => 'check_duplicate_request',
             'expiry_date'                  => 'expiry_date'
-        );
-    }
-
-    /**
-     * Verify Reference ID value
-     *
-     * @param $value
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setReferenceId($value)
-    {
-        if (empty($value)) {
-            $this->reference_id = null;
-
-            return $this;
-        }
-
-        return $this->setLimitedString(
-            'reference_id',
-            $value,
-            self::REFERENCE_ID_MIN_LENGTH,
-            self::REFERENCE_ID_MAX_LENGTH
         );
     }
 

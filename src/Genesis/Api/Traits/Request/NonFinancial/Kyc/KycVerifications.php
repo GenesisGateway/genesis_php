@@ -50,13 +50,6 @@ use Genesis\Utils\Country;
 trait KycVerifications
 {
     /**
-     * Country code in ISO 3166
-     *
-     * @var string
-     */
-    protected $country;
-
-    /**
      * This key specifies the types of proof that can be used for verification
      *
      * @var string
@@ -78,37 +71,6 @@ trait KycVerifications
      * @see VerificationAddressesTypes
      */
     protected $address_supported_types;
-
-    /**
-     * Document's expiry date at yyyy-mm-dd format, for example - 2025-12-31, can be a blank string.
-     * A blank string means that the user will need to enter the expiry date from the UI
-     *
-     * @var DateTime
-     */
-    protected $expiry_date;
-
-    /**
-     * Check and set the correct value for Verifications Country
-     *
-     * @param $country
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setCountry($country)
-    {
-        if (empty($country)) {
-            $this->country = null;
-
-            return $this;
-        }
-
-        return $this->allowedOptionsSetter(
-            'country',
-            Country::getList(),
-            $country,
-            'Invalid value given for Country.'
-        );
-    }
 
     /**
      * Set the correct Verifications Modes
@@ -172,40 +134,5 @@ trait KycVerifications
         $this->address_supported_types = $addressType;
 
         return $this;
-    }
-
-    /**
-     * Set the correct value for Expiry Date
-     *
-     * @param $value
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setExpiryDate($value)
-    {
-        if (empty($value)) {
-            $this->expiry_date = '';
-
-            return $this;
-        }
-
-        return $this->parseDate(
-            'expiry_date',
-            DateTimeFormat::getAll(),
-            $value,
-            'Invalid value given for Expiry Date'
-        );
-    }
-
-    /**
-     * Get Expiry Date in correct format
-     *
-     * @return string
-     */
-    public function getExpiryDate()
-    {
-        return empty($this->expiry_date)
-            ? ''
-            : $this->expiry_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 }

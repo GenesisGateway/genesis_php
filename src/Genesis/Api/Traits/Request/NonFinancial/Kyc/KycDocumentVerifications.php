@@ -85,14 +85,6 @@ trait KycDocumentVerifications
     protected $document_allow_online;
 
     /**
-     * Supported types of document that can be verified
-     *
-     * @var string
-     * @see VerificationDocumentTypes
-     */
-    protected $document_supported_types;
-
-    /**
      * Set the correct value for Verifications Document Date Of Birth
      *
      * @param $value
@@ -149,34 +141,6 @@ trait KycDocumentVerifications
     public function setDocumentAllowOffline($value)
     {
         $this->document_allow_offline = Common::toBoolean($value);
-
-        return $this;
-    }
-
-    /**
-     * Check and set correct Verification Document Type
-     *
-     * @param array $documentSupportedTypes Array with Document Types
-     * @return $this
-     * @throws InvalidArgument
-     * @see VerificationDocumentTypes
-     */
-    public function setDocumentSupportedTypes($documentSupportedTypes)
-    {
-        $getAllowed = VerificationDocumentTypes::getAll();
-
-        if (!is_array($documentSupportedTypes) || array_diff($documentSupportedTypes, $getAllowed)) {
-            throw new InvalidArgument(
-                sprintf(
-                    'Expecting document type to be \'%s\' and \'%s\' provided. Allowed values - %s',
-                    'array',
-                    gettype($documentSupportedTypes),
-                    implode(', ', $getAllowed)
-                )
-            );
-        }
-
-        $this->document_supported_types = $documentSupportedTypes;
 
         return $this;
     }

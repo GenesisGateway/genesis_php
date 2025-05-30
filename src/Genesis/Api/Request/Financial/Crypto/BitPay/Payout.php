@@ -28,6 +28,7 @@ namespace Genesis\Api\Request\Financial\Crypto\BitPay;
 
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\Financial\AsyncAttributes;
+use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Exceptions\ErrorParameter;
 
@@ -41,6 +42,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
 {
     use AddressInfoAttributes;
     use AsyncAttributes;
+    use NotificationAttributes;
     use PaymentAttributes;
 
     const WALLET_PROVIDER_BITGO    = 'bitgo';
@@ -51,6 +53,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     const WALLET_PROVIDER_GEMINI   = 'gemini';
     const WALLET_PROVIDER_ITBIT    = 'itbit';
     const WALLET_PROVIDER_KRAKEN   = 'kraken';
+    const WALLET_PROVIDER_OTHER    = 'other';
 
     const CRYPTO_ADDRESS_VALIDATION_REGEX = '/\A[132nm][a-zA-Z1-9]{26,34}\z/';
 
@@ -174,6 +177,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
     {
         $requiredFields = [
             'transaction_id',
+            'notification_url',
             'return_success_url',
             'return_failure_url',
             'amount',
@@ -193,7 +197,8 @@ class Payout extends \Genesis\Api\Request\Base\Financial
                 self::WALLET_PROVIDER_GDAX,
                 self::WALLET_PROVIDER_GEMINI,
                 self::WALLET_PROVIDER_ITBIT,
-                self::WALLET_PROVIDER_KRAKEN
+                self::WALLET_PROVIDER_KRAKEN,
+                self::WALLET_PROVIDER_OTHER
             ]
         ];
 
@@ -209,6 +214,7 @@ class Payout extends \Genesis\Api\Request\Base\Financial
         return [
             'usage'                  => $this->usage,
             'remote_ip'              => $this->remote_ip,
+            'notification_url'       => $this->notification_url,
             'return_success_url'     => $this->return_success_url,
             'return_failure_url'     => $this->return_failure_url,
             'amount'                 => $this->transformAmount($this->amount, $this->currency),

@@ -56,7 +56,8 @@ class PayoutSpec extends ObjectBehavior
             Payout::WALLET_PROVIDER_GDAX,
             Payout::WALLET_PROVIDER_GEMINI,
             Payout::WALLET_PROVIDER_ITBIT,
-            Payout::WALLET_PROVIDER_KRAKEN
+            Payout::WALLET_PROVIDER_KRAKEN,
+            Payout::WALLET_PROVIDER_OTHER
         ];
         $this->setRequestParameters();
 
@@ -71,6 +72,7 @@ class PayoutSpec extends ObjectBehavior
         $faker = $this->getFaker();
 
         $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setNotificationUrl($faker->url);
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setCurrency(
