@@ -1486,6 +1486,7 @@ Financial\OnlineBankingPayments\WeChat
 //Payout
 Financial\Payout\AfricanMobilePayout
 Financial\Payout\RussianMobilePayout
+Financial\Payout\GlobalPayout
 
 // Preauthorization
 Financial\Preauthorization\IncrementalAuthorize
@@ -1547,6 +1548,13 @@ NonFinancial\Kyc\IdentityDocument\Download
 NonFinancial\Kyc\IdentityDocument\Upload
 NonFinancial\Kyc\Transaction\Create
 NonFinancial\Kyc\Transaction\Update
+
+// Payee
+NonFinancial\Payee\Create
+NonFinancial\Payee\Retrieve
+NonFinancial\Payee\Account\Create
+NonFinancial\Payee\Account\ListAccounts
+NonFinancial\Payee\Account\Retrieve
 
 // Reconcile requests
 NonFinancial\Reconcile\DateRange

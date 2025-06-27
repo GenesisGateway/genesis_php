@@ -1,3 +1,11 @@
+2.1.6
+-----
+**Features**:
+
+* Added Global Payout transaction request support
+* Added Create and Retrieve Payee API requests support
+* Added Create, Retrieve, List Payee Account API requests support
+
 2.1.5
 -----
 **Features**:

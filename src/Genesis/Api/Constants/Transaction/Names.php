@@ -73,6 +73,7 @@ class Names
         Types::EZEECARD_PAYOUT         => 'eZeeCard Payout',
         Types::EZEEWALLET              => 'eZeeWallet',
         Types::FASHIONCHEQUE           => 'Fashioncheque',
+        Types::GLOBAL_PAYOUT           => 'Global Payout',
         Types::GOOGLE_PAY              => 'Google Pay',
         Types::IDEAL                   => 'iDeal',
         Types::IDEBIT_PAYIN            => 'iDebit PayIn',

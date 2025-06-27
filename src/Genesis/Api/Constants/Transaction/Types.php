@@ -575,6 +575,11 @@ class Types
     const INVOICE_REFUND = 'invoice_refund';
 
     /**
+     * Global Payout is a transaction type based on Open Banking APIs, used for initiating bank payments
+     */
+    const GLOBAL_PAYOUT = 'global_payout';
+
+    /**
      * Retrieve all available transaction Types
      *
      * @return array
@@ -669,6 +674,7 @@ class Types
             self::WEBPAY                  => 'OnlineBankingPayments\Webpay',
             self::WECHAT                  => 'OnlineBankingPayments\WeChat',
             self::AFRICAN_MOBILE_PAYOUT   => 'Payout\AfricanMobilePayout',
+            self::GLOBAL_PAYOUT           => 'Payout\GlobalPayout',
             self::RUSSIAN_MOBILE_PAYOUT   => 'Payout\RussianMobilePayout',
             self::INCREMENTAL_AUTHORIZE   => 'Preauthorization\IncrementalAuthorize',
             self::PARTIAL_REVERSAL        => 'Preauthorization\PartialReversal',

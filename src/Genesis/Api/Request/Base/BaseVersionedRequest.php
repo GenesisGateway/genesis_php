@@ -80,7 +80,9 @@ abstract class BaseVersionedRequest extends \Genesis\Api\Request
      * @param $version
      *
      * @return $this
+     *
      * @throws InvalidArgument
+     * @throws EnvironmentNotSet
      */
     public function setVersion($version)
     {
@@ -101,6 +103,8 @@ abstract class BaseVersionedRequest extends \Genesis\Api\Request
      * @param $requestPath
      *
      * @return $this
+     *
+     * @throws EnvironmentNotSet
      */
     public function setRequestPath($requestPath)
     {
