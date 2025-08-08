@@ -24,31 +24,48 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\NonFinancial\Payee\Account;
+namespace Genesis\Api\Request\NonFinancial\Payee;
 
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
-use Genesis\Api\Traits\Request\NonFinancial\PayeeAccountAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\Country;
 
 /**
- * Class Retrieve
+ * Update a Payee record
  *
- * Handles the retrieval of a specific payee account details.
+ * @package Genesis\Api\Request\NonFinancial\Payee
  *
- * @package Genesis\Api\Request\NonFinancial\Payee\Account
+ * @method $this  setPayeeName(string $value)         Sets the full name of the Payee
+ * @method string getPayeeName()                      Returns the full name of the Payee
+ * @method string getPayeeCountry()                   Returns the country code of the Payee in ISO 3166 format
  *
  */
-class Retrieve extends BaseRequest
+class Update extends BaseRequest
 {
-    use PayeeAccountAttributes;
     use PayeeAttributes;
 
-    const REQUEST_PATH = 'payee/:payee_unique_id/account/:account_unique_id';
+    const REQUEST_PATH = 'payee/:payee_unique_id';
 
     /**
-     * Retrieve constructor.
+     * The Payee full name.
+     *
+     * @var string
+     */
+    protected $payee_name;
+
+    /**
+     * Payee Country code in ISO 3166. In case of person this should contain the country of birth.
+     * In case of company this should contain the country of incorporation.
+     *
+     * @var string
+     */
+    protected $payee_country;
+
+    /**
+     * Class constructor
      */
     public function __construct()
     {
@@ -56,7 +73,30 @@ class Retrieve extends BaseRequest
     }
 
     /**
-     * Updates the request path with proper payee unique ID and account unique ID.
+     * Sets the payee country
+     *
+     * @param string $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setPayeeCountry($value)
+    {
+        if (empty($value)) {
+            $this->payee_country = null;
+
+            return $this;
+        }
+
+        return $this->allowedOptionsSetter(
+            'payee_country',
+            Country::getList(),
+            $value,
+            'Invalid Payee Country'
+        );
+    }
+
+    /**
+     * Updates the request path with payee_unique_id
      *
      * @throws EnvironmentNotSet
      */
@@ -64,43 +104,48 @@ class Retrieve extends BaseRequest
     {
         $this->setRequestPath(
             str_replace(
-                [':payee_unique_id', ':account_unique_id'],
-                [(string)$this->payee_unique_id, (string)$this->account_unique_id],
-                static::REQUEST_PATH
+                ':payee_unique_id',
+                (string)$this->payee_unique_id,
+                self::REQUEST_PATH
             )
         );
     }
 
     /**
-     * Set the required fields.
+     * Set the required fields
      *
      * @return void
      */
     protected function setRequiredFields()
     {
-        $requiredFields       = [
+        $requiredFields = [
             'payee_unique_id'
         ];
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
     }
 
     /**
-     * Configures a Secured Post Request with JSON body
+     * Configures a Secured Patch Request with JSON body
      *
      * @return void
      */
     protected function initJsonConfiguration()
     {
-        $this->setGetRequest();
+        $this->setPatchRequest();
     }
 
     /**
-     * Returns an empty request structure (GET requests don't need a body).
+     * Returns the request structure
      *
      * @return array
      */
     protected function getRequestStructure()
     {
-        return [];
+        return [
+            'payee' => [
+                'name'    => $this->payee_name,
+                'country' => $this->payee_country
+            ]
+        ];
     }
 }

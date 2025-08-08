@@ -27,6 +27,7 @@
 namespace Genesis\Api\Request\NonFinancial\Payee\Account;
 
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
+use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common;
 use Genesis\Utils\Common as CommonUtils;
@@ -52,16 +53,9 @@ use Genesis\Utils\Country;
  */
 class Create extends BaseRequest
 {
-    const REQUEST_PATH = 'payee/:payee_unique_id/account';
+    use PayeeAttributes;
 
-    /**
-     * Payee unique ID
-     *
-     * This is the identifier for the payee account.
-     *
-     * @var string
-     */
-    protected $payee_unique_id;
+    const REQUEST_PATH = 'payee/:payee_unique_id/account';
 
     /**
      * The type of the Account. Can be iban or bank.
@@ -99,23 +93,6 @@ class Create extends BaseRequest
     public function __construct()
     {
         parent::__construct(self::REQUEST_PATH);
-    }
-
-    /**
-     * Sets the payee unique ID
-     *
-     * @param string $value
-     *
-     * @return $this
-     *
-     * @throws EnvironmentNotSet
-     */
-    public function setPayeeUniqueId($value)
-    {
-        $this->payee_unique_id = $value;
-        $this->updateRequestPath();
-
-        return $this;
     }
 
     /**

@@ -57,6 +57,7 @@ abstract class Request
     const METHOD_POST    = 'POST';
     const METHOD_GET     = 'GET';
     const METHOD_PUT     = 'PUT';
+    const METHOD_PATCH   = 'PATCH';
 
     const AUTH_TYPE_BASIC = 'basic';
     const AUTH_TYPE_TOKEN = 'bearer';

@@ -27,6 +27,7 @@
 namespace Genesis\Api\Request\NonFinancial\Payee\Account;
 
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
+use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -45,14 +46,9 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class ListAccounts extends BaseRequest
 {
-    const REQUEST_PATH = 'payee/:payee_unique_id/account';
+    use PayeeAttributes;
 
-    /**
-     * The unique identifier of the Payee.
-     *
-     * @var string
-     */
-    protected $payee_unique_id;
+    const REQUEST_PATH = 'payee/:payee_unique_id/account';
 
     /**
      * Filter by exact account number.
@@ -81,23 +77,6 @@ class ListAccounts extends BaseRequest
     public function __construct()
     {
         parent::__construct(self::REQUEST_PATH);
-    }
-
-    /**
-     * Sets the payee unique ID.
-     *
-     * @param string $value
-     *
-     * @return $this
-     *
-     * @throws EnvironmentNotSet
-     */
-    public function setPayeeUniqueId($value)
-    {
-        $this->payee_unique_id = $value;
-        $this->updateRequestPath();
-
-        return $this;
     }
 
     /**

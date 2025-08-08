@@ -31,16 +31,19 @@ use Genesis\Api\Traits\Request\NonFinancial\PayeeAccountAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\Country;
 
 /**
- * Class Retrieve
+ * Class Update
  *
- * Handles the retrieval of a specific payee account details.
+ * Update Account related to a specific Payee
  *
  * @package Genesis\Api\Request\NonFinancial\Payee\Account
  *
+ * @method $this  setPayeeAccountCountry(string $value) Sets the country code in ISO 3166
+ * @method string getPayeeAccountCountry()              Returns the country code in ISO 3166
  */
-class Retrieve extends BaseRequest
+class Update extends BaseRequest
 {
     use PayeeAccountAttributes;
     use PayeeAttributes;
@@ -48,7 +51,14 @@ class Retrieve extends BaseRequest
     const REQUEST_PATH = 'payee/:payee_unique_id/account/:account_unique_id';
 
     /**
-     * Retrieve constructor.
+     * Country code in ISO 3166
+     *
+     * @var string
+     */
+    protected $payee_account_country;
+
+    /**
+     * Class constructor
      */
     public function __construct()
     {
@@ -56,7 +66,7 @@ class Retrieve extends BaseRequest
     }
 
     /**
-     * Updates the request path with proper payee unique ID and account unique ID.
+     * Updates the request path with proper payee unique ID and account unique ID
      *
      * @throws EnvironmentNotSet
      */
@@ -72,35 +82,46 @@ class Retrieve extends BaseRequest
     }
 
     /**
-     * Set the required fields.
+     * Set the required fields
      *
      * @return void
      */
     protected function setRequiredFields()
     {
         $requiredFields       = [
-            'payee_unique_id'
+            'payee_unique_id',
+            'account_unique_id',
+            'payee_account_country'
         ];
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
+
+        $requiredFieldValues       = [
+            'payee_account_country' => Country::getList()
+        ];
+        $this->requiredFieldValues = CommonUtils::createArrayObject($requiredFieldValues);
     }
 
     /**
-     * Configures a Secured Post Request with JSON body
+     * Configures a Secured Patch Request with JSON body
      *
      * @return void
      */
     protected function initJsonConfiguration()
     {
-        $this->setGetRequest();
+        $this->setPatchRequest();
     }
 
     /**
-     * Returns an empty request structure (GET requests don't need a body).
+     * Returns the request structure
      *
      * @return array
      */
     protected function getRequestStructure()
     {
-        return [];
+        return [
+            'account' => [
+                'country' => $this->payee_account_country
+            ]
+        ];
     }
 }

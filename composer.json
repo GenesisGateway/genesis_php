@@ -1,7 +1,7 @@
 {
   "name": "genesisgateway/genesis_php",
   "description": "PHP Client for Genesis Payment Processing Gateway",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "license": "MIT",
   "keywords": [
     "3ds_v2",
@@ -144,7 +144,7 @@
       "vendor/bin/phpspec run --format=pretty"
     ],
     "php-cs": [
-      "vendor/bin/phpcs . --report=summary --standard=.phpcs.xml"
+      "vendor/bin/phpcs . --standard=.phpcs.xml"
     ],
     "php-md": [
       "vendor/bin/phpmd . ansi ./.phpmd.xml --not-strict"

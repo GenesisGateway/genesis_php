@@ -93,4 +93,22 @@ abstract class BaseRequest extends BaseVersionedRequest
             ]
         );
     }
+
+    /**
+     * Set Request PATCH method
+     *
+     * @return void
+     */
+    protected function setPatchRequest()
+    {
+        $this->config = CommonUtils::createArrayObject(
+            [
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_PATCH,
+                'format'        => Builder::JSON,
+                'authorization' => Request::AUTH_TYPE_BASIC
+            ]
+        );
+    }
 }

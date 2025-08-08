@@ -42,6 +42,8 @@ use LogicException;
  *
  * @package    Genesis
  * @subpackage Api
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Notification
 {
@@ -162,7 +164,7 @@ class Notification
         }
 
         $messageSig  = trim($this->notificationObj->signature);
-        $customerPwd = trim(\Genesis\Config::getPassword());
+        $customerPwd = trim(\Genesis\Config::getPassword() ? \Genesis\Config::getPassword() : '');
 
         switch (strlen($messageSig)) {
             default:
@@ -302,8 +304,10 @@ class Notification
             header('Content-type: application/xml', true);
         }
 
-        // Clean the buffer
-        ob_clean();
+        if (ob_get_length()) {
+            // Clean the buffer
+            ob_clean();
+        }
 
         echo $this->generateResponse();
     }

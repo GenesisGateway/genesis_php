@@ -27,6 +27,7 @@
 namespace Genesis\Api\Request\NonFinancial\Payee;
 
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
+use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
 
@@ -40,14 +41,9 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class Retrieve extends BaseRequest
 {
-    const REQUEST_PATH = 'payee/:payee_unique_id';
+    use PayeeAttributes;
 
-    /**
-     * The unique identifier of the Payee.
-     *
-     * @var string
-     */
-    protected $payee_unique_id;
+    const REQUEST_PATH = 'payee/:payee_unique_id';
 
     /**
      * Retrieve constructor.
@@ -55,23 +51,6 @@ class Retrieve extends BaseRequest
     public function __construct()
     {
         parent::__construct(self::REQUEST_PATH);
-    }
-
-    /**
-     * Sets the payee unique ID
-     *
-     * @param string $value
-     *
-     * @return $this
-     *
-     * @throws EnvironmentNotSet
-     */
-    public function setPayeeUniqueId($value)
-    {
-        $this->payee_unique_id = $value;
-        $this->updateRequestPath();
-
-        return $this;
     }
 
     /**

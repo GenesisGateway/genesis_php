@@ -157,6 +157,12 @@ class Curl extends Base
                 return [
                     CURLOPT_CUSTOMREQUEST => 'PUT'
                 ];
+                break;
+            case Request::METHOD_PATCH:
+                return [
+                    CURLOPT_CUSTOMREQUEST => 'PATCH'
+                ];
+                break;
             default:
                 return [];
         }

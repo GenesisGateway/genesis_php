@@ -24,40 +24,48 @@
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
-namespace Genesis\Api\Request\NonFinancial\Reconcile;
+namespace Genesis\Api\Request\Base\NonFinancial\Reconcile;
 
-use Genesis\Api\Request\Base\NonFinancial\Reconcile\BaseRequest;
+use Genesis\Api\Request;
+use Genesis\Config;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
- * Reconcile request by arn, transaction_id or unique_id
+ * Base Abstract Class for all Reconcile Requests
  *
- * @package    Genesis
- * @subpackage Request
+ * @package Genesis\Api\Request\Base\NonFinancial\Reconcile
+ *
+ * @method bool getUseSmartRouter() Get Smart Router usage.
  */
-class Transaction extends BaseRequest
+abstract class BaseRequest extends Request
 {
     /**
-     * Acquirer's Reference Number
+     * Path to the API endpoint
      *
      * @var string
      */
-    protected $arn;
+    protected $path;
 
     /**
-     * Transaction id of an existing transaction
+     * Force Smart Router endpoint for Financial transactions
      *
-     * @var string
+     * @var bool
      */
-    protected $transaction_id;
+    protected $use_smart_router = false;
 
     /**
-     * Unique id of an existing transaction
+     * Use Smart Router endpoint for Financial transactions
      *
-     * @var string
+     * @param $value
+     * @return $this
      */
-    protected $unique_id;
+    public function setUseSmartRouter($value)
+    {
+        $this->use_smart_router = CommonUtils::toBoolean($value);
+
+        return $this;
+    }
 
     /**
      * Set the per-request configuration
@@ -68,40 +76,28 @@ class Transaction extends BaseRequest
      */
     protected function initConfiguration()
     {
-        $this->path = 'reconcile';
+        $this->initXmlConfiguration();
 
-        parent::initConfiguration();
+        $this->initApiGatewayConfiguration($this->path);
     }
 
     /**
-     * Set the required fields
+     * Process Request Params
      *
      * @return void
-     */
-    protected function setRequiredFields()
-    {
-        $requiredFieldsGroups = [
-            'id'  => ['arn', 'transaction_id', 'unique_id']
-        ];
-
-        $this->requiredFieldsGroups = CommonUtils::createArrayObject($requiredFieldsGroups);
-    }
-
-    /**
-     * Create the request's Tree structure
      *
-     * @return void
+     * @throws EnvironmentNotSet
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
      */
-    protected function populateStructure()
+    protected function processRequestParameters()
     {
-        $treeStructure = [
-            'reconcile' => [
-                'arn'               => $this->arn,
-                'transaction_id'    => $this->transaction_id,
-                'unique_id'         => $this->unique_id
-            ]
-        ];
 
-        $this->treeStructure = CommonUtils::createArrayObject($treeStructure);
+        if ($this->getUseSmartRouter() || Config::getForceSmartRouting()) {
+            $this->initApiGatewayConfiguration($this->path, false, 'api_service');
+        }
+
+        parent::processRequestParameters();
     }
 }

@@ -1552,9 +1552,11 @@ NonFinancial\Kyc\Transaction\Update
 // Payee
 NonFinancial\Payee\Create
 NonFinancial\Payee\Retrieve
+NonFinancial\Payee\Update
 NonFinancial\Payee\Account\Create
 NonFinancial\Payee\Account\ListAccounts
 NonFinancial\Payee\Account\Retrieve
+NonFinancial\Payee\Account\Update
 
 // Reconcile requests
 NonFinancial\Reconcile\DateRange

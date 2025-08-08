@@ -1,3 +1,11 @@
+2.1.7
+-----
+**Features**:
+
+* Added Smart Routing API support for single transaction Reconcile request
+* Added Update Payee API request support
+* Added Update Payee Account API request support
+
 2.1.6
 -----
 **Features**:

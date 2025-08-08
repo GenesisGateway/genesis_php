@@ -137,6 +137,15 @@ class CurlSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_return_correct_curl_http_patch_method_option_by_type()
+    {
+        $this->getMethodOptionByType(Request::METHOD_PATCH)->shouldBe(
+            [
+                CURLOPT_CUSTOMREQUEST => 'PATCH'
+            ]
+        );
+    }
+
     protected function sendRemoteConnection($remote_url, $authorization = Request::AUTH_TYPE_BASIC, $token = null, $status = 200)
     {
         $faker = \Faker\Factory::create();

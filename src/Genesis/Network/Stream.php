@@ -72,20 +72,33 @@ class Stream extends Base
     {
         $url = parse_url($requestData['url']);
 
-        $headers = [
-            'Content-Type: ' . $this->getRequestContentType($requestData['format']),
-            $this->authorization($requestData),
-            sprintf('Content-Length: %s', strlen($requestData['body'])),
-            sprintf('User-Agent: %s', $requestData['user_agent']),
-        ];
+        $headerContent  = [ sprintf('Content-Length: %s', strlen($requestData['body']))];
+        $contextContent = [ 'content' => $requestData['body'] ];
+
+        // If there is no additional data in the request
+        if ($requestData['body'] == '[]') {
+            $headerContent  = [];
+            $contextContent = [];
+        }
+
+        $headers = array_merge(
+            [
+                'Content-Type: ' . $this->getRequestContentType($requestData['format']),
+                $this->authorization($requestData),
+                sprintf('User-Agent: %s', $requestData['user_agent']),
+            ],
+            $headerContent
+        );
 
         $contextOptions = [
-            'http' => [
-                'method'  => $requestData['type'],
-                'header'  => implode("\r\n", $headers),
-                'content' => $requestData['body'],
-                'timeout' => $requestData['timeout']
-            ],
+            'http' => array_merge(
+                [
+                    'method'  => $requestData['type'],
+                    'header'  => implode("\r\n", $headers),
+                    'timeout' => $requestData['timeout']
+                ],
+                $contextContent
+            ),
             'ssl'  => [
                 // DO NOT allow self-signed certificates
                 'allow_self_signed' => false,
