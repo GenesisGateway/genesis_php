@@ -1,3 +1,16 @@
+2.2.0
+-----
+**Features**:
+
+* Removed the following transaction types from Web Payment Form:
+  * banco_do_brasil
+  * bradesco
+  * itau
+  * pse
+  * redpagos
+  * santander
+  * webpay
+
 2.1.7
 -----
 **Features**:
