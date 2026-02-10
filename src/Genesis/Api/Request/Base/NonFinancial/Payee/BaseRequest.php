@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -106,6 +106,24 @@ abstract class BaseRequest extends BaseVersionedRequest
                 'protocol'      => Request::PROTOCOL_HTTPS,
                 'port'          => Request::PORT_HTTPS,
                 'type'          => Request::METHOD_PATCH,
+                'format'        => Builder::JSON,
+                'authorization' => Request::AUTH_TYPE_BASIC
+            ]
+        );
+    }
+
+    /**
+     * Set Request DELETE method
+     *
+     * @return void
+     */
+    protected function setDeleteRequest()
+    {
+        $this->config = CommonUtils::createArrayObject(
+            [
+                'protocol'      => Request::PROTOCOL_HTTPS,
+                'port'          => Request::PORT_HTTPS,
+                'type'          => Request::METHOD_DELETE,
                 'format'        => Builder::JSON,
                 'authorization' => Request::AUTH_TYPE_BASIC
             ]

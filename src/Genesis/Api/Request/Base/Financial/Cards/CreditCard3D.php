@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -51,10 +51,7 @@ abstract class CreditCard3D extends CreditCard
      */
     protected function required3DSFieldsConditional()
     {
-        return array_merge(
-            $this->requiredMpiFieldsConditional(),
-            $this->requiredThreedsV2DeviceTypeConditional()
-        );
+        return $this->requiredThreedsV2DeviceTypeConditional();
     }
 
     /**

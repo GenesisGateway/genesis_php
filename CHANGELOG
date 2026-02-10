@@ -1,3 +1,28 @@
+2.2.1
+-----
+**Features**
+
+* Added support for Payee Owner, Documents, and Verifications transaction requests
+* Extended Payee API
+* Added support for Reverify Payee Account API request
+* Added with_enhanced_address_verification parameter to KYC Address verification
+* Added support for ManagedRecurring API
+* Added business parameter to KYC Create Verification request
+* Added support for KYC Create Business transaction request
+* Added additional_proof parameter to KYC Offsite Verification
+* Added support for Retokenize transaction request for Tokenization API
+* Added support for Billing Statements API
+* Added support for scheme_tokenized parameter to Web Payment Form request
+* Added Payee/Create additional parameters
+* Added Payee/Update additional parameters
+* Updated MPI directory_server_id parameter from a mandatory requirement to an optional in favor of Scheme-tokenized transactions
+* Updated Payout Money Transfer Types
+
+**Fixes**
+
+* Fixed Stream Network library with specific API requests
+
+
 2.2.0
 -----
 **Features**:

@@ -20,16 +20,13 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\Api\Request\NonFinancial\BillingApi;
 
-use Genesis\Api\Request\Base\GraphqlRequest;
-use Genesis\Api\Traits\Request\NonFinancial\BillingApi\OrderByDirection;
-use Genesis\Api\Traits\Request\NonFinancial\DateAttributes;
-use Genesis\Api\Traits\Request\NonFinancial\PagingAttributes;
+use Genesis\Api\Request\Base\NonFinancial\BillingApi\BaseRequest;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Exceptions\InvalidClassMethod;
@@ -43,17 +40,12 @@ use Genesis\Exceptions\InvalidClassMethod;
  * @method string getOrderByField()
  * @method string getTransactionType()
  */
-class Transaction extends GraphqlRequest
+class Transaction extends BaseRequest
 {
-    use DateAttributes;
-    use OrderByDirection;
-    use PagingAttributes;
-
     const MAX_COUNT_BILLING_STATEMENT       = 10;
     const MAX_COUNT_UNIQUE_ID               = 10000;
     const MAX_COUNT_MERCHANT_TRANSACTION_ID = 10000;
     const MAX_COUNT_MASTER_ACCOUNT_NAME     = 10;
-    const MAX_DAYS_DIFFERENCE               = 7;
 
     /**
      * Request filter parameter:
@@ -62,14 +54,6 @@ class Transaction extends GraphqlRequest
      * @var string[]
      */
     protected $unique_id;
-
-    /**
-     * Request filter parameter:
-     * List of billing statement IDs. Max number of elements allowed is 10.
-     *
-     * @var string[]
-     */
-    protected $billing_statement = [];
 
     /**
      * Request filter parameter:
@@ -95,13 +79,7 @@ class Transaction extends GraphqlRequest
      */
     protected $transaction_type;
 
-    /**
-     * Field result collection is sorted by.
-     * Default value: transactionDate
-     *
-     * @var string
-     */
-    protected $order_by_field;
+
 
     /**
      * Defines fields that must not be surrounded with quotes in the request
@@ -110,6 +88,9 @@ class Transaction extends GraphqlRequest
      */
     private $filters_without_quotes = ['billingStatement', 'uniqueId', 'merchantTransactionId', 'masterAccountName'];
 
+    /**
+     * Transaction constructor.
+     */
     public function __construct()
     {
         parent::__construct('billing_transactions', 'billingTransactions');
@@ -139,32 +120,6 @@ class Transaction extends GraphqlRequest
         }
 
         return sprintf('["%s"]', implode('","', $this->unique_id));
-    }
-
-    /**
-     * Set the list of Billing statement IDs in the filter
-     *
-     * @param array $value
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setBillingStatement($value)
-    {
-        return $this->parseArrayOfStrings('billing_statement', $value, 'BillingStatement');
-    }
-
-    /**
-     * Return a formatted string with the Billing statement IDs
-     *
-     * @return string
-     */
-    public function getBillingStatement()
-    {
-        if (empty($this->billing_statement)) {
-            return '';
-        }
-
-        return sprintf('["%s"]', implode('","', $this->billing_statement));
     }
 
     /**
@@ -239,48 +194,6 @@ class Transaction extends GraphqlRequest
     }
 
     /**
-     * Set order by field parameter
-     *
-     * @param string $value
-     * @return $this
-     * @throws InvalidArgument
-     */
-    public function setOrderByField($value)
-    {
-        return $this->allowedOptionsSetter(
-            'order_by_field',
-            $this->getOrderByFieldAllowedValues(),
-            $value,
-            'Invalid value given for orderByField. Allowed values: ' .
-            implode(', ', $this->getOrderByFieldAllowedValues())
-        );
-    }
-
-    /**
-     * Set Service API token
-     *
-     * @return void
-     */
-    protected function initGraphqlToken()
-    {
-        $this->setApiConfig('bearer_token', \Genesis\Config::getBillingApiToken());
-    }
-
-    /**
-     * Additional optional filter arguments
-     *
-     * @return string
-     */
-    protected function getAdditionalArguments()
-    {
-        return sprintf(
-            '%s %s',
-            $this->getRequestOrder(),
-            $this->getRequestPaging()
-        );
-    }
-
-    /**
      * Add paging information to the request
      *
      * @return string
@@ -291,6 +204,8 @@ class Transaction extends GraphqlRequest
     }
 
     /**
+     * Set the required fields for the request
+     *
      * @return void
      */
     protected function setRequiredFields()
@@ -315,7 +230,10 @@ class Transaction extends GraphqlRequest
     }
 
     /**
+     * Validate the request requirements
+     *
      * @return void
+     *
      * @throws ErrorParameter
      * @throws InvalidArgument
      * @throws InvalidClassMethod
@@ -360,29 +278,6 @@ class Transaction extends GraphqlRequest
             self::MAX_COUNT_MASTER_ACCOUNT_NAME,
             'masterAccountName'
         );
-    }
-
-    /**
-     * Validate max number of elements in array
-     *
-     * @param array  $var     - the array variable
-     * @param int    $maxSize - max size of the array
-     * @param string $message - text for the error message
-     *
-     * @return void
-     * @throws ErrorParameter
-     */
-    protected function checkArrayMaxSize($var, $maxSize, $message)
-    {
-        if (!empty($var) && count($var) > $maxSize) {
-            throw new ErrorParameter(
-                sprintf(
-                    'Max number of %s elements allowed is %s.',
-                    $message,
-                    $maxSize
-                )
-            );
-        }
     }
 
     /**
@@ -471,35 +366,10 @@ class Transaction extends GraphqlRequest
     }
 
     /**
-     * Return a formatted string with paging parameters
+     * Get the request structure fields
      *
      * @return string
      */
-    protected function getRequestPaging()
-    {
-        $paging = [
-            'page'    => $this->getPage(),
-            'perPage' => $this->getPerPage()
-        ];
-
-        return $this->generateGraphQLCode($paging, 'paging');
-    }
-
-    /**
-     * Return a formatted string with ordering parameters
-     *
-     * @return string
-     */
-    protected function getRequestOrder()
-    {
-        $elements = [
-            'byDirection' => $this->getOrderByDirection(),
-            'byField'     => $this->getOrderByField()
-        ];
-
-        return $this->generateGraphQLCode($elements, 'sort');
-    }
-
     protected function getRequestStructure()
     {
         return $this->getResponseFields();

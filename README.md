@@ -1534,6 +1534,12 @@ NonFinancial\Fx\GetRate
 NonFinancial\Fx\SearchRate
 
 // KYC requests
+NonFinancial\Kyc\Address\ByDocumentProof
+NonFinancial\Kyc\Address\ByElectronicIdentity
+NonFinancial\Kyc\Business\CreateBusiness
+NonFinancial\Kyc\Business\BusinessVerification
+NonFinancial\Kyc\Business\ListBusinessDocument
+NonFinancial\Kyc\Business\BusinessDocument
 NonFinancial\Kyc\Call\Create
 NonFinancial\Kyc\Call\Update
 NonFinancial\Kyc\ClientVerification\Register
@@ -1553,10 +1559,31 @@ NonFinancial\Kyc\Transaction\Update
 NonFinancial\Payee\Create
 NonFinancial\Payee\Retrieve
 NonFinancial\Payee\Update
+NonFinancial\Payee\ListPayees
+NonFinancial\Payee\ListPayeeOwners
+NonFinancial\Payee\AssociatePayeeWithOwners
+NonFinancial\Payee\DissociatePayeeWithOwners
+NonFinancial\Payee\CreatePayeeDocument
+NonFinancial\Payee\RetrievePayeeDocument
+NonFinancial\Payee\ListPayeeDocuments
 NonFinancial\Payee\Account\Create
 NonFinancial\Payee\Account\ListAccounts
 NonFinancial\Payee\Account\Retrieve
+NonFinancial\Payee\Account\Reverify
 NonFinancial\Payee\Account\Update
+NonFinancial\Payee\Owners\Create
+NonFinancial\Payee\Owners\Retrieve
+NonFinancial\Payee\Owners\Update
+NonFinancial\Payee\Owners\Delete
+NonFinancial\Payee\Owners\ListOwners
+NonFinancial\Payee\Owners\AssociateOwnerWithOwners
+NonFinancial\Payee\Owners\DissociateOwners
+NonFinancial\Payee\Owners\CreateOwnerDocument
+NonFinancial\Payee\Owners\RetrieveOwnerDocument
+NonFinancial\Payee\Owners\ListOwnerDocuments
+NonFinancial\Payee\Verifications\CreatePayeeVerification
+NonFinancial\Payee\Verifications\ListPayeeVerifications
+NonFinancial\Payee\Verifications\RetrievePayeeVerification
 
 // Reconcile requests
 NonFinancial\Reconcile\DateRange
@@ -1589,6 +1616,7 @@ Financial\Cards\Threeds\V2\MethodContinue
 
 // Tokenization API
 NonFinancial\TokenizationApi\Tokenize
+NonFinancial\TokenizationApi\Retokenize
 NonFinancial\TokenizationApi\Detokenize
 NonFinancial\TokenizationApi\UpdateToken
 NonFinancial\TokenizationApi\ValidateToken
@@ -1598,6 +1626,12 @@ NonFinancial\TokenizationApi\Cryptogram
 
 // Billing Transactions API
 NonFinancial\BillingApi\Transaction
+NonFinancial\BillingApi\Statement
+
+// Managed Recurring API
+NonFinancial\ManagedRecurring\Items
+NonFinancial\ManagedRecurring\Item
+NonFinancial\ManagedRecurring\CancelItem
 
 // APM Klarna Services
 NonFinancial\Alternatives\Klarna\ReleaseAuthorization

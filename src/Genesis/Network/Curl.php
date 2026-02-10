@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -161,6 +161,11 @@ class Curl extends Base
             case Request::METHOD_PATCH:
                 return [
                     CURLOPT_CUSTOMREQUEST => 'PATCH'
+                ];
+                break;
+            case Request::METHOD_DELETE:
+                return [
+                    CURLOPT_CUSTOMREQUEST => 'DELETE'
                 ];
                 break;
             default:

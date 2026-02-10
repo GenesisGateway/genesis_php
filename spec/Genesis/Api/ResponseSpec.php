@@ -147,6 +147,36 @@ class ResponseSpec extends ObjectBehavior
         $this->isSuccessful()->shouldBe(null);
     }
 
+    public function it_should_be_successful_on_http_204_no_content($network)
+    {
+        $network->beADoubleOf('Genesis\Network');
+        $network->getResponseBody()->willReturn('');
+        $network->getResponseHeaders()->willReturn('');
+        $network->getStatus()->willReturn(204);
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+
+        $this->isSuccessful()->shouldBe(true);
+    }
+
+    public function it_should_return_204_response_code($network)
+    {
+        $network->beADoubleOf('Genesis\Network');
+        $network->getResponseBody()->willReturn('');
+        $network->getResponseHeaders()->willReturn('');
+        $network->getStatus()->willReturn(204);
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+
+        $this->getResponseCode()->shouldBe(204);
+    }
+
     public function it_should_parse_transaction_without_status($network)
     {
         $sample = <<<XML
@@ -292,6 +322,11 @@ XML;
     public function it_should_validate_json_header_case_insensitive()
     {
         $this->isResponseTypeJson('content-type: application/json')->shouldBe(true);
+    }
+
+    public function it_should_validate_graphql_header_case_insensitive()
+    {
+        $this->isResponseTypeGraphQl('content-type: application/graphql-response+json')->shouldBe(true);
     }
 
     public function it_should_not_throw_when_status_is_array($network)

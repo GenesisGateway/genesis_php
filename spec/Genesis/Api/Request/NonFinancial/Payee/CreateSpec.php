@@ -23,6 +23,47 @@ class CreateSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(BaseRequest::class);
     }
 
+    public function it_should_fail_when_company_missing_registration_number()
+    {
+        $this->setPayeeType('company');
+        $this->setPayeeName($this->getFaker()->name());
+        $this->setPayeeCountry($this->getFaker()->randomElement(Country::getList()));
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_successfully_validate_company_with_registration_number()
+    {
+        $this->setPayeeType('company');
+        $this->setPayeeName($this->getFaker()->name());
+        $this->setPayeeCountry($this->getFaker()->randomElement(Country::getList()));
+        $this->setPayeeRegistrationNumber($this->getFaker()->numerify('########'));
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_successfully_validate_person_without_registration_number()
+    {
+        $this->setPayeeType('person');
+        $this->setPayeeName($this->getFaker()->name());
+        $this->setPayeeCountry($this->getFaker()->randomElement(Country::getList()));
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_set_optional_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setPayeeDate('1990-01-01');
+        $this->setPayeeNotificationUrl('https://example.com/notifications');
+        $this->setAddressCity('London');
+        $this->setAddressStreet('Test 12');
+        $this->setAddressCountry('GB');
+        $this->setAddressZipCode('1234');
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
     public function it_should_fail_when_missing_required_parameter()
     {
         $this->testMissingRequiredParameters(
@@ -78,8 +119,13 @@ class CreateSpec extends ObjectBehavior
 
     public function setRequestParameters()
     {
-        $this->setPayeeType($this->getFaker()->randomElement(['company', 'person']));
+        $payeeType = $this->getFaker()->randomElement(['company', 'person']);
+        $this->setPayeeType($payeeType);
         $this->setPayeeName($this->getFaker()->name());
         $this->setPayeeCountry($this->getFaker()->randomElement(Country::getList()));
+
+        if ($payeeType === 'company') {
+            $this->setPayeeRegistrationNumber($this->getFaker()->numerify('########'));
+        }
     }
 }

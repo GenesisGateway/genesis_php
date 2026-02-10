@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -32,11 +32,14 @@ use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
+ * Class Retrieve
+ *
  * Retrieve the details of a specific a Payee record based on it's unique ID.
  *
  * @package Genesis\Api\Request\NonFinancial\Payee
  *
- * @method string getPayeeUniqueId() Returns the unique identifier of the Payee
+ * @method string getPayeeUniqueId()       Returns the unique identifier of the Payee
+ * @method $this  setPayeeUniqueId($value) Sets the unique identifier of the Payee
  *
  */
 class Retrieve extends BaseRequest
@@ -55,8 +58,6 @@ class Retrieve extends BaseRequest
 
     /**
      * Updates the request path with payee_unique_id and query parameters.
-     *
-     * @return $this
      *
      * @throws EnvironmentNotSet
      */

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -29,6 +29,7 @@ namespace Genesis\Api\Traits\Request\NonFinancial\Kyc;
 use DateTime;
 use Genesis\Api\Constants\DateTimeFormat;
 use Genesis\Api\Constants\NonFinancial\Kyc\VerificationDocumentTypes;
+use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
 use Genesis\Utils\Country;
@@ -45,7 +46,17 @@ use Genesis\Utils\Country;
  * @method string getEmail();
  * @method string getVerificationMode()
  * @method string getReferenceId()
- * @method $this  setEmail($value);
+ * @method array  getDocumentSupportedTypes()
+ * @method string getFirstName()
+ * @method string getMiddleName()
+ * @method string getLastName()
+ * @method string getFullAddress()
+ * @method string getZipCode()
+ * @method $this  setFirstName($value)
+ * @method $this  setMiddleName($value)
+ * @method $this  setLastName($value)
+ * @method $this  setFullAddress($value)
+ * @method $this  setZipCode($value)
  */
 trait KycVerificationsCommon
 {
@@ -84,6 +95,41 @@ trait KycVerificationsCommon
      * @see VerificationDocumentTypes
      */
     protected $document_supported_types;
+
+    /**
+     * Customer's first name
+     *
+     * @var string
+     */
+    protected $first_name;
+
+    /**
+     * Customer's middle name
+     *
+     * @var string
+     */
+    protected $middle_name;
+
+    /**
+     * Customer's last name
+     *
+     * @var string
+     */
+    protected $last_name;
+
+    /**
+     * Customer's full address
+     *
+     * @var string
+     */
+    protected $full_address;
+
+    /**
+     * Customer's ZIP code
+     *
+     * @var string
+     */
+    protected $zip_code;
 
     /**
      * Check and set the correct value for Verifications Country
@@ -206,6 +252,26 @@ trait KycVerificationsCommon
     public function setBacksideProofRequired($value)
     {
         $this->backside_proof_required = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Sets email
+     *
+     * @param string $value
+     *
+     * @return $this
+     *
+     * @throws ErrorParameter
+     */
+    public function setEmail($value)
+    {
+        if ($value !== null && preg_match('/^.+\@.+\..+$/', $value) !== 1) {
+            throw new ErrorParameter('Please, enter a valid email');
+        }
+
+        $this->email = $value;
 
         return $this;
     }

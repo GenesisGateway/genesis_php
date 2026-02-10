@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -29,7 +29,7 @@ namespace Genesis\Api\Request\NonFinancial\Fx;
 use Genesis\Api\Request;
 use Genesis\Api\Request\Base\NonFinancial\Fx\BaseRequest;
 use Genesis\Builder;
-use Genesis\Utils\Common;
+use Genesis\Utils\Common as CommonUtils;
 
 /**
  * Class GetRates
@@ -66,13 +66,13 @@ class GetRates extends BaseRequest
     }
 
     /**
-     * Configures a Secured Post Request with Xml body
+     * Configures a Secured GET Request with JSON body
      *
      * @return void
      */
     protected function initJsonConfiguration()
     {
-        $this->config = Common::createArrayObject(
+        $this->config = CommonUtils::createArrayObject(
             [
                 'protocol'      => Request::PROTOCOL_HTTPS,
                 'port'          => Request::PORT_HTTPS,

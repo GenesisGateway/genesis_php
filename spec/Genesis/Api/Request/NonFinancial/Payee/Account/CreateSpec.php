@@ -49,14 +49,6 @@ class CreateSpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
-    public function it_should_fail_with_invalid_country()
-    {
-        $this->setRequestParameters();
-        $this->setPayeeAccountCountry('XX');
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
-    }
-
     public function it_should_require_institution_code_when_bank_account_type()
     {
         $this->setRequestParameters();

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -36,13 +36,27 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class MoneyTransferTypes
 {
-    const ACCOUNT_TO_ACCOUNT = 'account_to_account';
+    const ACCOUNT_TO_ACCOUNT                    = 'account_to_account';
 
-    const PERSON_TO_PERSON   = 'person_to_person';
+    const PERSON_TO_PERSON                      = 'person_to_person';
 
-    const WALLET_TRANSFER    = 'wallet_transfer';
+    const WALLET_TRANSFER                       = 'wallet_transfer';
 
-    const FUNDS_TRANSFER     = 'funds_transfer';
+    const FUNDS_TRANSFER                        = 'funds_transfer';
+
+    const LIQUID_ASSETS                         = 'liquid_assets';
+
+    const MERCHANT_SETTLEMENT                   = 'merchant_settlement';
+
+    const OWN_ACCOUNT                           = 'own_account';
+
+    const OWN_CREDIT_CARD_BILL                  = 'own_credit_card_bill';
+
+    const BUSINESS_DISBURSEMENT                 = 'business_disbursement';
+
+    const GOVERNMENT_OR_NON_PROFIT_DISBURSEMENT = 'government_or_non_profit_disbursement';
+
+    const GENERAL_BUSINESS_TO_BUSINESS          = 'general_business_to_business';
 
     /**
      * Get payment allowed payment

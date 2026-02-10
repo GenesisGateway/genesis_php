@@ -20,32 +20,44 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
 namespace Genesis\Api\Request\NonFinancial\Payee;
 
+use Genesis\Api\Constants\DateTimeFormat;
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
+use Genesis\Api\Traits\Request\NonFinancial\Payee\AddressAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\PayeeAttributes;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 use Genesis\Utils\Country;
+use DateTime;
 
 /**
+ * Class Update
+ *
  * Update a Payee record
  *
  * @package Genesis\Api\Request\NonFinancial\Payee
  *
- * @method $this  setPayeeName(string $value)         Sets the full name of the Payee
- * @method string getPayeeName()                      Returns the full name of the Payee
- * @method string getPayeeCountry()                   Returns the country code of the Payee in ISO 3166 format
+ * @method $this  setPayeeUniqueId($value)                   Sets the unique identifier of the Payee
+ * @method $this  setPayeeName(string $value)                Sets the full name of the Payee
+ * @method $this  setPayeeNotificationUrl(string $value)     Sets the notification URL
+ * @method $this  setPayeeRegistrationNumber(string $value)  Sets the registration number
+ * @method string getPayeeUniqueId()                         Returns the unique identifier of the Payee
+ * @method string getPayeeName()                             Returns the full name of the Payee
+ * @method string getPayeeCountry()                          Returns the country code of the Payee
+ * @method string getPayeeNotificationUrl()                  Returns the notification URL
+ * @method string getPayeeRegistrationNumber()               Returns the registration number
  *
  */
 class Update extends BaseRequest
 {
     use PayeeAttributes;
+    use AddressAttributes;
 
     const REQUEST_PATH = 'payee/:payee_unique_id';
 
@@ -65,11 +77,70 @@ class Update extends BaseRequest
     protected $payee_country;
 
     /**
+     * Date of birth for person or date of incorporation for company.
+     *
+     * @var DateTime|string
+     */
+    protected $payee_date;
+
+    /**
+     * The URL to which the Payee API will send notifications.
+     *
+     * @var string
+     */
+    protected $payee_notification_url;
+
+    /**
+     * The registration number of a company.
+     *
+     * @var string
+     */
+    protected $payee_registration_number;
+
+    /**
      * Class constructor
      */
     public function __construct()
     {
         parent::__construct(self::REQUEST_PATH);
+    }
+
+    /**
+     * Sets the payee date
+     *
+     * @param  string $value
+     *
+     * @return $this
+     *
+     * @throws InvalidArgument
+     */
+    public function setPayeeDate($value)
+    {
+        if (empty($value)) {
+            $this->payee_date = null;
+
+            return $this;
+        }
+
+        return $this->parseDate(
+            'payee_date',
+            DateTimeFormat::getAll(),
+            (string)$value,
+            'Invalid format for Owner date'
+        );
+    }
+
+    /**
+     * Gets the payee date
+     *
+     * @return string|null
+     */
+    public function getPayeeDate()
+    {
+        $format = $this->payee_date ? DateTimeFormat::YYYY_MM_DD_H_I_S :
+            DateTimeFormat::YYYY_MM_DD_ISO_8601;
+
+        return (empty($this->payee_date)) ? null : $this->payee_date->format($format);
     }
 
     /**
@@ -118,7 +189,7 @@ class Update extends BaseRequest
      */
     protected function setRequiredFields()
     {
-        $requiredFields = [
+        $requiredFields       = [
             'payee_unique_id'
         ];
         $this->requiredFields = CommonUtils::createArrayObject($requiredFields);
@@ -143,8 +214,12 @@ class Update extends BaseRequest
     {
         return [
             'payee' => [
-                'name'    => $this->payee_name,
-                'country' => $this->payee_country
+                'name'                => $this->payee_name,
+                'country'             => $this->payee_country,
+                'date'                => $this->getPayeeDate(),
+                'notification_url'    => $this->payee_notification_url,
+                'registration_number' => $this->payee_registration_number,
+                'address'             => $this->getAddressAttributesStructure()
             ]
         ];
     }

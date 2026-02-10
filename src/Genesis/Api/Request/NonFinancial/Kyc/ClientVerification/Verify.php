@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -111,6 +111,14 @@ class Verify extends KYCBaseRequest
         ];
 
         $this->requiredFields = Common::createArrayObject($requiredFields);
+
+        $requiredFieldsConditional = [
+            'background_checks_verifications_business_incorporation_date' => [
+                'background_checks_verifications_business_name'
+            ]
+        ];
+
+        $this->requiredFieldsConditional = Common::createArrayObject($requiredFieldsConditional);
     }
 
     /**

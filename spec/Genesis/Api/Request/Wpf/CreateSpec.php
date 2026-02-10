@@ -401,6 +401,13 @@ class CreateSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_set_scheme_tokenized()
+    {
+        $this->setRequestParameters();
+        $this->setSchemeTokenized(true);
+        $this->getDocument()->shouldContain('<scheme_tokenized>true</scheme_tokenized>');
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();

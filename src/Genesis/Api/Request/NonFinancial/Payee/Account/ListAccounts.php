@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -132,8 +132,6 @@ class ListAccounts extends BaseRequest
 
     /**
      * Updates the request path with payee_unique_id and query parameters.
-     *
-     * @return $this
      *
      * @throws EnvironmentNotSet
      */

@@ -98,6 +98,16 @@ class TransactionSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('byField');
     }
 
+    public function it_should_generate_paging_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setPage(2);
+        $this->setPerPage(50);
+        
+        $this->getDocument()->shouldContain('page: 2');
+        $this->getDocument()->shouldContain('perPage: 50');
+    }
+
     public function it_should_fail_with_invalid_order_by_field()
     {
         $this->setRequestParameters();
@@ -118,6 +128,48 @@ class TransactionSpec extends ObjectBehavior
         $this->setBillingStatement(['1', 2]);
 
         $this->getDocument()->shouldContain(' billingStatement: [\"1\",\"2\"] }');
+    }
+
+    public function it_should_set_transaction_type()
+    {
+        $this->setRequestParameters();
+        $this->setTransactionType('Sale Approved');
+        
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_fail_with_invalid_transaction_type()
+    {
+        $this->setRequestParameters();
+        
+        $this->shouldThrow(InvalidArgument::class)->during('setTransactionType', ['Invalid Type']);
+    }
+
+    public function it_should_validate_unique_id_max_count()
+    {
+        $largeArray = array_fill(0, 10001, 'id');
+        $this->setRequestParameters();
+        $this->setUniqueId($largeArray);
+        
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_validate_merchant_transaction_id_max_count()
+    {
+        $largeArray = array_fill(0, 10001, 'txn');
+        $this->setRequestParameters();
+        $this->setMerchantTransactionId($largeArray);
+        
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_validate_master_account_name_max_count()
+    {
+        $largeArray = array_fill(0, 11, 'account');
+        $this->setRequestParameters();
+        $this->setMasterAccountName($largeArray);
+        
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
     public function it_should_have_unique_id_with_proper_format()

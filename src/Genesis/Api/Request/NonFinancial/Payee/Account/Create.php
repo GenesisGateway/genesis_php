@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -118,23 +118,25 @@ class Create extends BaseRequest
      */
     protected function setRequiredFields()
     {
-        $requiredFields = [
+        $requiredFields       = [
             'payee_unique_id',
             'payee_account_type',
             'payee_account_number',
         ];
         $this->requiredFields = Common::createArrayObject($requiredFields);
 
-        $requiredFieldValues = [
-            'payee_account_type' => ['iban', 'bank'],
-            'payee_account_country'      => Country::getList()
+        $requiredFieldValues       = [
+            'payee_account_type'    => [
+                'iban',
+                'bank'
+            ],
         ];
         $this->requiredFieldValues = Common::createArrayObject($requiredFieldValues);
 
-        $requiredFieldsConditional = [
-            'payee_account_type' => [
+        $requiredFieldsConditional       = [
+            'payee_account_type'    => [
                 'bank' => ['payee_account_institution_code']
-            ]
+            ],
         ];
         $this->requiredFieldsConditional = CommonUtils::createArrayObject($requiredFieldsConditional);
     }

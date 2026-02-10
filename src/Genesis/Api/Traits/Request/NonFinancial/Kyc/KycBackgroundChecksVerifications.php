@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -53,6 +53,8 @@ use Genesis\Utils\Common;
  */
 trait KycBackgroundChecksVerifications
 {
+    use KycBusiness;
+
     /**
      * Customer's first name
      *
@@ -245,7 +247,8 @@ trait KycBackgroundChecksVerifications
             'date_of_birth' => $this->getBackgroundChecksDateOfBirth(),
             'async_update'  => $this->background_checks_async_update,
             'filters'       => $this->background_checks_filters,
-            'match_score'   => $this->match_score
+            'match_score'   => (int)$this->match_score,
+            'business'      => $this->getKycBusinessStructure()
         ];
     }
 }

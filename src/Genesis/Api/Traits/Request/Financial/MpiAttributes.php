@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -219,20 +219,6 @@ trait MpiAttributes
             'directory_server_id'         => $this->mpi_directory_server_id,
             'acs_transaction_id'          => $this->mpi_acs_transaction_id,
             'threeds_challenge_indicator' => $this->mpi_threeds_challenge_indicator
-        ];
-    }
-
-    /**
-     * Return required conditional MPI fields
-     *
-     * @return array
-     */
-    protected function requiredMpiFieldsConditional()
-    {
-        return [
-            'mpi_protocol_version' => [
-                MpiProtocolVersions::PROTOCOL_VERSION_2 => ['mpi_directory_server_id']
-            ]
         ];
     }
 }

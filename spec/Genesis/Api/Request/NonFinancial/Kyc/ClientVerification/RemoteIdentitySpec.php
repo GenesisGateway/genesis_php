@@ -76,6 +76,13 @@ class RemoteIdentitySpec extends ObjectBehavior
         $this->getDocument()->shouldContain('date_of_birth');
     }
 
+    public function it_should_contain_additional_proof_when_set()
+    {
+        $this->setRequestParameters();
+        $this->setDocumentAdditionalProof($this->getFaker()->word());
+        $this->getDocument()->shouldContain('additional_proof');
+    }
+
     protected function setRequestParameters()
     {
         $this->setEmail($this->getFaker()->email());

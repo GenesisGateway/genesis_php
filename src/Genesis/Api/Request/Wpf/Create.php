@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -43,6 +43,7 @@ use Genesis\Api\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\Threeds\V2\WpfAttributes as WpfThreedsV2Attributes;
 use Genesis\Api\Traits\Request\RiskAttributes;
 use Genesis\Api\Traits\Request\Wpf\Validations;
+use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common;
@@ -66,6 +67,7 @@ use Genesis\Utils\Common as CommonUtils;
  * @method string getDescription()            A text describing the reason of the payment
  * @method string getReturnCancelUrl()        URL where the customer is sent to after they cancel the payment
  * @method bool   getRememberCard()           Offer the user the option to save cardholder details for future use (tokenize)
+ * @method bool   getSchemeTokenized()        Offer the user the option to generate a DPAN and save cardholder details for future use (tokenize)
  * @method string getConsumerId()             Check documentation section Consumers and Tokenization. Saved cards will be listed for user to select
  * @method string getLifetime()               Number of minutes determining how long the WPF will be valid
  * @method string getReminders()              Settings for reminders sending when using the ’Pay Later’ feature
@@ -157,7 +159,7 @@ class Create extends \Genesis\Api\Request
     protected $lifetime = self::DEFAULT_LIFETIME;
 
     /**
-     * Signifies whether the ’Pay Later’ feature would be enabled on the WPF
+     * Signifies whether the 'Pay Later' feature would be enabled on the WPF
      *
      * @var bool $pay_later
      */
@@ -171,7 +173,7 @@ class Create extends \Genesis\Api\Request
     protected $reminder_language;
 
     /**
-     * Settings for reminders sending when using the ’Pay Later’ feature
+     * Settings for reminders sending when using the 'Pay Later' feature
      *
      * @var array $reminders
      */
@@ -211,6 +213,13 @@ class Create extends \Genesis\Api\Request
      * @var mixed $web_payment_form_id
      */
     protected $web_payment_form_id;
+
+    /**
+     * Offer the user the option to generate a DPAN and save cardholder details for future use (tokenize).
+     *
+     * @var bool $scheme_tokenized
+     */
+    protected $scheme_tokenized = false;
 
     /**
      * @param bool $flag
@@ -406,9 +415,9 @@ class Create extends \Genesis\Api\Request
      *
      * @return $this
      *
-     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws InvalidArgument|EnvironmentNotSet
      */
-    public function setLanguage($language = \Genesis\Api\Constants\i18n::EN)
+    public function setLanguage($language = i18n::EN)
     {
         $language = CommonUtils::filterLanguageCode($language);
 
@@ -432,9 +441,26 @@ class Create extends \Genesis\Api\Request
     }
 
     /**
+     * Set to true to offer the user the option to generate a DPAN and save
+     * cardholder details for future use (tokenize).
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function setSchemeTokenized($value)
+    {
+        $this->scheme_tokenized = (bool) $value;
+
+        return $this;
+    }
+
+    /**
      * Set the per-request configuration
      *
      * @return void
+     *
+     * @throws EnvironmentNotSet
      */
     protected function initConfiguration()
     {
@@ -537,6 +563,7 @@ class Create extends \Genesis\Api\Request
                 'billing_address'           => $this->getBillingAddressParamsStructure(),
                 'shipping_address'          => $this->getShippingAddressParamsStructure(),
                 'remember_card'             => var_export($this->remember_card, true),
+                'scheme_tokenized'          => var_export($this->scheme_tokenized, true),
                 'transaction_types'         => $this->transaction_types,
                 'lifetime'                  => $this->lifetime,
                 'risk_params'               => $this->getRiskParamsStructure(),

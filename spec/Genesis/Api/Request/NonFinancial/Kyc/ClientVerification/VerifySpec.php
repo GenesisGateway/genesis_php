@@ -6,6 +6,7 @@ use Genesis\Api\Constants\NonFinancial\Kyc\VerificationAddressesTypes;
 use Genesis\Api\Constants\NonFinancial\Kyc\VerificationDocumentTypes;
 use Genesis\Api\Constants\NonFinancial\Kyc\VerificationLanguages;
 use Genesis\Api\Request\NonFinancial\Kyc\ClientVerification\Verify;
+use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\NonFinancial\Kyc\KycVerificationsExamples;
@@ -97,6 +98,26 @@ class VerifySpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->setLanguage($this->getFaker()->randomElement(VerificationLanguages::getAll()));
         $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_include_business_when_set()
+    {
+        $date = $this->getFaker()->date('Y-m-d');
+        $name = $this->getFaker()->company();
+
+        $this->setRequestParameters();
+        $this->setBackgroundChecksVerificationsBusinessIncorporationDate($date);
+        $this->setBackgroundChecksVerificationsBusinessName($name);
+        $this->getDocument()->shouldContain('{"business":{"name":"' . $name . '","incorporation_date":"' . $date . '"}}');
+    }
+
+    public function it_should_throw_when_name_not_set()
+    {
+        $date = $this->getFaker()->date('Y-m-d');
+
+        $this->setRequestParameters();
+        $this->setBackgroundChecksVerificationsBusinessIncorporationDate($date);
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
     protected function setRequestParameters()

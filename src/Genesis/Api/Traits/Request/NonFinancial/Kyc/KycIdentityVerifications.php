@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -43,7 +43,9 @@ use Genesis\Exceptions\InvalidArgument;
  * @method string getDocumentLastName()
  * @method bool   getDocumentFullAddress()
  * @method string getDocumentProof()
+ * @method string getDocumentAdditionalProof()
  * @method $this  setDocumentProof($value)
+ * @method $this  setDocumentAdditionalProof($value)
  */
 trait KycIdentityVerifications
 {
@@ -88,6 +90,14 @@ trait KycIdentityVerifications
      * @var string
      */
     protected $document_full_address;
+
+    /**
+     * Base64 encoded additional image of the document. Can be used to provide
+     * backside of the document or additional proof of identity
+     *
+     * @var string
+     */
+    protected $document_additional_proof;
 
     /**
      * Set the correct value for Verifications Document Date Of Birth
@@ -193,7 +203,6 @@ trait KycIdentityVerifications
         );
     }
 
-
     /**
      * Set customer's full address
      *
@@ -225,12 +234,13 @@ trait KycIdentityVerifications
     protected function getIdentityDocumentStructure()
     {
         return [
-            'proof'         => $this->document_proof,
-            'date_of_birth' => $this->getDocumentDateOfBirth(),
-            'first_name'    => $this->document_first_name,
-            'middle_name'   => $this->document_middle_name,
-            'last_name'     => $this->document_last_name,
-            'full_address'  => $this->document_full_address
+            'proof'            => $this->document_proof,
+            'additional_proof' => $this->document_additional_proof,
+            'date_of_birth'    => $this->getDocumentDateOfBirth(),
+            'first_name'       => $this->document_first_name,
+            'middle_name'      => $this->document_middle_name,
+            'last_name'        => $this->document_last_name,
+            'full_address'     => $this->document_full_address
         ];
     }
 }

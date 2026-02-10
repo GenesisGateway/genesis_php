@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -76,6 +76,8 @@ use Genesis\Parser;
 class Response
 {
     const HEADER_CONTENT_TYPE_JSON = 'Content-Type: application/json';
+
+    const HEADER_CONTENT_TYPE_GRAPHQL = 'Content-Type: application/graphql-response+json';
 
     /**
      * Store parsed, response object
@@ -150,7 +152,10 @@ class Response
 
     protected function getParser(Network $network)
     {
-        if ($this->isResponseTypeJson($network->getResponseHeaders())) {
+        if (
+            $this->isResponseTypeJson($network->getResponseHeaders()) ||
+            $this->isResponseTypeGraphQl($network->getResponseHeaders())
+        ) {
             $parser = new Parser(Parser::JSON_INTERFACE);
             $parser->parseDocument($network->getResponseBody());
 
@@ -175,6 +180,16 @@ class Response
     }
 
     /**
+     * @param string $headers
+     *
+     * @return bool
+     */
+    protected function isResponseTypeGraphQl($headers)
+    {
+        return stripos($headers, self::HEADER_CONTENT_TYPE_GRAPHQL) !== false;
+    }
+
+    /**
      * Check whether the request was successful
      *
      * Note: You should consult with the documentation
@@ -184,6 +199,11 @@ class Response
      */
     public function isSuccessful()
     {
+        // Handle 204 No Content (successful deletion)
+        if ($this->responseCode === 204) {
+            return true;
+        }
+
         $status = new Constants\Transaction\States(
             isset($this->responseObj->status) ? $this->responseObj->status : ''
         );

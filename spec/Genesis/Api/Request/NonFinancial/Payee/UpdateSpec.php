@@ -64,6 +64,20 @@ class UpdateSpec extends ObjectBehavior
         $this->getConfig()->shouldHaveKeyWithValue('format', Builder::JSON);
     }
 
+    public function it_should_set_optional_parameters()
+    {
+        $this->setRequestParameters();
+        $this->setPayeeDate('1990-01-01');
+        $this->setPayeeNotificationUrl('https://example.com/notifications');
+        $this->setPayeeRegistrationNumber($this->getFaker()->numerify('########'));
+        $this->setAddressCity('London');
+        $this->setAddressStreet('Test 12');
+        $this->setAddressCountry('GB');
+        $this->setAddressZipCode('1234');
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
     public function setRequestParameters()
     {
         $this->setPayeeUniqueId($this->getFaker()->uuid);

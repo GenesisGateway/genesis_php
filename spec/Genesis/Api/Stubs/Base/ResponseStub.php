@@ -10,4 +10,9 @@ class ResponseStub extends Response
     {
         return parent::isResponseTypeJson($headers);
     }
+
+    public function isResponseTypeGraphQl($headers)
+    {
+        return parent::isResponseTypeGraphQl($headers);
+    }
 }

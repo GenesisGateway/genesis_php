@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -37,6 +37,36 @@ use Genesis\Utils\Common as CommonUtils;
  */
 class IdentifierTypes
 {
+    /**
+     * Account to account
+     */
+    const ACCOUNT_TO_ACCOUNT = 'account_to_account';
+
+    /**
+     * Person to person
+     */
+    const PERSON_TO_PERSON = 'person_to_person';
+
+    /**
+     * Wallet transfer
+     */
+    const WALLET_TRANSFER = 'wallet_transfer';
+
+    /**
+     * Funds transfer
+     */
+    const FUNDS_TRANSFER = 'funds_transfer';
+
+    /**
+     * Liquid assets
+     */
+    const LIQUID_ASSETS = 'liquid_assets';
+
+    /**
+     * Merchant settlement
+     */
+    const MERCHANT_SETTLEMENT = 'merchant_settlement';
+
     /**
      * General person to person
      */

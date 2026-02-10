@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -41,11 +41,16 @@ use Genesis\Utils\Common;
  * @package Genesis\Api\Traits\Request\NonFinancial\Kyc
  *
  * @method $this  setDocumentFirstName($value)
+ * @method $this  setDocumentMiddleName($value)
  * @method $this  setDocumentLastName($value)
+ * @method $this  setDocumentFullAddress($value)
+ * @method $this  setDocumentProof($value)
  * @method string getDocumentFirstName()
  * @method string getDocumentLastName()
  * @method bool   getDocumentAllowOffline()
  * @method bool   getDocumentAllowOnline()
+ * @method string getDocumentFullAddress()
+ * @method string getDocumentProof()
  */
 trait KycDocumentVerifications
 {
@@ -55,6 +60,13 @@ trait KycDocumentVerifications
      * @var string
      */
     protected $document_first_name;
+
+    /**
+     * Customer's middle name
+     *
+     * @var string
+     */
+    protected $document_middle_name;
 
     /**
      * Customer's last name
@@ -83,6 +95,20 @@ trait KycDocumentVerifications
      * @var bool
      */
     protected $document_allow_online;
+
+    /**
+     * Customer's full address
+     *
+     * @var string
+     */
+    protected $document_full_address;
+
+    /**
+     * Base64 encoded image of the document
+     *
+     * @var string
+     */
+    protected $document_proof;
 
     /**
      * Set the correct value for Verifications Document Date Of Birth
@@ -154,10 +180,13 @@ trait KycDocumentVerifications
     {
         return [
             'first_name'                => $this->document_first_name,
+            'middle_name'               => $this->document_middle_name,
             'last_name'                 => $this->document_last_name,
             'date_of_birth'             => $this->getDocumentDateOfBirth(),
             'allow_offline'             => $this->document_allow_offline,
-            'allow_online'              => $this->document_allow_online
+            'allow_online'              => $this->document_allow_online,
+            'full_address'              => $this->document_full_address,
+            'proof'                     => $this->document_proof
         ];
     }
 }

@@ -14,13 +14,6 @@ trait SchemeTokenized3DExamples
         $this->shouldNotThrow()->during('getDocument');
     }
 
-    public function it_should_throw_without_directory_server_id_when_scheme_tokenized_not_set()
-    {
-        $this->setRequestParameters();
-        $this->setMpiParameters();
-        $this->shouldThrow()->during('getDocument');
-    }
-
     private function setMpiParameters()
     {
         $this->setMpiEci('05');

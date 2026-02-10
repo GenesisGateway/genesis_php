@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  * @author      emerchantpay
- * @copyright   Copyright (C) 2015-2025 emerchantpay Ltd.
+ * @copyright   Copyright (C) 2015-2026 emerchantpay Ltd.
  * @license     http://opensource.org/licenses/MIT The MIT License
  */
 
@@ -58,6 +58,7 @@ abstract class Request
     const METHOD_GET     = 'GET';
     const METHOD_PUT     = 'PUT';
     const METHOD_PATCH   = 'PATCH';
+    const METHOD_DELETE  = 'DELETE';
 
     const AUTH_TYPE_BASIC = 'basic';
     const AUTH_TYPE_TOKEN = 'bearer';
