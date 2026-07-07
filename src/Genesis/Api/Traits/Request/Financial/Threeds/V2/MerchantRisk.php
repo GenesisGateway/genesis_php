@@ -177,24 +177,40 @@ trait MerchantRisk
      */
     protected function getMerchantRiskValidations()
     {
+        $shippingIndicator = $this->threeds_v2_merchant_risk_shipping_indicator === null
+            ? ''
+            : $this->threeds_v2_merchant_risk_shipping_indicator;
+
+        $deliveryTimeframe = $this->threeds_v2_merchant_risk_delivery_timeframe === null
+            ? ''
+            : $this->threeds_v2_merchant_risk_delivery_timeframe;
+
+        $reorderItemsIndicator = $this->threeds_v2_merchant_risk_reorder_items_indicator === null
+            ? ''
+            : $this->threeds_v2_merchant_risk_reorder_items_indicator;
+
+        $preOrderPurchaseIndicator = $this->threeds_v2_merchant_risk_pre_order_purchase_indicator === null
+            ? ''
+            : $this->threeds_v2_merchant_risk_pre_order_purchase_indicator;
+
         return [
             'threeds_v2_merchant_risk_shipping_indicator' => [
-                $this->threeds_v2_merchant_risk_shipping_indicator => [
+                $shippingIndicator => [
                     ['threeds_v2_merchant_risk_shipping_indicator' => ShippingIndicators::getAll()]
                 ]
             ],
             'threeds_v2_merchant_risk_delivery_timeframe' => [
-                $this->threeds_v2_merchant_risk_delivery_timeframe => [
+                $deliveryTimeframe => [
                     ['threeds_v2_merchant_risk_delivery_timeframe' => DeliveryTimeframes::getAll()]
                 ]
             ],
             'threeds_v2_merchant_risk_reorder_items_indicator' => [
-                $this->threeds_v2_merchant_risk_reorder_items_indicator => [
+                $reorderItemsIndicator => [
                     ['threeds_v2_merchant_risk_reorder_items_indicator' => ReorderItemIndicators::getAll()]
                 ]
             ],
             'threeds_v2_merchant_risk_pre_order_purchase_indicator' => [
-                $this->threeds_v2_merchant_risk_pre_order_purchase_indicator => [
+                $preOrderPurchaseIndicator => [
                     ['threeds_v2_merchant_risk_pre_order_purchase_indicator' => PreOrderPurchaseIndicators::getAll()]
                 ]
             ]

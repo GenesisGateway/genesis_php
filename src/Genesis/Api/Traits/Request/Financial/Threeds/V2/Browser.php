@@ -238,7 +238,7 @@ trait Browser
     {
         return [
             'threeds_v2_browser_color_depth' => [
-                $this->threeds_v2_browser_color_depth => [
+                ($this->threeds_v2_browser_color_depth === null ? '' : $this->threeds_v2_browser_color_depth) => [
                     ['threeds_v2_browser_color_depth' => ColorDepths::getAll()]
                 ]
             ]

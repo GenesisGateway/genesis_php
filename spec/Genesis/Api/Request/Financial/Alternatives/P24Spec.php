@@ -85,6 +85,15 @@ class P24Spec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_not_fail_with_null_bank_code()
+    {
+        $this->setRequestParameters();
+        $this->setBankCode(null);
+        $this->setCurrency('EUR');
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
     public function it_should_not_validate_bank_code_for_other_currencies()
     {
         $this->setRequestParameters();

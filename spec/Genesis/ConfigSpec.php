@@ -206,6 +206,52 @@ class ConfigSpec extends ObjectBehavior
         $this::setInterface('network', 'curl');
     }
 
+    public function it_should_return_false_for_get_interface_with_null()
+    {
+        $this::getInterface(null)->shouldBe(false);
+    }
+
+    public function it_should_return_false_for_set_interface_with_null()
+    {
+        $this::setInterface(null, 'value')->shouldBe(false);
+    }
+
+    public function it_should_not_trigger_deprecation_for_get_interface_with_null()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        \Genesis\Config::getInterface(null);
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
+    public function it_should_not_trigger_deprecation_for_set_interface_with_null()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        \Genesis\Config::setInterface(null, 'value');
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
     public function it_should_have_default_force_smart_routing()
     {
         $this->shouldHaveDefaultSmartRouting();

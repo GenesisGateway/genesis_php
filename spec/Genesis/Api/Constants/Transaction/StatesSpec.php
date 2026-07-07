@@ -190,6 +190,32 @@ class StatesSpec extends ObjectBehavior
         $this->isApproved()->shouldBe(false);
     }
 
+    public function it_should_not_fail_with_null_state_construction()
+    {
+        $this->beConstructedWith(null);
+
+        $this->isApproved()->shouldBe(false);
+    }
+
+    public function it_should_not_trigger_deprecation_with_null_state()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        $states = new States(null);
+        $states->isApproved();
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
     private function buildMethod($status)
     {
         return 'is' . Common::snakeCaseToCamelCase($status);

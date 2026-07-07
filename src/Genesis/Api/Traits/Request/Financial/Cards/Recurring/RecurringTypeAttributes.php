@@ -54,7 +54,7 @@ trait RecurringTypeAttributes
     {
         return [
             'recurring_type' => [
-                $this->recurring_type => [
+                ($this->recurring_type === null ? '' : $this->recurring_type) => [
                     ['recurring_type' => Types::getInitialTypes()]
                 ]
             ]
@@ -70,7 +70,7 @@ trait RecurringTypeAttributes
     {
         return [
             'recurring_type' => [
-                $this->recurring_type => [
+                ($this->recurring_type === null ? '' : $this->recurring_type) => [
                     ['recurring_type' => array_merge(
                         Types::getInitialTypes(),
                         Types::getSubsequentTypes()

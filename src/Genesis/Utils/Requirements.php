@@ -139,6 +139,8 @@ final class Requirements
      */
     public static function getErrorMessage($name)
     {
+        $name = $name === null ? '' : $name;
+
         $messages = [
             'system'    => 'Unsupported PHP version, please upgrade!' . PHP_EOL .
                            'This library requires PHP version ' . self::$minPHPVersion . ' or newer.',

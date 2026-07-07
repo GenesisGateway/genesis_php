@@ -38,4 +38,27 @@ class RequirementsSpec extends ObjectBehavior
 
         $this::getErrorMessage('system')->shouldBe($error_message);
     }
+
+    public function it_should_return_fallback_message_for_null_name()
+    {
+        $this::getErrorMessage(null)->shouldBe('[] Missing project dependency!');
+    }
+
+    public function it_should_not_trigger_deprecation_for_get_error_message_with_null()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        \Genesis\Utils\Requirements::getErrorMessage(null);
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
 }

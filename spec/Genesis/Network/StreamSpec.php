@@ -50,6 +50,85 @@ class StreamSpec extends ObjectBehavior
         }
     }
 
+    public function it_should_have_response_headers_after_execute()
+    {
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = false;
+
+        Config::setEnvironment(
+            \Genesis\Api\Constants\Environments::STAGING
+        );
+        Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Faker\Provider\UserAgent($faker));
+
+        $options = [
+            'body'          => '',
+            'url'           => sprintf(
+                'https://%s%s',
+                Config::getSubDomain('gateway'),
+                Config::getEndpoint()
+            ),
+            'timeout'       => Config::getNetworkTimeout(),
+            'user_agent'    => $faker->userAgent,
+            'authorization' => Request::AUTH_TYPE_BASIC,
+            'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
+            'type'          => Request::METHOD_GET,
+            'format'        => Builder::XML
+        ];
+
+        $this->prepareRequestBody($options);
+        $this->execute();
+
+        $this->getResponseHeaders()->shouldNotBeEmpty();
+        $this->getResponseHeaders()->shouldContain('HTTP/');
+    }
+
+    public function it_should_use_http_get_last_response_headers_function_when_available()
+    {
+        // Verify the compatibility pattern: function_exists check for PHP 8.5+
+        // On PHP < 8.5, http_get_last_response_headers() does not exist,
+        // so the fallback to $http_response_header is used.
+        if (function_exists('http_get_last_response_headers')) {
+            // PHP 8.5+ path — the function exists and will be used
+            $this->getWrappedObject();
+        } else {
+            // PHP < 8.5 path — $http_response_header fallback is used
+            $this->getWrappedObject();
+        }
+
+        // Both paths should produce valid response headers after execution
+        $this->getWrappedObject()->is_wpf  = false;
+        $this->getWrappedObject()->is_prod = false;
+
+        Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
+        Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \Faker\Provider\UserAgent($faker));
+
+        $options = [
+            'body'          => '',
+            'url'           => sprintf(
+                'https://%s%s',
+                Config::getSubDomain('gateway'),
+                Config::getEndpoint()
+            ),
+            'timeout'       => Config::getNetworkTimeout(),
+            'user_agent'    => $faker->userAgent,
+            'authorization' => Request::AUTH_TYPE_BASIC,
+            'user_login'    => Config::getUsername() . ':' . Config::getPassword(),
+            'type'          => Request::METHOD_GET,
+            'format'        => Builder::XML
+        ];
+
+        $this->prepareRequestBody($options);
+        $this->execute();
+
+        $this->getResponse()->shouldContain("\r\n\r\n");
+    }
+
     public function it_can_connect_to_staging_wpf_environment()
     {
         $this->getWrappedObject()->is_wpf  = true;

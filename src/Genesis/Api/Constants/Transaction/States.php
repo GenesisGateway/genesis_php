@@ -342,6 +342,7 @@ class States
      */
     private function getStateAliasConstantName($state)
     {
+        $state = $state === null ? '' : $state;
         $subject = $state;
         $alias   = $this->getAllStateAliases();
 

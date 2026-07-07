@@ -34,4 +34,27 @@ class PayoutBankParametersSpec extends ObjectBehavior
 
         $this->getbankNamesPerCurrency($currency)->shouldBeArray();
     }
+
+    public function it_should_return_empty_array_for_null_currency()
+    {
+        $this->getBankNamesPerCurrency(null)->shouldBe([]);
+    }
+
+    public function it_should_not_trigger_deprecation_for_null_currency()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        PayoutBankParameters::getBankNamesPerCurrency(null);
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
 }

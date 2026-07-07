@@ -228,6 +228,17 @@ class CheckerSpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->duringGetDocument();
     }
 
+    public function it_should_not_fail_with_null_recurring_type()
+    {
+        $this->setRequiredRequestParameters();
+        $this->setMoto(true);
+        $this->setMit(true);
+        $this->setRecurringType(null);
+        $this->setTransactionExemption($this->getRandomExemption());
+
+        $this->shouldNotThrow()->duringGetDocument();
+    }
+
     /**
      * Helper Methods
      */

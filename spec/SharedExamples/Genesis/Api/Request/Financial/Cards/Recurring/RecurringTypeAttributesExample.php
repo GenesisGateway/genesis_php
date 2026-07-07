@@ -46,6 +46,35 @@ trait RecurringTypeAttributesExample
         $this->getDocument()->shouldNotContain('<recurring_type>');
     }
 
+    public function it_should_not_fail_when_recurring_type_is_explicitly_null()
+    {
+        $this->setRequestParameters();
+        $this->setRecurringType(null);
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_not_trigger_deprecation_when_recurring_type_is_null()
+    {
+        $this->setRequestParameters();
+        $this->setRecurringType(null);
+
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        $this->getWrappedObject()->getDocument();
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
     public function it_should_not_fail_with_managed_type_when_managed_recurring_available_for_every_transaction()
     {
         if ($this->getWrappedObject() instanceof WpfCreate

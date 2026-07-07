@@ -209,6 +209,8 @@ final class Common
             return false;
         }
 
+        $key = $key === null ? '' : $key;
+
         return array_key_exists($key, $arr);
     }
 
@@ -259,6 +261,8 @@ final class Common
         if (!$arrObj instanceof \ArrayObject) {
             return null;
         }
+
+        $key = $key === null ? '' : $key;
 
         $arr = $arrObj->getArrayCopy();
 

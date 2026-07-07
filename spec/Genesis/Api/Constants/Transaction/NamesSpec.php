@@ -73,4 +73,27 @@ class NamesSpec extends ObjectBehavior
     {
         $this->shouldNotThrow()->during('getName', ['invalid_trx_type']);
     }
+
+    public function it_should_return_unknown_for_null_transaction_type()
+    {
+        $this->getName(null)->shouldBe('Unknown Transaction Type');
+    }
+
+    public function it_should_not_trigger_deprecation_for_get_name_with_null()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        \Genesis\Api\Constants\Transaction\Names::getName(null);
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
 }

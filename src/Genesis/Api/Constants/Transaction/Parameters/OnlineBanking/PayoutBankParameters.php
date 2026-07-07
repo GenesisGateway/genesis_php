@@ -387,7 +387,7 @@ class PayoutBankParameters
      */
     public static function getBankNamesPerCurrency($currency)
     {
-        $currency = strtoupper($currency);
+        $currency = $currency === null ? '' : strtoupper($currency);
 
         if (array_key_exists($currency, self::$names)) {
             return self::$names[$currency];

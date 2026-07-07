@@ -158,6 +158,8 @@ class Names
      */
     public static function getName($transactionType)
     {
+        $transactionType = $transactionType === null ? '' : $transactionType;
+
         return array_key_exists($transactionType, self::$names) ?
             self::$names[$transactionType] : 'Unknown Transaction Type';
     }

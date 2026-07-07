@@ -24,6 +24,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\NullableFieldsNoPHP85DeprecationExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
@@ -49,6 +50,7 @@ class Sale3DSpec extends ObjectBehavior
     use ManagedRecurringAttributesExample;
     use MpiAttributesExamples;
     use NeighborhoodAttributesExamples;
+    use NullableFieldsNoPHP85DeprecationExamples;
     use RecurringCategoryAttributesExample;
     use RecurringTypeAttributesExample;
     use RequestExamples;

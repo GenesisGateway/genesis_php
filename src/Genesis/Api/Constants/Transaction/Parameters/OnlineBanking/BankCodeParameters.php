@@ -134,7 +134,7 @@ class BankCodeParameters
 
     public static function getBankCodesPerCurrency($currency)
     {
-        $currency = strtoupper($currency);
+        $currency = $currency === null ? '' : strtoupper($currency);
 
         if (array_key_exists($currency, self::$codes)) {
             return self::$codes[$currency];

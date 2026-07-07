@@ -236,7 +236,7 @@ trait Sdk
     {
         return [
             'threeds_v2_sdk_interface' => [
-                $this->threeds_v2_sdk_interface => [
+                ($this->threeds_v2_sdk_interface === null ? '' : $this->threeds_v2_sdk_interface) => [
                     ['threeds_v2_sdk_interface' => Interfaces::getAll()]
                 ]
             ]

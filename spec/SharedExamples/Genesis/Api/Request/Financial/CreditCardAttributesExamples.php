@@ -7,6 +7,65 @@ use spec\SharedExamples\Faker;
 
 trait CreditCardAttributesExamples
 {
+    public function it_should_fail_without_card_number()
+    {
+        $this->setRequestParameters();
+        $this->setCardNumber(null);
+
+        $this->shouldThrow(ErrorParameter::class)
+            ->during('getDocument');
+    }
+
+    public function it_should_not_trigger_deprecation_with_null_card_number()
+    {
+        $this->setRequestParameters();
+        $this->setCardNumber(null);
+
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        try {
+            $this->getWrappedObject()->getDocument();
+        } catch (\Exception $e) {
+            // Expected ErrorParameter — we only care about deprecation notices
+        }
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
+    public function it_should_not_trigger_deprecation_with_null_expiration_month()
+    {
+        $this->setRequestParameters();
+        $this->setExpirationMonth(null);
+
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        try {
+            $this->getWrappedObject()->getDocument();
+        } catch (\Exception $e) {
+            // Expected ErrorParameter — we only care about deprecation notices
+        }
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
     public function it_should_fail_without_expiration_month()
     {
         $this->setRequestParameters();

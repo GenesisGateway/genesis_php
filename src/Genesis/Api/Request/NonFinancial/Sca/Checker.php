@@ -217,7 +217,7 @@ class Checker extends BaseVersionedRequest
     {
         $this->requiredFieldValuesConditional = Common::createArrayObject([
             'recurring_type' => [
-                $this->recurring_type => [
+                ($this->recurring_type === null ? '' : $this->recurring_type) => [
                     ['recurring_type' => [Types::INITIAL, Types::SUBSEQUENT]]
                 ]
             ]

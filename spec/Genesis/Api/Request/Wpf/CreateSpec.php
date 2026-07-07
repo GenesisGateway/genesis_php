@@ -18,6 +18,7 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringC
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\NullableFieldsNoPHP85DeprecationExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PendingPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
@@ -30,6 +31,7 @@ class CreateSpec extends ObjectBehavior
     use BusinessAttributesExample;
     use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
+    use NullableFieldsNoPHP85DeprecationExamples;
     use PendingPaymentAttributesExamples;
     use RecurringCategoryAttributesExample;
     use ThreedsV2AttributesExamples;

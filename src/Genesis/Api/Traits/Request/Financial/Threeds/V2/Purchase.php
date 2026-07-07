@@ -51,7 +51,7 @@ trait Purchase
     {
         return [
             'threeds_v2_purchase_category' => [
-                $this->threeds_v2_purchase_category => [
+                ($this->threeds_v2_purchase_category === null ? '' : $this->threeds_v2_purchase_category) => [
                     ['threeds_v2_purchase_category' => Categories::getAll()]
                 ]
             ]

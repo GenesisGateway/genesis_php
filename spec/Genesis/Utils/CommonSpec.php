@@ -155,6 +155,114 @@ class CommonSpec extends ObjectBehavior
         $this::isRegexExpr(RegexValidator::PATTERN_CREDIT_CARD_NUMBER)->shouldBe(true);
     }
 
+    public function it_should_return_false_for_is_array_key_exists_with_null_key()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2');
+
+        $this::isArrayKeyExists(null, $array)->shouldBe(false);
+    }
+
+    public function it_should_return_false_for_is_array_key_exists_with_null_key_and_empty_array()
+    {
+        $this::isArrayKeyExists(null, array())->shouldBe(false);
+    }
+
+    public function it_should_return_true_for_is_array_key_exists_with_null_key_when_empty_string_key_present()
+    {
+        $array = array('' => 'empty_key_value', 'key2' => 'value2');
+
+        $this::isArrayKeyExists(null, $array)->shouldBe(true);
+    }
+
+    public function it_should_return_true_for_is_array_key_exists_with_empty_string_key()
+    {
+        $array = array('' => 'empty_key_value', 'key2' => 'value2');
+
+        $this::isArrayKeyExists('', $array)->shouldBe(true);
+    }
+
+    public function it_should_return_true_for_is_array_key_exists_with_valid_key()
+    {
+        $array = array('key1' => 'value1', 'key2' => 'value2');
+
+        $this::isArrayKeyExists('key1', $array)->shouldBe(true);
+    }
+
+    public function it_should_return_false_for_is_array_key_exists_with_invalid_array()
+    {
+        $this::isArrayKeyExists('key1', 'not_array')->shouldBe(false);
+    }
+
+    public function it_should_handle_append_items_to_array_obj_with_null_key()
+    {
+        $arrObj = new \ArrayObject(array('existing' => 'value'));
+
+        $result = \Genesis\Utils\Common::appendItemsToArrayObj($arrObj, null, array('new_value'));
+        if (!($result instanceof \ArrayObject)) {
+            throw new \Exception('Expected ArrayObject result');
+        }
+    }
+
+    public function it_should_append_under_empty_string_key_when_null_key_given()
+    {
+        $arrObj = new \ArrayObject(array('existing' => 'value'));
+
+        \Genesis\Utils\Common::appendItemsToArrayObj($arrObj, null, array('appended'));
+
+        if ($arrObj->offsetGet('') !== array('appended')) {
+            throw new \Exception('Expected appended values under empty string key');
+        }
+    }
+
+    public function it_should_return_null_for_append_items_to_array_obj_with_non_array_object()
+    {
+        $notArrayObj = 'string';
+
+        $result = \Genesis\Utils\Common::appendItemsToArrayObj($notArrayObj, null, array('value'));
+
+        if ($result !== null) {
+            throw new \Exception('Expected null for non-ArrayObject');
+        }
+    }
+
+    public function it_should_not_trigger_deprecation_for_is_array_key_exists_with_null()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        $array = array('key1' => 'value1');
+        \Genesis\Utils\Common::isArrayKeyExists(null, $array);
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
+    public function it_should_not_trigger_deprecation_for_append_items_to_array_obj_with_null_key()
+    {
+        $deprecations = array();
+        set_error_handler(function ($errno, $errstr) use (&$deprecations) {
+            $deprecations[] = $errstr;
+        }, E_DEPRECATED | E_USER_DEPRECATED);
+
+        $arrObj = new \ArrayObject(array('existing' => 'value'));
+        \Genesis\Utils\Common::appendItemsToArrayObj($arrObj, null, array('appended'));
+
+        restore_error_handler();
+
+        if (!empty($deprecations)) {
+            throw new \Exception(
+                'Deprecation notice triggered: ' . implode('; ', $deprecations)
+            );
+        }
+    }
+
     public function getMatchers(): array
     {
         return array(

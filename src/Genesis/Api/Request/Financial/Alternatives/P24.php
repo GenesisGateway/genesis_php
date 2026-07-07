@@ -84,7 +84,7 @@ class P24 extends \Genesis\Api\Request\Base\Financial\Alternative
     {
         $requiredFieldValuesConditional = [
             'bank_code' => [
-                $this->bank_code => [
+                ($this->bank_code === null ? '' : $this->bank_code) => [
                     [
                         'bank_code' => BankCodes::getAll(),
                         'currency' => $this->bankCodeCurrencies

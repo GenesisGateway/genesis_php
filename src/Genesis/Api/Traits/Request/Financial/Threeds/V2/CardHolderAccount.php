@@ -398,19 +398,39 @@ trait CardHolderAccount
      */
     protected function getCardHolderAccountValidations()
     {
+        $updateIndicator = $this->threeds_v2_card_holder_account_update_indicator === null
+            ? ''
+            : $this->threeds_v2_card_holder_account_update_indicator;
+
+        $passwordChangeIndicator = $this->threeds_v2_card_holder_account_password_change_indicator === null
+            ? ''
+            : $this->threeds_v2_card_holder_account_password_change_indicator;
+
+        $shippingAddressUsageIndicator = $this->threeds_v2_card_holder_account_shipping_address_usage_indicator === null
+            ? ''
+            : $this->threeds_v2_card_holder_account_shipping_address_usage_indicator;
+
+        $suspiciousActivityIndicator = $this->threeds_v2_card_holder_account_suspicious_activity_indicator === null
+            ? ''
+            : $this->threeds_v2_card_holder_account_suspicious_activity_indicator;
+
+        $registrationIndicator = $this->threeds_v2_card_holder_account_registration_indicator === null
+            ? ''
+            : $this->threeds_v2_card_holder_account_registration_indicator;
+
         return [
             'threeds_v2_card_holder_account_update_indicator' => [
-                $this->threeds_v2_card_holder_account_update_indicator => [
+                $updateIndicator => [
                     ['threeds_v2_card_holder_account_update_indicator' => UpdateIndicators::getAll()]
                 ]
             ],
             'threeds_v2_card_holder_account_password_change_indicator' => [
-                $this->threeds_v2_card_holder_account_password_change_indicator => [
+                $passwordChangeIndicator => [
                     ['threeds_v2_card_holder_account_password_change_indicator' => PasswordChangeIndicators::getAll()]
                 ]
             ],
             'threeds_v2_card_holder_account_shipping_address_usage_indicator' => [
-                $this->threeds_v2_card_holder_account_shipping_address_usage_indicator => [
+                $shippingAddressUsageIndicator => [
                     [
                         'threeds_v2_card_holder_account_shipping_address_usage_indicator' =>
                             ShippingAddressUsageIndicators::getAll()
@@ -418,7 +438,7 @@ trait CardHolderAccount
                 ]
             ],
             'threeds_v2_card_holder_account_suspicious_activity_indicator' => [
-                $this->threeds_v2_card_holder_account_suspicious_activity_indicator => [
+                $suspiciousActivityIndicator => [
                     [
                         'threeds_v2_card_holder_account_suspicious_activity_indicator' =>
                             SuspiciousActivityIndicators::getAll()
@@ -426,7 +446,7 @@ trait CardHolderAccount
                 ]
             ],
             'threeds_v2_card_holder_account_registration_indicator' => [
-                $this->threeds_v2_card_holder_account_registration_indicator => [
+                $registrationIndicator => [
                     ['threeds_v2_card_holder_account_registration_indicator' => RegistrationIndicators::getAll()]
                 ]
             ]

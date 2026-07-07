@@ -83,19 +83,31 @@ trait Control
      */
     protected function getControlValidations()
     {
+        $deviceType = $this->threeds_v2_control_device_type === null
+            ? ''
+            : $this->threeds_v2_control_device_type;
+
+        $challengeWindowSize = $this->threeds_v2_control_challenge_window_size === null
+            ? ''
+            : $this->threeds_v2_control_challenge_window_size;
+
+        $challengeIndicator = $this->threeds_v2_control_challenge_indicator === null
+            ? ''
+            : $this->threeds_v2_control_challenge_indicator;
+
         return [
             'threeds_v2_control_device_type' => [
-                $this->threeds_v2_control_device_type => [
+                $deviceType => [
                     ['threeds_v2_control_device_type' => DeviceTypes::getAll()]
                 ]
             ],
             'threeds_v2_control_challenge_window_size' => [
-                $this->threeds_v2_control_challenge_window_size => [
+                $challengeWindowSize => [
                     ['threeds_v2_control_challenge_window_size' => ChallengeWindowSizes::getAll()]
                 ]
             ],
             'threeds_v2_control_challenge_indicator' => [
-                $this->threeds_v2_control_challenge_indicator => [
+                $challengeIndicator => [
                     ['threeds_v2_control_challenge_indicator' => ChallengeIndicators::getAll()]
                 ]
             ]
