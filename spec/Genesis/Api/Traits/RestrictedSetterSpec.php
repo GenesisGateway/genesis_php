@@ -55,6 +55,60 @@ class RestrictedSetterSpec extends ObjectBehavior
         );
     }
 
+    public function it_should_clear_the_field_when_strict_allowed_options_setter_receives_null()
+    {
+        $this->test_field = 'val';
+
+        $this->publicAllowedOptionsStrictSetter(
+            'test_field',
+            ['val', 'val1', 'val2'],
+            null,
+            'Error Message'
+        );
+
+        $this->test_field->shouldBe(null);
+    }
+
+    public function it_should_accept_an_exact_string_with_strict_allowed_options_setter()
+    {
+        $result = $this->publicAllowedOptionsStrictSetter(
+            'test_field',
+            ['val', 'val1', 'val2'],
+            'val',
+            'Error Message'
+        );
+
+        $result->shouldBeAnInstanceOf(RestrictedSetterStub::class);
+        $this->test_field->shouldBe('val');
+    }
+
+    public function it_should_cast_the_value_to_string_with_strict_allowed_options_setter()
+    {
+        $this->publicAllowedOptionsStrictSetter('test_field', ['1', 'val'], 1, 'Error Message');
+
+        $this->test_field->shouldBe('1');
+    }
+
+    public function it_should_reject_values_not_strictly_allowed_and_keep_the_previous_value()
+    {
+        $this->test_field = 'previous';
+
+        // true and 0 match 'val' under loose comparison on PHP < 8, the string cast rejects them
+        foreach ([true, 0, '', 'VAL', 'val '] as $invalidValue) {
+            $this->shouldThrow(InvalidArgument::class)->during(
+                'publicAllowedOptionsStrictSetter',
+                [
+                    'test_field',
+                    ['val', 'val1', 'val2'],
+                    $invalidValue,
+                    'Error Message'
+                ]
+            );
+
+            $this->test_field->shouldBe('previous');
+        }
+    }
+
     public function it_should_not_fail_during_limited_string_with_proper_max_value_and_without_min_value_length()
     {
         $this->shouldNotThrow(InvalidArgument::class)->during(

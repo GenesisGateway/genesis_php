@@ -29,6 +29,7 @@ namespace Genesis\Api\Request\NonFinancial\TokenizationApi;
 use Genesis\Api\Request\Base\NonFinancial\TokenizationApi\BaseRequest;
 use Genesis\Api\Traits\Request\NonFinancial\TokenizationApiAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\TokenizationApiCardAttributes;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
 
 /**
@@ -40,11 +41,22 @@ use Genesis\Utils\Common as CommonUtils;
  * The token can be used in the Processing API instead of the cardholder data.
  *
  * @package Genesis\Api\Request\NonFinancial\TokenizationApi
+ *
+ * @method bool|null getSchemeTokenized()    Whether Card Scheme Tokenization will be used
+ * @method $this setSchemeTokenized($value)  Request Card Scheme Tokenization
  */
 class Tokenize extends BaseRequest
 {
     use TokenizationApiAttributes;
     use TokenizationApiCardAttributes;
+
+    /**
+     * Indicates that Card Scheme Tokenization will be used.
+     * Sent only when explicitly set; omitted otherwise.
+     *
+     * @var bool|null
+     */
+    protected $scheme_tokenized;
 
     /**
      * Tokenize constructor
@@ -55,15 +67,53 @@ class Tokenize extends BaseRequest
     }
 
     /**
+     * Set whether Card Scheme Tokenization will be used
+     *
+     * @param bool|string|int $value Boolean or a value recognized as boolean (e.g. 'true', 'no', 1, 0)
+     *
+     * @return $this
+     * @throws InvalidArgument When the value is not recognized as a boolean
+     */
+    public function setSchemeTokenized($value)
+    {
+        $filtered = CommonUtils::filterBoolean($value);
+
+        if (!is_bool($filtered)) {
+            throw new InvalidArgument('Invalid value given for scheme_tokenized. Boolean value is expected.');
+        }
+
+        $this->scheme_tokenized = $filtered;
+
+        return $this;
+    }
+
+    /**
+     * Return the parameters which may hold empty (but not null) values, e.g. scheme_tokenized = false
+     * Example value:
+     * array(
+     *     'class_property' => 'request_structure_key'
+     * )
+     *
+     * @return array
+     */
+    protected function allowedEmptyNotNullFields()
+    {
+        return [
+            'scheme_tokenized' => 'scheme_tokenized'
+        ];
+    }
+
+    /**
      * @return array
      */
     protected function getRequestStructure()
     {
         return [
-            'consumer_id' => $this->consumer_id,
-            'token_type'  => $this->token_type,
-            'email'       => $this->email,
-            'card_data'   => $this->getCreditCardParamsStructure()
+            'consumer_id'      => $this->consumer_id,
+            'token_type'       => $this->token_type,
+            'email'            => $this->email,
+            'card_data'        => $this->getCreditCardParamsStructure(),
+            'scheme_tokenized' => $this->scheme_tokenized
         ];
     }
 

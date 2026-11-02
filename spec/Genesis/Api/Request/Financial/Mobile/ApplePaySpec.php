@@ -13,6 +13,8 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\ForceThreedsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\BirthDateAttributesExample;
@@ -24,8 +26,10 @@ class ApplePaySpec extends ObjectBehavior
     use CryptoAttributesExamples;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use ForceThreedsAttributesExamples;
     use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use RecurringTypeAttributesExample;
     use RequestExamples;
 

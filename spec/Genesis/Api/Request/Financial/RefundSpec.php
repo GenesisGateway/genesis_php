@@ -3,26 +3,30 @@
 namespace spec\Genesis\Api\Request\Financial;
 
 use Genesis\Api\Constants\Transaction\Parameters\Refund\BankAccountTypeParameters;
+use Genesis\Api\Constants\Transaction\Parameters\Refund\CreditReasonIndicatorParameters;
+use Genesis\Api\Constants\Transaction\Parameters\Refund\TicketChangeIndicatorParameters;
 use Genesis\Api\Request\Financial\Refund;
 use PhpSpec\ObjectBehavior;
 use spec\Genesis\Api\Traits\Request\Financial\InstallmentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\CommercialCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class RefundSpec extends ObjectBehavior
 {
     use RequestExamples;
     use InstallmentAttributesExamples;
+    use CommercialCardAttributesExamples;
 
     private $creditIndicators = [
-        Refund::CREDIT_REASON_INDICATOR_OTHER,
-        Refund::CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET,
-        Refund::CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION,
-        Refund::CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT
+        CreditReasonIndicatorParameters::OTHER,
+        CreditReasonIndicatorParameters::PARTIAL_REFUND_OR_TICKET,
+        CreditReasonIndicatorParameters::TRANSPORT_CANCELLATION,
+        CreditReasonIndicatorParameters::TRAVEL_TRANSPORT
     ];
 
     private $ticketIndicators = [
-        Refund::TICKET_CHANGE_INDICATOR_TO_EXISTING,
-        Refund::TICKET_CHANGE_INDICATOR_TO_NEW
+        TicketChangeIndicatorParameters::TO_EXISTING,
+        TicketChangeIndicatorParameters::TO_NEW
     ];
 
     public function it_is_initializable()

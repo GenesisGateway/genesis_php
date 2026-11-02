@@ -26,9 +26,13 @@
 
 namespace Genesis\Api\Request\Financial;
 
+use Genesis\Api\Constants\Transaction\Parameters\Refund\CreditReasonIndicatorParameters;
+use Genesis\Api\Constants\Transaction\Parameters\Refund\TicketChangeIndicatorParameters;
 use Genesis\Api\Traits\Request\Financial\BeneficiaryAttributes;
+use Genesis\Api\Traits\Request\Financial\CommercialCardAttributes;
 use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
 use Genesis\Api\Traits\Request\Financial\Refund\BankAttributes;
+use Genesis\Api\Traits\Request\Financial\Refund\TravelTicketAttributes;
 
 /**
  * Class Refund
@@ -41,79 +45,9 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
 {
     use BankAttributes;
     use BeneficiaryAttributes;
+    use CommercialCardAttributes;
     use InstallmentAttributes;
-
-    const CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION   = 'A';
-    const CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT         = 'B';
-    const CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET = 'P';
-    const CREDIT_REASON_INDICATOR_OTHER                    = 'O';
-    const TICKET_CHANGE_INDICATOR_TO_EXISTING              = 'C';
-    const TICKET_CHANGE_INDICATOR_TO_NEW                   = 'N';
-
-    /**
-     * This field indicates the reason for a credit to the cardholder.
-     * Allowed values: A, B, P, O
-     *
-     * @var string
-     */
-    protected $credit_reason_indicator_1;
-
-    /**
-     * This field indicates the reason for a credit to the cardholder.
-     * Allowed values: A, B, P, O
-     *
-     * @var string
-     */
-    protected $credit_reason_indicator_2;
-
-    /**
-     * This field will contain either a space or a code to indicate why a ticket was changed.
-     * Allowed values: C, N
-     *
-     * @var string
-     */
-    protected $ticket_change_indicator;
-
-    /**
-     * @param $value
-     *
-     * @return Refund
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setCreditReasonIndicator1($value)
-    {
-        return $this->setCreditReasonIndicator('credit_reason_indicator_1', $value);
-    }
-
-    /**
-     * @param $value
-     *
-     * @return Refund
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setCreditReasonIndicator2($value)
-    {
-        return $this->setCreditReasonIndicator('credit_reason_indicator_2', $value);
-    }
-
-    /**
-     * @param $value
-     *
-     * @return Refund
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setTicketChangeIndicator($value)
-    {
-        return $this->allowedOptionsSetter(
-            'ticket_change_indicator',
-            [
-                self::TICKET_CHANGE_INDICATOR_TO_EXISTING,
-                self::TICKET_CHANGE_INDICATOR_TO_NEW
-            ],
-            $value,
-            'Invalid ticket change indicator.'
-        );
-    }
+    use TravelTicketAttributes;
 
     /**
      * Returns the Request transaction type
@@ -125,28 +59,6 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
     }
 
     /**
-     * @param $field
-     * @param $value
-     *
-     * @return Refund
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    protected function setCreditReasonIndicator($field, $value)
-    {
-        return $this->allowedOptionsSetter(
-            $field,
-            [
-                self::CREDIT_REASON_INDICATOR_TRANSPORT_CANCELLATION,
-                self::CREDIT_REASON_INDICATOR_TRAVEL_TRANSPORT,
-                self::CREDIT_REASON_INDICATOR_PARTIAL_REFUND_OR_TICKET,
-                self::CREDIT_REASON_INDICATOR_OTHER
-            ],
-            $value,
-            'Invalid credit reason indicator.'
-        );
-    }
-
-    /**
      * Return the payment transaction structure
      *
      * @return array
@@ -155,18 +67,38 @@ class Refund extends \Genesis\Api\Request\Base\Financial\Reference
     {
         return array_merge(
             parent::getPaymentTransactionStructure(),
-            [
-                'travel' => [
-                    'ticket' => [
-                        'credit_reason_indicator_1' => $this->credit_reason_indicator_1,
-                        'credit_reason_indicator_2' => $this->credit_reason_indicator_2,
-                        'ticket_change_indicator'   => $this->ticket_change_indicator,
-                    ]
-                ]
-            ],
+            $this->getTravelTicketAttributesStructure(),
             $this->getBeneficiaryAttributesStructure(),
             $this->getBankAttributesStructure(),
-            $this->getInstallmentAttributesStructure()
+            $this->getInstallmentAttributesStructure(),
+            $this->getCommercialCardAttributesStructure()
         );
+    }
+
+    /**
+     * Extend the Refund Request Validations
+     *
+     * @return void
+     * @throws \Genesis\Exceptions\ErrorParameter
+     */
+    protected function checkRequirements()
+    {
+        parent::checkRequirements();
+
+        $this->validateCommercialCardAttributes();
+    }
+
+    /**
+     * Return the required parameters keys which values could evaluate as empty
+     * Example value:
+     * array(
+     *     'class_property' => 'request_structure_key'
+     * )
+     *
+     * @return array
+     */
+    protected function allowedEmptyNotNullFields()
+    {
+        return $this->getCommercialCardAllowedFieldsZeroValues();
     }
 }

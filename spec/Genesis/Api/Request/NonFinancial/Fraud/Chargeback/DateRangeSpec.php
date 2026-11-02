@@ -10,15 +10,13 @@ use PhpSpec\ObjectBehavior;
 use spec\Fixtures\Api\Stubs\Parser\ParserStub;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\NonFinancial\DateRangeRequestSharedExample;
-use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ExternallyProcessedSharedExample;
-use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ProcessingTypeSharedExample;
+use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ScopeSharedExample;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DateRangeSpec extends ObjectBehavior
 {
     use DateRangeRequestSharedExample;
-    use ExternallyProcessedSharedExample;
-    use ProcessingTypeSharedExample;
+    use ScopeSharedExample;
     use RequestExamples;
 
     public function it_is_initializable()
@@ -76,6 +74,56 @@ class DateRangeSpec extends ObjectBehavior
         $this->setImportDate(null);
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    /**
+     * Date XOR truth table (scope always present).
+     * requiredFieldsOR enforces EXACTLY ONE of start_date / import_date.
+     */
+
+    public function it_should_succeed_with_scope_and_start_date_only()
+    {
+        $this->setScopeParameters();
+        $this->setStartDate(Faker::getInstance()->date('Y-m-d'));
+        $this->setImportDate(null);
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_succeed_with_scope_and_import_date_only()
+    {
+        $this->setScopeParameters();
+        $this->setStartDate(null);
+        $this->setImportDate(Faker::getInstance()->date('Y-m-d'));
+
+        $this->shouldNotThrow()->during('getDocument');
+    }
+
+    public function it_should_throw_with_scope_but_no_dates()
+    {
+        $this->setScopeParameters();
+        $this->setStartDate(null);
+        $this->setImportDate(null);
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_throw_with_scope_and_both_dates()
+    {
+        $this->setScopeParameters();
+        $this->setStartDate(Faker::getInstance()->date('Y-m-d'));
+        $this->setImportDate(Faker::getInstance()->date('Y-m-d'));
+
+        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+    }
+
+    public function it_should_throw_when_scope_missing_but_start_date_present()
+    {
+        $this->setScope(null);
+        $this->setStartDate(Faker::getInstance()->date('Y-m-d'));
+        $this->setImportDate(null);
+
+        $this->shouldThrow()->during('getDocument');
     }
 
     public function it_should_have_type_date_range_when_use_set_end_date()
@@ -168,7 +216,16 @@ class DateRangeSpec extends ObjectBehavior
      */
     protected function setRequestAdditionalParameters()
     {
-        $this->setExternallyProcessedParameters();
-        $this->setProcessingTypeParameters();
+        $this->setScopeParameters();
+    }
+
+    /**
+     * Used by ScopeSharedExample
+     *
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    protected function setDefaultRequestParameters()
+    {
+        $this->setRequestParameters();
     }
 }

@@ -50,6 +50,8 @@ use Genesis\Utils\Common;
  * @method string getBackgroundChecksLastName()
  * @method string getBackgroundChecksFullName()
  * @method bool   getBackgroundChecksAsyncUpdate()
+ * @method bool   getBackgroundChecksWithAliasSearch()
+ * @method bool   getBackgroundChecksWithAssociatesSearch()
  */
 trait KycBackgroundChecksVerifications
 {
@@ -112,6 +114,20 @@ trait KycBackgroundChecksVerifications
      * @var int
      */
     protected $match_score;
+
+    /**
+     * Search within the alias list during the AML background check.
+     *
+     * @var bool
+     */
+    protected $background_checks_with_alias_search;
+
+    /**
+     * Search within the relatives and close associates (RCA) list during the AML background check.
+     *
+     * @var bool
+     */
+    protected $background_checks_with_associates_search;
 
     /**
      * Set the correct value for Verifications Background Checks Date Of Birth
@@ -233,6 +249,32 @@ trait KycBackgroundChecksVerifications
     }
 
     /**
+     * Set the correct value for Background Checks With Alias Search - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setBackgroundChecksWithAliasSearch($value)
+    {
+        $this->background_checks_with_alias_search = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Background Checks With Associates Search - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setBackgroundChecksWithAssociatesSearch($value)
+    {
+        $this->background_checks_with_associates_search = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
      * Get the correct structure for Verifications Background Checks
      *
      * @return array
@@ -240,15 +282,17 @@ trait KycBackgroundChecksVerifications
     protected function getVerificationBackgroundChecksStructure()
     {
         return [
-            'first_name'    => $this->background_checks_first_name,
-            'middle_name'   => $this->background_checks_middle_name,
-            'last_name'     => $this->background_checks_last_name,
-            'full_name'     => $this->background_checks_full_name,
-            'date_of_birth' => $this->getBackgroundChecksDateOfBirth(),
-            'async_update'  => $this->background_checks_async_update,
-            'filters'       => $this->background_checks_filters,
-            'match_score'   => (int)$this->match_score,
-            'business'      => $this->getKycBusinessStructure()
+            'first_name'             => $this->background_checks_first_name,
+            'middle_name'            => $this->background_checks_middle_name,
+            'last_name'              => $this->background_checks_last_name,
+            'full_name'              => $this->background_checks_full_name,
+            'date_of_birth'          => $this->getBackgroundChecksDateOfBirth(),
+            'async_update'           => $this->background_checks_async_update,
+            'filters'                => $this->background_checks_filters,
+            'match_score'            => (int)$this->match_score,
+            'business'               => $this->getKycBusinessStructure(),
+            'with_alias_search'      => $this->background_checks_with_alias_search,
+            'with_associates_search' => $this->background_checks_with_associates_search
         ];
     }
 }

@@ -8,6 +8,7 @@ use Genesis\Api\Constants\Transaction\Parameters\ScaExemptions;
 use Genesis\Api\Constants\Transaction\Types;
 use Genesis\Api\Request\Wpf\Create;
 use Genesis\Exceptions\ErrorParameter;
+use Genesis\Exceptions\InvalidMethod;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
@@ -19,7 +20,9 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExampl
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NullableFieldsNoPHP85DeprecationExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\OrderAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PendingPaymentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 
@@ -32,8 +35,10 @@ class CreateSpec extends ObjectBehavior
     use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
     use NullableFieldsNoPHP85DeprecationExamples;
+    use OrderAttributesExamples;
     use PendingPaymentAttributesExamples;
     use RecurringCategoryAttributesExample;
+    use PurposeOfPaymentAttributesExamples;
     use ThreedsV2AttributesExamples;
     use ThreedsV2DatesExamples;
     use DigitalAssetTypeAttributesExamples;
@@ -48,6 +53,35 @@ class CreateSpec extends ObjectBehavior
         $this->setRequestParameters();
         $this->getDocument()->shouldNotBeEmpty();
         $this->getDocument()->shouldContainString('transaction_types');
+    }
+
+    public function it_should_contain_billing_street_name_when_set()
+    {
+        $this->setRequestParameters();
+        $this->setBillingStreetName('Example Street');
+        $this->getDocument()->shouldContainString('<street_name>Example Street</street_name>');
+    }
+
+    public function it_should_not_contain_billing_street_name_when_not_set()
+    {
+        $this->setRequestParameters();
+        $this->getDocument()->shouldNotContainString('<street_name>');
+    }
+
+    public function it_should_fail_when_ezeewallet_type_has_no_merchant_website()
+    {
+        $this->shouldThrow(ErrorParameter::class)->during('addTransactionType', [
+            Types::EZEEWALLET,
+            []
+        ]);
+    }
+
+    public function it_should_pass_when_ezeewallet_type_has_merchant_website()
+    {
+        $this->shouldNotThrow()->during('addTransactionType', [
+            Types::EZEEWALLET,
+            ['merchant_website' => 'http://www.example.com']
+        ]);
     }
 
     public function it_should_fail_with_non_wpf_transaction_type()
@@ -410,6 +444,22 @@ class CreateSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('<scheme_tokenized>true</scheme_tokenized>');
     }
 
+    public function it_should_not_support_foreign_retailer_indicator_setter_for_wpf()
+    {
+        $this->shouldThrow(InvalidMethod::class)->during('setForeignRetailerIndicator', ['F']);
+    }
+
+    public function it_should_not_contain_marketplace_data_for_wpf()
+    {
+        $this->setRequestParameters();
+        $this->getDocument()->shouldNotContain('marketplace_data');
+    }
+
+    protected function getPurposeOfPaymentRootXpath()
+    {
+        return '/wpf_payment/purpose_of_payment';
+    }
+
     protected function setRequestParameters()
     {
         $faker = \Faker\Factory::create();
@@ -448,8 +498,9 @@ class CreateSpec extends ObjectBehavior
         $this->addTransactionType(
             Types::EZEEWALLET,
             array(
-                'wallet_id'   => 'john@example.com',
-                'wallet_pass' => 'password'
+                'wallet_id'        => 'john@example.com',
+                'wallet_pass'      => 'password',
+                'merchant_website' => 'http://www.example.com'
             )
         );
         $this->setDigitalAssetType(Faker::getInstance()->randomElement(DigitalAssetTypes::getAll()));

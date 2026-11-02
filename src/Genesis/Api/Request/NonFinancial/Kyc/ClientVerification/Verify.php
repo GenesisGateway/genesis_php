@@ -31,6 +31,7 @@ use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycBackgroundChecksVerifications;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycDocumentVerifications;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycFaceVerifications;
+use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycVerificationInstructions;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycVerifications;
 use Genesis\Api\Traits\Request\NonFinancial\Kyc\KycVerificationsCommon;
 use Genesis\Utils\Common;
@@ -50,12 +51,19 @@ use Genesis\Utils\Common;
  * @method string getRedirectUrl();
  * @method bool   getAddressBacksideProofRequired();
  * @method bool   getAllowRetry();
+ * @method bool   getShowConsent();
+ * @method bool   getShowPrivacyPolicy();
+ * @method bool   getDocumentWithEnhancedData();
+ * @method bool   getDocumentAllowFuzzyMatch();
+ * @method bool   getDocumentAllowDeclineDuringSingleStep();
+ * @method bool   getDocumentWithOpticalCharacterRecognitionForm();
  */
 class Verify extends KYCBaseRequest
 {
     use KycBackgroundChecksVerifications;
     use KycDocumentVerifications;
     use KycFaceVerifications;
+    use KycVerificationInstructions;
     use KycVerifications;
     use KycVerificationsCommon;
     use ReferenceAttributes;
@@ -91,12 +99,132 @@ class Verify extends KYCBaseRequest
     protected $allow_retry;
 
     /**
+     * Whether the consent message is shown on the verification page
+     *
+     * @var bool
+     */
+    protected $show_consent;
+
+    /**
+     * Whether the privacy policy is shown on the verification page
+     *
+     * @var bool
+     */
+    protected $show_privacy_policy;
+
+    /**
+     * Request enhanced data extraction from the document
+     *
+     * @var bool
+     */
+    protected $document_with_enhanced_data;
+
+    /**
+     * Allow fuzzy matching of the document data
+     *
+     * @var bool
+     */
+    protected $document_allow_fuzzy_match;
+
+    /**
+     * Allow the verification to be declined during the single step flow
+     *
+     * @var bool
+     */
+    protected $document_allow_decline_during_single_step;
+
+    /**
+     * Show the OCR form to the customer
+     *
+     * @var bool
+     */
+    protected $document_with_optical_character_recognition_form;
+
+    /**
      * Define Verifications request endpoint
      *
      */
     public function __construct()
     {
         parent::__construct('verifications');
+    }
+
+    /**
+     * Set the correct value for Show Consent - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setShowConsent($value)
+    {
+        $this->show_consent = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Show Privacy Policy - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setShowPrivacyPolicy($value)
+    {
+        $this->show_privacy_policy = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Document With Enhanced Data - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setDocumentWithEnhancedData($value)
+    {
+        $this->document_with_enhanced_data = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Document Allow Fuzzy Match - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setDocumentAllowFuzzyMatch($value)
+    {
+        $this->document_allow_fuzzy_match = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Document Allow Decline During Single Step - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setDocumentAllowDeclineDuringSingleStep($value)
+    {
+        $this->document_allow_decline_during_single_step = Common::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set the correct value for Document With Optical Character Recognition Form - boolean
+     *
+     * @param $value
+     * @return $this
+     */
+    public function setDocumentWithOpticalCharacterRecognitionForm($value)
+    {
+        $this->document_with_optical_character_recognition_form = Common::toBoolean($value);
+
+        return $this;
     }
 
     /**
@@ -133,11 +261,40 @@ class Verify extends KYCBaseRequest
     protected function allowedEmptyNotNullFields()
     {
         return array(
-            'face_allow_offline'           => 'allow_offline',
-            'face_allow_online'            => 'allow_online',
-            'face_check_duplicate_request' => 'check_duplicate_request',
-            'expiry_date'                  => 'expiry_date'
+            'face_allow_offline'                               => 'allow_offline',
+            'face_allow_online'                                => 'allow_online',
+            'face_check_duplicate_request'                     => 'check_duplicate_request',
+            'expiry_date'                                      => 'expiry_date',
+            'show_consent'                                     => 'show_consent',
+            'show_privacy_policy'                              => 'show_privacy_policy',
+            'background_checks_with_alias_search'              => 'with_alias_search',
+            'background_checks_with_associates_search'         => 'with_associates_search',
+            'document_with_enhanced_data'                      => 'with_enhanced_data',
+            'document_allow_fuzzy_match'                       => 'allow_fuzzy_match',
+            'document_allow_decline_during_single_step'        => 'allow_decline_during_single_step',
+            'document_with_optical_character_recognition_form' => 'with_optical_character_recognition_form',
+            'verification_instructions_allow_paper_based'      => 'allow_paper_based',
+            'verification_instructions_allow_photocopy'        => 'allow_photocopy',
+            'verification_instructions_allow_laminated'        => 'allow_laminated',
+            'verification_instructions_allow_screenshot'       => 'allow_screenshot',
+            'verification_instructions_allow_cropped'          => 'allow_cropped',
+            'verification_instructions_allow_scanned'          => 'allow_scanned'
         );
+    }
+
+    /**
+     * Get the structure of the Verify-only document options
+     *
+     * @return array
+     */
+    protected function getDocumentOptionsStructure()
+    {
+        return [
+            'with_enhanced_data'                      => $this->document_with_enhanced_data,
+            'allow_fuzzy_match'                       => $this->document_allow_fuzzy_match,
+            'allow_decline_during_single_step'        => $this->document_allow_decline_during_single_step,
+            'with_optical_character_recognition_form' => $this->document_with_optical_character_recognition_form
+        ];
     }
 
     /**
@@ -162,7 +319,13 @@ class Verify extends KYCBaseRequest
             'allow_retry'                     => $this->allow_retry,
             'verification_mode'               => $this->verification_mode,
             'background_checks'               => $this->getVerificationBackgroundChecksStructure(),
-            'document'                        => $this->getVerificationDocumentStructure()
+            'document'                        => array_merge(
+                $this->getVerificationDocumentStructure(),
+                $this->getDocumentOptionsStructure()
+            ),
+            'show_consent'                    => $this->show_consent,
+            'show_privacy_policy'             => $this->show_privacy_policy,
+            'verification_instructions'       => $this->getVerificationInstructionsStructure()
         ];
     }
 }

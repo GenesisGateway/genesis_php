@@ -27,25 +27,29 @@
 namespace Genesis\Api\Request\NonFinancial\ProcessedTransactions;
 
 use Genesis\Api\Request\Base\NonFinancial\DateRangeRequest as BaseDateRangeRequest;
-use Genesis\Api\Traits\Request\NonFinancial\ExternallyProcessed;
-use Genesis\Api\Traits\Request\NonFinancial\ProcessingType;
+use Genesis\Api\Traits\Request\NonFinancial\Scope;
+use Genesis\Utils\Common;
 
 class DateRange extends BaseDateRangeRequest
 {
-    use ExternallyProcessed;
-    use ProcessingType;
+    use Scope;
 
     protected function initConfiguration()
     {
         parent::initBaseConfiguration('processed_transactions/by_date');
     }
 
+    protected function setRequiredFields()
+    {
+        $this->requiredFields = Common::createArrayObject([
+            'start_date',
+            'scope'
+        ]);
+    }
+
     protected function getRequestStructure()
     {
-        return array_merge(
-            $this->getExternallyProcessedStructure(),
-            $this->getProcessingTypeStructure()
-        );
+        return $this->getScopeStructure();
     }
 
     protected function getParentNode()

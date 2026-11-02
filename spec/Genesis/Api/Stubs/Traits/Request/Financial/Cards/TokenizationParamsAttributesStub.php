@@ -2,7 +2,7 @@
 
 namespace spec\Genesis\Api\Stubs\Traits\Request\Financial\Cards;
 
-use Genesis\API\Traits\MagicAccessors;
+use Genesis\Api\Traits\MagicAccessors;
 use Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributes;
 use Genesis\Api\Traits\RestrictedSetter;
 

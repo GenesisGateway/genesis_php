@@ -64,6 +64,11 @@ class NamesSpec extends ObjectBehavior
         }
     }
 
+    public function it_should_return_alipay_display_name()
+    {
+        $this->getName(Types::ALIPAY)->shouldBe('Alipay');
+    }
+
     public function it_should_return_specific_string_for_invalid_transcation_type()
     {
         $this->getName('invalid_trx_type')->shouldBe('Unknown Transaction Type');

@@ -26,6 +26,8 @@
 
 namespace Genesis\Api\Traits\Request\Financial;
 
+use Genesis\Exceptions\ErrorParameter;
+
 /**
  * The UCOF transaction uses a previously stored credential for a fixed or variable amount and it does not occur
  * on a scheduled or regularly occurring transaction date. With it, the cardholder has provided consent to the merchant
@@ -38,6 +40,7 @@ namespace Genesis\Api\Traits\Request\Financial;
  * @method $this  setCredentialOnFileTransactionIdentifier($value) Ucof attribute
  * @method string getCredentialOnFileSettlementDate()              Ucof attribute
  * @method $this  setCredentialOnFileSettlementDate($value)        Ucof attribute
+ * @method string|null getCredentialOnFileTransactionLinkId()     Ucof attribute
  */
 trait UcofAttributes
 {
@@ -56,6 +59,34 @@ trait UcofAttributes
     protected $credential_on_file_settlement_date;
 
     /**
+     * Scheme Transaction Link ID (scheme_transaction_link_id) of the original transaction (Mastercard)
+     *
+     * @var string|null $credential_on_file_transaction_link_id
+     */
+    protected $credential_on_file_transaction_link_id;
+
+    /**
+     * Set the Scheme Transaction Link ID of the original transaction
+     *
+     * Only the documented max length (22) is enforced, the exact format is validated by the gateway
+     *
+     * @param string|null $value
+     *
+     * @return $this
+     * @throws \Genesis\Exceptions\InvalidArgument
+     */
+    public function setCredentialOnFileTransactionLinkId($value)
+    {
+        if ($value === null || $value === '') {
+            $this->credential_on_file_transaction_link_id = null;
+
+            return $this;
+        }
+
+        return $this->setLimitedString('credential_on_file_transaction_link_id', $value, null, 22);
+    }
+
+    /**
      * Returns the Ucof Attributes Structure
      *
      * @return array
@@ -66,5 +97,35 @@ trait UcofAttributes
             'credential_on_file_transaction_identifier' => $this->credential_on_file_transaction_identifier,
             'credential_on_file_settlement_date'        => $this->credential_on_file_settlement_date
         ];
+    }
+
+    /**
+     * Link ID structure, merged only by requests that document the parameter (Authorize, Sale)
+     *
+     * @return array
+     */
+    protected function getUcofTransactionLinkIdStructure()
+    {
+        return ['credential_on_file_transaction_link_id' => $this->credential_on_file_transaction_link_id];
+    }
+
+    /**
+     * Explicit rejection for UCOF users without documented link id support
+     *
+     * @return void
+     * @throws ErrorParameter
+     */
+    protected function rejectCredentialOnFileTransactionLinkId()
+    {
+        if ($this->credential_on_file_transaction_link_id === null) {
+            return;
+        }
+
+        throw new ErrorParameter(
+            sprintf(
+                'credential_on_file_transaction_link_id is not supported for %s transaction type.',
+                $this->getTransactionType()
+            )
+        );
     }
 }

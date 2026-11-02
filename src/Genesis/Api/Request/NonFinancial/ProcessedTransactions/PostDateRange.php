@@ -27,8 +27,8 @@
 namespace Genesis\Api\Request\NonFinancial\ProcessedTransactions;
 
 use Genesis\Api\Request\Base\NonFinancial\DateRangeRequest as BaseDateRangeRequest;
-use Genesis\Api\Traits\Request\NonFinancial\ExternallyProcessed;
-use Genesis\Api\Traits\Request\NonFinancial\ProcessingType;
+use Genesis\Api\Traits\Request\NonFinancial\Scope;
+use Genesis\Utils\Common;
 
 /**
  * Class PostDateRange
@@ -36,8 +36,7 @@ use Genesis\Api\Traits\Request\NonFinancial\ProcessingType;
  */
 class PostDateRange extends BaseDateRangeRequest
 {
-    use ExternallyProcessed;
-    use ProcessingType;
+    use Scope;
 
     /**
      * Batch number of processed transactions
@@ -104,6 +103,14 @@ class PostDateRange extends BaseDateRangeRequest
         parent::initBaseConfiguration('processed_transactions/by_post_date');
     }
 
+    protected function setRequiredFields()
+    {
+        $this->requiredFields = Common::createArrayObject([
+            'start_date',
+            'scope'
+        ]);
+    }
+
     protected function getRequestStructure()
     {
         return array_merge(
@@ -112,8 +119,7 @@ class PostDateRange extends BaseDateRangeRequest
                 'batch_slip_number'   => $this->batch_slip_number,
                 'deposit_slip_number' => $this->deposit_slip_number
             ],
-            $this->getExternallyProcessedStructure(),
-            $this->getProcessingTypeStructure()
+            $this->getScopeStructure()
         );
     }
 

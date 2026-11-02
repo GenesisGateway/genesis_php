@@ -5,10 +5,12 @@ namespace spec\Genesis\Api\Request\NonFinancial\Fraud\Retrieval;
 use Genesis\Api\Request\NonFinancial\Fraud\Retrieval\DateRange;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ScopeSharedExample;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DateRangeSpec extends ObjectBehavior
 {
+    use ScopeSharedExample;
     use RequestExamples;
 
     public function it_is_initializable()
@@ -60,5 +62,11 @@ class DateRangeSpec extends ObjectBehavior
         $faker = $this->getFaker();
 
         $this->setStartDate($faker->dateTimeBetween('-2 years', 'now')->format('Y-m-d'));
+        $this->setScopeParameters();
+    }
+
+    protected function setDefaultRequestParameters()
+    {
+        $this->setRequestParameters();
     }
 }

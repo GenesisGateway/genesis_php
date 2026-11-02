@@ -140,7 +140,8 @@ $genesis
         ->setBillingZipCode('10178')
         ->setBillingCity('Los Angeles')
         ->setBillingState('CA')
-        ->setBillingCountry('US');
+        ->setBillingCountry('US')
+        ->setBillingStreetName('Example Street');
 
     // Send the request
     $genesis->execute();
@@ -233,6 +234,7 @@ $request
     ->setBillingCity('Los Angeles')
     ->setBillingState('CA')
     ->setBillingCountry('US')
+    ->setBillingStreetName('Example Street')
 
     // Web Payment Form language, default is EN if no language is provided
     ->setLanguage(\Genesis\Api\Constants\i18n::EN)
@@ -409,6 +411,7 @@ try {
         ->setBillingCity('Los Angeles')
         ->setBillingState('CA')
         ->setBillingCountry('US')
+        ->setBillingStreetName('Example Street')
 
         // 3DSv2 params
 
@@ -615,6 +618,7 @@ try {
         ->setBillingCity('Los Angeles')
         ->setBillingState('CA')
         ->setBillingCountry('US')
+        ->setBillingStreetName('Example Street')
 
         // Optional Description
         ->setDescription('Example Description')
@@ -830,6 +834,7 @@ $genesis->request()
     ->setBillingCity('Los Angeles')
     ->setBillingState('CA')
     ->setBillingCountry('US')
+    ->setBillingStreetName('Example Street')
     // Shipping Details
     ->setShippingFirstName('Travis')
     ->setShippingLastName('Pastrana')
@@ -910,6 +915,7 @@ $genesis
     ->setBillingCity('Los Angeles')
     ->setBillingState('CA')
     ->setBillingCountry('US')
+    ->setBillingStreetName('Example Street')
 
     // Shipping Details
     ->setShippingFirstName('Travis')
@@ -1006,6 +1012,7 @@ $genesis->request()
     ->setBillingCity('Los Angeles')
     ->setBillingState('CA')
     ->setBillingCountry('US')
+    ->setBillingStreetName('Example Street')
     // Shipping Details
     ->setShippingFirstName('Travis')
     ->setShippingLastName('Pastrana')
@@ -1086,6 +1093,7 @@ $genesis
     ->setBillingCity('Los Angeles')
     ->setBillingState('CA')
     ->setBillingCountry('US')
+    ->setBillingStreetName('Example Street')
 
     // Shipping Details
     ->setShippingFirstName('Travis')
@@ -1171,6 +1179,7 @@ try {
         ->setBillingNeighborhood('Lichtenberg')
         ->setBillingState('Berlin')
         ->setBillingCountry('DE')
+        ->setBillingStreetName('Example Street')
 
 
         // Shipping Address
@@ -1284,6 +1293,7 @@ try {
         ->setBillingCity('Los Angeles')
         ->setBillingState('CA')
         ->setBillingCountry('US')
+        ->setBillingStreetName('Example Street')
         // Optional Description
         ->setDescription('Example Description')
 
@@ -1314,6 +1324,135 @@ catch (\Genesis\Exceptions\ErrorParameter $parameter) {
 }
 // Log/handle network (transport) errors
 // Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
+```
+
+</details>
+
+Example Card Scheme Tokenization via Tokenization API
+-------------
+Set `scheme_tokenized` to `true` on the `Tokenize` and `Cryptogram` requests when Card Scheme Tokenization will be used. The parameter is optional in the SDK and is sent only when `setSchemeTokenized()` is called; both `true` and `false` are sent as given.
+
+<details>
+<summary>Example Tokenize Request</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+
+// ...OR, optionally, you can set the credentials manually
+\Genesis\Config::setEndpoint(\Genesis\Api\Constants\Endpoints::EMERCHANTPAY);
+\Genesis\Config::setEnvironment(\Genesis\Api\Constants\Environments::STAGING);
+\Genesis\Config::setUsername('<enter_your_username>');
+\Genesis\Config::setPassword('<enter_your_password>');
+
+try {
+    // Create a new Genesis instance with desired API request
+    $genesis = new \Genesis\Genesis('NonFinancial\TokenizationApi\Tokenize');
+
+    /** @var \Genesis\Api\Request\NonFinancial\TokenizationApi\Tokenize $tokenize_request */
+    $tokenize_request = $genesis->request();
+    $tokenize_request
+        ->setConsumerId('123456')
+        ->setEmail('john@example.com')
+        ->setTokenType('uuid')
+
+        // Card Details
+        ->setCardNumber('4200000000000000')
+        ->setCardHolder('John Doe')
+        ->setExpirationMonth('05')
+        ->setExpirationYear('2030')
+
+        // Card Scheme Tokenization
+        ->setSchemeTokenized(true);
+
+    // Send the request
+    $genesis->execute();
+
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
+    // Store the plain-text token, it can't be obtained again
+    echo $genesis->response()->getResponseObject()->token;
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle invalid setter values
+// Example: Non-boolean scheme_tokenized value
+catch (\Genesis\Exceptions\InvalidArgument $argument) {
+    error_log($argument->getMessage());
+}
+// Log/handle network (transport) errors
+// Example: SSL verification errors, Timeouts
+catch (\Genesis\Exceptions\ErrorNetwork $network) {
+    error_log($network->getMessage());
+}
+```
+
+</details>
+
+<details>
+<summary>Example Cryptogram Request</summary>
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+// Load the pre-configured ini file...
+\Genesis\Config::loadSettings('/path/to/config.ini');
+
+try {
+    // Create a new Genesis instance with desired API request
+    $genesis = new \Genesis\Genesis('NonFinancial\TokenizationApi\Cryptogram');
+
+    /** @var \Genesis\Api\Request\NonFinancial\TokenizationApi\Cryptogram $cryptogram_request */
+    $cryptogram_request = $genesis->request();
+    $cryptogram_request
+        ->setConsumerId('123456')
+        ->setEmail('john@example.com')
+        ->setToken('ee946db8-d7db-4bb7-b608-b65b153e127d')
+        ->setTokenType('uuid')
+        ->setTransactionReference('123456789')
+
+        // Card Scheme Tokenization
+        ->setSchemeTokenized(true);
+
+    // Send the request
+    $genesis->execute();
+
+    // If there is an error - display the error information
+    if (!$genesis->response()->isSuccessful()) {
+        echo "Error code: {$genesis->response()->getResponseObject()->code}\n";
+        echo "Message: {$genesis->response()->getResponseObject()->message}\n";
+        echo "Technical message: {$genesis->response()->getResponseObject()->technical_message}\n";
+    }
+
+    // Cryptogram to be included in the authorization
+    echo $genesis->response()->getResponseObject()->cryptogram;
+}
+// Log/handle invalid parameters
+// Example: Empty (required) parameter
+catch (\Genesis\Exceptions\ErrorParameter $parameter) {
+    error_log($parameter->getMessage());
+}
+// Log/handle invalid setter values
+// Example: Non-boolean scheme_tokenized value
+catch (\Genesis\Exceptions\InvalidArgument $argument) {
+    error_log($argument->getMessage());
+}
+// Log/handle network (transport) errors
 catch (\Genesis\Exceptions\ErrorNetwork $network) {
     error_log($network->getMessage());
 }
@@ -1392,6 +1531,7 @@ You can use the following request types to initialize the Genesis client:
 ```text
 // Generic transaction operations
 Financial\Capture
+Financial\AsyncRefund
 Financial\Refund
 Financial\Cancel
 
@@ -1498,6 +1638,8 @@ Financial\Vouchers\Neosurf
 Financial\Vouchers\Paysafecard
 
 // Electronic Wallets transactions
+Financial\Wallets\Alipay
+Financial\Wallets/EWallet
 Financial\Wallets\EzeeWallet
 Financial\Wallets\PayPal
 Financial\Wallets\Neteller
@@ -1526,6 +1668,10 @@ NonFinancial\Fraud\Reports\Transaction
 NonFinancial\Fraud\Retrieval\DateRange
 NonFinancial\Fraud\Retrieval\Transaction
 
+// Rapid Dispute Resolution request
+NonFinancial\Fraud\Rdr\DateRange
+NonFinancial\Fraud\Rdr\Transaction
+
 // Fx requests
 NonFinancial\Fx\GetTiers
 NonFinancial\Fx\GetTier
@@ -1536,6 +1682,7 @@ NonFinancial\Fx\SearchRate
 // KYC requests
 NonFinancial\Kyc\Address\ByDocumentProof
 NonFinancial\Kyc\Address\ByElectronicIdentity
+NonFinancial\Kyc\BankAccountVerification
 NonFinancial\Kyc\Business\CreateBusiness
 NonFinancial\Kyc\Business\BusinessVerification
 NonFinancial\Kyc\Business\ListBusinessDocument
@@ -1587,6 +1734,7 @@ NonFinancial\Payee\Verifications\RetrievePayeeVerification
 
 // Reconcile requests
 NonFinancial\Reconcile\DateRange
+NonFinancial\Reconcile\Order
 NonFinancial\Reconcile\Transaction
 
 // SCA Checker API
@@ -1601,12 +1749,16 @@ NonFinancial\ProcessedTransactions\Transaction
 NonFinancial\ProcessedTransactions\DateRange
 NonFinancial\ProcessedTransactions\PostDateRange
 
+// Payment Authorizations API
+NonFinancial\PaymentAuthorizations\DateRange
+
 // TransferTo Payers API
 NonFinancial\Alternatives\TransferTo\Payers
 
 // Web Payment Form (Checkout) requests
 Wpf\Create
 Wpf\Reconcile
+Wpf\ReconcileByOrder
 
 // Transaction API
 NonFinancial\TransactionApi\CardExpiryDateUpdate
@@ -1627,6 +1779,7 @@ NonFinancial\TokenizationApi\Cryptogram
 // Billing Transactions API
 NonFinancial\BillingApi\Transaction
 NonFinancial\BillingApi\Statement
+NonFinancial\BillingApi\EnhancedStatement
 
 // Managed Recurring API
 NonFinancial\ManagedRecurring\Items
@@ -1645,9 +1798,53 @@ NonFinancial\ProcessedBatches\PostDateRange
 // Trustly APM Services
 NonFinancial\Alternatives\Trustly\RegisterAccount
 NonFinancial\Alternatives\Trustly\SelectAccount
+
+// Alipay APM Services
+NonFinancial\Alternatives\Alipay\RegisterMerchant
 ```
 
 More information about each one of the request types can be found in the Genesis API Documentation and the Wiki
+
+Billing Statements / Transactions API
+-------------------------------------
+
+The Billing Statements API (`NonFinancial\BillingApi\Statement`) and Enhanced Billing Statements API
+(`NonFinancial\BillingApi\EnhancedStatement`) are GraphQL-based requests served from the same
+`billing_statements` endpoint; `EnhancedStatement` issues the `enhancedBillingStatements` query with the
+extended `summary`/`details` response tree, while `Statement` issues the standard `billingStatements` query.
+
+Date range filters (both statement requests):
+
+```php
+$request
+    ->setStartDateFrom('2024-01-01')          // inclusive (server-side)
+    ->setStartDateTo('2024-01-07')            // non-inclusive (server-side)
+    ->setEndDateFrom('2024-01-01')
+    ->setEndDateTo('2024-01-07');
+```
+
+Each `*From`/`*To` pair must be provided together, the `From` value must be on or before its `To` value,
+and a pair may span at most 7 days. Dates accept `Y-m-d` or `Y-m-d H:i:s`.
+
+Master account MID filter:
+
+```php
+$request->setMasterAccountMID(['111700000000000', '124000000000000']);
+```
+
+Response fields are selected by the caller, flat and/or nested (GraphQL-style). The nested structure is rendered as provided:
+
+```php
+$request->setResponseFields([
+    'billingStatement',
+    'summary' => [
+        'grossVolume' => ['count', 'amount'],
+    ],
+    'details' => [
+        'discountFees' => ['subtotalCount', 'subtotalAmount']
+    ]
+]);
+```
 
 Running Specs
 --------------

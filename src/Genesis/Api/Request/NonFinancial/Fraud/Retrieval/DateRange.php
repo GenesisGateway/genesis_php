@@ -27,6 +27,7 @@
 namespace Genesis\Api\Request\NonFinancial\Fraud\Retrieval;
 
 use Genesis\Api\Constants\DateTimeFormat;
+use Genesis\Api\Traits\Request\NonFinancial\Scope;
 
 /**
  * Retrieval request by Date Range
@@ -37,6 +38,8 @@ use Genesis\Api\Constants\DateTimeFormat;
 
 class DateRange extends \Genesis\Api\Request
 {
+    use Scope;
+
     /**
      * start of the requested date range
      *
@@ -140,7 +143,8 @@ class DateRange extends \Genesis\Api\Request
     protected function setRequiredFields()
     {
         $requiredFields = [
-            'start_date'
+            'start_date',
+            'scope'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);
@@ -154,11 +158,14 @@ class DateRange extends \Genesis\Api\Request
     protected function populateStructure()
     {
         $treeStructure = [
-            'retrieval_request_request' => [
-                'start_date' => $this->getStartDate(),
-                'end_date'   => $this->getEndDate(),
-                'page'       => $this->page
-            ]
+            'retrieval_request_request' => array_merge(
+                [
+                    'start_date' => $this->getStartDate(),
+                    'end_date'   => $this->getEndDate(),
+                    'page'       => $this->page
+                ],
+                $this->getScopeStructure()
+            )
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);

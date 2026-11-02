@@ -49,6 +49,26 @@ class SaleSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
+    public function it_should_not_fail_with_valid_sdd_countries()
+    {
+        $sampleCountries = ['DE', 'FR', 'GB', 'CH', 'SE', 'NO', 'PL', 'IS'];
+
+        foreach ($sampleCountries as $country) {
+            $this->setRequestParameters();
+            $this->setBillingCountry($country);
+
+            $this->shouldNotThrow()->during('getDocument');
+        }
+    }
+
+    public function it_should_fail_with_unsupported_sdd_country()
+    {
+        $this->setRequestParameters();
+        $this->setBillingCountry('US');
+
+        $this->shouldThrow()->during('getDocument');
+    }
+
     public function it_should_contain_company_name_when_set()
     {
         $this->setRequestParameters();

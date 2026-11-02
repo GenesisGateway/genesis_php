@@ -130,7 +130,7 @@ class DateRangeSpec extends ObjectBehavior
     public function it_should_contain_per_page_parameter()
     {
         $this->setRequestParameters();
-        $perPage = Faker::getInstance()->randomNumber(2);
+        $perPage = Faker::getInstance()->numberBetween(1, 99);
         $this->setPerPage($perPage);
 
         $this->getDocument()->shouldContain("<per_page>{$perPage}</per_page>");

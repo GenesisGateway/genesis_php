@@ -3,6 +3,7 @@
 namespace spec\Genesis\Api\Stubs\Traits\Request\Financial;
 
 use Genesis\Api\Traits\MagicAccessors;
+use Genesis\Api\Traits\RestrictedSetter;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 
 /**
@@ -12,5 +13,6 @@ use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 class PurposeOfPaymentAttributesStub
 {
     use MagicAccessors;
+    use RestrictedSetter;
     use PurposeOfPaymentAttributes;
 }

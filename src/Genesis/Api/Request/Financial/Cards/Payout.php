@@ -26,6 +26,9 @@
 
 namespace Genesis\Api\Request\Financial\Cards;
 
+use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferPurposeOfPayment;
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPayment;
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPaymentValues;
 use Genesis\Api\Traits\Request\AddressInfoAttributes;
 use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
@@ -34,11 +37,10 @@ use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
-use Genesis\API\Traits\Request\Financial\GamingAttributes;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;
 use Genesis\Api\Traits\Request\Financial\UcofAttributes;
-use Genesis\API\Traits\Request\MotoAttributes;
+use Genesis\Api\Traits\Request\MotoAttributes;
 use Genesis\Api\Traits\Request\Payout\MoneyTransferPayoutAttributes;
 use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Common as CommonUtils;
@@ -65,10 +67,20 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use DigitalAssetTypeAttributes;
     use CryptoAttributes;
     use MotoAttributes;
-    use GamingAttributes;
 
-    const MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH = 33;
-    const MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH = 25;
+    /**
+     * Return the purpose of payment values supported by Payout.
+     *
+     * @return array
+     */
+    protected function getAllowedPurposeOfPaymentValues()
+    {
+        return array_values(array_unique(array_merge(
+            PurposeOfPayment::getCodes(),
+            PurposeOfPaymentValues::getAll(),
+            MoneyTransferPurposeOfPayment::getAll()
+        )));
+    }
 
     /**
      * Payout doesn't support Scheme Tokenized parameter
@@ -168,6 +180,22 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     }
 
     /**
+     * Reject credential_on_file_transaction_link_id, as Payout doesn't support it
+     *
+     * @return void
+     *
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        $this->rejectCredentialOnFileTransactionLinkId();
+
+        parent::checkRequirements();
+    }
+
+    /**
      * Return additional request attributes
      * @return array
      */
@@ -176,7 +204,6 @@ class Payout extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
         return array_merge(
             [
                 'moto'                      => $this->moto,
-                'gaming'                    => $this->gaming,
                 'customer_email'            => $this->customer_email,
                 'customer_phone'            => $this->customer_phone,
                 'document_id'               => $this->document_id,

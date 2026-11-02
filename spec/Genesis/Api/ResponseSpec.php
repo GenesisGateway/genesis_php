@@ -284,6 +284,20 @@ XML;
         $this->getResponseObject()->amount->shouldBe('3.14');
     }
 
+    public function it_should_expose_order_id_on_the_response_object($network)
+    {
+        $this->prepareNetworkMock($network, $this->buildSample(
+            array('approved', 00, 314, 'USD')
+        ));
+
+        $this->shouldNotThrow()->during(
+            'parseResponse',
+            array($network)
+        );
+
+        $this->getResponseObject()->order_id->shouldBe('order-12345');
+    }
+
     public function it_should_get_formatted_timestamp($network)
     {
         $this->prepareNetworkMock($network, $this->buildSample(
@@ -831,7 +845,8 @@ XML;
                 'amount'            => $amount,
                 'currency'          => $currency,
                 'partial_approval'  => $partial_approval,
-                'sent_to_acquirer'  => ''
+                'sent_to_acquirer'  => '',
+                'order_id'          => 'order-12345'
             )
         );
 

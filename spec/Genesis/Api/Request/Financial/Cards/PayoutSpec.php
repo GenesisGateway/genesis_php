@@ -3,7 +3,10 @@
 namespace spec\Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
+use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferPurposeOfPayment;
 use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferTypes;
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPayment;
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPaymentValues;
 use Genesis\Api\Request\Financial\Cards\Payout;
 use Genesis\Exceptions\InvalidMethod;
 use PhpSpec\ObjectBehavior;
@@ -11,19 +14,20 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExam
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\CustomerIdentificationExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CreditCardAttributesExamples;
-use spec\SharedExamples\Genesis\API\Request\Financial\CryptoAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
-use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\SourceOfFundsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofTransactionLinkIdNotSupportedExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
+use spec\SharedExamples\Genesis\Api\Traits\Request\Payout\MoneyTransferPayoutAttributesExamples;
 
 class PayoutSpec extends ObjectBehavior
 {
@@ -41,14 +45,60 @@ class PayoutSpec extends ObjectBehavior
     use SourceOfFundsAttributesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use UcofTransactionLinkIdNotSupportedExamples;
     use DigitalAssetTypeAttributesExamples;
     use CryptoAttributesExamples;
-    use GamingAttributesExamples;
     use MotoAttributesExamples;
+    use MoneyTransferPayoutAttributesExamples;
 
     public function it_is_initializable()
     {
         $this->shouldHaveType(Payout::class);
+    }
+
+    /**
+     * Return invalid values for Payout purpose of payment validation.
+     *
+     * @return array
+     */
+    protected function getRejectedPurposeOfPaymentValues()
+    {
+        return $this->getInvalidPurposeOfPaymentValues();
+    }
+
+    /**
+     * Add a Mastercard-only value to the representative XML placement values.
+     *
+     * @return array
+     */
+    protected function getRepresentativePurposeOfPaymentValues()
+    {
+        return [
+            PurposeOfPayment::ISBONU,
+            PurposeOfPaymentValues::BONUS_PAYMENT,
+            MoneyTransferPurposeOfPayment::FAMILY_SUPPORT,
+        ];
+    }
+
+    /**
+     * Set all fields required to render a money transfer Payout document.
+     *
+     * @return void
+     */
+    protected function setPurposeOfPaymentRequiredParameters()
+    {
+        $this->setRequestParameters();
+        $this->setMoneyTransferRequiredParameters();
+    }
+
+    /**
+     * Payout does not compose FundingAttributes.
+     *
+     * @return bool
+     */
+    protected function supportsPurposeOfPaymentFunding()
+    {
+        return false;
     }
 
     public function it_should_fail_when_set_invalid_money_transfer_type()
@@ -64,7 +114,7 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow()->during('setMoneyTransferServiceProviderName', [
                 str_repeat(
                     '*',
-                    Payout::MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH + 1
+                    26
                 )
             ]);
     }
@@ -76,7 +126,7 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow()->during('setMoneyTransferSenderAccountNumber', [
             str_repeat(
                 '*',
-                Payout::MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH + 1
+                34
             )
         ]);
     }
@@ -125,6 +175,16 @@ class PayoutSpec extends ObjectBehavior
         $this->shouldThrow(InvalidMethod::class)->duringGetCredentialOnFileSettlementDate();
     }
 
+    public function it_should_throw_when_set_gaming()
+    {
+        $this->shouldThrow(InvalidMethod::class)->duringSetGaming(true);
+    }
+
+    public function it_should_throw_when_get_gaming()
+    {
+        $this->shouldThrow(InvalidMethod::class)->duringGetGaming();
+    }
+
     protected function setRequestParameters()
     {
         $faker = $this->getFaker();
@@ -154,7 +214,7 @@ class PayoutSpec extends ObjectBehavior
         $this->setBillingCountry($faker->countryCode);
     }
 
-    private function setMoneyTransferRequiredParameters()
+    protected function setMoneyTransferRequiredParameters()
     {
         $faker = $this->getFaker();
         $this->setMoneyTransferType($faker->randomElement(

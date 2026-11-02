@@ -36,6 +36,16 @@ class CreditSpec extends ObjectBehavior
         ]);
     }
 
+    /**
+     * Credit does not compose FundingAttributes.
+     *
+     * @return bool
+     */
+    protected function supportsPurposeOfPaymentFunding()
+    {
+        return false;
+    }
+
     protected function setRequestParameters()
     {
         $this->setTransactionId(Faker::getInstance()->numberBetween(1, PHP_INT_MAX));

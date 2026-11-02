@@ -27,9 +27,9 @@
 namespace Genesis\Api\Request\NonFinancial\Fraud\Chargeback;
 
 use Genesis\Api\Constants\DateTimeFormat;
-use Genesis\Api\Constants\NonFinancial\Fraud\Chargeback\ExternallyProcessed;
-use Genesis\Api\Constants\NonFinancial\Fraud\Chargeback\ProcessingTypes;
+use Genesis\Api\Traits\Request\NonFinancial\DateAttributes;
 use Genesis\Api\Traits\Request\NonFinancial\PagingAttributes;
+use Genesis\Api\Traits\Request\NonFinancial\Scope;
 use Genesis\Exceptions\ErrorParameter;
 
 /**
@@ -37,27 +37,12 @@ use Genesis\Exceptions\ErrorParameter;
  *
  * @package    Genesis
  * @subpackage Request
- *
- * @method getExternallyProcessed() Filters chargebacks by being externally processed or being native to Genesis
- * @method getProcessingType() Filters chargebacks by being card present or card not present
  */
 class DateRange extends \Genesis\Api\Request
 {
     use PagingAttributes;
-
-    /**
-     * start of the requested date range
-     *
-     * @var \DateTime
-     */
-    protected $start_date;
-
-    /**
-     * end of the requested date range
-     *
-     * @var \DateTime
-     */
-    protected $end_date;
+    use Scope;
+    use DateAttributes;
 
     /**
      * date of import in our system. Spans from beggining until end of day
@@ -65,66 +50,6 @@ class DateRange extends \Genesis\Api\Request
      * @var \DateTime
      */
     protected $import_date;
-
-    /**
-     * Filters chargebacks by being externally processed or being native to Genesis
-     *
-     * @var string $externally_processed
-     */
-    protected $externally_processed;
-
-    /**
-     * Filters chargebacks by being card present or card not present
-     *
-     * @var string $processing_type
-     */
-    protected $processing_type;
-
-    /**
-     * Start of requested date range
-     *
-     * @param string $value
-     * @return $this
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setStartDate($value)
-    {
-        if (empty($value)) {
-            $this->start_date = null;
-
-            return $this;
-        }
-
-        return $this->parseDate(
-            'start_date',
-            DateTimeFormat::getAll(),
-            (string) $value,
-            'Invalid format for start_date.'
-        );
-    }
-
-    /**
-     * End of requested date range
-     *
-     * @param string $value
-     * @return $this
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setEndDate($value)
-    {
-        if (empty($value)) {
-            $this->end_date = null;
-
-            return $this;
-        }
-
-        return $this->parseDate(
-            'end_date',
-            DateTimeFormat::getAll(),
-            (string) $value,
-            'Invalid format for end_date.'
-        );
-    }
 
     /**
      * @param $value
@@ -145,70 +70,6 @@ class DateRange extends \Genesis\Api\Request
             (string) $value,
             'Invalid format for import_date.'
         );
-    }
-
-    /**
-     * Filters chargebacks by being externally processed or being native to Genesis.
-     *
-     * @param $value
-     * @return $this
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setExternallyProcessed($value)
-    {
-        if ($value === null) {
-            $this->externally_processed = null;
-
-            return $this;
-        }
-
-        return $this->allowedOptionsSetter(
-            'externally_processed',
-            ExternallyProcessed::getAll(),
-            $value,
-            'Invalid value for externally_processed attribute.'
-        );
-    }
-
-    /**
-     * Filters Chargebacks by being card present or card not present
-     *
-     * @param $value
-     * @return $this
-     * @throws \Genesis\Exceptions\InvalidArgument
-     */
-    public function setProcessingType($value)
-    {
-        if ($value === null) {
-            $this->processing_type = null;
-
-            return $this;
-        }
-
-        return $this->allowedOptionsSetter(
-            'processing_type',
-            ProcessingTypes::getAll(),
-            $value,
-            'Invalid value for processing_type attribute.'
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartDate()
-    {
-        return empty($this->start_date) ?
-            null : $this->start_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndDate()
-    {
-        return empty($this->end_date) ?
-            null : $this->end_date->format(DateTimeFormat::YYYY_MM_DD_ISO_8601);
     }
 
     /**
@@ -245,6 +106,10 @@ class DateRange extends \Genesis\Api\Request
         ];
 
         $this->requiredFieldsOR = \Genesis\Utils\Common::createArrayObject($requiredFieldsOR);
+
+        $this->requiredFields = \Genesis\Utils\Common::createArrayObject([
+            'scope'
+        ]);
     }
 
     /**
@@ -266,15 +131,16 @@ class DateRange extends \Genesis\Api\Request
     protected function populateStructure()
     {
         $treeStructure = [
-            'chargeback_request' => [
-                'start_date'           => $this->getStartDate(),
-                'end_date'             => $this->getEndDate(),
-                'import_date'          => $this->getImportDate(),
-                'page'                 => $this->page,
-                'per_page'             => $this->per_page,
-                'externally_processed' => $this->externally_processed,
-                'processing_type'      => $this->processing_type
-            ]
+            'chargeback_request' => array_merge(
+                [
+                    'start_date'  => $this->getStartDate(),
+                    'end_date'    => $this->getEndDate(),
+                    'import_date' => $this->getImportDate(),
+                    'page'        => $this->page,
+                    'per_page'    => $this->per_page
+                ],
+                $this->getScopeStructure()
+            )
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);

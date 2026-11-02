@@ -11,7 +11,7 @@ use Genesis\Config;
 use Genesis\Exceptions\ErrorParameter;
 use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class CreateSpec extends ObjectBehavior
 {

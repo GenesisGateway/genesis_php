@@ -29,7 +29,7 @@ namespace Genesis\Api\Request\Base;
 use Genesis\Builder;
 use Genesis\Exceptions\EnvironmentNotSet;
 use Genesis\Exceptions\InvalidArgument;
-use Genesis\Utils\Common as CommonUtils;
+use Genesis\Utils\ResponseFieldsRenderer;
 
 /**
  * Class GraphqlRequest
@@ -58,6 +58,13 @@ abstract class GraphqlRequest extends BaseVersionedRequest
     private $request_name;
 
     /**
+     * Renders and validates the response-field selection (built once with the allowed fields).
+     *
+     * @var ResponseFieldsRenderer
+     */
+    private $response_fields_renderer;
+
+    /**
      * @param string $requestPath
      * @param string $requestName
      */
@@ -65,35 +72,60 @@ abstract class GraphqlRequest extends BaseVersionedRequest
     {
         $this->request_path = $requestPath;
         $this->request_name = $requestName;
+        $this->response_fields_renderer = new ResponseFieldsRenderer($this->getResponseFieldsAllowedValues());
 
         parent::__construct($this->request_path, Builder::JSON, $allowedVersions);
     }
 
     /**
-     * Add single value to response field list
+     * Add a single value to the response field list.
      *
-     * @param $value
+     * Accepts a flat field name, or a single [name => sub-selection] pair for a nested
+     * (GraphQL-style) selection. Only the top-level name is validated against the allowed list.
+     *
+     * @param mixed $value
      * @return $this
      * @throws InvalidArgument
      */
     public function addResponseField($value)
     {
-        if (!in_array($value, $this->getResponseFieldsAllowedValues())) {
-            throw new InvalidArgument(
-                'Invalid value given for response fields. Allowed values: ' .
-                implode(', ', $this->getResponseFieldsAllowedValues())
-            );
+        $entry = is_array($value) ? $value : [$value];
+
+        $this->response_fields_renderer->validate($entry);
+
+        foreach ($entry as $key => $selection) {
+            // String key: a nested selection, stored by key so re-adding overwrites (de-dups).
+            // Integer key: a flat scalar field, deduplicated by addFlatResponseField().
+            // array_unique() is unsafe here because the list mixes scalars and nested arrays.
+            if (!is_int($key)) {
+                $this->response_fields[$key] = $selection;
+                continue;
+            }
+
+            $this->addFlatResponseField($selection);
         }
-
-        array_push($this->response_fields, $value);
-
-        $this->response_fields = array_unique($this->response_fields);
 
         return $this;
     }
 
     /**
-     * Set the fields in the response
+     * Append a flat scalar response field if it is not already selected.
+     *
+     * @param string $field
+     * @return void
+     */
+    private function addFlatResponseField($field)
+    {
+        if (!in_array($field, $this->response_fields, true)) {
+            $this->response_fields[] = $field;
+        }
+    }
+
+    /**
+     * Set the fields in the response.
+     *
+     * Accepts flat field names and/or nested [name => sub-selection] arrays. Only the top-level
+     * keys are validated against the allowed list; nested field names are rendered as provided.
      *
      * @param array $value
      * @return $this
@@ -101,30 +133,22 @@ abstract class GraphqlRequest extends BaseVersionedRequest
      */
     public function setResponseFields($value)
     {
-        if (
-            CommonUtils::isValidArray($value)
-            && empty(array_diff($value, $this->getResponseFieldsAllowedValues()))
-        ) {
-            $this->response_fields = $value;
-            $this->response_fields = array_unique($this->response_fields);
+        $this->response_fields_renderer->validate($value);
 
-            return $this;
-        }
+        $this->response_fields = $value;
 
-        throw new InvalidArgument(
-            'Invalid value/s given for the response fields array. Allowed values: ' .
-            implode(', ', $this->getResponseFieldsAllowedValues())
-        );
+        return $this;
     }
 
     /**
-     * Return a formatted string with response fields
+     * Return a formatted string with response fields (supports nested sub-selections).
      *
      * @return string
+     * @throws InvalidArgument
      */
     public function getResponseFields()
     {
-        return sprintf('%s', implode(' ', $this->response_fields));
+        return $this->response_fields_renderer->render($this->response_fields);
     }
 
     /**
@@ -214,6 +238,64 @@ abstract class GraphqlRequest extends BaseVersionedRequest
         ];
 
         $this->treeStructure = \Genesis\Utils\Common::createArrayObject($treeStructure);
+    }
+
+    /**
+     * Format an array of strings into an escaped GraphQL string-list literal: ["a","b"].
+     *
+     * Escapes each value with escapeGraphQLString(), so a value containing a character
+     * the GraphQL string grammar reserves cannot break the surrounding query. This method
+     * adds the one pair of double quotes around each escaped value.
+     *
+     * @param array $values
+     * @return string empty string when the list is empty
+     */
+    protected function formatArrayToGraphQLStringList(array $values)
+    {
+        if (empty($values)) {
+            return '';
+        }
+
+        $escaped = array_map([$this, 'escapeGraphQLString'], $values);
+
+        return sprintf('["%s"]', implode('","', $escaped));
+    }
+
+    /**
+     * Escape a value for safe inclusion inside a GraphQL double-quoted string.
+     *
+     * Escapes seven characters: the backslash (\\), the double quote (\"), the newline
+     * (\n), the carriage return (\r), the horizontal tab (\t), the backspace (\b) and
+     * the form feed (\f).
+     *
+     * The newline and the carriage return are GraphQL LineTerminators and MUST be
+     * escaped: a raw LineTerminator is not a valid StringCharacter, so leaving it in
+     * place produces a query the gateway cannot parse. The tab, the backspace and the
+     * form feed are valid StringCharacters under the current GraphQL specification and
+     * are escaped for robustness against parsers implementing the older SourceCharacter
+     * grammar, and for parity with the Genesis Ruby SDK.
+     *
+     * The backslash is replaced first, so the backslashes introduced by the six other
+     * sequences are not escaped a second time.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    protected function escapeGraphQLString($value)
+    {
+        $search = [
+            '\\',   // must stay first
+            '"',
+            "\n",
+            "\r",
+            "\t",
+            "\x08", // backspace; PHP has no "\b" escape sequence
+            "\f"
+        ];
+
+        $replace = ['\\\\', '\\"', '\\n', '\\r', '\\t', '\\b', '\\f'];
+
+        return str_replace($search, $replace, (string) $value);
     }
 
     /**

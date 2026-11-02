@@ -13,9 +13,12 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenizedExamp
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MarketplaceDataAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\OrderAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
@@ -30,9 +33,12 @@ class InitRecurringSaleSpec extends ObjectBehavior
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
     use FundingAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use FxRateAttributesExamples;
     use ManagedRecurringAttributesExample;
+    use MarketplaceDataAttributesExamples;
     use NeighborhoodAttributesExamples;
+    use OrderAttributesExamples;
     use RecurringCategoryAttributesExample;
     use RequestExamples;
     use TokenizationAttributesExamples;
@@ -43,6 +49,12 @@ class InitRecurringSaleSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(InitRecurringSale::class);
+    }
+
+    protected function setPurposeOfPaymentFundingParameters()
+    {
+        $this->setPurposeOfPaymentRequiredParameters();
+        $this->setFundingIdentifierType('account_to_account');
     }
 
     protected function setRequestParameters()

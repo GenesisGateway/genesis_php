@@ -38,6 +38,201 @@ use Genesis\Utils\Common;
 class PurposeOfPayment
 {
     /**
+     * Account management
+     */
+    const ISACCT = 'ISACCT';
+
+    /**
+     * Air transport related business
+     */
+    const ISAIRB = 'ISAIRB';
+
+    /**
+     * Transaction is the payment of allowance
+     */
+    const ISALLW = 'ISALLW';
+
+    /**
+     * Settlement of annuity
+     */
+    const ISANNI = 'ISANNI';
+
+    /**
+     * Unemployment disability benefit
+     */
+    const ISBENE = 'ISBENE';
+
+    /**
+     * Business expenses
+     */
+    const ISBEXP = 'ISBEXP';
+
+    /**
+     * Bonus payment
+     */
+    const ISBONU = 'ISBONU';
+
+    /**
+     * Bus transport related business
+     */
+    const ISBUSB = 'ISBUSB';
+
+    /**
+     * Cash management transfer
+     */
+    const ISCASH = 'ISCASH';
+
+    /**
+     * Payment of cable TV bill
+     */
+    const ISCBTV = 'ISCBTV';
+
+    /**
+     * Government institute issued related to cash compensation, helplessness, disability
+     */
+    const ISCCHD = 'ISCCHD';
+
+    /**
+     * Credit card payment
+     */
+    const ISCCRD = 'ISCCRD';
+
+    /**
+     * Payment of credit card bill
+     */
+    const ISCDBL = 'ISCDBL';
+
+    /**
+     * Payment for charity reasons
+     */
+    const ISCHAR = 'ISCHAR';
+
+    /**
+     * Collection payment
+     */
+    const ISCOLL = 'ISCOLL';
+
+    /**
+     * Commercial payment
+     */
+    const ISCOMC = 'ISCOMC';
+
+    /**
+     * Commission
+     */
+    const ISCOMM = 'ISCOMM';
+
+    /**
+     * Compensation relating to interest loss/value date adjustment and can include fees
+     */
+    const ISCOMP = 'ISCOMP';
+
+    /**
+     * Payment of copyright
+     */
+    const ISCPYR = 'ISCPYR';
+
+    /**
+     * Related to a debit card payment
+     */
+    const ISDCRD = 'ISDCRD';
+
+    /**
+     * Payment of a deposit
+     */
+    const ISDEPT = 'ISDEPT';
+
+    /**
+     * Payment of dividend
+     */
+    const ISDIVD = 'ISDIVD';
+
+    /**
+     * Payment of study/tuition fees
+     */
+    const ISEDUE = 'ISEDUE';
+
+    /**
+     * Payment of electricity bill
+     */
+    const ISELEC = 'ISELEC';
+
+    /**
+     * Energies
+     */
+    const ISENRG = 'ISENRG';
+
+    /**
+     * General fees
+     */
+    const ISFEES = 'ISFEES';
+
+    /**
+     * Payment for ferry related business
+     */
+    const ISFERB = 'ISFERB';
+
+    /**
+     * Foreign exchange
+     */
+    const ISFREX = 'ISFREX';
+
+    /**
+     * Payment of gas bill
+     */
+    const ISGASB = 'ISGASB';
+
+    /**
+     * Compensation to unemployed persons during insolvency procedures
+     */
+    const ISGFRP = 'ISGFRP';
+
+    /**
+     * Government payment
+     */
+    const ISGOVT = 'ISGOVT';
+
+    /**
+     * Health insurance
+     */
+    const ISHLTI = 'ISHLTI';
+
+    /**
+     * Reimbursement of credit card payment
+     */
+    const ISICCP = 'ISICCP';
+
+    /**
+     * Reimbursement of debit card payment
+     */
+    const ISIDCP = 'ISIDCP';
+
+    /**
+     * Payment of car insurance premium
+     */
+    const ISINPC = 'ISINPC';
+
+    /**
+     * Transaction is related to the payment of an insurance claim
+     */
+    const ISINSC = 'ISINSC';
+
+    /**
+     * Installment
+     */
+    const ISINSM = 'ISINSM';
+
+    /**
+     * Insurance premium
+     */
+    const ISINSU = 'ISINSU';
+
+    /**
+     * Intra company payment
+     */
+    const ISINTC = 'ISINTC';
+
+    /**
      * Interest
      */
     const ISINTE = 'ISINTE';
@@ -228,7 +423,7 @@ class PurposeOfPayment
     const ISVATX = 'ISVATX';
 
     /**
-     * With holding
+     * Withholding
      */
     const ISWHLD = 'ISWHLD';
 
@@ -245,5 +440,15 @@ class PurposeOfPayment
     public static function getAll()
     {
         return Common::getClassConstants(self::class);
+    }
+
+    /**
+     * Get all Purpose of Payment codes
+     *
+     * @return array
+     */
+    public static function getCodes()
+    {
+        return array_values(self::getAll());
     }
 }

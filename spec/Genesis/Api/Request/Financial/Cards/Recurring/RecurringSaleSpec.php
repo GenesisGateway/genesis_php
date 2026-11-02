@@ -4,16 +4,19 @@ namespace spec\Genesis\Api\Request\Financial\Cards\Recurring;
 
 use Genesis\Api\Request\Financial\Cards\Recurring\RecurringSale;
 use Genesis\Exceptions\InvalidArgument;
+use Genesis\Exceptions\InvalidMethod;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Business\BusinessAttributesExample;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class RecurringSaleSpec extends ObjectBehavior
 {
     use BusinessAttributesExample;
+    use PurposeOfPaymentAttributesExamples;
     use RequestExamples;
     use MotoAttributesExamples;
 
@@ -37,6 +40,16 @@ class RecurringSaleSpec extends ObjectBehavior
         $this->setCurrency(Faker::getInstance()->randomElement(Currency::getList()));
 
         $this->shouldNotThrow()->during('getDocument');
+    }
+
+    /**
+     * RecurringSale does not compose FundingAttributes.
+     *
+     * @return bool
+     */
+    protected function supportsPurposeOfPaymentFunding()
+    {
+        return false;
     }
 
     public function it_should_fail_with_invalid_currency_param()
@@ -78,6 +91,18 @@ class RecurringSaleSpec extends ObjectBehavior
         $this->setMoto('yes');
 
         $this->getDocument()->shouldContain('<moto>true</moto>');
+    }
+
+    public function it_should_not_support_foreign_retailer_indicator()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldThrow(InvalidMethod::class)->during(
+            'setForeignRetailerIndicator',
+            ['F']
+        );
+
+        $this->getDocument()->shouldNotContain('marketplace_data');
     }
 
     protected function setRequestParameters()

@@ -16,7 +16,7 @@ class MyBankSpec extends ObjectBehavior
     use PendingPaymentAttributesExamples;
     use RequestExamples;
 
-    private $allowedCountries = ['IT', 'BE', 'PT', 'ES'];
+    private $allowedCountries = ['IT', 'BE', 'PT', 'ES', 'FR'];
 
     public function it_is_initializable()
     {

@@ -27,6 +27,8 @@
 namespace Genesis\Api\Traits\Request\Payout;
 
 use Genesis\Api\Constants\DateTimeFormat;
+use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferSenderAccountNumberTypes;
+use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferSourcesOfFunds;
 use Genesis\Api\Constants\Transaction\Parameters\Payout\MoneyTransferTypes;
 use Genesis\Exceptions\InvalidArgument;
 
@@ -43,6 +45,15 @@ use Genesis\Exceptions\InvalidArgument;
  * @method string getMoneyTransferSenderZipCode()
  * @method string getMoneyTransferSenderAddress1()
  * @method string getMoneyTransferSenderState()
+ * @method string getMoneyTransferSenderAccountNumberType()
+ * @method string getMoneyTransferSourceOfFunds()
+ * @method string|null getMoneyTransferReceiverFirstName()
+ * @method string|null getMoneyTransferReceiverLastName()
+ * @method string|null getMoneyTransferReceiverCountry()
+ * @method string|null getMoneyTransferReceiverCity()
+ * @method string|null getMoneyTransferReceiverState()
+ * @method string|null getMoneyTransferReceiverZipCode()
+ * @method string|null getMoneyTransferReceiverAddress1()
  *
  * @method $this setMoneyTransferSenderFirstName($value)
  * @method $this setMoneyTransferSenderLastName($value)
@@ -51,10 +62,21 @@ use Genesis\Exceptions\InvalidArgument;
  * @method $this setMoneyTransferSenderZipCode($value)
  * @method $this setMoneyTransferSenderAddress1($value)
  * @method $this setMoneyTransferSenderState($value)
+ * @method $this setMoneyTransferSenderAccountNumberType($value)
+ * @method $this setMoneyTransferSourceOfFunds($value)
+ * @method $this setMoneyTransferReceiverFirstName($value)
+ * @method $this setMoneyTransferReceiverLastName($value)
+ * @method $this setMoneyTransferReceiverCountry($value)
+ * @method $this setMoneyTransferReceiverCity($value)
+ * @method $this setMoneyTransferReceiverState($value)
+ * @method $this setMoneyTransferReceiverZipCode($value)
+ * @method $this setMoneyTransferReceiverAddress1($value)
  *
  */
 trait MoneyTransferPayoutAttributes
 {
+    use MoneyTransferReceiverAttributes;
+
     /**
      * The type of money transfer. It can be account_to_account, person_to_person, wallet_transfer, funds_transfer
      * @var string $money_transfer_type
@@ -122,6 +144,18 @@ trait MoneyTransferPayoutAttributes
     protected $money_transfer_sender_state;
 
     /**
+     * Sender account number type.
+     * @var string $money_transfer_sender_account_number_type
+     */
+    protected $money_transfer_sender_account_number_type;
+
+    /**
+     * Source of funds for the money transfer.
+     * @var string $money_transfer_source_of_funds
+     */
+    protected $money_transfer_source_of_funds;
+
+    /**
      * @param string $value
      * @throws InvalidArgument
      */
@@ -187,7 +221,7 @@ trait MoneyTransferPayoutAttributes
             'money_transfer_sender_account_number',
             $value,
             null,
-            self::MONEY_TRANSFER_SENDER_ACCOUNT_NUMBER_MAX_LENGTH
+            33
         );
     }
 
@@ -202,7 +236,47 @@ trait MoneyTransferPayoutAttributes
             'money_transfer_service_provider_name',
             $value,
             null,
-            self::MONEY_TRANSFER_SERVICE_PROVIDER_NAME_MAX_LENGTH
+            25
+        );
+    }
+
+    /**
+     * Set sender account number type.
+     *
+     * `null` clears the value. `''` is not an allowed type and throws, unlike
+     * the receiver string setters, where `''` clears.
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMoneyTransferSenderAccountNumberType($value)
+    {
+        return $this->allowedOptionsStrictSetter(
+            'money_transfer_sender_account_number_type',
+            MoneyTransferSenderAccountNumberTypes::getAll(),
+            $value,
+            'Invalid value for Money Transfer Sender Account Number Type.'
+        );
+    }
+
+    /**
+     * Set money transfer source of funds.
+     *
+     * `null` clears the value. `''` is not an allowed source and throws, unlike
+     * the receiver string setters, where `''` clears.
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setMoneyTransferSourceOfFunds($value)
+    {
+        return $this->allowedOptionsStrictSetter(
+            'money_transfer_source_of_funds',
+            MoneyTransferSourcesOfFunds::getAll(),
+            $value,
+            'Invalid value for Money Transfer Source of Funds.'
         );
     }
 
@@ -225,7 +299,10 @@ trait MoneyTransferPayoutAttributes
                 'zip_code'   => $this->money_transfer_sender_zip_code,
                 'address1'   => $this->money_transfer_sender_address1,
                 'state'      => $this->money_transfer_sender_state
-            ]
+            ],
+            'receiver'                   => $this->getMoneyTransferReceiverStructure(),
+            'sender_account_number_type' => $this->money_transfer_sender_account_number_type,
+            'source_of_funds'            => $this->money_transfer_source_of_funds
         ];
     }
 
@@ -235,20 +312,23 @@ trait MoneyTransferPayoutAttributes
      */
     protected function requiredMoneyTransferFieldsConditional()
     {
-        return [
-            'money_transfer_type' => [
-                'money_transfer_sender_account_number',
-                'money_transfer_sender_first_name',
-                'money_transfer_sender_last_name',
-                'money_transfer_sender_country',
-                'money_transfer_sender_city',
-                'money_transfer_sender_zip_code',
-                'money_transfer_sender_address1',
+        return array_merge(
+            [
+                'money_transfer_type' => [
+                    'money_transfer_sender_account_number',
+                    'money_transfer_sender_first_name',
+                    'money_transfer_sender_last_name',
+                    'money_transfer_sender_country',
+                    'money_transfer_sender_city',
+                    'money_transfer_sender_zip_code',
+                    'money_transfer_sender_address1',
+                ],
+                'money_transfer_sender_country' => [
+                    'US' => ['money_transfer_sender_state'],
+                    'CA' => ['money_transfer_sender_state']
+                ]
             ],
-            'money_transfer_sender_country' => [
-                'US' => ['money_transfer_sender_state'],
-                'CA' => ['money_transfer_sender_state']
-            ]
-        ];
+            $this->requiredMoneyTransferReceiverFieldsConditional()
+        );
     }
 }

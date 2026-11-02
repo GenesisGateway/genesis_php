@@ -14,21 +14,27 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringC
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenized3DExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\CommercialCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MarketplaceDataAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NullableFieldsNoPHP85DeprecationExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\OrderAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\ForceThreedsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofTransactionLinkIdNotSupportedExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
@@ -40,17 +46,22 @@ class Sale3DSpec extends ObjectBehavior
     use AccountOwnerAttributesExamples;
     use AllowedZeroAmount;
     use BusinessAttributesExample;
+    use CommercialCardAttributesExamples;
     use CredentialOnFileAttributesExamples;
     use CreditCardAttributesExamples;
     use CryptoAttributesExamples;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use ForceThreedsAttributesExamples;
     use FundingAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use FxRateAttributesExamples;
     use ManagedRecurringAttributesExample;
+    use MarketplaceDataAttributesExamples;
     use MpiAttributesExamples;
     use NeighborhoodAttributesExamples;
     use NullableFieldsNoPHP85DeprecationExamples;
+    use OrderAttributesExamples;
     use RecurringCategoryAttributesExample;
     use RecurringTypeAttributesExample;
     use RequestExamples;
@@ -59,6 +70,7 @@ class Sale3DSpec extends ObjectBehavior
     use ThreedsV2DatesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use UcofTransactionLinkIdNotSupportedExamples;
     use SchemeTokenized3DExamples;
     use InstallmentAttributesExamples;
     use TokenizationParamsAttributesExamples;
@@ -84,6 +96,12 @@ class Sale3DSpec extends ObjectBehavior
         $this->setReferenceId('transaction-reference-id');
         $this->getReferenceId()->shouldBe('transaction-reference-id');
         $this->getDocument()->shouldContain('transaction-reference-id');
+    }
+
+    protected function setPurposeOfPaymentFundingParameters()
+    {
+        $this->setPurposeOfPaymentRequiredParameters();
+        $this->setFundingIdentifierType('account_to_account');
     }
 
     protected function setRequestParameters()

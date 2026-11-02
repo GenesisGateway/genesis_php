@@ -7,10 +7,12 @@ use Genesis\Exceptions\ErrorParameter;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Faker;
+use spec\SharedExamples\Genesis\Api\Request\NonFinancial\BillingApi\DateTimeFromToAttributesSharedExample;
 use spec\SharedExamples\Genesis\Api\Request\NonFinancial\BillingApi\OrderByDirectionSharedExample;
 
 class StatementSpec extends ObjectBehavior
 {
+    use DateTimeFromToAttributesSharedExample;
     use OrderByDirectionSharedExample;
 
     public function it_is_initializable()
@@ -43,36 +45,43 @@ class StatementSpec extends ObjectBehavior
         $this->shouldNotThrow()->during('getDocument');
     }
 
-    public function it_should_set_date_range_filters()
+    public function it_should_not_emit_obsolete_start_end_date_filters()
     {
         $this->setRequestParameters();
-        $this->setStartDate('2024-01-01');
-        $this->setEndDate('2024-01-07');
+        $this->setStartDateFrom('2024-01-01');
+        $this->setStartDateTo('2024-01-07');
 
-        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldNotContain('startDate:');
+        $this->getDocument()->shouldNotContain('endDate:');
     }
 
-    public function it_should_throw_when_max_days_difference_exceeded()
+    public function it_should_set_master_account_mid()
     {
-        $this->setRequestParameters();
-        $this->setStartDate('2024-01-01');
-        $this->setEndDate('2024-01-09'); // 8 days > 7 max
-
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+        $this->setMasterAccountMID(['MID001', 'MID002']);
+        $this->getMasterAccountMID()->shouldReturn('["MID001","MID002"]');
     }
 
-    public function it_should_fail_with_start_date_and_missing_end_date()
+    public function it_should_render_master_account_mid_in_document()
     {
         $this->setRequestParameters();
-        $this->setStartDate('2024-01-01');
+        $this->setMasterAccountMID(['MID001', 'MID002']);
 
-        $this->shouldThrow(ErrorParameter::class)->during('getDocument');
+        // The document is JSON-encoded, so the list literal quotes appear escaped as \"...\"
+        $this->getDocument()->shouldContain('masterAccountMID: [\"MID001\",\"MID002\"]');
     }
 
-    public function it_should_fail_with_end_date_and_missing_start_date()
+    public function it_should_escape_quotes_in_master_account_mid()
     {
+        $this->setMasterAccountMID(['A"B']);
+        $this->getMasterAccountMID()->shouldReturn('["A\\"B"]');
+    }
+
+    public function it_should_fail_with_invalid_number_of_master_account_mid()
+    {
+        $values = array_fill(0, 1001, 'MID'); // 1001 > 1000 max
+
         $this->setRequestParameters();
-        $this->setEndDate('2024-01-01');
+        $this->setMasterAccountMID($values);
 
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
@@ -91,7 +100,7 @@ class StatementSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
 
-        $this->shouldThrow(InvalidArgument::class)->during('setResponseFields', ['invalid_field']);
+        $this->shouldThrow(InvalidArgument::class)->during('setResponseFields', [['invalid_field']]);
     }
 
     public function it_should_fail_with_invalid_status()
@@ -104,7 +113,7 @@ class StatementSpec extends ObjectBehavior
     public function it_should_set_valid_status()
     {
         $this->setRequestParameters();
-        
+
         $this->setStatus('paid');
         $this->setStatus('pending');
         $this->setStatus('open');
@@ -146,18 +155,40 @@ class StatementSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('next');
     }
 
+    public function it_should_escape_breaking_symbols_in_next_cursor()
+    {
+        $this->setRequestParameters();
+        $this->setNext('abc"def\\ghi');
+
+        // The document is JSON-encoded; the GraphQL escapes (\" and \\) appear doubled.
+        $this->getDocument()->shouldContain('next: \"abc\\\\\"def\\\\\\\\ghi\"');
+        $this->getDocument()->shouldNotContain('abc"def');
+    }
+
+    public function it_should_escape_control_characters_in_next_cursor()
+    {
+        $this->setRequestParameters();
+        $this->setNext("abc\ndef");
+
+        // The document is JSON-encoded; the GraphQL escape (\n) appears doubled. A raw newline never
+        // reaches the document: json_encode() renders it as a one-backslash \n, so the observable
+        // difference is the backslash count - one backslash unescaped, two once escaped as GraphQL.
+        $this->getDocument()->shouldContain('next: \"abc\\\\ndef\"');
+        $this->getDocument()->shouldNotContain('next: \"abc\\ndef\"');
+    }
+
     public function it_should_set_currency()
     {
         $this->setRequestParameters();
         $this->setCurrency('USD');
-        
+
         $this->shouldNotThrow()->during('getDocument');
     }
 
     public function it_should_fail_with_invalid_currency()
     {
         $this->setRequestParameters();
-        
+
         $this->shouldThrow(InvalidArgument::class)->during('setCurrency', ['INVALID']);
     }
 
@@ -165,17 +196,20 @@ class StatementSpec extends ObjectBehavior
     {
         $this->setRequestParameters();
         $this->setCreationDate('2024-01-01');
-        
+
         $this->getCreationDate()->shouldReturn('2024-01-01');
     }
 
     public function it_should_format_complex_fields()
     {
-        $this->setResponseFields(['summary', 'details']);
+        $this->setResponseFields([
+            'summary' => ['grossVolume', 'netSettlementAmount'],
+            'details' => ['transactionTypesBreakdown' => ['category', 'amount']],
+        ]);
         $this->setStatus('paid');
-        
-        $this->getDocument()->shouldContain('summary { grossVolume debit credit fees');
-        $this->getDocument()->shouldContain('details { transactionTypesBreakdown');
+
+        $this->getDocument()->shouldContain('summary { grossVolume netSettlementAmount }');
+        $this->getDocument()->shouldContain('details { transactionTypesBreakdown { category amount } }');
     }
 
     public function it_should_format_status_without_quotes()
@@ -187,12 +221,15 @@ class StatementSpec extends ObjectBehavior
         $this->getDocument()->shouldNotContain('status: "paid"');
     }
 
-    public function it_should_include_summary_in_response_structure()
+    public function it_should_render_nested_summary_selection()
     {
-        $this->setResponseFields(['billingStatement', 'startDate', 'paymentMethod', 'masterAccountName', 'creationDate', 'summary']);
+        $this->setResponseFields([
+            'billingStatement',
+            'summary' => ['grossVolume', 'netSettlementAmount'],
+        ]);
         $this->setStatus('paid');
 
-        $this->getDocument()->shouldContain('summary { grossVolume debit credit fees taxes netReserves adjustments netSettlementAmount paymentFxConversionFee paymentAmount paymentCurrency }');
+        $this->getDocument()->shouldContain('summary { grossVolume netSettlementAmount }');
     }
 
     public function it_should_set_billing_statement()
@@ -212,7 +249,7 @@ class StatementSpec extends ObjectBehavior
     {
         $faker = Faker::getInstance();
 
-        $values = ['billingStatement', 'creationDate', 'startDate', 'endDate', 'valueDate', 
+        $values = ['billingStatement', 'creationDate', 'startDate', 'endDate', 'valueDate',
                   'currency', 'status', 'masterAccountName'];
 
         return $faker->randomElement($values);
@@ -222,8 +259,8 @@ class StatementSpec extends ObjectBehavior
     {
         $faker = Faker::getInstance();
 
-        $values = ['id', 'billingStatement', 'status', 'company', 'masterAccountName', 
-                  'masterAccountCurrency', 'valueDate', 'creationDate', 'currency', 
+        $values = ['id', 'billingStatement', 'status', 'company', 'masterAccountName', 'masterAccountMID',
+                  'masterAccountCurrency', 'valueDate', 'creationDate', 'currency',
                   'paymentMethod', 'startDate', 'endDate', 'summary', 'details'];
 
         return $faker->randomElements($values, 5);

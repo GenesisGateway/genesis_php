@@ -40,11 +40,21 @@ use Genesis\Utils\Common as CommonUtils;
  * Verification of the customer address using customer's electronic identity.
  *
  * @package Genesis\Api\Request\NonFinancial\Kyc\Address
+ *
+ * @method bool getWithAsyncWorkflow()
  */
 class ByElectronicIdentity extends KYCBaseRequest
 {
     use ReferenceAttributes;
     use KycVerificationsCommon;
+
+    /**
+     * A flag that controls whether the address verification request is sent synchronously or asynchronously.
+     * The default value is 'false', i.e. synchronously.
+     *
+     * @var bool
+     */
+    protected $with_async_workflow;
 
     /**
      * Define Verifications request endpoint
@@ -53,6 +63,20 @@ class ByElectronicIdentity extends KYCBaseRequest
     public function __construct()
     {
         parent::__construct('verifications/address/by_electronic_identity');
+    }
+
+    /**
+     * Set with_async_workflow
+     *
+     * @param boolean $value
+     *
+     * @return $this
+     */
+    public function setWithAsyncWorkflow($value)
+    {
+        $this->with_async_workflow = CommonUtils::toBoolean($value);
+
+        return $this;
     }
 
     /**
@@ -82,13 +106,14 @@ class ByElectronicIdentity extends KYCBaseRequest
     protected function getRequestStructure()
     {
         return [
-            'reference_id' => $this->reference_id,
-            'country'      => $this->country,
-            'email'        => $this->email,
-            'first_name'   => $this->first_name,
-            'last_name'    => $this->last_name,
-            'full_address' => $this->full_address,
-            'zip_code'     => $this->zip_code,
+            'reference_id'        => $this->reference_id,
+            'country'             => $this->country,
+            'email'               => $this->email,
+            'first_name'          => $this->first_name,
+            'last_name'           => $this->last_name,
+            'full_address'        => $this->full_address,
+            'zip_code'            => $this->zip_code,
+            'with_async_workflow' => $this->with_async_workflow,
         ];
     }
 }

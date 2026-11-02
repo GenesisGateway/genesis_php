@@ -27,6 +27,7 @@
 namespace Genesis\Api\Request\Base\Financial\Cards;
 
 use Genesis\Api\Traits\Request\Financial\MpiAttributes;
+use Genesis\Api\Traits\Request\Financial\Threeds\ForceThreedsAttributes;
 use Genesis\Api\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
 use Genesis\Api\Traits\Request\Financial\UcofAttributes;
 use Genesis\Exceptions\ErrorParameter;
@@ -41,6 +42,7 @@ use Genesis\Exceptions\InvalidClassMethod;
 abstract class CreditCard3D extends CreditCard
 {
     use AllThreedsV2Attributes;
+    use ForceThreedsAttributes;
     use MpiAttributes;
     use UcofAttributes;
 
@@ -72,10 +74,13 @@ abstract class CreditCard3D extends CreditCard
      */
     protected function get3DSTransactionAttributes()
     {
-        return [
-            'mpi_params'        => $this->getMpiParamsStructure(),
-            'threeds_v2_params' => $this->getThreedsV2ParamsStructure()
-        ];
+        return array_merge(
+            $this->getForceThreedsStructure(),
+            [
+                'mpi_params'        => $this->getMpiParamsStructure(),
+                'threeds_v2_params' => $this->getThreedsV2ParamsStructure()
+            ]
+        );
     }
 
     /**
@@ -89,9 +94,8 @@ abstract class CreditCard3D extends CreditCard
      */
     protected function checkRequirements()
     {
-        if ($this->getSchemeTokenized()) {
-            unset($this->requiredFieldsConditional['mpi_protocol_version']);
-        }
+        // credential_on_file_transaction_link_id is documented only for Authorize and Sale
+        $this->rejectCredentialOnFileTransactionLinkId();
 
         parent::checkRequirements();
     }

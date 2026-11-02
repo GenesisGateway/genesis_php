@@ -9,7 +9,7 @@ use Genesis\Api\Request\NonFinancial\Payee\Owners\Delete;
 use Genesis\Builder;
 use Genesis\Config;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DeleteSpec extends ObjectBehavior
 {

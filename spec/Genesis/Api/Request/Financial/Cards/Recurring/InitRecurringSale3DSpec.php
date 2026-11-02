@@ -15,14 +15,19 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\ThreedsV2DatesExampl
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MarketplaceDataAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MpiAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\OrderAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\ForceThreedsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofTransactionLinkIdNotSupportedExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
 use spec\SharedExamples\Genesis\Api\Traits\Request\Financial\Cards\TokenizationParamsAttributesExamples;
@@ -35,11 +40,15 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use CredentialOnFileAttributesExamples;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use ForceThreedsAttributesExamples;
     use FundingAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use FxRateAttributesExamples;
     use ManagedRecurringAttributesExample;
+    use MarketplaceDataAttributesExamples;
     use MpiAttributesExamples;
     use NeighborhoodAttributesExamples;
+    use OrderAttributesExamples;
     use RecurringCategoryAttributesExample;
     use RequestExamples;
     use ScaAttributesExamples;
@@ -47,6 +56,7 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     use ThreedsV2DatesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use UcofTransactionLinkIdNotSupportedExamples;
     use SchemeTokenized3DExamples;
     use TokenizationParamsAttributesExamples;
     use MotoAttributesExamples;
@@ -54,6 +64,12 @@ class InitRecurringSale3DSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(InitRecurringSale3D::class);
+    }
+
+    protected function setPurposeOfPaymentFundingParameters()
+    {
+        $this->setPurposeOfPaymentRequiredParameters();
+        $this->setFundingIdentifierType('account_to_account');
     }
 
     protected function setRequestParameters()

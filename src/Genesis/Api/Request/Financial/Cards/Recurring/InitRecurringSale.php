@@ -33,7 +33,10 @@ use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttribu
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
+use Genesis\Api\Traits\Request\Financial\MarketplaceDataAttributes;
+use Genesis\Api\Traits\Request\Financial\OrderAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\Api\Traits\Request\MotoAttributes;
 use Genesis\Api\Traits\Request\RiskAttributes;
@@ -53,9 +56,12 @@ class InitRecurringSale extends \Genesis\Api\Request\Base\Financial\Cards\Credit
     use BusinessAttributes;
     use DescriptorAttributes;
     use FundingAttributes;
+    use PurposeOfPaymentAttributes;
     use FxRateAttributes;
     use ManagedRecurringAttributes;
+    use MarketplaceDataAttributes;
     use MotoAttributes;
+    use OrderAttributes;
     use RecurringCategoryAttributes;
     use RiskAttributes;
     use TravelDataAttributes;
@@ -103,27 +109,46 @@ class InitRecurringSale extends \Genesis\Api\Request\Base\Financial\Cards\Credit
     }
 
     /**
+     * Extend the InitRecurringSale Request Validations
+     *
+     * @return void
+     * @throws \Genesis\Exceptions\ErrorParameter
+     * @throws \Genesis\Exceptions\InvalidArgument
+     * @throws \Genesis\Exceptions\InvalidClassMethod
+     */
+    protected function checkRequirements()
+    {
+        parent::checkRequirements();
+        $this->validateMarketplaceDataAttributes();
+    }
+
+    /**
      * Return additional request attributes
      * @return array
      */
     protected function getTransactionAttributes()
     {
-        return [
-            'moto'                      => $this->moto,
-            'customer_email'            => $this->customer_email,
-            'customer_phone'            => $this->customer_phone,
-            'document_id'               => $this->document_id,
-            'billing_address'           => $this->getBillingAddressParamsStructure(),
-            'shipping_address'          => $this->getShippingAddressParamsStructure(),
-            'risk_params'               => $this->getRiskParamsStructure(),
-            'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
-            'travel'                    => $this->getTravelData(),
-            'fx_rate_id'                => $this->fx_rate_id,
-            'business_attributes'       => $this->getBusinessAttributesStructure(),
-            'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
-            'recurring_category'        => $this->recurring_category,
-            'funding'                   => $this->getFundingAttributesStructure(),
-            'account_owner'             => $this->getAccountOwnerAttributesStructure()
-        ];
+        return array_merge(
+            [
+                'moto'                      => $this->moto,
+                'customer_email'            => $this->customer_email,
+                'customer_phone'            => $this->customer_phone,
+                'document_id'               => $this->document_id,
+                'billing_address'           => $this->getBillingAddressParamsStructure(),
+                'shipping_address'          => $this->getShippingAddressParamsStructure(),
+                'risk_params'               => $this->getRiskParamsStructure(),
+                'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
+                'travel'                    => $this->getTravelData(),
+                'fx_rate_id'                => $this->fx_rate_id,
+                'business_attributes'       => $this->getBusinessAttributesStructure(),
+                'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
+                'recurring_category'        => $this->recurring_category,
+                'marketplace_data'          => $this->getMarketplaceDataAttributesStructure(),
+                'funding'                   => $this->getFundingAttributesStructure(),
+                'purpose_of_payment'        => $this->purpose_of_payment,
+                'account_owner'             => $this->getAccountOwnerAttributesStructure()
+            ],
+            $this->getOrderAttributesStructure()
+        );
     }
 }

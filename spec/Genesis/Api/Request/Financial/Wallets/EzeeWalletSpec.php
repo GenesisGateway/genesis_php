@@ -22,7 +22,8 @@ class EzeeWalletSpec extends ObjectBehavior
     public function it_should_fail_when_missing_required_params()
     {
         $this->testMissingRequiredParameters([
-            'source_wallet_id'
+            'source_wallet_id',
+            'merchant_website'
         ]);
     }
 
@@ -110,5 +111,6 @@ class EzeeWalletSpec extends ObjectBehavior
         $this->setReturnSuccessUrl($faker->url);
         $this->setReturnFailureUrl($faker->url);
         $this->setNotificationUrl($faker->url);
+        $this->setMerchantWebsite($faker->url);
     }
 }

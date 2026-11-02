@@ -28,7 +28,7 @@ namespace Genesis\Api\Request\Financial\Cards;
 
 use Genesis\Api\Traits\Request\DigitalAssetTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\AccountOwnerAttributes;
-use Genesis\API\Traits\Request\Financial\CryptoAttributes;
+use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\CustomerIdentificationData;
 use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\SourceOfFundsAttributes;

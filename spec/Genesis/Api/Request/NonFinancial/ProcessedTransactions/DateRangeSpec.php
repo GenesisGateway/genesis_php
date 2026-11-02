@@ -5,15 +5,13 @@ namespace spec\Genesis\Api\Request\NonFinancial\ProcessedTransactions;
 use Genesis\Api\Request\NonFinancial\ProcessedTransactions\DateRange;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\NonFinancial\DateRangeRequestSharedExample;
-use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ExternallyProcessedSharedExample;
-use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ProcessingTypeSharedExample;
+use spec\SharedExamples\Genesis\Api\Request\NonFinancial\ScopeSharedExample;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DateRangeSpec extends ObjectBehavior
 {
     use DateRangeRequestSharedExample;
-    use ExternallyProcessedSharedExample;
-    use ProcessingTypeSharedExample;
+    use ScopeSharedExample;
     use RequestExamples;
 
     public function it_is_initializable()
@@ -29,8 +27,9 @@ class DateRangeSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('end_date');
         $this->getDocument()->shouldContain('page');
         $this->getDocument()->shouldContain('per_page');
-        $this->getDocument()->shouldContain('externally_processed');
-        $this->getDocument()->shouldContain('processing_type');
+        $this->getDocument()->shouldContain('scope');
+        $this->getDocument()->shouldNotContain('externally_processed');
+        $this->getDocument()->shouldNotContain('processing_type');
     }
 
     public function it_should_have_correct_endpoint_url()
@@ -48,13 +47,13 @@ class DateRangeSpec extends ObjectBehavior
     {
         $this->setRequestDateParameters();
         $this->setRequestPageParameters();
-        $this->setExternallyProcessedParameters();
-        $this->setProcessingTypeParameters();
+        $this->setScopeParameters();
     }
 
     public function setRequestParameters()
     {
         $this->setRequestDateParameters();
         $this->setEndDate(null);
+        $this->setScopeParameters();
     }
 }

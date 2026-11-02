@@ -72,13 +72,12 @@ trait DateAttributes
     {
         if (empty($date)) {
             $this->start_date = null;
+            $this->start_date_has_time = false;
 
             return $this;
         }
 
-        if (preg_match(RegexValidator::PATTERN_TIMESTAMP, $date) === 1) {
-            $this->start_date_has_time = true;
-        }
+        $this->start_date_has_time = preg_match(RegexValidator::PATTERN_TIMESTAMP, $date) === 1;
 
         return $this->parseDate(
             'start_date',
@@ -108,13 +107,12 @@ trait DateAttributes
     {
         if (empty($date)) {
             $this->end_date = null;
+            $this->end_date_has_time = false;
 
             return $this;
         }
 
-        if (preg_match(RegexValidator::PATTERN_TIMESTAMP, $date) === 1) {
-            $this->end_date_has_time = true;
-        }
+        $this->end_date_has_time = preg_match(RegexValidator::PATTERN_TIMESTAMP, $date) === 1;
 
         return $this->parseDate(
             'end_date',

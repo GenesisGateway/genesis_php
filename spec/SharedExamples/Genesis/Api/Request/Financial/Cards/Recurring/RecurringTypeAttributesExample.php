@@ -6,7 +6,7 @@ use Genesis\Api\Constants\Transaction\Parameters\ManagedRecurring\Modes;
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Request\Financial\Cards\Authorize3D;
 use Genesis\Api\Request\Financial\Cards\Sale3D;
-use Genesis\API\Request\Financial\Mobile\ApplePay;
+use Genesis\Api\Request\Financial\Mobile\ApplePay;
 use Genesis\Api\Request\Financial\Mobile\GooglePay;
 use Genesis\Api\Request\Wpf\Create as WpfCreate;
 use Genesis\Exceptions\ErrorParameter;

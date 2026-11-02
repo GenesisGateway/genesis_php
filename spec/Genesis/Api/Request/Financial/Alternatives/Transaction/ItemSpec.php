@@ -5,6 +5,7 @@ namespace spec\Genesis\Api\Request\Financial\Alternatives\Transaction;
 use Faker\Factory;
 use Genesis\Api\Constants\Financial\Alternative\Transaction\ItemTypes;
 use Genesis\Api\Request\Financial\Alternatives\Transaction\Item as InvoiceItem;
+use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
@@ -111,6 +112,85 @@ class ItemSpec extends ObjectBehavior
         $this->shouldThrow()->during('validate');
     }
 
+    public function it_should_serialize_tax_rate_as_percent_times_100_for_eur()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setCurrency('EUR');
+        $this->setQuantity(1);
+        $this->setUnitPrice(5);
+        $this->setTaxRate('12.34');
+
+        $this->toArray()->shouldHaveKeyWithValue('tax_rate', '1234');
+    }
+
+    public function it_should_serialize_tax_rate_as_percent_times_100_for_jpy()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setCurrency('JPY');
+        $this->setQuantity(1);
+        $this->setUnitPrice(5);
+        $this->setTaxRate('12.34');
+
+        $this->toArray()->shouldHaveKeyWithValue('tax_rate', '1234');
+    }
+
+    public function it_should_calculate_total_tax_amount_for_jpy()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setCurrency('JPY');
+        $this->setQuantity(1);
+        $this->setUnitPrice(1000);
+        $this->setTaxRate(10);
+
+        $this->getTotalTaxAmount()->shouldBe('91');
+
+        $structure = $this->toArray();
+        $structure->shouldHaveKeyWithValue('total_tax_amount', '91');
+        $structure->shouldHaveKeyWithValue('tax_rate', '1000');
+    }
+
+    public function it_should_calculate_total_tax_amount_for_bhd()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setCurrency('BHD');
+        $this->setQuantity(1);
+        $this->setUnitPrice('10.000');
+        $this->setTaxRate(10);
+
+        $this->getTotalTaxAmount()->shouldBe('0.910');
+
+        $structure = $this->toArray();
+        $structure->shouldHaveKeyWithValue('total_tax_amount', '910');
+        $structure->shouldHaveKeyWithValue('tax_rate', '1000');
+    }
+
+    public function it_should_throw_when_tax_rate_has_more_than_two_decimals_for_eur()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setCurrency('EUR');
+        $this->setQuantity(1);
+        $this->setUnitPrice(5);
+        $this->setTaxRate('12.345');
+
+        $this->shouldThrow(InvalidArgument::class)->during('toArray');
+    }
+
+    public function it_should_keep_tax_rate_as_entered_when_currency_not_set()
+    {
+        $this->setName('item');
+        $this->setItemType(ItemTypes::PHYSICAL);
+        $this->setQuantity(1);
+        $this->setUnitPrice(5);
+        $this->setTaxRate('12.34');
+
+        $this->toArray()->shouldHaveKeyWithValue('tax_rate', '12.34');
+    }
+
     protected function setRequestParameters()
     {
         $faker = Factory::create();
@@ -133,7 +213,7 @@ class ItemSpec extends ObjectBehavior
     {
         $currency     = $this->getCurrency()->getWrappedObject();
         $total_amount = Currency::amountToExponent($total_amount, $currency);
-        $tax_rate     = Currency::amountToExponent($tax_rate, $currency);
+        $tax_rate     = bcmul((string) $tax_rate, '100', 0);
 
         $total_tax_amount = ceil(
             $total_amount - ($total_amount * 10000)/(10000 + $tax_rate)

@@ -34,8 +34,11 @@ use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttribu
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
+use Genesis\Api\Traits\Request\Financial\MarketplaceDataAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
+use Genesis\Api\Traits\Request\Financial\OrderAttributes;
 use Genesis\Api\Traits\Request\Financial\ScaAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\Api\Traits\Request\MotoAttributes;
@@ -57,10 +60,13 @@ class InitRecurringSale3D extends \Genesis\Api\Request\Base\Financial\Cards\Cred
     use BusinessAttributes;
     use DescriptorAttributes;
     use FundingAttributes;
+    use PurposeOfPaymentAttributes;
     use FxRateAttributes;
     use ManagedRecurringAttributes;
+    use MarketplaceDataAttributes;
     use MotoAttributes;
     use NotificationAttributes;
+    use OrderAttributes;
     use RecurringCategoryAttributes;
     use RiskAttributes;
     use ScaAttributes;
@@ -140,6 +146,8 @@ class InitRecurringSale3D extends \Genesis\Api\Request\Base\Financial\Cards\Cred
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
 
         parent::checkRequirements();
+
+        $this->validateMarketplaceDataAttributes();
     }
 
     /**
@@ -166,9 +174,12 @@ class InitRecurringSale3D extends \Genesis\Api\Request\Base\Financial\Cards\Cred
                 'business_attributes'       => $this->getBusinessAttributesStructure(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
+                'marketplace_data'          => $this->getMarketplaceDataAttributesStructure(),
                 'funding'                   => $this->getFundingAttributesStructure(),
+                'purpose_of_payment'        => $this->purpose_of_payment,
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
+            $this->getOrderAttributesStructure(),
             $this->getScaAttributesStructure(),
             $this->get3DSTransactionAttributes(),
             $this->getUcofAttributesStructure()

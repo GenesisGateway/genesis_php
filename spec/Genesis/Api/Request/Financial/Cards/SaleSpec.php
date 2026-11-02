@@ -5,6 +5,7 @@ namespace spec\Genesis\Api\Request\Financial\Cards;
 use Genesis\Api\Constants\Transaction\Parameters\DigitalAssetTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Recurring\Types;
 use Genesis\Api\Request\Financial\Cards\Sale;
+use Genesis\Exceptions\ErrorParameter;
 use PhpSpec\ObjectBehavior;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AccountOwnerAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\AllowedZeroAmount;
@@ -13,18 +14,24 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\ManagedRec
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringCategoryAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\Recurring\RecurringTypeAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Cards\SchemeTokenizedExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\CommercialCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CredentialOnFileAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CreditCardAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\CryptoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExample;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\FxRateAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\GamingAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MarketplaceDataAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\MarketplaceDataSubsequentRecurringExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\MotoAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\OrderAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\ScaAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\TokenizationAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\UcofAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\UcofTransactionLinkIdAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DigitalAssetTypeAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
@@ -36,34 +43,40 @@ class SaleSpec extends ObjectBehavior
     use AccountOwnerAttributesExamples;
     use AllowedZeroAmount;
     use BusinessAttributesExample;
+    use CommercialCardAttributesExamples;
     use CredentialOnFileAttributesExamples;
     use CreditCardAttributesExamples;
     use CryptoAttributesExamples;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
     use FundingAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use FxRateAttributesExamples;
     use ManagedRecurringAttributesExample;
     use NeighborhoodAttributesExamples;
+    use OrderAttributesExamples;
     use RecurringCategoryAttributesExample;
     use RecurringTypeAttributesExample;
     use RequestExamples;
     use ScaAttributesExamples;
     use TokenizationAttributesExamples;
     use UcofAttributesExamples;
+    use UcofTransactionLinkIdAttributesExamples;
     use SchemeTokenizedExamples;
     use InstallmentAttributesExamples;
     use TokenizationParamsAttributesExamples;
     use DigitalAssetTypeAttributesExamples;
     use MotoAttributesExamples;
     use GamingAttributesExamples;
+    use MarketplaceDataAttributesExamples;
+    use MarketplaceDataSubsequentRecurringExamples;
 
     public function it_is_initializable()
     {
         $this->shouldHaveType(Sale::class);
     }
 
-     public function it_can_build_with_reference_id_parameter()
+    public function it_can_build_with_reference_id_parameter()
     {
         $this->setRequestParameters();
         $this->setReferenceId('transaction-reference-id');
@@ -83,6 +96,80 @@ class SaleSpec extends ObjectBehavior
         $this->setReferenceId('transaction-reference-id');
 
         $this->shouldNotThrow()->during('getDocument');
+    }
+  
+    public function it_should_send_commercial_card_amounts_as_entered_on_subsequent_recurring_without_currency()
+    {
+        $faker = $this->getFaker();
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
+        $this->setRecurringType(Types::SUBSEQUENT);
+        $this->setReferenceId('transaction-reference-id');
+
+        $this->setCommercialCardName('Commercial Card Item');
+        $this->setCommercialCardQuantity(1);
+        $this->setCommercialCardTaxRate('20');
+        $this->setCommercialCardUnitPrice('5000');
+        $this->setCommercialCardTotalTaxAmount('1000');
+        $this->setCommercialCardTotalDiscountAmount('500');
+
+        $this->getDocument()->shouldContain('<unit_price>5000</unit_price>');
+        $this->getDocument()->shouldContain('<total_tax_amount>1000</total_tax_amount>');
+        $this->getDocument()->shouldContain('<total_discount_amount>500</total_discount_amount>');
+        $this->getDocument()->shouldContain('<tax_rate>2000</tax_rate>');
+    }
+
+    public function it_should_fail_with_empty_commercial_card_unit_price_on_subsequent_recurring_without_currency()
+    {
+        $faker = $this->getFaker();
+
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
+        $this->setRecurringType(Types::SUBSEQUENT);
+        $this->setReferenceId('transaction-reference-id');
+
+        $this->setCommercialCardName('Commercial Card Item');
+        $this->setCommercialCardQuantity(1);
+        $this->setCommercialCardTaxRate('20');
+        $this->setCommercialCardUnitPrice('0');
+        $this->setCommercialCardTotalTaxAmount('1000');
+        $this->setCommercialCardTotalDiscountAmount('500');
+
+        $this->shouldThrow(
+            new ErrorParameter('Empty (null) required parameter: commercial_card_unit_price')
+        )->during('getDocument');
+    }
+
+    public function it_should_transform_commercial_card_unit_price_on_subsequent_recurring_with_currency()
+    {
+        $faker = $this->getFaker();
+
+        $this->setTransactionId($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setAmount($faker->numberBetween(1, PHP_INT_MAX));
+        $this->setUsage('Genesis PHP Client Automated Request');
+        $this->setRemoteIp($faker->ipv4);
+        $this->setRecurringType(Types::SUBSEQUENT);
+        $this->setReferenceId('transaction-reference-id');
+        $this->setCurrency('EUR');
+
+        $this->setCommercialCardName('Commercial Card Item');
+        $this->setCommercialCardQuantity(1);
+        $this->setCommercialCardTaxRate('20');
+        $this->setCommercialCardUnitPrice('50.00');
+        $this->setCommercialCardTotalTaxAmount('1000');
+        $this->setCommercialCardTotalDiscountAmount('500');
+
+        $this->getDocument()->shouldContain('<unit_price>5000</unit_price>');
+    }
+
+    protected function setPurposeOfPaymentFundingParameters()
+    {
+        $this->setPurposeOfPaymentRequiredParameters();
+        $this->setFundingIdentifierType('account_to_account');
     }
 
     protected function setRequestParameters()

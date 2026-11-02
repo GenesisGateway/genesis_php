@@ -42,6 +42,7 @@ use Genesis\Utils\Common as CommonUtils;
  * @package Genesis\Api\Request\NonFinancial\Kyc\Address
  *
  * @method bool getWithEnhancedAddressVerification()
+ * @method bool getWithAsyncWorkflow()
  */
 class ByDocumentProof extends KYCBaseRequest
 {
@@ -56,6 +57,14 @@ class ByDocumentProof extends KYCBaseRequest
      * @var bool
      */
     protected $with_enhanced_address_verification;
+
+    /**
+     * A flag that controls whether the address verification request is sent synchronously or asynchronously.
+     * The default value is 'false', i.e. synchronously.
+     *
+     * @var bool
+     */
+    protected $with_async_workflow;
 
     /**
      * Define Verifications request endpoint
@@ -76,6 +85,20 @@ class ByDocumentProof extends KYCBaseRequest
     public function setWithEnhancedAddressVerification($value)
     {
         $this->with_enhanced_address_verification = CommonUtils::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Set with_async_workflow
+     *
+     * @param boolean $value
+     *
+     * @return $this
+     */
+    public function setWithAsyncWorkflow($value)
+    {
+        $this->with_async_workflow = CommonUtils::toBoolean($value);
 
         return $this;
     }
@@ -109,6 +132,7 @@ class ByDocumentProof extends KYCBaseRequest
             'document_supported_types'           => $this->document_supported_types,
             'backside_proof_required'            => $this->backside_proof_required,
             'with_enhanced_address_verification' => $this->with_enhanced_address_verification,
+            'with_async_workflow'                => $this->with_async_workflow,
             'document'                           => $this->getVerificationDocumentStructure()
         ];
     }

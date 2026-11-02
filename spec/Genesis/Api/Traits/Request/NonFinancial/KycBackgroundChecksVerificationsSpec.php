@@ -121,4 +121,30 @@ class KycBackgroundChecksVerificationsSpec extends ObjectBehavior
             ['string']
         );
     }
+
+    public function it_should_set_with_alias_search_correctly()
+    {
+        $this->shouldNotThrow()->during(
+            'setBackgroundChecksWithAliasSearch',
+            [Faker::getInstance()->boolean()]
+        );
+
+        $this->shouldNotThrow()->during(
+            'setBackgroundChecksWithAliasSearch',
+            [1]
+        );
+    }
+
+    public function it_should_set_with_associates_search_correctly()
+    {
+        $this->shouldNotThrow()->during(
+            'setBackgroundChecksWithAssociatesSearch',
+            [Faker::getInstance()->boolean()]
+        );
+
+        $this->shouldNotThrow()->during(
+            'setBackgroundChecksWithAssociatesSearch',
+            [1]
+        );
+    }
 }

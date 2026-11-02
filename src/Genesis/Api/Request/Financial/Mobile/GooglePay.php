@@ -38,7 +38,9 @@ use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Api\Traits\Request\Financial\Threeds\ForceThreedsAttributes;
 use Genesis\Api\Traits\Request\Financial\Threeds\V2\AllAttributes as AllThreedsV2Attributes;
 use Genesis\Api\Traits\Request\Mobile\GooglePayAttributes;
 use Genesis\Exceptions\InvalidArgument;
@@ -61,9 +63,11 @@ class GooglePay extends Financial
     use BusinessAttributes;
     use DescriptorAttributes;
     use DocumentAttributes;
+    use ForceThreedsAttributes;
     use FundingAttributes;
     use GooglePayAttributes;
     use NotificationAttributes;
+    use PurposeOfPaymentAttributes;
     use PaymentAttributes;
     use RecurringTypeAttributes;
 
@@ -181,9 +185,11 @@ class GooglePay extends Financial
             'business_attributes'       => $this->getBusinessAttributesStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'document_id'               => $this->document_id,
+            'force_threeds'             => $this->force_threeds,
             'threeds_v2_params'         => $this->getThreedsV2ParamsStructure(),
             'recurring_type'            => $this->getRecurringType(),
-            'funding'                   => $this->getFundingAttributesStructure()
+            'funding'                   => $this->getFundingAttributesStructure(),
+            'purpose_of_payment'        => $this->purpose_of_payment
         ];
     }
 

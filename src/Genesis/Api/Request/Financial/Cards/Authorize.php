@@ -35,12 +35,16 @@ use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttribu
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\SubsequentRecurringTypeAttributes;
+use Genesis\Api\Traits\Request\Financial\CommercialCardAttributes;
 use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\GamingAttributes;
 use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
+use Genesis\Api\Traits\Request\Financial\MarketplaceDataAttributes;
+use Genesis\Api\Traits\Request\Financial\OrderAttributes;
 use Genesis\Api\Traits\Request\Financial\PreauthorizationAttributes;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\Financial\ScaAttributes;
@@ -62,13 +66,17 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     use AccountOwnerAttributes;
     use AddressInfoAttributes;
     use BusinessAttributes;
+    use CommercialCardAttributes;
     use CryptoAttributes;
     use DescriptorAttributes;
     use FundingAttributes;
+    use PurposeOfPaymentAttributes;
     use FxRateAttributes;
     use GamingAttributes;
     use ManagedRecurringAttributes;
+    use MarketplaceDataAttributes;
     use MotoAttributes;
+    use OrderAttributes;
     use PreauthorizationAttributes;
     use RecurringCategoryAttributes;
     use RecurringTypeAttributes;
@@ -101,8 +109,9 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
      */
     protected function allowedEmptyNotNullFields()
     {
-        return array(
-            'amount' => static::REQUEST_KEY_AMOUNT
+        return array_merge(
+            ['amount' => static::REQUEST_KEY_AMOUNT],
+            $this->getCommercialCardAllowedFieldsZeroValues()
         );
     }
 
@@ -137,6 +146,8 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
     {
         if ($this->recurring_type == Types::SUBSEQUENT) {
             $this->checkRequirementsSubsequent();
+            $this->validateMarketplaceDataAttributes();
+            $this->validateCommercialCardAttributes();
 
             return;
         }
@@ -148,6 +159,8 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
         );
 
         parent::checkRequirements();
+        $this->validateMarketplaceDataAttributes();
+        $this->validateCommercialCardAttributes();
     }
 
     /**
@@ -177,12 +190,17 @@ class Authorize extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
                 'reference_id'              => $this->reference_id,
+                'marketplace_data'          => $this->getMarketplaceDataAttributesStructure(),
                 'funding'                   => $this->getFundingAttributesStructure(),
+                'purpose_of_payment'        => $this->purpose_of_payment,
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
+            $this->getOrderAttributesStructure(),
             $this->getScaAttributesStructure(),
             $this->getUcofAttributesStructure(),
-            $this->getInstallmentAttributesStructure()
+            $this->getUcofTransactionLinkIdStructure(),
+            $this->getInstallmentAttributesStructure(),
+            $this->getCommercialCardAttributesStructure()
         );
     }
 }

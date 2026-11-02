@@ -119,7 +119,7 @@ class Transaction extends BaseRequest
             return '';
         }
 
-        return sprintf('["%s"]', implode('","', $this->unique_id));
+        return $this->formatArrayToGraphQLStringList($this->unique_id);
     }
 
     /**
@@ -146,7 +146,7 @@ class Transaction extends BaseRequest
             return '';
         }
 
-        return sprintf('["%s"]', implode('","', $this->merchant_transaction_id));
+        return $this->formatArrayToGraphQLStringList($this->merchant_transaction_id);
     }
 
     /**
@@ -172,7 +172,7 @@ class Transaction extends BaseRequest
             return '';
         }
 
-        return sprintf('["%s"]', implode('","', $this->master_account_name));
+        return $this->formatArrayToGraphQLStringList($this->master_account_name);
     }
 
     /**
@@ -295,7 +295,8 @@ class Transaction extends BaseRequest
             'gstAmount', 'gstRate', 'vatAmount', 'vatRate', 'terminalName', 'region', 'settlementBillingStatements',
             'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'merchantTransactionId',
             'masterAccountName', 'valueDate', 'documentId', 'referenceId', 'authCode', 'paymentType', 'cardBrand',
-            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype'];
+            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype', 'retrievalReferenceNumber',
+            'omnipayCardPresentTransactionId'];
     }
 
     /**

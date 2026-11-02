@@ -120,7 +120,8 @@ class EzeeWallet extends \Genesis\Api\Request\Base\Financial
             'return_failure_url',
             'notification_url',
             'source_wallet_id',
-            'source_wallet_pwd'
+            'source_wallet_pwd',
+            'merchant_website'
         ];
 
         $this->requiredFields = \Genesis\Utils\Common::createArrayObject($requiredFields);

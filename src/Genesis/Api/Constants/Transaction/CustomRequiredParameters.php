@@ -26,6 +26,7 @@
 
 namespace Genesis\Api\Constants\Transaction;
 
+use Genesis\Api\Constants\Transaction\Parameters\Wallets\EWallet\PaymentTypes as EWalletPaymentTypes;
 use Genesis\Api\Request\Financial\Alternatives\Klarna\Authorize;
 
 /**
@@ -51,6 +52,16 @@ class CustomRequiredParameters
     {
         return [
             'customer_account_id' => null
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function forEzeewallet()
+    {
+        return [
+            'merchant_website' => null
         ];
     }
 
@@ -83,6 +94,18 @@ class CustomRequiredParameters
     {
         return [
             'customer_id' => null
+        ];
+    }
+
+    /**
+     * Required custom attribute for eWallet
+     *
+     * @return array
+     */
+    public static function forEWallet()
+    {
+        return [
+            'payment_type' => EWalletPaymentTypes::getAllowedPaymentTypes()
         ];
     }
 }

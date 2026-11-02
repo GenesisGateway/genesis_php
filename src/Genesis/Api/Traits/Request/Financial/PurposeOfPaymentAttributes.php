@@ -27,6 +27,7 @@
 namespace Genesis\Api\Traits\Request\Financial;
 
 use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPayment;
+use Genesis\Api\Constants\Transaction\Parameters\PurposeOfPaymentValues;
 use Genesis\Exceptions\InvalidArgument;
 
 /**
@@ -34,20 +35,31 @@ use Genesis\Exceptions\InvalidArgument;
  *
  * @package Genesis\Api\Traits\Request\Financial
  *
- * @method string getPurposeOfPayment()
+ * @method string|null getPurposeOfPayment()
  */
 trait PurposeOfPaymentAttributes
 {
     /**
-     * Purpose of Payment code, required for Visa OCTs with recipients
-     * in Argentina, Bangladesh, Egypt, India, Chile and Colombia.
+     * Purpose of Payment: a Visa code (e.g. ISBONU) or its human-readable value
+     * (e.g. bonus_payment); Payout also accepts the Mastercard Money Transfer values.
      *
      * @var $purpose_of_payment
      */
     protected $purpose_of_payment;
 
     /**
-     * Validate purpose_of_payment param
+     * Set the Purpose of Payment of the transaction.
+     *
+     * Used for Visa Account Funding Transactions (AFT) and for Visa OCT /
+     * Mastercard Money Transfer payouts (Credit, Payout). Some issuer or
+     * recipient countries require it (for example Argentina, Bangladesh, Chile,
+     * Colombia, Egypt, India, Mexico and Saudi Arabia; the list is not
+     * exhaustive and is enforced by the gateway, not by the SDK). When the
+     * parameter is absent, the gateway applies its default (ISSAVG).
+     *
+     * The value is validated strictly against the request's allow-list.
+     * `null` clears the value. `''`, non-strings and unknown values throw
+     * InvalidArgument and keep the previous value.
      *
      * @param $value
      *
@@ -57,11 +69,24 @@ trait PurposeOfPaymentAttributes
     */
     public function setPurposeOfPayment($value)
     {
-        return $this->allowedOptionsSetter(
+        return $this->allowedOptionsStrictSetter(
             'purpose_of_payment',
-            PurposeOfPayment::getAll(),
+            $this->getAllowedPurposeOfPaymentValues(),
             $value,
             'Parameter Purpose of Payment not valid!'
+        );
+    }
+
+    /**
+     * Visa codes and Visa human-readable values
+     *
+     * @return array
+     */
+    protected function getAllowedPurposeOfPaymentValues()
+    {
+        return array_merge(
+            PurposeOfPayment::getCodes(),
+            PurposeOfPaymentValues::getAll()
         );
     }
 }

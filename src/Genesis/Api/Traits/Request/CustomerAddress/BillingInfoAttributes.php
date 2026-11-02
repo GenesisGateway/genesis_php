@@ -39,6 +39,7 @@ namespace Genesis\Api\Traits\Request\CustomerAddress;
  * @method $this setBillingState($value) Set Customer's Billing Address: State
  * @method $this setBillingNeighborhood($value) Set Customer's Billing Address: Neighborhood
  * @method $this setBillingCountry($value) Set Customer's Billing Address: Country
+ * @method $this setBillingStreetName($value) Set Customer's Billing Address: Street name
  */
 trait BillingInfoAttributes
 {
@@ -109,6 +110,13 @@ trait BillingInfoAttributes
     protected $billing_country;
 
     /**
+     * Customer's Billing Address: Street name
+     *
+     * @var string
+     */
+    protected $billing_street_name;
+
+    /**
      * Builds an array list with all Params
      *
      * @return array
@@ -124,7 +132,8 @@ trait BillingInfoAttributes
             'city'         => $this->billing_city,
             'state'        => $this->billing_state,
             'neighborhood' => $this->billing_neighborhood,
-            'country'      => $this->billing_country
+            'country'      => $this->billing_country,
+            'street_name'  => $this->billing_street_name
         ];
     }
 }

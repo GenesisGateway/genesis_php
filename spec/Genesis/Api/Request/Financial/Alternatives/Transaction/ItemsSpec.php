@@ -3,6 +3,8 @@
 namespace spec\Genesis\Api\Request\Financial\Alternatives\Transaction;
 
 use Faker\Factory;
+use Genesis\Api\Constants\Financial\Alternative\Transaction\ItemTypes;
+use Genesis\Api\Request\Financial\Alternatives\Transaction\Item as InvoiceItem;
 use Genesis\Api\Request\Financial\Alternatives\Transaction\Items as InvoiceItems;
 use Genesis\Utils\Currency;
 use PhpSpec\ObjectBehavior;
@@ -69,6 +71,20 @@ class ItemsSpec extends ObjectBehavior
         $this->getOrderTaxAmount()->shouldBe($total_tax_amount1 + $total_tax_amount2);
     }
 
+    public function it_can_calculate_order_tax_amount_for_bhd()
+    {
+        $item = new InvoiceItem();
+        $item->setName('Item BHD');
+        $item->setItemType(ItemTypes::PHYSICAL);
+        $item->setQuantity(1);
+        $item->setUnitPrice('10.000');
+        $item->setTaxRate(10);
+        $this->addItem($item);
+
+        $this->setCurrency('BHD');
+        $this->toArray()->shouldHaveKeyWithValue('order_tax_amount', '910');
+    }
+
     protected function setRequestParameters()
     {
         $item = $this->setItem();
@@ -84,7 +100,7 @@ class ItemsSpec extends ObjectBehavior
     protected function calculateTotalTaxAmount($total_amount, $tax_rate)
     {
         $total_amount = Currency::amountToExponent($total_amount, $this->currency);
-        $tax_rate     = Currency::amountToExponent($tax_rate, $this->currency);
+        $tax_rate     = bcmul((string) $tax_rate, '100', 0);
 
         $total_tax_amount = ceil(
             $total_amount - ($total_amount * 10000)/(10000 + $tax_rate)

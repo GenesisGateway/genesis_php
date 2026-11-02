@@ -34,7 +34,7 @@ namespace Genesis\Api\Traits\Request\Financial\OnlineBankingPayments;
  */
 
 use Genesis\Api\Traits\MagicAccessors;
-use Genesis\API\Traits\RestrictedSetter;
+use Genesis\Api\Traits\RestrictedSetter;
 use Genesis\Exceptions\InvalidArgument;
 
 /**

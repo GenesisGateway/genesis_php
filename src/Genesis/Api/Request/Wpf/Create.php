@@ -38,6 +38,8 @@ use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttrib
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
+use Genesis\Api\Traits\Request\Financial\OrderAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\PendingPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\Threeds\V2\WpfAttributes as WpfThreedsV2Attributes;
@@ -85,8 +87,10 @@ class Create extends \Genesis\Api\Request
     use DescriptorAttributes;
     use FundingAttributes;
     use NotificationAttributes;
+    use OrderAttributes;
     use PaymentAttributes;
     use PendingPaymentAttributes;
+    use PurposeOfPaymentAttributes;
     use RecurringCategoryAttributes;
     use RiskAttributes;
     use Validations;
@@ -581,7 +585,9 @@ class Create extends \Genesis\Api\Request
                 'web_payment_form_id'       => $this->web_payment_form_id,
                 'recurring_category'        => $this->recurring_category,
                 'funding'                   => $this->getFundingAttributesStructure(),
-                'account_owner'             => $this->getAccountOwnerAttributesStructure()
+                'purpose_of_payment'        => $this->purpose_of_payment,
+                'account_owner'             => $this->getAccountOwnerAttributesStructure(),
+                'order_id'                  => $this->order_id
             ]
         ];
 

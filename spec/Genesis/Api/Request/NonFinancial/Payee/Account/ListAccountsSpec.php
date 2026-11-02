@@ -9,7 +9,7 @@ use Genesis\Builder;
 use Genesis\Config;
 use Genesis\Api\Request\NonFinancial\Payee\Account\ListAccounts;
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class ListAccountsSpec extends ObjectBehavior
 {

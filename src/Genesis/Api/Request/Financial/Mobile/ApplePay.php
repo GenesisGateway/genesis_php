@@ -36,6 +36,8 @@ use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
+use Genesis\Api\Traits\Request\Financial\Threeds\ForceThreedsAttributes;
 use Genesis\Api\Traits\Request\Mobile\ApplePayAttributes;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Common as CommonUtils;
@@ -57,8 +59,10 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
     use CryptoAttributes;
     use DescriptorAttributes;
     use DocumentAttributes;
+    use ForceThreedsAttributes;
     use FundingAttributes;
     use PaymentAttributes;
+    use PurposeOfPaymentAttributes;
     use RecurringTypeAttributes;
 
     /**
@@ -188,7 +192,9 @@ class ApplePay extends \Genesis\Api\Request\Base\Financial
             'business_attributes'       => $this->getBusinessAttributesStructure(),
             'dynamic_descriptor_params' => $this->getDynamicDescriptorParamsStructure(),
             'recurring_type'            => $this->getRecurringType(),
-            'funding'                   => $this->getFundingAttributesStructure()
+            'force_threeds'             => $this->force_threeds,
+            'funding'                   => $this->getFundingAttributesStructure(),
+            'purpose_of_payment'        => $this->purpose_of_payment
         ];
     }
 }

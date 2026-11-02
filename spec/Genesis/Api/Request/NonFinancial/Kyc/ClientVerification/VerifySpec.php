@@ -120,6 +120,132 @@ class VerifySpec extends ObjectBehavior
         $this->shouldThrow(ErrorParameter::class)->during('getDocument');
     }
 
+    public function it_should_contain_show_consent_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setShowConsent($value);
+        $this->getDocument()->shouldContain('"show_consent":' . json_encode($value));
+    }
+
+    public function it_should_contain_show_privacy_policy_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setShowPrivacyPolicy($value);
+        $this->getDocument()->shouldContain('"show_privacy_policy":' . json_encode($value));
+    }
+
+    public function it_should_contain_with_alias_search_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setBackgroundChecksWithAliasSearch($value);
+        $this->getDocument()->shouldContain('"background_checks":{"with_alias_search":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_with_associates_search_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setBackgroundChecksWithAssociatesSearch($value);
+        $this->getDocument()->shouldContain('"background_checks":{"with_associates_search":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_with_enhanced_data_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setDocumentWithEnhancedData($value);
+        $this->getDocument()->shouldContain('"document":{"with_enhanced_data":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_fuzzy_match_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setDocumentAllowFuzzyMatch($value);
+        $this->getDocument()->shouldContain('"document":{"allow_fuzzy_match":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_decline_during_single_step_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setDocumentAllowDeclineDuringSingleStep($value);
+        $this->getDocument()->shouldContain('"document":{"allow_decline_during_single_step":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_with_ocr_form_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setDocumentWithOpticalCharacterRecognitionForm($value);
+        $this->getDocument()->shouldContain('"document":{"with_optical_character_recognition_form":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_paper_based_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowPaperBased($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_paper_based":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_photocopy_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowPhotocopy($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_photocopy":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_laminated_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowLaminated($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_laminated":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_screenshot_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowScreenshot($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_screenshot":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_cropped_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowCropped($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_cropped":' . json_encode($value) . '}');
+    }
+
+    public function it_should_contain_allow_scanned_when_set()
+    {
+        $value = $this->getFaker()->boolean();
+
+        $this->setRequestParameters();
+        $this->setVerificationInstructionsAllowScanned($value);
+        $this->getDocument()->shouldContain('"verification_instructions":{"allow_scanned":' . json_encode($value) . '}');
+    }
+
     protected function setRequestParameters()
     {
         $this->setEmail($this->getFaker()->email());

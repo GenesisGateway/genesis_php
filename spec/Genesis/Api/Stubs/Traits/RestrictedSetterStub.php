@@ -14,6 +14,7 @@ class RestrictedSetterStub
         setLimitedString as public publicSetLimitedString;
         parseDate as public publicParseDate;
         allowedOptionsSetter as public publicAllowedOptionsSetter;
+        allowedOptionsStrictSetter as public publicAllowedOptionsStrictSetter;
         parseAmount as public publicParseAmount;
         parseArrayOfStrings as public publicParseArrayOfStrings;
     }

@@ -22,6 +22,17 @@ class TypesSpec extends ObjectBehavior
     {
         $this->isValidWPFTransactionType(Types::EZEEWALLET)->shouldReturn(true);
         $this->isValidWPFTransactionType(Types::IDEBIT_PAYIN)->shouldReturn(true);
+        $this->isValidWPFTransactionType(Types::ALIPAY)->shouldReturn(true);
+    }
+
+    // Feature: f2026091501-add_alipay_transaction_support, Property 1: Transaction type registration
+    // round trip — the `alipay` type maps to Financial\Wallets\Alipay. Instantiation of that class
+    // and its generated transaction_type are covered where they belong, in AlipaySpec.
+    // (Validates Requirements 1.3, 2.1, 2.3, 8.10)
+    public function it_should_map_alipay_to_its_request_class()
+    {
+        $this->getFinancialRequestClassForTrxType(Types::ALIPAY)
+            ->shouldReturn('Financial\Wallets\Alipay');
     }
 
     public function it_can_detect_not_supported_wpf_trx_types()
@@ -100,12 +111,14 @@ class TypesSpec extends ObjectBehavior
         $typesObject = $this->getWrappedObject();
 
         $this::canVoid($typesObject::BALOTO)->shouldBe(false);
+        $this::canVoid($typesObject::ALIPAY)->shouldBe(false);
     }
 
     public function it_should_be_true_for_refundable_types()
     {
         $typesObject = $this->getWrappedObject();
         $refundableTypes = [
+            $typesObject::ALIPAY,
             $typesObject::APPLE_PAY,
             $typesObject::BALOTO,
             $typesObject::BANCOMER,

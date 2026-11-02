@@ -46,6 +46,8 @@ use Genesis\Utils\Common as CommonUtils;
  *      Sets the URL to which the Verification API will send notifications (webhooks) about status changes.
  * @method $this setVerificationRedirectUrl(string $verification_redirect_url)
  *      Sets the URL to which the user will be redirected if additional information is required.
+ * @method bool|null getWithChecksRetry()
+ *      Returns whether to re-run all the entity checks regardless of their current status, or null when unset.
  *
  */
 class CreatePayeeVerification extends BaseRequest
@@ -67,6 +69,16 @@ class CreatePayeeVerification extends BaseRequest
      * @var string
      */
     protected $verification_redirect_url;
+
+    /**
+     * Signifies whether to re-run all the entity checks regardless of their current status.
+     *
+     * Defaults to false on the Gateway side. Left unset so an omission is distinguishable
+     * from an explicitly set false.
+     *
+     * @var bool|null
+     */
+    protected $with_checks_retry;
 
     /**
      * CreateVerification constructor.
@@ -108,6 +120,35 @@ class CreatePayeeVerification extends BaseRequest
     }
 
     /**
+     * Signifies whether to re-run all the entity checks regardless of their current status.
+     *
+     * The value is normalized to a boolean via CommonUtils::toBoolean, so passing null sets an
+     * explicit false (not an omission). To omit the parameter, do not call this setter at all.
+     *
+     * @param mixed $value
+     * @return $this
+     */
+    public function setWithChecksRetry($value)
+    {
+        $this->with_checks_retry = CommonUtils::toBoolean($value);
+
+        return $this;
+    }
+
+    /**
+     * Fields that must be kept even when their value is "empty" (e.g. boolean false),
+     * as long as they are not null.
+     *
+     * @return array
+     */
+    protected function allowedEmptyNotNullFields()
+    {
+        return [
+            'with_checks_retry'
+        ];
+    }
+
+    /**
      * Returns the request structure.
      *
      * @return array
@@ -116,8 +157,9 @@ class CreatePayeeVerification extends BaseRequest
     {
         return [
             'verification' => [
-                'notification_url' => $this->verification_notification_url,
-                'redirect_url'     => $this->verification_redirect_url
+                'notification_url'  => $this->verification_notification_url,
+                'redirect_url'      => $this->verification_redirect_url,
+                'with_checks_retry' => $this->with_checks_retry
             ]
         ];
     }

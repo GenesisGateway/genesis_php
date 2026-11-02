@@ -28,6 +28,7 @@ namespace Genesis\Api\Traits\Request\Financial;
 
 use Genesis\Api\Constants\Transaction\Parameters\Funding\BusinessApplicationIdentifierTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\IdentifierTypes;
+use Genesis\Api\Constants\Transaction\Parameters\Funding\PersonTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\ReceiverAccountTypes;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Country;
@@ -41,6 +42,7 @@ use Genesis\Utils\Country;
  * @method string getFundingReceiverFirstName()
  * @method $this  setFundingReceiverLastName($value)
  * @method string getFundingReceiverLastName()
+ * @method string getFundingReceiverType()
  * @method string getFundingReceiverCountry()
  * @method $this  setFundingReceiverAccountNumber($value)
  * @method string getFundingReceiverAccountNumber()
@@ -48,12 +50,19 @@ use Genesis\Utils\Country;
  * @method string getFundingBusinessApplicationIdentifier()
  * @method $this  setFundingReceiverAddress($value)
  * @method string getFundingReceiverAddress()
+ * @method $this  setFundingReceiverAddress2($value)
+ * @method string getFundingReceiverAddress2()
+ * @method $this  setFundingReceiverStreetName($value)
+ * @method string getFundingReceiverStreetName()
+ * @method $this  setFundingReceiverZipCode($value)
+ * @method string getFundingReceiverZipCode()
  * @method $this  setFundingReceiverState($value)
  * @method string getFundingReceiverState()
  * @method $this  setFundingReceiverCity($value)
  * @method string getFundingReceiverCity()
  * @method $this  setFundingSenderName($value)
  * @method string getFundingSenderName()
+ * @method string getFundingSenderType()
  * @method $this  setFundingSenderReferenceNumber($value)
  * @method string getFundingSenderReferenceNumber()
  * @method string getFundingSenderCountry()
@@ -87,6 +96,13 @@ trait FundingAttributes
      * @var string
      */
     protected $funding_receiver_last_name;
+
+    /**
+     * Receiver person type
+     *
+     * @var string
+     */
+    protected $funding_receiver_type;
 
     /**
      * Country code in ISO 3166
@@ -124,6 +140,20 @@ trait FundingAttributes
     protected $funding_receiver_address;
 
     /**
+     * Receiver address2
+     *
+     * @var string
+     */
+    protected $funding_receiver_address2;
+
+    /**
+     * Receiver street name
+     *
+     * @var string
+     */
+    protected $funding_receiver_street_name;
+
+    /**
      * Receiver state
      *
      * @var string
@@ -138,11 +168,25 @@ trait FundingAttributes
     protected $funding_receiver_city;
 
     /**
+     * Receiver zip code
+     *
+     * @var string
+     */
+    protected $funding_receiver_zip_code;
+
+    /**
      * Sender name
      *
      * @var string
      */
     protected $funding_sender_name;
+
+    /**
+     * Sender person type
+     *
+     * @var string
+     */
+    protected $funding_sender_type;
 
     /**
      * Sender reference number
@@ -248,6 +292,40 @@ trait FundingAttributes
     }
 
     /**
+     * Validate funding_receiver_type param
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFundingReceiverType($value)
+    {
+        return $this->allowedOptionsSetter(
+            'funding_receiver_type',
+            PersonTypes::getAll(),
+            $value,
+            'Parameter Funding Receiver Type not valid!'
+        );
+    }
+
+    /**
+     * Validate funding_sender_type param
+     *
+     * @param $value
+     * @return $this
+     * @throws InvalidArgument
+     */
+    public function setFundingSenderType($value)
+    {
+        return $this->allowedOptionsSetter(
+            'funding_sender_type',
+            PersonTypes::getAll(),
+            $value,
+            'Parameter Funding Sender Type not valid!'
+        );
+    }
+
+    /**
      * Validate funding_receiver_country param
      *
      * @param $value
@@ -277,15 +355,20 @@ trait FundingAttributes
             'receiver'                        => [
                 'first_name'          => $this->funding_receiver_first_name,
                 'last_name'           => $this->funding_receiver_last_name,
+                'type'                => $this->funding_receiver_type,
                 'country'             => $this->funding_receiver_country,
                 'account_number'      => $this->funding_receiver_account_number,
                 'account_number_type' => $this->funding_receiver_account_number_type,
                 'address'             => $this->funding_receiver_address,
+                'address2'            => $this->funding_receiver_address2,
+                'street_name'         => $this->funding_receiver_street_name,
                 'state'               => $this->funding_receiver_state,
                 'city'                => $this->funding_receiver_city,
+                'zip_code'            => $this->funding_receiver_zip_code,
             ],
             'sender'                          => [
                 'name'             => $this->funding_sender_name,
+                'type'             => $this->funding_sender_type,
                 'reference_number' => $this->funding_sender_reference_number,
                 'country'          => $this->funding_sender_country,
                 'address'          => $this->funding_sender_address,

@@ -10,7 +10,7 @@ use Genesis\Builder;
 use Genesis\Config;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class AssociateOwnerWithOwnersSpec extends ObjectBehavior
 {

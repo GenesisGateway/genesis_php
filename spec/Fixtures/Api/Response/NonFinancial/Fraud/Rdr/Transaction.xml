@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rapid_dispute_resolution_response>
+    <status>error</status>
+    <code>471</code>
+    <message>Rapid Dispute Resolution not found!</message>
+    <technical_message>Rapid Dispute Resolution by the given criteria cannot be found!</technical_message>
+</rapid_dispute_resolution_response>

@@ -63,6 +63,7 @@ use Genesis\Utils\Common as CommonUtils;
  * @method bool isInvalidated()
  * @method bool isChargebackReversal()
  * @method bool isPendingReview()
+ * @method bool isPartiallyReversed()
  * @method bool isCancelled()
  * @method bool isAccepted()
  * @method bool isChanged()
@@ -215,6 +216,12 @@ class States
      * Once a represented transaction is reversed, the state changes to representment reversed.
      */
     const REPRESENTMENT_REVERSED = 'representment_reversed';
+
+    /**
+     * Relevant only for preauthorization transactions. Once a partial amount (less than the full
+     * preauthorized amount) is returned to the customer, the transaction becomes partially reversed.
+     */
+    const PARTIALLY_REVERSED = 'partially_reversed';
 
     /**
      * The transaction is on hold, a manual review needs to be performed.

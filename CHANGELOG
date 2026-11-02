@@ -1,3 +1,31 @@
+2.3.0
+-----
+
+**Features**:
+
+* Added Alipay transaction support — new `Financial\Wallets\Alipay` request
+* Added eWallet transaction support — new `Financial\Wallets\eWallet` request
+* Added Async Refund transaction support — new `Financial\AsyncRefund` request
+* Added KYC Bank Account Verification API request — new `NonFinancial\Kyc\BankAccount\BankAccountVerification` request
+* Added Payment Authorizations API — new `NonFinancial\PaymentAuthorizations\DateRange` request
+* Added Rapid Dispute Resolution API — new `NonFinancial\Fraud\Rdr\DateRange` and `Rdr\Transaction` requests
+* Updated reporting APIs to current scope contract — `scope` replaces the old processing-type parameters
+* Updated Billing API to current API contract — new `BillingApi\EnhancedStatement` request and datetime range filters
+* Updated KYC Create Verification parameters — new consent, document and background-check attributes
+* Updated KYC Address Verification parameters — new async-workflow attribute
+* Updated Payee Verification parameters — new checks-retry attribute
+* Updated Funding and VISA AFT attributes and validation — new funding receiver/sender attributes
+* Updated Money Transfer Payout and Purpose of Payment support — new money-transfer receiver and purpose-of-payment attributes
+* Added Commercial Card Data and Mastercard LTI support — new commercial card attributes on the card requests
+* Updated 3DS and Credential-on-File transaction parameters — new credential-on-file link id and force-3DS attributes
+* Added merchant order data to Processing and WPF requests — new `order_id` attribute
+* Added Marketplace Foreign Retailer data — new foreign retailer indicator and amount attributes
+* Synchronized SDK validations and constants with current API docs — new transaction states and error codes
+* Added Alipay Register Merchant APM Service request — new `NonFinancial\Alternatives\Alipay\RegisterMerchant` request
+* Added scheme_tokenized parameter to Tokenization API Cryptogram
+* Added WPF Reconcile by Order ID support — new `Wpf\ReconcileByOrder` request
+* Completed GraphQL string escaping for control characters in escapeGraphQLString
+
 2.2.2
 -----
 

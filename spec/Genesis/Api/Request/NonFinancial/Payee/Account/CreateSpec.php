@@ -10,7 +10,7 @@ use Genesis\Utils\Country;
 use PhpSpec\ObjectBehavior;
 use Genesis\Api\Request\NonFinancial\Payee\Account\Create;
 use Genesis\Api\Request\Base\NonFinancial\Payee\BaseRequest;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use Genesis\Exceptions\ErrorParameter;
 
 class CreateSpec extends ObjectBehavior

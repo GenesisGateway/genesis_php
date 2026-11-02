@@ -45,6 +45,19 @@ class ByDocumentProofSpec extends ObjectBehavior
         $this->getDocument()->shouldContain('with_enhanced_address_verification');
     }
 
+    public function it_should_contain_with_async_workflow_when_enabled()
+    {
+        $this->setRequestParameters();
+        $this->setWithAsyncWorkflow(true);
+        $this->getDocument()->shouldContain('with_async_workflow');
+    }
+
+    public function it_should_normalize_with_async_workflow_when_disabled()
+    {
+        $this->setWithAsyncWorkflow(false);
+        $this->getWithAsyncWorkflow()->shouldBe(false);
+    }
+
     protected function setRequestParameters()
     {
         $this->setReferenceId($this->getFaker()->uuid());

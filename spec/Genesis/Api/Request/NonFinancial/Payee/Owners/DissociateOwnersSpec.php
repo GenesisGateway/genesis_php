@@ -9,7 +9,7 @@ use Genesis\Api\Request\NonFinancial\Payee\Owners\DissociateOwners;
 use Genesis\Builder;
 use Genesis\Config;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class DissociateOwnersSpec extends ObjectBehavior
 {

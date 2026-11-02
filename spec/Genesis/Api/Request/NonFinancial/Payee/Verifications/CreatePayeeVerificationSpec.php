@@ -9,7 +9,7 @@ use Genesis\Api\Request\NonFinancial\Payee\Verifications\CreatePayeeVerification
 use Genesis\Builder;
 use Genesis\Config;
 use PhpSpec\ObjectBehavior;
-use spec\SharedExamples\Genesis\API\Request\RequestExamples;
+use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 
 class CreatePayeeVerificationSpec extends ObjectBehavior
 {
@@ -52,6 +52,38 @@ class CreatePayeeVerificationSpec extends ObjectBehavior
     public function it_should_have_correct_request_type()
     {
         $this->getConfig()->shouldHaveKeyWithValue('format', Builder::JSON);
+    }
+
+    public function it_should_not_include_with_checks_retry_when_omitted()
+    {
+        $this->setRequestParameters();
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldNotContain('with_checks_retry');
+    }
+
+    public function it_should_serialize_with_checks_retry_as_true_when_enabled()
+    {
+        $this->setRequestParameters();
+        $this->setWithChecksRetry(true);
+
+        $this->shouldNotThrow()->during('getDocument');
+        $this->getDocument()->shouldContain('"with_checks_retry":true');
+    }
+
+    public function it_should_preserve_with_checks_retry_as_false_when_disabled()
+    {
+        $this->setRequestParameters();
+        $this->setWithChecksRetry(false);
+
+        $this->getDocument()->shouldContain('"with_checks_retry":false');
+    }
+
+    public function it_should_normalize_truthy_with_checks_retry_to_boolean_true()
+    {
+        $this->setWithChecksRetry('true');
+
+        $this->getWithChecksRetry()->shouldBe(true);
     }
 
     public function setRequestParameters()

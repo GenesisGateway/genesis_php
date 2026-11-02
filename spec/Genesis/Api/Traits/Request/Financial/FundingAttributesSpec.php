@@ -3,6 +3,7 @@
 namespace spec\Genesis\Api\Traits\Request\Financial;
 
 use Genesis\Api\Constants\Transaction\Parameters\Funding\IdentifierTypes;
+use Genesis\Api\Constants\Transaction\Parameters\Funding\PersonTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\ReceiverAccountTypes;
 use Genesis\Exceptions\InvalidArgument;
 use PhpSpec\ObjectBehavior;
@@ -39,6 +40,32 @@ class FundingAttributesSpec extends ObjectBehavior
     {
         $this->shouldThrow(InvalidArgument::class)
             ->duringSetFundingReceiverAccountNumberType('aaaaa');
+    }
+
+    public function it_should_not_fail_when_valid_funding_receiver_type()
+    {
+        foreach (PersonTypes::getAll() as $value) {
+            $this->shouldNotThrow()->duringSetFundingReceiverType($value);
+        }
+    }
+
+    public function it_should_fail_when_invalid_funding_receiver_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->duringSetFundingReceiverType('aaaaa');
+    }
+
+    public function it_should_not_fail_when_valid_funding_sender_type()
+    {
+        foreach (PersonTypes::getAll() as $value) {
+            $this->shouldNotThrow()->duringSetFundingSenderType($value);
+        }
+    }
+
+    public function it_should_fail_when_invalid_funding_sender_type()
+    {
+        $this->shouldThrow(InvalidArgument::class)
+            ->duringSetFundingSenderType('aaaaa');
     }
 
     public function it_should_fail_with_three_digit_country_code()

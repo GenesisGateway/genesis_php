@@ -69,6 +69,13 @@ class Types
     const REFUND = 'refund';
 
     /**
+     * Async Refund is a refund transaction processed through an asynchronous workflow.
+     * Async refunds can only be done on former transactions, therefore the reference id
+     * for the corresponding transaction is mandatory.
+     */
+    const ASYNC_REFUND = 'async_refund';
+
+    /**
      * Void transactions undo previous transactions.
      */
     const VOID = 'void';
@@ -161,6 +168,12 @@ class Types
     const EPS = 'eps';
 
     /**
+     * e-Wallet is an asynchronous payment method which routes the payment to one of the
+     * supported Indian e-wallet providers, selected via the payment_type parameter
+     */
+    const E_WALLET = 'e_wallet';
+
+    /**
      * Bank transfer payment, popular in Germany
      */
     const SOFORT = 'sofort';
@@ -242,6 +255,13 @@ class Types
      * InstaDebit Payout is only synchronous and uses online bank transfer.
      */
     const INSTA_DEBIT_PAYOUT = 'insta_debit_payout';
+
+    /**
+     * Alipay is an oBeP-style alternative payment method that allows the customer to pay directly with their
+     * ebank account. After the transaction is initiated the customer is redirected to Alipay's page, which
+     * presents a QR code they scan with the Alipay mobile app to confirm the payment.
+     */
+    const ALIPAY = 'alipay';
 
     /**
      * WeChat Pay solution offers merchants access to the over 300 million WeChat users that have linked payment
@@ -602,6 +622,7 @@ class Types
             self::VOID                    => 'Cancel',
             self::CAPTURE                 => 'Capture',
             self::REFUND                  => 'Refund',
+            self::ASYNC_REFUND            => 'AsyncRefund',
             self::P24                     => 'Alternatives\P24',
             self::POLI                    => 'Alternatives\Poli',
             self::PPRO                    => 'Alternatives\Ppro',
@@ -648,7 +669,7 @@ class Types
             self::APPLE_PAY               => 'Mobile\ApplePay',
             self::GOOGLE_PAY              => 'Mobile\GooglePay',
             self::RUSSIAN_MOBILE_SALE     => 'Mobile\RussianMobileSale',
-            self::AFRICAN_MOBILE_SALE     => 'Mobile\AfricanMobileSale.php',
+            self::AFRICAN_MOBILE_SALE     => 'Mobile\AfricanMobileSale',
             self::BANCO_DO_BRASIL         => 'OnlineBankingPayments\BancoDoBrasil',
             self::BANCOMER                => 'OnlineBankingPayments\Bancomer',
             self::BRADESCO                => 'OnlineBankingPayments\Bradesco',
@@ -686,6 +707,8 @@ class Types
             self::CASHU                   => 'Vouchers\CashU',
             self::NEOSURF                 => 'Vouchers\Neosurf',
             self::PAYSAFECARD             => 'Vouchers\Paysafecard',
+            self::ALIPAY                  => 'Wallets\Alipay',
+            self::E_WALLET                => 'Wallets\EWallet',
             self::EZEEWALLET              => 'Wallets\EzeeWallet',
             self::NETELLER                => 'Wallets\Neteller',
             self::PAY_PAL                 => 'Wallets\PayPal',
@@ -717,6 +740,7 @@ class Types
     public static function getWPFTransactionTypes()
     {
         return [
+            self::ALIPAY,
             self::APPLE_PAY,
             self::ARGENCARD,
             self::AURA,
@@ -737,6 +761,7 @@ class Types
             self::EFECTY,
             self::ELO,
             self::EPS,
+            self::E_WALLET,
             self::EZEEWALLET,
             self::FASHIONCHEQUE,
             self::GOOGLE_PAY,
@@ -847,6 +872,7 @@ class Types
     public static function canRefund($type)
     {
         $transactionTypesList = [
+            self::ALIPAY,
             self::APPLE_PAY,
             self::AFRICAN_MOBILE_PAYOUT,
             self::AFRICAN_MOBILE_SALE,
@@ -864,6 +890,7 @@ class Types
             self::DAVIVIENDA,
             self::EFECTY,
             self::EPS,
+            self::E_WALLET,
             self::FASHIONCHEQUE,
             self::IDEAL,
             self::IDEBIT_PAYIN,
@@ -988,7 +1015,8 @@ class Types
             self::REFUND,
             self::SDD_REFUND,
             self::BITPAY_REFUND,
-            self::INVOICE_REFUND
+            self::INVOICE_REFUND,
+            self::ASYNC_REFUND
         ];
 
         return in_array(strtolower($type), $transactionTypesList);

@@ -183,6 +183,27 @@ class StatesSpec extends ObjectBehavior
         $this->{$this->buildMethod(States::REPRESENTMENT_REVERSED)}()->shouldBe(true);
     }
 
+    public function it_should_have_partially_reversed_constant_value()
+    {
+        if (States::PARTIALLY_REVERSED !== 'partially_reversed') {
+            throw new \Exception('PARTIALLY_REVERSED constant must equal "partially_reversed"');
+        }
+    }
+
+    public function it_should_have_magic_is_partially_reversed()
+    {
+        $this->beConstructedWith(States::PARTIALLY_REVERSED);
+
+        $this->{$this->buildMethod(States::PARTIALLY_REVERSED)}()->shouldBe(true);
+    }
+
+    public function it_should_recognize_partially_reversed_as_valid()
+    {
+        $this->beConstructedWith(States::PARTIALLY_REVERSED);
+
+        $this->isValid()->shouldBe(true);
+    }
+
     public function it_should_compare_properly_statuses()
     {
         $this->beConstructedWith(States::NEW_STATUS);

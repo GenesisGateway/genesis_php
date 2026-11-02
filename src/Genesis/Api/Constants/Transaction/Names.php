@@ -45,8 +45,10 @@ class Names
     private static $names = [
         Types::AFRICAN_MOBILE_PAYOUT   => 'African Mobile Payout',
         Types::AFRICAN_MOBILE_SALE     => 'African Mobile Sale',
+        Types::ALIPAY                  => 'Alipay',
         Types::APPLE_PAY               => 'Apple pay',
         Types::ARGENCARD               => 'Argencard',
+        Types::ASYNC_REFUND            => 'Async Refund',
         Types::AURA                    => 'Aura',
         Types::AUTHORIZE               => 'Authorize',
         Types::AUTHORIZE_3D            => 'Authorize (3D-Secure)',
@@ -70,6 +72,7 @@ class Names
         Types::EFECTY                  => 'Efecty',
         Types::ELO                     => 'Elo',
         Types::EPS                     => 'EPS',
+        Types::E_WALLET                => 'eWallet',
         Types::EZEECARD_PAYOUT         => 'eZeeCard Payout',
         Types::EZEEWALLET              => 'eZeeWallet',
         Types::FASHIONCHEQUE           => 'Fashioncheque',

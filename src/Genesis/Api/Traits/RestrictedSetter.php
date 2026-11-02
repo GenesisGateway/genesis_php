@@ -56,6 +56,37 @@ trait RestrictedSetter
     }
 
     /**
+     * Strict variant of allowedOptionsSetter: null clears the field, any other value
+     * is cast to string and must be strictly present in $allowed.
+     *
+     * @param $field
+     * @param $allowed
+     * @param $value
+     * @param $errorMessage
+     *
+     * @return $this
+     * @throws InvalidArgument
+     */
+    protected function allowedOptionsStrictSetter($field, $allowed, $value, $errorMessage)
+    {
+        if ($value === null) {
+            $this->$field = null;
+
+            return $this;
+        }
+
+        $value = (string)$value;
+
+        if (!in_array($value, $allowed, true)) {
+            throw new InvalidArgument($errorMessage . ' Allowed values are ' . implode(', ', $allowed));
+        }
+
+        $this->$field = $value;
+
+        return $this;
+    }
+
+    /**
      * @param string $field
      * @param string $value
      * @param int/null $min

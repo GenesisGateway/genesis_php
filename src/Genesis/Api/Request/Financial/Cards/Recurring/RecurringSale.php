@@ -29,6 +29,7 @@ namespace Genesis\Api\Request\Financial\Cards\Recurring;
 use Genesis\Api\Request\Base\Financial;
 use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\PaymentAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
 use Genesis\Api\Traits\Request\MotoAttributes;
@@ -47,6 +48,7 @@ class RecurringSale extends Financial
     use BusinessAttributes;
     use MotoAttributes;
     use PaymentAttributes;
+    use PurposeOfPaymentAttributes;
     use ReferenceAttributes;
     use TravelDataAttributes;
 
@@ -109,7 +111,8 @@ class RecurringSale extends Financial
                 $this->transformAmount($this->amount, $this->currency) : $this->amount,
             'moto'                => Common::toBoolean($this->moto),
             'travel'              => $this->getTravelData(),
-            'business_attributes' => $this->getBusinessAttributesStructure()
+            'business_attributes' => $this->getBusinessAttributesStructure(),
+            'purpose_of_payment'  => $this->purpose_of_payment
         ];
     }
 }

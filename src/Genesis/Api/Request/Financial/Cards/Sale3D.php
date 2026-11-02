@@ -34,13 +34,17 @@ use Genesis\Api\Traits\Request\Financial\Business\BusinessAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\ManagedRecurringAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringCategoryAttributes;
 use Genesis\Api\Traits\Request\Financial\Cards\Recurring\RecurringTypeAttributes;
+use Genesis\Api\Traits\Request\Financial\CommercialCardAttributes;
 use Genesis\Api\Traits\Request\Financial\CryptoAttributes;
 use Genesis\Api\Traits\Request\Financial\DescriptorAttributes;
 use Genesis\Api\Traits\Request\Financial\FundingAttributes;
+use Genesis\Api\Traits\Request\Financial\PurposeOfPaymentAttributes;
 use Genesis\Api\Traits\Request\Financial\FxRateAttributes;
 use Genesis\Api\Traits\Request\Financial\GamingAttributes;
 use Genesis\Api\Traits\Request\Financial\Installments\InstallmentAttributes;
+use Genesis\Api\Traits\Request\Financial\MarketplaceDataAttributes;
 use Genesis\Api\Traits\Request\Financial\NotificationAttributes;
+use Genesis\Api\Traits\Request\Financial\OrderAttributes;
 use Genesis\Api\Traits\Request\Financial\ReferenceAttributes;
 use Genesis\Api\Traits\Request\Financial\ScaAttributes;
 use Genesis\Api\Traits\Request\Financial\TravelData\TravelDataAttributes;
@@ -61,14 +65,18 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
     use AddressInfoAttributes;
     use AsyncAttributes;
     use BusinessAttributes;
+    use CommercialCardAttributes;
     use CryptoAttributes;
     use DescriptorAttributes;
     use FundingAttributes;
+    use PurposeOfPaymentAttributes;
     use FxRateAttributes;
     use GamingAttributes;
     use ManagedRecurringAttributes;
+    use MarketplaceDataAttributes;
     use MotoAttributes;
     use NotificationAttributes;
+    use OrderAttributes;
     use RecurringCategoryAttributes;
     use RecurringTypeAttributes;
     use ReferenceAttributes;
@@ -102,7 +110,8 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
             array(
                 'amount' => static::REQUEST_KEY_AMOUNT
             ),
-            $this->getAllowedFieldsZeroValues()
+            $this->getAllowedFieldsZeroValues(),
+            $this->getCommercialCardAllowedFieldsZeroValues()
         );
     }
 
@@ -155,6 +164,9 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
         $this->requiredFieldValuesConditional = CommonUtils::createArrayObject($requiredFieldsValuesConditional);
 
         parent::checkRequirements();
+
+        $this->validateMarketplaceDataAttributes();
+        $this->validateCommercialCardAttributes();
     }
 
     /**
@@ -186,13 +198,17 @@ class Sale3D extends \Genesis\Api\Request\Base\Financial\Cards\CreditCard3D
                 'recurring_type'            => $this->getRecurringType(),
                 'managed_recurring'         => $this->getManagedRecurringAttributesStructure(),
                 'recurring_category'        => $this->recurring_category,
+                'marketplace_data'          => $this->getMarketplaceDataAttributesStructure(),
                 'funding'                   => $this->getFundingAttributesStructure(),
+                'purpose_of_payment'        => $this->purpose_of_payment,
                 'account_owner'             => $this->getAccountOwnerAttributesStructure()
             ],
+            $this->getOrderAttributesStructure(),
             $this->getScaAttributesStructure(),
             $this->get3DSTransactionAttributes(),
             $this->getUcofAttributesStructure(),
-            $this->getInstallmentAttributesStructure()
+            $this->getInstallmentAttributesStructure(),
+            $this->getCommercialCardAttributesStructure()
         );
     }
 }

@@ -4,6 +4,7 @@ namespace spec\SharedExamples\Genesis\Api\Request\Financial;
 
 use Genesis\Api\Constants\Transaction\Parameters\Funding\BusinessApplicationIdentifierTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\IdentifierTypes;
+use Genesis\Api\Constants\Transaction\Parameters\Funding\PersonTypes;
 use Genesis\Api\Constants\Transaction\Parameters\Funding\ReceiverAccountTypes;
 use Genesis\Exceptions\InvalidArgument;
 use Genesis\Utils\Country;
@@ -210,6 +211,91 @@ trait FundingAttributesExamples
         $this->setFundingReceiverCity($city);
         $this->getDocument()->shouldMatch(
             "/<receiver>\s*<city>{$this->escapeParams($city)}<\/city>\s*<\/receiver>/"
+        );
+    }
+
+    public function it_should_contain_funding_receiver_type_when_set()
+    {
+        $this->setRequestParameters();
+
+        $this->setFundingReceiverType(PersonTypes::LEGAL);
+        $this->getDocument()->shouldMatch(
+            "/<receiver>\s*<type>" . PersonTypes::LEGAL . "<\/type>\s*<\/receiver>/"
+        );
+    }
+
+    public function it_should_contain_funding_receiver_address2_when_set()
+    {
+        $faker = Faker::getInstance();
+
+        $this->setRequestParameters();
+
+        $address2 = $faker->address();
+        $this->setFundingReceiverAddress2($address2);
+        $this->getDocument()->shouldMatch(
+            "/<receiver>.*<address2>{$this->escapeParams($address2)}<\/address2>.*<\/receiver>/s"
+        );
+    }
+
+    public function it_should_contain_funding_receiver_street_name_when_set()
+    {
+        $faker = Faker::getInstance();
+
+        $this->setRequestParameters();
+
+        $streetName = $faker->streetName();
+        $this->setFundingReceiverStreetName($streetName);
+        $this->getDocument()->shouldMatch(
+            "/<receiver>.*<street_name>{$this->escapeParams($streetName)}<\/street_name>.*<\/receiver>/s"
+        );
+    }
+
+    public function it_should_contain_funding_receiver_zip_code_when_set()
+    {
+        $faker = Faker::getInstance();
+
+        $this->setRequestParameters();
+
+        $zipCode = $faker->postcode();
+        $this->setFundingReceiverZipCode($zipCode);
+        $this->getDocument()->shouldMatch(
+            "/<receiver>.*<zip_code>{$this->escapeParams($zipCode)}<\/zip_code>.*<\/receiver>/s"
+        );
+    }
+
+    public function it_should_contain_funding_sender_type_when_set()
+    {
+        $this->setRequestParameters();
+
+        $this->setFundingSenderType(PersonTypes::LEGAL);
+        $this->getDocument()->shouldMatch(
+            "/<sender>\s*<type>" . PersonTypes::LEGAL . "<\/type>\s*<\/sender>/"
+        );
+    }
+
+    public function it_should_not_contain_funding_node_when_no_funding_data_set()
+    {
+        $this->setRequestParameters();
+
+        $this->getDocument()->shouldNotContain('<funding>');
+    }
+
+    public function it_should_build_with_only_pre_existing_funding_fields()
+    {
+        $faker = Faker::getInstance();
+
+        $this->setRequestParameters();
+
+        $this->setFundingIdentifierType($faker->randomElement(IdentifierTypes::getAll()));
+        $this->setFundingReceiverFirstName($faker->firstName());
+        $this->setFundingReceiverLastName($faker->lastName());
+
+        $this->getDocument()->shouldContain('<funding>');
+        $this->getDocument()->shouldNotMatch(
+            "/<receiver>.*<type>.*<\/type>.*<\/receiver>/s"
+        );
+        $this->getDocument()->shouldNotMatch(
+            "/<sender>\s*<type>.*<\/type>/s"
         );
     }
 

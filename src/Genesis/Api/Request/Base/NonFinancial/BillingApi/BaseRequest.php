@@ -47,12 +47,23 @@ abstract class BaseRequest extends GraphqlRequest
 
     const MAX_DAYS_DIFFERENCE = 7;
 
+    const MAX_COUNT_MASTER_ACCOUNT_MID = 1000;
+
     /**
      * List of billing statement IDs
      *
      * @var string[]
      */
     protected $billing_statement = [];
+
+    /**
+     * List of master account MIDs
+     *
+     * @note Only works for records added after 17.08.2026 (server-side behavior).
+     *
+     * @var string[]
+     */
+    protected $master_account_mid = [];
 
     /**
      * Field result collection is sorted by
@@ -91,7 +102,41 @@ abstract class BaseRequest extends GraphqlRequest
             return '';
         }
 
-        return sprintf('["%s"]', implode('","', $this->billing_statement));
+        return $this->formatArrayToGraphQLStringList($this->billing_statement);
+    }
+
+    /**
+     * Set the list of master account MIDs in the filter
+     *
+     * @param array $value
+     *
+     * @return $this
+     *
+     * @throws InvalidArgument
+     */
+    public function setMasterAccountMID($value)
+    {
+        if (empty($value)) {
+            $this->master_account_mid = [];
+
+            return $this;
+        }
+
+        return $this->parseArrayOfStrings('master_account_mid', $value, 'MasterAccountMID');
+    }
+
+    /**
+     * Return a formatted string with the master account MIDs
+     *
+     * @return string
+     */
+    public function getMasterAccountMID()
+    {
+        if (empty($this->master_account_mid)) {
+            return '';
+        }
+
+        return $this->formatArrayToGraphQLStringList($this->master_account_mid);
     }
 
     /**

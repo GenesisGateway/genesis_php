@@ -3,3 +3,4 @@ vendor
 phpspec_report.xml
 phpcs_report.xml
 phpmd_report.xml
+.agents/

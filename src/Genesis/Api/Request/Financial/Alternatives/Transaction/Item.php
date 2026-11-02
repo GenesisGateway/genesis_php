@@ -317,7 +317,7 @@ class Item
     {
         // Convert to minor units for more accurate calculations
         $total_amount = $this->getAmountInProperUnit($this->getTotalAmount());
-        $tax_rate     = $this->getAmountInProperUnit($this->tax_rate);
+        $tax_rate     = $this->getTaxRateInProperUnit();
 
         $total_tax_amount = ceil(
             $total_amount - (($total_amount * 10000) / (10000 + $tax_rate))
@@ -344,7 +344,7 @@ class Item
             'item_type'             => $this->item_type,
             'quantity'              => $this->quantity,
             'unit_price'            => $this->getAmountInProperUnit($this->unit_price),
-            'tax_rate'              => $this->getAmountInProperUnit($this->tax_rate),
+            'tax_rate'              => $this->getTaxRateInProperUnit(),
             'total_discount_amount' => $this->getAmountInProperUnit($this->total_discount_amount),
             'total_amount'          => $this->getAmountInProperUnit($this->getTotalAmount()),
             'total_tax_amount'      => $this->getAmountInProperUnit($this->getTotalTaxAmount()),
@@ -516,5 +516,33 @@ class Item
         }
 
         return $value;
+    }
+
+    /**
+     * Convert the tax rate percent to the gateway format: an integer with two implicit decimals
+     * (12.34 means 12.34% and is sent as 1234). The multiplier is fixed and does not depend on the currency.
+     *
+     * @return mixed
+     *
+     * @throws InvalidArgument
+     */
+    private function getTaxRateInProperUnit()
+    {
+        if (empty($this->currency)) {
+            return $this->tax_rate;
+        }
+
+        $parts = explode('.', (string) $this->tax_rate);
+
+        if (!empty($parts[1]) && mb_strlen($parts[1]) > 2) {
+            throw new InvalidArgument(
+                sprintf(
+                    'Item parameter tax_rate is set to %s, but expected to have at most 2 decimal places',
+                    $this->tax_rate
+                )
+            );
+        }
+
+        return bcmul((string) $this->tax_rate, '100', 0);
     }
 }

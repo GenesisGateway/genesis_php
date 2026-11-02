@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<e_wallet_responses>
+    <!-- pending_async sample: the gateway returns the wallet provider redirect_url -->
+    <payment_response>
+        <transaction_type>e_wallet</transaction_type>
+        <status>pending_async</status>
+        <transaction_id>119864bbfee6a1e1a41c7e85a5</transaction_id>
+        <unique_id>de7e722035f04839bc30676cf3c4eae9</unique_id>
+        <technical_message>TESTMODE: No real money will be transferred!</technical_message>
+        <message>TESTMODE: No real money will be transferred!</message>
+        <mode>test</mode>
+        <timestamp>2026-01-15T10:22:31Z</timestamp>
+        <descriptor>test</descriptor>
+        <amount>10000</amount>
+        <currency>INR</currency>
+        <sent_to_acquirer>true</sent_to_acquirer>
+        <redirect_url>https://staging.gate.emerchantpay.net/redirect/to_acquirer/de7e722035f04839bc30676cf3c4eae9</redirect_url>
+    </payment_response>
+    <!-- error sample: the gateway returns an error code -->
+    <payment_response>
+        <transaction_type>e_wallet</transaction_type>
+        <status>error</status>
+        <code>340</code>
+        <transaction_id>a41c7e85a5119864bbfee6a1e1</transaction_id>
+        <unique_id>3c4eae9de7e722035f04839bc30676cf</unique_id>
+        <technical_message>'payment_type' is not supported by the terminal!</technical_message>
+        <message>Please check input data for errors!</message>
+        <mode>test</mode>
+        <timestamp>2026-01-15T10:24:07Z</timestamp>
+        <descriptor>test</descriptor>
+        <amount>10000</amount>
+        <currency>INR</currency>
+        <sent_to_acquirer>false</sent_to_acquirer>
+    </payment_response>
+</e_wallet_responses>

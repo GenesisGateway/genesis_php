@@ -101,4 +101,20 @@ class DateAttributesSpec extends ObjectBehavior
 
         $this->shouldThrow(ErrorParameter::class)->duringPublicValidateDatesMaxDifference(7);
     }
+
+    public function it_should_render_start_date_only_after_replacing_datetime_with_date()
+    {
+        $this->setStartDate('1970-12-12 10:30:00');
+        $this->setStartDate('1970-12-12');
+
+        $this->getStartDate()->shouldReturn('1970-12-12');
+    }
+
+    public function it_should_render_end_date_only_after_replacing_datetime_with_date()
+    {
+        $this->setEndDate('1970-12-12 10:30:00');
+        $this->setEndDate('1970-12-12');
+
+        $this->getEndDate()->shouldReturn('1970-12-12');
+    }
 }

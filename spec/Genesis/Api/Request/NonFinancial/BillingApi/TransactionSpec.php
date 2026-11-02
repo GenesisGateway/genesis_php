@@ -196,6 +196,25 @@ class TransactionSpec extends ObjectBehavior
         $this->getDocument()->shouldContain(' masterAccountName: [\"Travis Pastrana\"] }');
     }
 
+    public function it_should_accept_new_response_fields()
+    {
+        $this->setUniqueId(['unique_id']);
+
+        $this->shouldNotThrow()->during(
+            'setResponseFields',
+            [['retrievalReferenceNumber', 'omnipayCardPresentTransactionId']]
+        );
+    }
+
+    public function it_should_render_new_response_fields()
+    {
+        $this->setUniqueId(['unique_id']);
+        $this->setResponseFields(['retrievalReferenceNumber', 'omnipayCardPresentTransactionId']);
+
+        $this->getDocument()->shouldContain('retrievalReferenceNumber');
+        $this->getDocument()->shouldContain('omnipayCardPresentTransactionId');
+    }
+
     protected function setRequestParameters()
     {
         $this->setResponseFields($this->getResponseFieldsAllowedValues());
@@ -225,7 +244,8 @@ class TransactionSpec extends ObjectBehavior
             'gstAmount', 'gstRate', 'vatAmount', 'vatRate', 'terminalName', 'region', 'settlementBillingStatements',
             'settlementDates', 'settlementStatus', 'merchantId', 'merchantName', 'merchantTransactionId',
             'masterAccountName', 'valueDate', 'documentId', 'referenceId', 'authCode', 'paymentType', 'cardBrand',
-            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype'];
+            'cardNumber', 'cardHolder', 'cardType', 'cardSubtype', 'retrievalReferenceNumber',
+            'omnipayCardPresentTransactionId'];
 
         return $faker->randomElements($values, 5);
     }

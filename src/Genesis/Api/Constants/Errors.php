@@ -62,7 +62,7 @@ final class Errors
     const AUTHENTICATION_ERROR                          = 110;
 
     /**
-     * Config error occurred, e.g. terminal not configured properly.
+     * Configuration error occurred, e.g. terminal not configured properly.
      *
      * Check terminal settings
      */
@@ -129,12 +129,12 @@ final class Errors
     const INPUT_DATA_INVALID_ERROR                      = 340;
 
     /**
-     * The input Builder could not be parsed due to invalid code
+     * The input XML could not be parsed due to invalid code. Please check XML data.
      */
     const INVALID_XML_ERROR                             = 350;
 
     /**
-     * Invalid value for HTTP header - Content-Type
+     * Missing or invalid content type: should be text/xml!
      */
     const INVALID_CONTENT_TYPE_ERROR                    = 360;
 
@@ -165,7 +165,10 @@ final class Errors
     const REFERENCE_MISMATCH_ERROR                      = 440;
 
     /**
-     * Transaction doublet was detected, transaction was blocked
+     * Transaction doublet was detected, transaction was blocked.
+     *
+     * This happens if several transactions with same amount, cardholder, cc number,
+     * cvv and expiry date are sent within 5 minutes.
      */
     const DOUBLE_TRANSACTION_ERROR                      = 450;
 
@@ -178,6 +181,11 @@ final class Errors
      * Chargeback not found!
      */
     const CHARGEBACK_NOT_FOUND_ERROR                    = 470;
+
+    /**
+     * Rapid Dispute Resolution not found!
+     */
+    const RAPID_DISPUTE_RESOLUTION_NOT_FOUND_ERROR      = 471;
 
     /**
      * Retrieval Request not found!
@@ -193,6 +201,11 @@ final class Errors
      * Transaction declined by issuer
      */
     const PROCESSING_ERROR                              = 500;
+
+    /**
+     * Transaction declined due to a rejection by the bank.
+     */
+    const BANK_REJECT_ERROR                             = 501;
 
     /**
      * Transaction declined, Credit card number is invalid
@@ -223,6 +236,11 @@ final class Errors
      * The voucher could not be issued!
      */
     const ISSUING_ERROR                                 = 550;
+
+    /**
+     * SCA required!
+     */
+    const SCA_REQUIRED_ERROR                            = 551;
 
     /**
      * Transaction declined by risk management
@@ -270,7 +288,9 @@ final class Errors
     const BLACKLIST_ERROR                               = 614;
 
     /**
-     * PAN Whitelist Filter blocked the transaction
+     * PAN Whitelist Filter blocked the transaction.
+     *
+     * The card was not found in the configured PAN whitelist, so the transaction was blocked.
      */
     const CARD_WHITELIST_ERROR                          = 615;
 
@@ -305,12 +325,14 @@ final class Errors
     const USER_LIMIT_EXCEEDED_ERROR                     = 625;
 
     /**
-     * Found user transaction declined by issuer
+     * Found user transaction declined by issuer. Try again later!
      */
     const MULTIPLE_FAILURE_DETECTION_ERROR              = 626;
 
     /**
      * CrossSelling Error!
+     *
+     * The transaction was declined by the CrossSellingFilter.
      */
     const CS_DETECTION_ERROR                            = 627;
 
@@ -335,12 +357,14 @@ final class Errors
     const AVS_ERROR                                     = 690;
 
     /**
-     * MaxMind High Risk Error
+     * MaxMind High Risk Error.
+     *
+     * Raised when a transaction is considered high risk by the MaxMind minFraud service.
      */
     const MAX_MIND_RISK_ERROR                           = 691;
 
     /**
-     * ThreatMetrix High Risk Error
+     * Transaction declined by ThreatMetrix risk module.
      */
     const THREAT_METRIX_RISK_ERROR                      = 692;
 
@@ -405,9 +429,49 @@ final class Errors
     const INVALID_TOKEN_ERROR                           = 730;
 
     /**
+     * Invalid scheme tokenization merchant configuration!
+     */
+    const INVALID_SCHEME_TOKENIZATION_MERCHANT_CONFIGURATION_ERROR = 731;
+
+    /**
+     * Token already scheme tokenized!
+     */
+    const EXISTING_SCHEME_TOKEN_ERROR                   = 732;
+
+    /**
      * Detokenize action is forbidden!
      */
     const DETOKENIZE_FORBIDDEN_ERROR                    = 740;
+
+    /**
+     * Tokenize action is forbidden!
+     */
+    const TOKENIZE_FORBIDDEN_ERROR                      = 741;
+
+    /**
+     * Update token action is forbidden!
+     */
+    const UPDATE_TOKEN_FORBIDDEN_ERROR                  = 742;
+
+    /**
+     * Validate token action is forbidden!
+     */
+    const VALIDATE_TOKEN_FORBIDDEN_ERROR                = 743;
+
+    /**
+     * Delete token action is forbidden!
+     */
+    const DELETE_TOKEN_FORBIDDEN_ERROR                  = 744;
+
+    /**
+     * Client-side encryption error!
+     */
+    const CLIENT_SIDE_ENCRYPTION_ERROR                  = 750;
+
+    /**
+     * Client-side Encryption is not enabled!
+     */
+    const CLIENT_SIDE_ENCRYPTION_NOT_ENABLED_ERROR      = 751;
 
     /**
      * General KYC Service Error
@@ -445,7 +509,7 @@ final class Errors
     const KYC_SERVICE_UNACCEPTABLE_MERCHANT_STATE_ERROR = 806;
 
     /**
-     * Some error occurred on the issuer side
+     * Some error occurred on the issuer side. Contact support.
      */
     const REMOTE_ERROR                                  = 900;
 
@@ -540,7 +604,7 @@ final class Errors
             case self::INPUT_DATA_INVALID_ERROR:
                 return 'Argument passed in valid format but makes no sense (e.g. incorrect country code or currency).';
             case self::INVALID_XML_ERROR:
-                return 'The input Builder could not be parsed due to invalid code.';
+                return 'The input XML could not be parsed due to invalid code. Please check XML data.';
             case self::INVALID_CONTENT_TYPE_ERROR:
                 return 'Missing or invalid content type: should be text/xml!';
             case self::WORKFLOW_ERROR:
@@ -555,17 +619,23 @@ final class Errors
             case self::REFERENCE_MISMATCH_ERROR:
                 return 'Data mismatch with reference, e.g. amount exceeds reference.';
             case self::DOUBLE_TRANSACTION_ERROR:
-                return 'Transaction doublet was detected, transaction was blocked.';
+                return 'Transaction doublet was detected, transaction was blocked. This happens if several ' .
+                       'transactions with same amount, cardholder, cc number, cvv and expiry date are sent ' .
+                       'within 5 minutes.';
             case self::TRANSACTION_NOT_FOUND_ERROR:
                 return 'The referenced transaction could not be found.';
             case self::CHARGEBACK_NOT_FOUND_ERROR:
                 return 'Chargeback not found!';
+            case self::RAPID_DISPUTE_RESOLUTION_NOT_FOUND_ERROR:
+                return 'Rapid Dispute Resolution not found!';
             case self::RETRIEVAL_REQUEST_NOT_FOUND_ERROR:
                 return 'Retrieval Request not found!';
             case self::FRAUD_REPORT_NOT_FOUND_ERROR:
                 return 'Fraud Report not found!';
             case self::PROCESSING_ERROR:
                 return 'Transaction declined by issuer.';
+            case self::BANK_REJECT_ERROR:
+                return 'Transaction declined due to a rejection by the bank.';
             case self::INVALID_CARD_ERROR:
                 return 'Transaction declined, Credit card number is invalid.';
             case self::ISSUER_OCT_NOT_ENABLED_ERROR:
@@ -578,6 +648,8 @@ final class Errors
                 return 'Amount exceeds credit card limit.';
             case self::ISSUING_ERROR:
                 return 'The voucher could not be issued!';
+            case self::SCA_REQUIRED_ERROR:
+                return 'SCA required!';
             case self::RISK_ERROR:
                 return 'Transaction declined by risk management.';
             case self::INTERCHANGE_REJECT_ERROR:
@@ -597,7 +669,8 @@ final class Errors
             case self::BLACKLIST_ERROR:
                 return 'Value from the Transaction Request or Risk Parameters is blacklisted.';
             case self::CARD_WHITELIST_ERROR:
-                return 'PAN Whitelist Filter blocked the transaction.';
+                return 'PAN Whitelist Filter blocked the transaction. The card was not found in the ' .
+                       'configured PAN whitelist, so the transaction was blocked.';
             case self::CARD_LIMIT_EXCEEDED_ERROR:
                 return 'Card limit exceeded configured limits.';
             case self::TERMINAL_LIMIT_EXCEEDED_ERROR:
@@ -611,9 +684,9 @@ final class Errors
             case self::USER_LIMIT_EXCEEDED_ERROR:
                 return 'User limit exceeded configured limits.';
             case self::MULTIPLE_FAILURE_DETECTION_ERROR:
-                return 'Found user transaction declined by issuer.';
+                return 'Found user transaction declined by issuer. Try again later!';
             case self::CS_DETECTION_ERROR:
-                return 'CrossSelling Error!';
+                return 'CrossSelling Error! The transaction was declined by the CrossSellingFilter.';
             case self::RECURRING_LIMIT_EXCEEDED_ERROR:
                 return 'Amount/count by recurring subscription exceeded.';
             case self::IRIS_FILTER_DECLINED_ERROR:
@@ -623,21 +696,22 @@ final class Errors
             case self::AVS_ERROR:
                 return 'Address Verification failed.';
             case self::MAX_MIND_RISK_ERROR:
-                return 'MaxMind High Risk Error.';
+                return 'If a transaction is considered high risk by MaxMind minFraud service, ' .
+                       'a MaxMindRiskError is raised.';
             case self::THREAT_METRIX_RISK_ERROR:
-                return 'ThreatMetrix High Risk Error.';
+                return 'Transaction declined by ThreatMetrix risk module.';
             case self::IP_NOT_WHITELISTED_ERROR:
                 return 'Transaction declined by risk management, IP is NOT whitelisted!';
             case self::DOMAIN_BLACKLISTED_ERROR:
                 return 'Transaction declined by risk management, domain is blacklisted!';
             case self::FRAUD_ERROR:
-                return 'Please contact the risk team!';
+                return 'Risk Error: Please contact the risk team!';
             case self::IBAN_BLACKLIST_ERROR:
                 return 'Transaction declined by risk management, iban blacklisted!';
             case self::CARD_BRAND_VELOCITY_RESTRICTION_ERROR:
                 return 'Terminal card brand limitation!';
             case self::REMOTE_ERROR:
-                return 'Some error occurred on the issuer.';
+                return 'Some error occurred on the issuer. Contact support.';
             case self::REMOTE_SYSTEM_ERROR:
                 return 'Some error occurred on the issuer.';
             case self::REMOTE_CONFIGURATION_ERROR:
@@ -664,8 +738,24 @@ final class Errors
                 return 'Unsupported token type!';
             case self::INVALID_TOKEN_ERROR:
                 return 'Invalid token!';
+            case self::INVALID_SCHEME_TOKENIZATION_MERCHANT_CONFIGURATION_ERROR:
+                return 'Invalid scheme tokenization merchant configuration!';
+            case self::EXISTING_SCHEME_TOKEN_ERROR:
+                return 'Token already scheme tokenized!';
             case self::DETOKENIZE_FORBIDDEN_ERROR:
                 return 'Detokenize action is forbidden!';
+            case self::TOKENIZE_FORBIDDEN_ERROR:
+                return 'Tokenize action is forbidden!';
+            case self::UPDATE_TOKEN_FORBIDDEN_ERROR:
+                return 'Update token action is forbidden!';
+            case self::VALIDATE_TOKEN_FORBIDDEN_ERROR:
+                return 'Validate token action is forbidden!';
+            case self::DELETE_TOKEN_FORBIDDEN_ERROR:
+                return 'Delete token action is forbidden!';
+            case self::CLIENT_SIDE_ENCRYPTION_ERROR:
+                return 'Client-side encryption error!';
+            case self::CLIENT_SIDE_ENCRYPTION_NOT_ENABLED_ERROR:
+                return 'Client-side Encryption is not enabled!';
             case self::KYC_SERVICE_ERROR:
                 return 'General KYC Service Error';
             case self::DOCUMENT_MIME_TYPE_UNSUPPORTED_ERROR:

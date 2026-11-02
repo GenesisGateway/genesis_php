@@ -15,6 +15,8 @@ use spec\SharedExamples\Genesis\Api\Request\Financial\DescriptorAttributesExampl
 use spec\SharedExamples\Genesis\Api\Request\Financial\FundingAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NeighborhoodAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\NotificationAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\PurposeOfPaymentAttributesExamples;
+use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\ForceThreedsAttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\Financial\Threeds\V2\ThreedsV2AttributesExamples;
 use spec\SharedExamples\Genesis\Api\Request\RequestExamples;
 use spec\SharedExamples\Genesis\Api\Traits\Request\DocumentAttributesExample;
@@ -24,9 +26,11 @@ class GooglePaySpec extends ObjectBehavior
     use AsyncAttributesExample;
     use DescriptorAttributesExample;
     use DocumentAttributesExample;
+    use ForceThreedsAttributesExamples;
     use FundingAttributesExamples;
     use NeighborhoodAttributesExamples;
     use NotificationAttributesExamples;
+    use PurposeOfPaymentAttributesExamples;
     use RecurringTypeAttributesExample;
     use RequestExamples;
     use ThreedsV2AttributesExamples;

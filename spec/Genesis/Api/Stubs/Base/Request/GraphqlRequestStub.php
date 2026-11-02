@@ -16,6 +16,16 @@ class GraphqlRequestStub extends GraphqlRequest
         return $this->generateGraphQLCode($elements, $element_name, $glue, $format);
     }
 
+    public function publicFormatArrayToGraphQLStringList(array $values)
+    {
+        return $this->formatArrayToGraphQLStringList($values);
+    }
+
+    public function publicEscapeGraphQLString($value)
+    {
+        return $this->escapeGraphQLString($value);
+    }
+
     protected function initGraphqlToken()
     {
         return 'token';
@@ -33,6 +43,6 @@ class GraphqlRequestStub extends GraphqlRequest
 
     protected function getResponseFieldsAllowedValues()
     {
-        return ['response_field'];
+        return ['response_field', 'other_field'];
     }
 }
